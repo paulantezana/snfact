@@ -1,0 +1,134 @@
+$asideWidth: 220px;
+$asideSmallWidth: 64px;
+$headerHeight: 56px;
+
+// General Styles
+.AdminLayout{
+  &-header{
+    line-height: $headerHeight;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 100;
+  }
+  &-main{
+    margin-top: $headerHeight;
+    height: calc(100vh - #{$headerHeight});
+    overflow-y: auto;
+  }
+  &-aside{
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    left: -100%;
+    z-index: 110;
+    width: 100%;
+  }
+}
+
+// Layout 1
+.SnAdminL1{
+  .AdminLayout{
+    &-main,
+    &-header{
+      //transition: margin-left, width .4s cubic-bezier(0.075, 0.82, 0.165, 1);
+      @include from(l){
+        margin-left: $asideWidth;
+      }
+    }
+
+    &-header{
+      @include from(l){
+        width: calc(100vw - #{$asideWidth});
+      }
+    }
+
+    &-aside{
+      //transition: left, width .4s cubic-bezier(0.075, 0.82, 0.165, 1);
+      @include from(l){
+        width: $asideWidth;
+        left: 0;
+      }
+    }
+  }
+
+  // In Show
+  &.AsideMenu-is-show{
+    @include to(l){
+      .AdminLayout{
+        &-aside{
+          left: 0;
+        }
+      }
+    }
+    @include from(l){
+      .AdminLayout{
+        &-main,
+        &-header{
+          margin-left: $asideSmallWidth;
+          width: calc(100vw - #{$asideSmallWidth});
+        }
+        &-aside{
+          width: $asideSmallWidth;
+        }
+      }
+    }
+  }
+}
+
+// Layout 2
+.SnAdminL2{
+  .AdminLayout{
+    &-main,
+    &-header{
+      //transition: margin-left, width .4s cubic-bezier(0.075, 0.82, 0.165, 1);
+      @include from(l){
+        margin-left: $asideSmallWidth;
+      }
+    }
+
+    &-header{
+      @include from(l){
+        width: calc(100vw - #{$asideSmallWidth});
+      }
+    }
+    &-aside{
+      //transition: left, width .4s cubic-bezier(0.075, 0.82, 0.165, 1);
+      @include from(l){
+        width: $asideSmallWidth;
+        left: 0;
+      }
+    }
+  }
+
+  // In Show
+  &.AsideMenu-is-show{
+    @include to(l){
+      .AdminLayout{
+        &-aside{
+          left: 0;
+        }
+      }
+    }
+    @include from(l){
+      .AdminLayout{
+        &-main,
+        &-header{
+          margin-left: $asideWidth;
+          width: calc(100vw - #{$asideWidth});
+        }
+        &-aside{
+          width: $asideWidth;
+        }
+      }
+    }
+  }
+}
+
+
+.SnContent{
+  @include from(l){
+    padding: 1rem;
+  }
+}
+

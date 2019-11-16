@@ -1,0 +1,10 @@
+body{
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 0.95rem;
+}
+
+[class*="icon-"]::before{
+  position: relative;
+  top: 2px;
+}

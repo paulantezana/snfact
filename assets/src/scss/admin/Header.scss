@@ -1,0 +1,14 @@
+.Header{
+    display: flex;
+    justify-content: space-between;
+    background: var(--snColorBgAlt);
+    box-shadow: 0 1px var(--snColorBorder);
+}
+
+#AsideMenu-toggle{
+    padding: 0 16px;
+    cursor: pointer;
+    &:hover{
+        background: var(--snColorHover);
+    }
+}

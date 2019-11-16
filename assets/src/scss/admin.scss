@@ -1,0 +1,96 @@
+@import "node_modules/sedna/bin/sedna";
+@import "_postConfig";
+
+// Base
+@include SnBase();
+@import "_base";
+
+// Components
+@include SnMenu();
+@include SnBtn();
+@include SnBtns();
+@include SnAlert();
+@include SnCard();
+@include SnForm();
+@include SnInput();
+@include SnAvatar();
+@include SnGrid();
+@include SnLoading();
+@include SnMargin();
+@include SnModal();
+@include SnMessage();
+@include SnPagination();
+@include SnTable();
+
+@import "admin/Layout";
+@import "admin/Header";
+@import "admin/HeaderMenu";
+@import "admin/AsideMenu";
+@import "admin/SnToolbar";
+
+@import "admin/InfiniteScroll";
+@import "admin/CustomerRow";
+
+@import "admin/Tooltip";
+@import "admin/SnSwitch";
+@import "admin/dashboard";
+@import "admin/User";
+
+.hidden{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.SnTag{
+  font-size: .8rem;
+  line-height: 1rem;
+  height: 1rem;
+  padding: 0 .3rem;
+  display: block;
+  border-radius: .2em;
+  &.primary{
+    background: var(--snColor1);
+    color: var(--snColor1Inverse);
+  }
+  &.success{
+    background: var(--snSuccess);
+    color: var(--snSuccessInverse);
+  }
+}
+
+.SnDoc{
+  &-left{
+    @include from(l){
+      & > *{
+        position: fixed;
+        //z-index: 1;
+      }
+    }
+  }
+  &-right{
+    @include from(l){
+      width: calc(100vw - 412px);
+      max-width: 100%;
+    }
+  }
+  &-titles{
+    @extend %snList;
+    a{
+      text-decoration: none;
+      display: block;
+      color: var(--snColorText);
+      padding: .5rem 1rem;
+      &:hover{
+        background: var(--snColorHover);
+      }
+    }
+  }
+
+  grid-template-columns: 1fr;
+  display: grid;
+  height: calc(100vh - 60px);
+  grid-gap: 16px;
+  @include  from(l){
+    grid-template-columns: 1fr 280px;
+  }
+}

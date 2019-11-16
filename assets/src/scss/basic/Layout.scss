@@ -1,0 +1,24 @@
+.BasicLayout{
+  padding: 3rem 1rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  @include from(l){
+    padding-top: 5rem;
+  }
+  &-main{
+    margin-right: auto;
+    margin-left: auto;
+  }
+  &-footer{
+    text-align: center;
+    margin-top: auto;
+    color: var(--snColorTextAlt);
+    font-size: .8em;
+    padding: 1rem 0;
+  }
+}
+
+.BasicLayout{
+  background: url('./../../images/background.svg') no-repeat center center;
+}

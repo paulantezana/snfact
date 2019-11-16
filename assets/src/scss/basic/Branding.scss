@@ -1,0 +1,20 @@
+.Branding{
+  &-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    h1{
+      margin: 0;
+      color: var(--snColorText);
+    }
+  }
+  &-img{
+    margin-right: 8px;
+    height: 32px;
+  }
+  &-description{
+    margin: 12px  0 40px;
+    text-align: center;
+  }
+}

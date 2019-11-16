@@ -1,0 +1,9 @@
+.SnToolbar{
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  background: var(--snColorBgAlt);
+  border: 1px solid var(--snColorBorder);
+}

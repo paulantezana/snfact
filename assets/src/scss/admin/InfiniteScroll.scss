@@ -1,0 +1,7 @@
+.InfiniteScroll {
+    height: calc(100vh - #{$headerHeight + (185 - 32)});
+    @include from(l){
+        height: calc(100vh - #{$headerHeight + 185});
+    }
+    overflow: auto;
+}

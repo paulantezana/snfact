@@ -1,0 +1,212 @@
+$hoverMenuBg: var(--snColor1);
+$hoverMenuColor: white;
+$menuBorderColor: var(--snColorDark);
+
+// General styles
+.AsideMenu {
+  @extend %snList;
+  height: calc(100vh - #{$headerHeight});
+  background: var(--snColorDarker);
+  overflow-y: auto;
+  &-container{
+    background: var(--snColorDarker);
+    color: var(--snColorDarkInverse);
+  }
+  li {
+    position: relative;
+  }
+  ul {
+    @extend %snList;
+    background: var(--snColorDark);
+    a {
+      padding-left: 50px;
+    }
+  }
+  &-item,
+  a {
+    color: var(--snColorDarkInverse);
+    text-decoration: none;
+    line-height: 2.5rem;
+    padding: 0 8px 0 20px;
+    display: flex;
+    align-items: center;
+    [class*="icon-"] {
+      margin-right: 16px;
+    }
+    > span {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &:hover {
+      background: $hoverMenuBg;
+      color: $hoverMenuColor;
+    }
+    .toggle {
+      margin: 0 0 0 8px;
+    }
+  }
+}
+
+// Menu Aside wrrapper
+.AsideMenu-is-show {
+  @include to(l) {
+    .AsideMenu {
+      &-wrapper {
+        background: rgba(black, .5);
+      }
+      &-container {
+        width: $asideWidth;
+      }
+    }
+  }
+}
+
+//
+
+// Divider
+.AsideMenu {
+    &-divider {
+        padding: 10px 20px;
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: 700;
+    }
+}
+
+//@mixin AsideMenuInLarge(){
+  .AsideMenu {
+      ul{
+          display: none;
+          &.is-show{
+              display: block;
+          }
+      }
+  }
+//}
+
+//@extend AsideMenuInLarge();
+
+@mixin AsideMenuInSmall(){
+  @include from(l) {
+    .AsideMenu {
+      overflow-y: initial;
+      &-divider {
+        // border-bottom: 1px solid $menuBorderColor;
+        padding: 0;
+        font-size: 0;
+      }
+      > li {
+        > a {
+          justify-content: center;
+          padding-left: 0;
+          padding-right: 0;
+          > span {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            text-align: left;
+            padding: 0 20px;
+            width: 220px;
+            background: $hoverMenuBg;
+            display: none;
+          }
+          .toggle {
+            display: none;
+          }
+          [class*="icon-"] {
+            margin-right: 0;
+          }
+        }
+      }
+      li {
+        ul {
+          position: absolute;
+          top: 0;
+          left: 100%;
+          width: 220px;
+          display: none;
+          a {
+            padding: 0 20px;
+          }
+        }
+        &:hover {
+          > ul {
+            display: block;
+          }
+          > a span {
+            display: flex;
+          }
+          > a {
+            background: $hoverMenuBg;
+            color: $hoverMenuColor;
+          }
+        }
+      }
+      > li > ul {
+        top: 100%;
+      }
+    }
+  }
+}
+
+.SnAdminL1.AsideMenu-is-show{
+  @include AsideMenuInSmall();
+}
+.SnAdminL2:not(.AsideMenu-is-show){
+  @include AsideMenuInSmall();
+}
+
+// ----------------------------------------------------------------------------
+// Aside Header
+.AsideHeader {
+  height: $headerHeight;
+  padding: 10px 20px;
+  border-bottom: 1px solid $menuBorderColor;
+}
+
+// Branding
+.Branding {
+  height: 100%;
+  &-link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: var(--snColorDarkInverse);
+    text-decoration: none;
+    img {
+      max-width: 28px;
+      margin-right: 16px;
+    }
+  }
+  &-name {
+    font-weight: 500;
+  }
+}
+
+// Layout
+@mixin AsideHeaderInSmall(){
+  @include from(l){
+    .AsideHeader {
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    .Branding {
+      &-img {
+        margin: 0;
+      }
+      &-name {
+        display: none;
+      }
+    }
+  }
+}
+
+.SnAdminL1.AsideMenu-is-show{
+  @include AsideHeaderInSmall();
+}
+.SnAdminL2:not(.AsideMenu-is-show){
+  @include AsideHeaderInSmall();
+}
