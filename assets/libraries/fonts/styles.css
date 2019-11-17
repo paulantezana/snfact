@@ -119,3 +119,18 @@
 .icon-down:before {
   content: "\41";
 }
+.icon-pencil:before {
+  content: "\42";
+}
+.icon-trash:before {
+  content: "\43";
+}
+.icon-plus:before {
+  content: "\44";
+}
+.icon-refresh:before {
+  content: "\45";
+}
+.icon-key:before {
+  content: "\46";
+}

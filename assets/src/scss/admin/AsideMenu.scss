@@ -30,6 +30,7 @@ $menuBorderColor: var(--snColorDark);
     padding: 0 8px 0 20px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     [class*="icon-"] {
       margin-right: 16px;
     }
@@ -77,7 +78,7 @@ $menuBorderColor: var(--snColorDark);
 
 //@mixin AsideMenuInLarge(){
   .AsideMenu {
-      ul{
+      ul {
           display: none;
           &.is-show{
               display: block;

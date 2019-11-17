@@ -11,8 +11,22 @@ let  UserForm = {
         this.submitButton = document.getElementById('userFormSubmit');
         this.list();
     },
-    list(){
-        // location.reload();
+    search(event){
+        event.preventDefault();
+        this.list(1,10,event.target.value);
+    },
+    list(page = 1, limit = 10, search = ''){
+        let customerTable = document.getElementById('userTable');
+        if(customerTable){
+            this.setLoading(true);
+            RequestApi.fetchText(`/user/table?limit=${limit}&page=${page}&search=${search}`,{
+                method: 'GET',
+            }).then(res => {
+                customerTable.innerHTML = res;
+            }).finally(e =>{
+                this.setLoading(false);
+            })
+        }
     },
     setLoading(state){
         this.loading = state;
@@ -83,7 +97,7 @@ let  UserForm = {
             if (res.success){
                 SnModal.close(this.modalName);
                 SnMessage.success({ content: res.message });
-                location.reload();
+                this.list();
             } else {
                 SnModal.error({ title: 'Algo salió mal', content: res.message })
             }
@@ -111,7 +125,6 @@ let  UserForm = {
                 }).then(res => {
                     if (res.success) {
                         SnMessage.success({ content: res.message });
-                        location.reload();
                         _list();
                     } else {
                         SnModal.error({ title: 'Algo salió mal', content: res.message })
@@ -178,7 +191,7 @@ let  UserForm = {
                 document.getElementById('userUserName').value  = res.result.user_name;
                 document.getElementById('userState').checked  = res.result.state;
                 document.getElementById('userUserRoleId').value  = res.result.user_role_id;
-                document.getElementById('userId').value = res.result.id;
+                document.getElementById('userId').value = res.result.user_id;
                 SnModal.open(this.modalName);
             }else {
                 SnModal.error({ title: 'Algo salió mal', content: res.message })

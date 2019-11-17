@@ -1,6 +1,6 @@
 const Service = {
-    path: '/calendario',
-    apiPath: '/calendario',
+    path: '/snfact',
+    apiPath: '/snfact',
 };
 
 class RequestApi {

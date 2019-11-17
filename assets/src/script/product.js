@@ -1,14 +1,14 @@
-let  CustomerForm = {
+let  ProductForm = {
     currentModeForm : 'create',
-    modalName : 'customerModalForm',
+    modalName : 'productModalForm',
 
     currentForm : null,
     submitButton : null,
 
     loading : false,
     init() {
-        this.currentForm = document.getElementById('customerForm');
-        this.submitButton = document.getElementById('customerFormSubmit');
+        this.currentForm = document.getElementById('productForm');
+        this.submitButton = document.getElementById('productFormSubmit');
         this.list();
     },
     search(event){
@@ -16,13 +16,13 @@ let  CustomerForm = {
         this.list(1,10,event.target.value);
     },
     list(page = 1, limit = 10, search = ''){
-        let customerTable = document.getElementById('customerTable');
-        if(customerTable){
+        let productTable = document.getElementById('productTable');
+        if(productTable){
             this.setLoading(true);
-            RequestApi.fetchText(`/customer/table?limit=${limit}&page=${page}&search=${search}`,{
+            RequestApi.fetchText(`/product/table?limit=${limit}&page=${page}&search=${search}`,{
                 method: 'GET',
             }).then(res => {
-                customerTable.innerHTML = res;
+                productTable.innerHTML = res;
             }).finally(e =>{
                 this.setLoading(false);
             })
@@ -30,14 +30,14 @@ let  CustomerForm = {
     },
     setLoading(state){
         this.loading = state;
-        let jsCustomerOption = document.querySelectorAll('.jsCustomerOption');
+        let jsProductOption = document.querySelectorAll('.jsProductOption');
         if (this.loading){
             if(this.submitButton){
                 this.submitButton.setAttribute('disabled','disabled');
                 this.submitButton.classList.add('loading');
             }
-            if (jsCustomerOption) {
-                jsCustomerOption.forEach(item => {
+            if (jsProductOption) {
+                jsProductOption.forEach(item => {
                     item.setAttribute('disabled', 'disabled');
                 });
             }
@@ -46,8 +46,8 @@ let  CustomerForm = {
                 this.submitButton.removeAttribute('disabled');
                 this.submitButton.classList.remove('loading');
             }
-            if (jsCustomerOption) {
-                jsCustomerOption.forEach(item => {
+            if (jsProductOption) {
+                jsProductOption.forEach(item => {
                     item.removeAttribute('disabled');
                 });
             }
@@ -65,26 +65,29 @@ let  CustomerForm = {
         this.setLoading(true);
 
         let url = '';
-        let customerSendData = {};
-        customerSendData.documentNumber =  document.getElementById('customerDocumentNumber').value || '';
-        customerSendData.identityDocumentCode =  document.getElementById('customerIdentityDocumentCode').value || '';
-        customerSendData.socialReason =  document.getElementById('customerSocialReason').value || '';
-        customerSendData.commercialReason =  document.getElementById('customerCommercialReason').value || '';
-        customerSendData.fiscalAddress =  document.getElementById('customerFiscalAddress').value || '';
-        customerSendData.email =  document.getElementById('customerEmail').value || '';
-        customerSendData.telephone =  document.getElementById('customerTelephone').value || '';
+        let productSendData = {};
+        productSendData.categoryId =  document.getElementById('productCategoryId').value || '';
+        productSendData.description =  document.getElementById('productDescription').value || '';
+        productSendData.unitPrice =  document.getElementById('productUnitPrice').value || '';
+        productSendData.productKey=  document.getElementById('productProductKey').value || '';
+        productSendData.productCode=  document.getElementById('productProductCode').value || '';
+        productSendData.unitMeasureCode=  document.getElementById('productUnitMeasureCode').value || '';
+        productSendData.affectationCode=  document.getElementById('productAffectationCode').value || '';
+        productSendData.systemIscCode=  document.getElementById('productSystemIscCode').value || '';
+        productSendData.isc=  document.getElementById('productIsc').value || '';
+        productSendData.state=  document.getElementById('productState').checked || false;
 
         if (this.currentModeForm === 'create'){
-            url = '/customer/create';
+            url = '/product/create';
         }
         if (this.currentModeForm === 'update'){
-            url = '/customer/update';
-            customerSendData.customerId = document.getElementById('customerId').value || 0;
+            url = '/product/update';
+            productSendData.productId = document.getElementById('productId').value || 0;
         }
 
         RequestApi.fetch(url,{
             method: 'POST',
-            body: customerSendData
+            body: productSendData
         }).then(res => {
             if (res.success){
                 SnModal.close(this.modalName);
@@ -97,7 +100,7 @@ let  CustomerForm = {
             this.setLoading(false);
         })
     },
-    delete(customerId, content = '') {
+    delete(productId, content = '') {
         let _setLoading = this.setLoading;
         let _list = this.list;
 
@@ -109,10 +112,10 @@ let  CustomerForm = {
             cancelText: 'No',
             onOk() {
                 _setLoading(true);
-                RequestApi.fetch('/customer/delete', {
+                RequestApi.fetch('/product/delete', {
                     method: 'POST',
                     body: {
-                        customerId: customerId || 0
+                        productId: productId || 0
                     }
                 }).then(res => {
                     if (res.success) {
@@ -134,30 +137,33 @@ let  CustomerForm = {
         SnModal.open(this.modalName);
     },
 
-    executeUpdateNormal(customerId){
+    executeUpdateNormal(productId){
         this.currentModeForm = 'update';
-        this.showModalUpdate(customerId);
+        this.showModalUpdate(productId);
     },
 
-    showModalUpdate(customerId){
+    showModalUpdate(productId){
         this.clearForm();
 
         this.setLoading(true);
-        RequestApi.fetch('/customer/id',{
+        RequestApi.fetch('/product/id',{
             method: 'POST',
             body: {
-                customerId: customerId || 0
+                productId: productId || 0
             }
         }).then(res => {
             if (res.success){
-                document.getElementById('customerDocumentNumber').value = res.result.document_number;
-                document.getElementById('customerIdentityDocumentCode').value = res.result.identity_document_code;
-                document.getElementById('customerSocialReason').value = res.result.social_reason;
-                document.getElementById('customerCommercialReason').value = res.result.commercial_reason;
-                document.getElementById('customerFiscalAddress').value = res.result.fiscal_address;
-                document.getElementById('customerEmail').value = res.result.email;
-                document.getElementById('customerTelephone').value = res.result.telephone;
-                document.getElementById('customerId').value = res.result.id;
+                document.getElementById('productCategoryId').value = res.result.category_id;
+                document.getElementById('productDescription').value = res.result.description;
+                document.getElementById('productUnitPrice').value = res.result.unit_price;
+                document.getElementById('productProductKey').value = res.result.product_key;
+                document.getElementById('productProductCode').value = res.result.product_code;
+                document.getElementById('productUnitMeasureCode').value = res.result.unit_measure_code;
+                document.getElementById('productAffectationCode').value = res.result.affectation_code;
+                document.getElementById('productSystemIscCode').value = res.result.system_isc_code;
+                document.getElementById('productIsc').value = res.result.isc;
+                document.getElementById('productState').checked = res.result.state;
+                document.getElementById('productId').value = res.result.id;
                 SnModal.open(this.modalName);
             }else {
                 SnModal.error({ title: 'Algo salió mal', content: res.message })
@@ -169,5 +175,5 @@ let  CustomerForm = {
 };
 
 document.addEventListener('DOMContentLoaded',()=>{
-    CustomerForm.init();
+    ProductForm.init();
 });
