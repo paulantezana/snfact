@@ -1,24 +1,48 @@
 <?php
 
-require_once MODEL_PATH . '/Category.php';
+require_once MODEL_PATH . '/Product.php';
+require_once MODEL_PATH. '/Business.php';
+require_once MODEL_PATH. '/CatAffectationIgvTypeCode.php';
+require_once MODEL_PATH. '/CatUnitMeasureTypeCode.php';
+require_once MODEL_PATH. '/Category.php';
+require_once MODEL_PATH. '/CatSystemIscTypeCode.php';
+require_once MODEL_PATH. '/CatProductCode.php';
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
     protected $connection;
-    protected $customerModel;
+    protected $productModel;
     protected $catIdentityDocumentTypeCodeModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
-        $this->customerModel = new Customer($connection);
+        $this->productModel = new Product($connection);
     }
 
     public function index()
     {
         try {
             //            Authorization($this->connection, 'usuario', 'modificar');
-            $this->render('admin/category.php');
+            $catAffectationIgvTypeCodeModel = new CatAffectationIgvTypeCode($this->connection);
+            $catUnitMeasureTypeCodeModel = new CatUnitMeasureTypeCode($this->connection);
+            $catSystemIscTypeCodeModel = new CatSystemIscTypeCode($this->connection);
+            $catProductCodeModel = new CatProductCode($this->connection);
+            $categoryModel = new Category($this->connection);
+
+            $catAffectationIgvTypeCodes = $catAffectationIgvTypeCodeModel->GetAll();
+            $catUnitMeasureTypeCodes = $catUnitMeasureTypeCodeModel->GetAll();
+            $catSystemIscTypeCodes = $catSystemIscTypeCodeModel->GetAll();
+            $catProductCodes = $catProductCodeModel->GetAll();
+            $categories = $categoryModel->GetAll();
+
+            $this->render('admin/product.php', [
+                'catAffectationIgvTypeCodes' => $catAffectationIgvTypeCodes,
+                'catUnitMeasureTypeCodes' => $catUnitMeasureTypeCodes,
+                'catSystemIscTypeCodes' => $catSystemIscTypeCodes,
+                'categories' => $categories,
+                'catProductCodes' => $catProductCodes,
+            ]);
         } catch (Exception $e) {
             echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
         }
@@ -32,10 +56,10 @@ class CategoryController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $customer = $this->customerModel->Paginate($page, $limit, $search);
+            $product = $this->productModel->Paginate($page, $limit, $search);
 
-            $this->render('admin/partials/customerTable.php', [
-                'customer' => $customer,
+            $this->render('admin/partials/productTable.php', [
+                'product' => $product,
             ]);
         } catch (Exception $e) {
             echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
@@ -50,7 +74,7 @@ class CategoryController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->customerModel->GetById($body['customerId']);
+            $res->result = $this->productModel->GetById($body['productId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -68,10 +92,14 @@ class CategoryController extends Controller
 
             $validate = $this->validateInput($body);
             if (!$validate->success) {
+                $res->error = $validate->error;
                 throw new Exception($validate->message);
             }
 
-            $res->result = $this->customerModel->Insert($body, $_SESSION[SESS_KEY]);
+            $businessModel = new Business($this->connection);
+            $body['businessId'] = $businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+
+            $res->result = $this->productModel->Insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
         } catch (Exception $e) {
@@ -90,21 +118,24 @@ class CategoryController extends Controller
 
             $validate = $this->validateInput($body);
             if (!$validate->success) {
+                $res->error = $validate->error;
                 throw new Exception($validate->message);
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->customerModel->UpdateById($body['customerId'], [
-                ':updated_at' => $currentDate,
-                ':updated_user_id' => $_SESSION[SESS_KEY],
-                ':business_id' => $body['businessId'],
-                ':document_number' => $body['documentNumber'],
-                ':identity_document_code' => $body['identityDocumentCode'],
-                ':social_reason' => $body['socialReason'],
-                ':commercial_reason' => $body['commercialReason'],
-                ':fiscal_address' => $body['fiscalAddress'],
-                ':main_email' => $body['mainEmail'],
-                ':telephone' => $body['telephone'],
+            $this->productModel->UpdateById($body['productId'], [
+                'updated_at' => $currentDate,
+                'updated_user_id' => $_SESSION[SESS_KEY],
+
+                'description' => $body['description'],
+                'unit_price' => $body['unitPrice'],
+                'product_key' => $body['productKey'],
+                'product_code' => $body['productCode'],
+                'unit_measure_code' => $body['unitMeasureCode'],
+                'affectation_code' => $body['affectationCode'],
+                'system_isc_code' => $body['systemIscCode'],
+                'isc' => $body['isc'],
+                'category_id' => $body['categoryId'],
             ]);
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
@@ -122,7 +153,7 @@ class CategoryController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $this->customerModel->DeleteById($body['customerId']);
+            $this->productModel->DeleteById($body['productId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {
@@ -133,14 +164,22 @@ class CategoryController extends Controller
 
     public function validateInput($body)
     {
-        $res = new Result();
-        $res->success = true;
-
-        if (($body['documentNumber']) == '') {
-            $res->message .= 'Falta ingresar el nombre | ';
-            $res->success = false;
+        $collector = new ErrorCollector();
+        if (trim($body['unitMeasureCode'] ?? '') == ""){
+            $collector->addError('unitMeasureCode','No se especificó el código de unidad de medida SUNAT');
         }
-
-        return $res;
+        if (trim($body['description'] ?? '') == ""){
+            $collector->addError('description','El campo descripción es obligatorio');
+        }
+        if (trim($body['productCode'] ?? '') == ""){
+            $collector->addError('productCode','El campo codigo producto es obligatorio');
+        }
+        if (trim($body['categoryId'] ?? '') == ""){
+            $collector->addError('productCode','El campo categoria es obligatorio');
+        }
+        if (trim($body['affectationCode'] ?? '') == ""){
+            $collector->addError('affectationCode','No se especifico el tipo de afectación del producto');
+        }
+        return $collector->getResult();
     }
 }

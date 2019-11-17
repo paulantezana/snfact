@@ -85,6 +85,7 @@ class Model
             ])) {
                 throw new Exception("No se pudo elimiar el registro");
             }
+            return $id;
         } catch (Exception $e) {
             throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }
@@ -101,6 +102,7 @@ class Model
             ])) {
                 throw new Exception("No se pudo elimiar el registro");
             }
+            return $value;
         } catch (Exception $e) {
             throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }
@@ -126,6 +128,7 @@ class Model
             if (!$stmt->execute($execute)) {
                 throw new Exception("Error al actualizar el registro");
             }
+            return $id;
         } catch (Exception $e) {
             throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }
@@ -151,6 +154,7 @@ class Model
             if (!$stmt->execute($execute)) {
                 throw new Exception("Error al actualizar el registro");
             }
+            return $value;
         } catch (Exception $e) {
             throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }

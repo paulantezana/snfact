@@ -68,6 +68,7 @@ let  CategoryForm = {
         let categorySendData = {};
         categorySendData.name =  document.getElementById('categoryName').value || '';
         categorySendData.description =  document.getElementById('categoryDescription').value || '';
+        categorySendData.state =  document.getElementById('categoryState').checked || false;
         categorySendData.parentId =  0;
 
         if (this.currentModeForm === 'create'){
@@ -148,7 +149,8 @@ let  CategoryForm = {
             if (res.success){
                 document.getElementById('categoryName').value  = res.result.name;
                 document.getElementById('categoryDescription').value  = res.result.description;
-                document.getElementById('categoryId').value = res.result.id;
+                document.getElementById('categoryState').checked = res.result.state;
+                document.getElementById('categoryId').value = res.result.category_id;
                 SnModal.open(this.modalName);
             }else {
                 SnModal.error({ title: 'Algo salió mal', content: res.message })

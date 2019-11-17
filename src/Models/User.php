@@ -8,6 +8,34 @@ class User extends Model
         parent::__construct("user","user_id",$db);
     }
 
+    public function Paginate($page = 1, $limit = 10, $search = '')
+    {
+        try {
+            $offset = ($page - 1) * $limit;
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM user WHERE user_name LIKE '%{$search}%'")->fetchColumn();
+            $totalPages = ceil($totalRows / $limit);
+
+            $sql = "SELECT user.*, ur.name as user_role FROM user
+                    INNER JOIN user_role ur on user.user_role_id = ur.user_role_id
+                    WHERE user_name LIKE '%{$search}%' LIMIT $offset, $limit";
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+
+            $paginate = [
+                'current' => $page,
+                'pages' => $totalPages,
+                'limit' => $limit,
+                'data' => $data,
+            ];
+            return $paginate;
+        } catch (Exception $e) {
+            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+        }
+    }
+
+
     public function login($user, $password)
     {
         try{

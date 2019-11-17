@@ -10,7 +10,7 @@ class CatGeographicalLocationCode extends Model
 
     public function Search(string $search) {
         try{
-            $sql = "SELECT * FROM geographical_location_code WHERE district LIKE :district OR province LIKE :province LIMIT 8";
+            $sql = "SELECT * FROM cat_geographical_location_code WHERE district LIKE :district OR province LIKE :province LIMIT 8";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 ':district' => '%' . $search . '%',

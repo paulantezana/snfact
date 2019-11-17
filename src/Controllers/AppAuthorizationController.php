@@ -14,29 +14,41 @@ class AppAuthorizationController extends  Controller
     }
 
     public function byUserRoleId(){
-        Authorization($this->connection,'rol','modificar');
+        $res = new Result();
+        try{
+            Authorization($this->connection,'rol','modificar');
 
-        $postData = file_get_contents("php://input");
-        $body = json_decode($postData, true);
-        if (!$body){
-            echo '';
-            return;
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+            if (!$body){
+                echo '';
+                return;
+            }
+
+            $res->result  = $this->appAuthorizationModel->GetAllByUserRoleId($body['userRoleId']);
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
         }
-
-        $appAuthorization = $this->appAuthorizationModel->GetAllByUserRoleId($body['userRoleId']);
-        echo json_encode($appAuthorization);
+        echo json_encode($res);
     }
 
     public function save(){
-        Authorization($this->connection,'rol','modificar');
+        $res = new Result();
+        try{
+            Authorization($this->connection,'rol','modificar');
 
-        $postData = file_get_contents("php://input");
-        $body = json_decode($postData, true);
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
 
-        $authIds = $body['authIds'] ?? [];
-        $userRoleId = $body['userRoleId'] ?? 0;
+            $authIds = $body['authIds'] ?? [];
+            $userRoleId = $body['userRoleId'] ?? 0;
 
-        $res = $this->appAuthorizationModel->Save($authIds, $userRoleId, $_SESSION[SESS_KEY]);
-        echo  json_encode($res);
+            $res->result  = $this->appAuthorizationModel->Save($authIds, $userRoleId, $_SESSION[SESS_KEY]);
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
     }
 }

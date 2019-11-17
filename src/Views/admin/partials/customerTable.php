@@ -2,29 +2,26 @@
     <table class="SnTable">
         <thead>
             <tr>
-                <th>Nombre completo</th>
-                <th>Documento</th>
-                <th>Telefono</th>
-                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Tipo de Documento</th>
+                <th>N° Documento</th>
+                <th>Razón Social / Nombre Completo</th>
                 <th style="width: 100px"></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($customer['data'] as $row) : ?>
                 <tr>
-                    <td><?= $row['full_name'] ?></td>
-                    <td><?= $row['document'] ?></td>
-                    <td><?= $row['phone'] ?></td>
-                    <td><?= $row['state'] ?></td>
+                    <td><?= $row['created_at'] ?></td>
+                    <td><?= $row['identity_document_code'] ?></td>
+                    <td><?= $row['document_number'] ?></td>
+                    <td><?= $row['social_reason'] ?></td>
                     <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn jsCustomerOption" data-tooltip="Editar" onclick="CustomerForm.executeUpdateNormal(<?= $row['id'] ?>)">
-                                <i class="icon-edit"></i>
+                            <div class="SnBtn jsCustomerOption" data-tooltip="Editar" onclick="CustomerForm.executeUpdateNormal(<?= $row['customer_id'] ?>)">
+                                <i class="icon-pencil"></i>
                             </div>
-                            <a href="<?= URL_PATH ?>/calendar?customerId=<?= $row['id'] ?>" class="SnBtn success jsCustomerOption" data-tooltip="Calendarios">
-                                <i class="icon-calendar"></i>
-                            </a>
-                            <div class="SnBtn jsCustomerOption" data-tooltip="Eliminar" onclick="CustomerForm.delete(<?= $row['id'] ?>,'<?= $row['full_name'] ?>')">
+                            <div class="SnBtn jsCustomerOption" data-tooltip="Eliminar" onclick="CustomerForm.delete(<?= $row['customer_id'] ?>,'<?= $row['social_reason'] ?>')">
                                 <i class="icon-trash"></i>
                             </div>
                         </div>

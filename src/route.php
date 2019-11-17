@@ -18,15 +18,49 @@ $routePaths = [
 
     // User
     '/user' => ['controller' => 'UserController', 'method' => 'index'],
+    '/user/table' => ['controller' => 'UserController', 'method' => 'table'],
     '/user/id' => ['controller' => 'UserController', 'method' => 'id'],
     '/user/create' => ['controller' => 'UserController', 'method' => 'create'],
     '/user/update' => ['controller' => 'UserController', 'method' => 'update'],
     '/user/updatePassword' => ['controller' => 'UserController', 'method' => 'updatePassword'],
     '/user/delete' => ['controller' => 'UserController', 'method' => 'delete'],
 
+    // User Role
+    '/userRole' => ['controller' => 'UserRoleController', 'method' => 'index'],
+    '/userRole/id' => ['controller' => 'UserRoleController', 'method' => 'id'],
+    '/userRole/list' => ['controller' => 'UserRoleController', 'method' => 'list'],
+    '/userRole/create' => ['controller' => 'UserRoleController', 'method' => 'create'],
+    '/userRole/update' => ['controller' => 'UserRoleController', 'method' => 'update'],
+    '/userRole/delete' => ['controller' => 'UserRoleController', 'method' => 'delete'],
+
+    '/appAuthorization/save' => ['controller' => 'AppAuthorizationController', 'method' => 'save'],
+    '/appAuthorization/byUserRoleId' => ['controller' => 'AppAuthorizationController', 'method' => 'byUserRoleId'],
+
+    // Business
+    '/business/update' => ['controller' => 'BusinessController', 'method' => 'update'],
+
+    // Category
+    '/category' => ['controller' => 'CategoryController', 'method' => 'index'],
+    '/category/table' => ['controller' => 'CategoryController', 'method' => 'table'],
+    '/category/search' => ['controller' => 'CategoryController', 'method' => 'search'],
+    '/category/id' => ['controller' => 'CategoryController', 'method' => 'id'],
+    '/category/create' => ['controller' => 'CategoryController', 'method' => 'create'],
+    '/category/update' => ['controller' => 'CategoryController', 'method' => 'update'],
+    '/category/delete' => ['controller' => 'CategoryController', 'method' => 'delete'],
+
+    // Product
+    '/product' => ['controller' => 'ProductController', 'method' => 'index'],
+    '/product/table' => ['controller' => 'ProductController', 'method' => 'table'],
+    '/product/search' => ['controller' => 'ProductController', 'method' => 'search'],
+    '/product/id' => ['controller' => 'ProductController', 'method' => 'id'],
+    '/product/create' => ['controller' => 'ProductController', 'method' => 'create'],
+    '/product/update' => ['controller' => 'ProductController', 'method' => 'update'],
+    '/product/delete' => ['controller' => 'ProductController', 'method' => 'delete'],
+
     // Customer
     '/customer' => ['controller' => 'CustomerController', 'method' => 'index'],
     '/customer/table' => ['controller' => 'CustomerController', 'method' => 'table'],
+    '/customer/search' => ['controller' => 'CustomerController', 'method' => 'search'],
     '/customer/id' => ['controller' => 'CustomerController', 'method' => 'id'],
     '/customer/create' => ['controller' => 'CustomerController', 'method' => 'create'],
     '/customer/update' => ['controller' => 'CustomerController', 'method' => 'update'],

@@ -48,61 +48,90 @@ class UserRoleController extends Controller
 
     public function id()
     {
-        Authorization($this->connection, 'rol', 'listar');
+        $res = new Result();
+        try{
+            Authorization($this->connection, 'rol', 'listar');
 
-        $postData = file_get_contents("php://input");
-        $body = json_decode($postData, true);
-        if (!$body) {
-            echo '';
-            return;
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+            if (!$body) {
+                echo '';
+                return;
+            }
+
+            $res->result = $this->userRoleModel->GetById((int) $body['userRoleId']);
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
         }
-
-        $userRole = $this->userRoleModel->GetById((int) $body['userRoleId']);
-        echo json_encode($userRole);
+        echo json_encode($res);
     }
 
     public function create()
     {
-        Authorization($this->connection, 'rol', 'crear');
+        $res = new Result();
+        try{
+            Authorization($this->connection, 'rol', 'crear');
 
-        $postData = file_get_contents("php://input");
-        $body = json_decode($postData, true);
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
 
-        $validate = $this->validateInput($body);
-        if (!$validate->success) {
-            echo json_encode($validate);
-            return;
+            $validate = $this->validateInput($body);
+            if (!$validate->success) {
+                echo json_encode($validate);
+                return;
+            }
+
+            $res->result = $this->userRoleModel->Insert($body, $_SESSION[SESS_KEY]);
+            $res->success = true;
+            $res->message = 'El registro se inserto exitosamente';
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
         }
-
-        $res = $this->userRoleModel->Insert($body, $_SESSION[SESS_KEY]);
         echo json_encode($res);
+
     }
     public function update()
     {
-        Authorization($this->connection, 'rol', 'modificar');
+        $res = new Result();
+        try{
+            Authorization($this->connection, 'rol', 'modificar');
 
-        $postData = file_get_contents("php://input");
-        $body = json_decode($postData, true);
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
 
-        $validate = $this->validateInput($body, true);
-        if (!$validate->success) {
-            echo json_encode($validate);
-            return;
+            $validate = $this->validateInput($body, true);
+            if (!$validate->success) {
+                echo json_encode($validate);
+                return;
+            }
+
+            $res->result = $this->userRoleModel->UpdateById((int) $body['userRoleId'], [
+                'name' => $body['name'] ?? '',
+            ]);
+            $res->success = true;
+            $res->message = 'El registro se actualizo exitosamente';
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
         }
-
-        $res = $this->userRoleModel->UpdateById((int) $body['userRoleId'], [
-            'name' => $body['name'] ?? '',
-        ]);
         echo json_encode($res);
+
     }
     public function delete()
     {
-        Authorization($this->connection, 'rol', 'eliminar');
+        $res = new Result();
+        try{
+            Authorization($this->connection, 'rol', 'eliminar');
 
-        $postData = file_get_contents("php://input");
-        $body = json_decode($postData, true);
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
 
-        $res = $this->userRoleModel->DeleteById((int) ($body['userRoleId'] ?? 0));
+            $res->result = $this->userRoleModel->DeleteById((int) ($body['userRoleId'] ?? 0));
+            $res->success = true;
+            $res->message = 'El registro se eliminó exitosamente';
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
         echo json_encode($res);
     }
 

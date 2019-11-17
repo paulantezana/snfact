@@ -17,16 +17,30 @@ class UserController extends Controller
     public function index()
     {
         try {
-            Authorization($this->connection, 'usuario', 'listar');
-            $page = isset($_GET['page']) ? $_GET['page'] : 1;
-
-            $user = $this->userModel->Paginate($page);
+//            Authorization($this->connection, 'usuario', 'listar');
             $userRoleModel = new UserRole($this->connection);
             $userRole = $userRoleModel->GetAll();
 
             $this->render('admin/user.php', [
-                'user' => $user,
                 'userRole' => $userRole,
+            ]);
+        } catch (Exception $e) {
+            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+        }
+    }
+
+    public function table()
+    {
+        try {
+//            Authorization($this->connection, 'usuario', 'listar');
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+
+            $user = $this->userModel->Paginate($page, $limit, $search);
+
+            $this->render('admin/partials/userTable.php', [
+                'user' => $user,
             ]);
         } catch (Exception $e) {
             echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
@@ -37,7 +51,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'usuario', 'modificar');
+//            Authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -53,7 +67,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'usuario', 'crear');
+//            Authorization($this->connection, 'usuario', 'crear');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -74,7 +88,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'usuario', 'modificar');
+//            Authorization($this->connection, 'usuario', 'modificar');
 
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
@@ -107,7 +121,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'usuario', 'modificar');
+//            Authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -134,7 +148,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'usuario', 'eliminar');
+//            Authorization($this->connection, 'usuario', 'eliminar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 

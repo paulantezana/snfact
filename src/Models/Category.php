@@ -1,20 +1,20 @@
 <?php
 
-class Customer extends Model
+class Category extends Model
 {
     public function __construct(PDO $connection)
     {
-        parent::__construct("customer", "customer_id", $connection);
+        parent::__construct("category", "category_id", $connection);
     }
 
     public function Paginate($page = 1, $limit = 10, $search = '')
     {
         try {
             $offset = ($page - 1) * $limit;
-            $totalRows = $this->db->query("SELECT COUNT(*) FROM customer WHERE social_reason LIKE '%{$search}%'")->fetchColumn();
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM category WHERE name LIKE '%{$search}%'")->fetchColumn();
             $totalPages = ceil($totalRows / $limit);
 
-            $sql = "SELECT * FROM customer WHERE social_reason LIKE '%{$search}%' LIMIT $offset, $limit";
+            $sql = "SELECT * FROM category WHERE name LIKE '%{$search}%' LIMIT $offset, $limit";
             $stmt = $this->db->prepare($sql);
 
             $stmt->execute();
@@ -32,13 +32,13 @@ class Customer extends Model
         }
     }
 
-    public function insert($customer, $userReferId)
+    public function insert($category)
     {
         $currentDate = date('Y-m-d H:i:s');
-        $sql = 'INSERT INTO customer (updated_at, created_at, created_user_id, updated_user_id, business_id, document_number,
-                                    identity_document_code, social_reason, commercial_reason, fiscal_address, main_email, telephone) 
-                                VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :business_id, :document_number,
-                                    :identity_document_code, :social_reason, :commercial_reason, :fiscal_address,: main_email, :telephone)';
+        $sql = 'INSERT INTO category (updated_at, created_at, created_user_id, updated_user_id, business_id,
+                                        parent_id, name, description) 
+                                VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :business_id,
+                                        :parent_id, :name, :description)';
         $stmt = $this->db->prepare($sql);
 
         if ($stmt->execute([
@@ -46,14 +46,11 @@ class Customer extends Model
             ':created_at' => $currentDate,
             ':created_user_id' => $_SESSION[SESS_KEY],
             ':updated_user_id' => $_SESSION[SESS_KEY],
-            ':business_id' => $customer['businessId'],
-            ':document_number' => $customer['documentNumber'],
-            ':identity_document_code' => $customer['identityDocumentCode'],
-            ':social_reason' => $customer['socialReason'],
-            ':commercial_reason' => $customer['commercialReason'],
-            ':fiscal_address' => $customer['fiscalAddress'],
-            ':main_email' => $customer['mainEmail'],
-            ':telephone' => $customer['telephone'],
+
+            ':business_id' => $category['businessId'],
+            ':parent_id' => $category['parentId'],
+            ':name' => $category['name'],
+            ':description' => $category['description'],
         ])) {
             return $this->db->lastInsertId();
         }

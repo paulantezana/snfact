@@ -157,7 +157,7 @@ let  CustomerForm = {
                 document.getElementById('customerFiscalAddress').value = res.result.fiscal_address;
                 document.getElementById('customerEmail').value = res.result.email;
                 document.getElementById('customerTelephone').value = res.result.telephone;
-                document.getElementById('customerId').value = res.result.id;
+                document.getElementById('customerId').value = res.result.customer_id;
                 SnModal.open(this.modalName);
             }else {
                 SnModal.error({ title: 'Algo salió mal', content: res.message })

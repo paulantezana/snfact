@@ -21,6 +21,8 @@
 @include SnMessage();
 @include SnPagination();
 @include SnTable();
+@include SnSwitch();
+@include SnTooltip();
 
 @import "admin/Layout";
 @import "admin/Header";
@@ -31,8 +33,6 @@
 @import "admin/InfiniteScroll";
 @import "admin/CustomerRow";
 
-@import "admin/Tooltip";
-@import "admin/SnSwitch";
 @import "admin/dashboard";
 @import "admin/User";
 

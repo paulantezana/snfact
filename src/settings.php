@@ -18,6 +18,8 @@ define('VIEW_PATH', ROOT_DIR. '/src/Views');
 define('SESS_KEY','SnId');
 define('SESS_DATA','SnData');
 define('SESS_MENU','SnMenu');
+define('SESS_LOCALS','SnLocals');
+define('SESS_CURRENT_LOCAL','SnCurrentLocal');
 
 define('APP_NAME','SnFact');
 define('APP_AUTHOR','SnFact');

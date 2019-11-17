@@ -1,31 +1,25 @@
 <?php
 
-require_once MODEL_PATH . '/Customer.php';
-require_once MODEL_PATH . '/CatIdentityDocumentTypeCode.php';
+require_once MODEL_PATH . '/Category.php';
+require_once MODEL_PATH.'/Business.php';
 
-class CustomerController extends Controller
+class CategoryController extends Controller
 {
     protected $connection;
-    protected $customerModel;
+    protected $categoryModel;
     protected $catIdentityDocumentTypeCodeModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
-        $this->customerModel = new Customer($connection);
-        $this->catIdentityDocumentTypeCodeModel = new CatIdentityDocumentTypeCode($connection);
+        $this->categoryModel = new Category($connection);
     }
 
     public function index()
     {
         try {
             //            Authorization($this->connection, 'usuario', 'modificar');
-
-            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
-
-            $this->render('admin/customer.php',[
-                'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
-            ]);
+            $this->render('admin/category.php');
         } catch (Exception $e) {
             echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
         }
@@ -39,10 +33,10 @@ class CustomerController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $customer = $this->customerModel->Paginate($page, $limit, $search);
+            $category = $this->categoryModel->Paginate($page, $limit, $search);
 
-            $this->render('admin/partials/customerTable.php', [
-                'customer' => $customer,
+            $this->render('admin/partials/categoryTable.php', [
+                'category' => $category,
             ]);
         } catch (Exception $e) {
             echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
@@ -57,7 +51,7 @@ class CustomerController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->customerModel->GetById($body['customerId']);
+            $res->result = $this->categoryModel->GetById($body['categoryId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -78,7 +72,10 @@ class CustomerController extends Controller
                 throw new Exception($validate->message);
             }
 
-            $res->result = $this->customerModel->Insert($body, $_SESSION[SESS_KEY]);
+            $businessModel = new Business($this->connection);
+            $body['businessId'] = $businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+
+            $res->result = $this->categoryModel->Insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
         } catch (Exception $e) {
@@ -101,17 +98,14 @@ class CustomerController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->customerModel->UpdateById($body['customerId'], [
-                ':updated_at' => $currentDate,
-                ':updated_user_id' => $_SESSION[SESS_KEY],
-                ':business_id' => $body['businessId'],
-                ':document_number' => $body['documentNumber'],
-                ':identity_document_code' => $body['identityDocumentCode'],
-                ':social_reason' => $body['socialReason'],
-                ':commercial_reason' => $body['commercialReason'],
-                ':fiscal_address' => $body['fiscalAddress'],
-                ':main_email' => $body['mainEmail'],
-                ':telephone' => $body['telephone'],
+            $this->categoryModel->UpdateById($body['categoryId'], [
+                'created_at' => $currentDate,
+                'updated_user_id' => $_SESSION[SESS_KEY],
+
+//                'parent_id' => $body['parentId'],
+                'name' => $body['name'],
+                'description' => $body['description'],
+                'state' => $body['state'],
             ]);
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
@@ -129,7 +123,7 @@ class CustomerController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $this->customerModel->DeleteById($body['customerId']);
+            $this->categoryModel->DeleteById($body['categoryId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {
@@ -143,7 +137,7 @@ class CustomerController extends Controller
         $res = new Result();
         $res->success = true;
 
-        if (($body['documentNumber']) == '') {
+        if (($body['name']) == '') {
             $res->message .= 'Falta ingresar el nombre | ';
             $res->success = false;
         }

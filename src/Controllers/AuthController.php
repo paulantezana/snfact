@@ -2,6 +2,8 @@
 
 require_once MODEL_PATH . '/User.php';
 require_once MODEL_PATH . '/AppAuthorization.php';
+require_once MODEL_PATH.'/Business.php';
+require_once MODEL_PATH.'/BusinessLocal.php';
 
 class AuthController extends Controller
 {
@@ -54,12 +56,28 @@ class AuthController extends Controller
         $_SESSION[SESS_KEY] = $user['user_id'];
         $_SESSION[SESS_DATA] = $user;
 
-//        $appAuthorizationModel = new AppAuthorization($this->connection);
-//        $appAuthorization = $appAuthorizationModel->GetMenu($user['user_role_id']);
-//        if (count($appAuthorization)<1){
-//            return false;
-//        }
-//        $_SESSION[SESS_MENU] = $appAuthorization;
+        try{
+            // Set Default Business
+            $businessModel = new Business($this->connection);
+            $businessLocalModel = new BusinessLocal($this->connection);
+
+            $business = $businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $businessLocals = $businessLocalModel->GetAllByBusinessId($business['business_id']);
+
+            $_SESSION[SESS_LOCALS] = $businessLocals;
+            $_SESSION[SESS_CURRENT_LOCAL] = $businessLocals[0]['business_local_id'];
+
+            // Menu
+            $appAuthorizationModel = new AppAuthorization($this->connection);
+            $appAuthorization = $appAuthorizationModel->GetMenu($user['user_role_id']);
+            if (count($appAuthorization)<1){
+                return false;
+            }
+            $_SESSION[SESS_MENU] = $appAuthorization;
+        } catch (Exception $e){
+            return false;
+        }
+
         return true;
     }
 

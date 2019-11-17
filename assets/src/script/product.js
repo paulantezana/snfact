@@ -163,7 +163,7 @@ let  ProductForm = {
                 document.getElementById('productSystemIscCode').value = res.result.system_isc_code;
                 document.getElementById('productIsc').value = res.result.isc;
                 document.getElementById('productState').checked = res.result.state;
-                document.getElementById('productId').value = res.result.id;
+                document.getElementById('productId').value = res.result.product_id;
                 SnModal.open(this.modalName);
             }else {
                 SnModal.error({ title: 'Algo salió mal', content: res.message })

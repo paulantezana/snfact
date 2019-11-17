@@ -155,6 +155,7 @@ CREATE TABLE business(
     phone VARCHAR(32),
     web_site VARCHAR(64),
     logo VARCHAR(255),
+    production BOOLEAN,
     UNIQUE KEY uk_company (web_site,email),
     CONSTRAINT pk_company PRIMARY KEY (business_id)
 )ENGINE = InnoDB;
@@ -199,6 +200,13 @@ CREATE TABLE business_serie(
         ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
+CREATE TABLE business_user(
+    business_id INT NOT NULL,
+    user_id INT NOT NULL,
+    CONSTRAINT fk_business_user_business FOREIGN KEY (business_id) REFERENCES business (business_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT
+)ENGINE = InnoDB;
+
 CREATE TABLE app_authorization(
     app_authorization_id INT AUTO_INCREMENT NOT NULL,
     module varchar(64) NOT NULL,
@@ -240,7 +248,7 @@ CREATE TABLE user(
     temp_key varchar(32),
     avatar varchar(64),
     user_name varchar(32) NOT NULL,
-    state boolean default true,
+    state BOOLEAN DEFAULT true,
     login_count SMALLINT,
     last_update_temp_key DATETIME,
     fa2_secret VARCHAR(64),
@@ -254,9 +262,16 @@ CREATE TABLE user(
 
 CREATE TABLE category(
     category_id INT NOT NULL AUTO_INCREMENT,
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+
+    business_id INT,
     parent_id INT,
     name VARCHAR(64),
     description VARCHAR(255),
+    state BOOLEAN DEFAULT true,
     CONSTRAINT pk_ma_category PRIMARY KEY (category_id)
 );
 
@@ -268,18 +283,25 @@ CREATE TABLE product(
     updated_user_id INT,
 
     business_id INT,
+    category_id INT,
     description VARCHAR(255) NOT NULL,
     unit_price FLOAT,
+    unit_value FLOAT,
     product_key VARCHAR(32) NOT NULL,
     product_code VARCHAR(12) NOT NULL,
     unit_measure_code VARCHAR(12) NOT NULL,
     affectation_code VARCHAR(8),
     system_isc_code VARCHAR(2),
     isc FLOAT,
+    state BOOLEAN DEFAULT true,
     CONSTRAINT pk_product PRIMARY KEY (product_id),
     CONSTRAINT fk_product_unit_measure_code FOREIGN KEY (unit_measure_code) REFERENCES cat_unit_measure_type_code (code)
         ON UPDATE RESTRICT ON DELETE RESTRICT,
     CONSTRAINT fk_product_product_code FOREIGN KEY (product_code) REFERENCES cat_product_code (code)
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES category (category_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_product_additional_legend_code FOREIGN KEY (affectation_code) REFERENCES cat_affectation_igv_type_code (code)
         ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
@@ -296,7 +318,7 @@ CREATE TABLE customer(
     social_reason VARCHAR(255),
     commercial_reason VARCHAR(255),
     fiscal_address VARCHAR(255),
-    main_email VARCHAR(64),
+    email VARCHAR(64),
     telephone VARCHAR(255),
     CONSTRAINT pk_customer PRIMARY KEY (customer_id),
     CONSTRAINT fk_customer_identity_document_code FOREIGN KEY (identity_document_code) REFERENCES cat_identity_document_type_code (code)
@@ -662,9 +684,9 @@ INSERT INTO cat_tribute_type_code(code, description, international_code, name) V
 # Catalogue 6
 INSERT INTO cat_identity_document_type_code(code, description) VALUES
 ('0', '0 NO DOMICILIADO, SIN RUC (EXPORTACIÓN)'),
-('1', '1 DNI - DOC. NACIONAL DE IDENTIDAD'),
+('1', '1 DNI'),
 ('4', '4 CARNET DE EXTRANJERIA'),
-('6', '6 RUC - REG. UNICO DE CONTRIBUYENTES'),
+('6', '6 RUC'),
 ('7', '7 PASAPORTE'),
 ('A', 'A CED. DIPLOMATICA DE IDENTIDAD'),
 ('B', 'B DOC.IDENT.PAIS.RESIDENCIA-NO.D'),
@@ -849,7 +871,49 @@ INSERT INTO cat_subject_detraction_code (code, description) VALUES
 -- DATOS ADICIONALES
 -- ADITIONAL DATA
 INSERT INTO user_role(name) VALUES ('Administrador'),('Personal'),('Invitado');
-INSERT INTO user(user_name,password,user_role_id) VALUES ('admin', sha1('admin'),1);
+INSERT INTO user(user_name,password,email,user_role_id) VALUES ('yoel', sha1('yoel'), 'data@gmail.com', 1);
 
 INSERT INTO app_authorization(module, action, description, state) VALUES
-('reporte','listar','listar reporte',true);
+('reporte','listar','listar reporte',true),
+
+('usuario','listar','listar usuarios',true),
+('usuario','crear','crear nuevo usuarios',true),
+('usuario','eliminar','Eliminar un usuario',true),
+('usuario','modificar','Acualizar los datos del usuario exepto la contraseña',true),
+('usuario','actualizarContraseña','Solo se permite actualizar la contraseña',true),
+
+('rol','listar','listar roles',true),
+('rol','crear','crear nuevos rol',true),
+('rol','eliminar','Eliminar un rol',true),
+('rol','modificar','Acualizar los roles',true),
+
+('escritorio','general','vista general',true);
+
+INSERT INTO user_role_authorization(user_role_id, app_authorization_id) VALUES
+(1,1),
+(1,2),
+(1,3),
+(1,4),
+(1,5),
+(1,6),
+(1,7),
+(1,8),
+(1,9),
+(1,10),
+(1,11);
+
+INSERT INTO business( continue_payment, ruc, social_reason, commercial_reason, email, phone, web_site, logo)
+VALUES (false,'99999999999','abc company','abc','abc@gmail.com','966254123','abc.com','');
+INSERT INTO business_user (business_id, user_id) VALUES (1,1);
+INSERT INTO business_local(updated_at, created_at, created_user_id, updated_user_id, short_name, sunat_code, location_code, department, province, district, address, pdf_invoice_size, pdf_header, description, business_id)
+VALUES (now(),now(),1,1,'Local principal','','080800','cusco','cusco','cusco','','A4','','',1);
+INSERT INTO business_serie(updated_at, delete_at, business_local_id, serie, document_code, max_correlative, contingency)
+VALUES (now(),null,1,'F001','01',0,false),
+       (now(),null,1,'B001','03',0,false),
+       (now(),null,1,'FP01','07',0,false),
+       (now(),null,1,'FP01','08',0,false),
+       (now(),null,1,'T001','09',0,false);
+
+
+-- TEMP
+INSERT INTO cat_product_code(code, description) VALUES ('100000','TEST');

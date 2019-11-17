@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/BaseModel.php';
 
 class CatDocumentTypeCode extends Model
 {
@@ -12,7 +11,7 @@ class CatDocumentTypeCode extends Model
     public function ByInCodes(array $codes) {
         try{
             $in =  "'" . implode('\',\'',$codes) . "'";
-            $sql = "SELECT * FROM document_type_code WHERE code IN ($in)";
+            $sql = "SELECT * FROM cat_document_type_code WHERE code IN ($in)";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll();

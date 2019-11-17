@@ -2,14 +2,14 @@
 <div class="SnContent">
     <div class="SnToolbar">
         <div class="SnToolbar-left">
-            <i class="icon-braille"></i> Usuarios
+            <i class="icon-angle-right"></i> Usuarios
         </div>
         <div class="SnToolbar-right">
-            <!--                <div class="SnBtn">-->
-            <!--                    <i class="icon-refresh"></i>-->
-            <!--                    Actualizar-->
-            <!--                </div>-->
-            <div class="SnBtn primary jsUserOption" onclick="UserForm.showModalCreate()">
+            <div class="SnBtn jsUserOption" onclick="UserForm.list()">
+                <i class="icon-refresh"></i>
+                Actualizar
+            </div>
+            <div class="SnBtn primary jsUserOption" onclick="UserForm.showModalCreate()" >
                 <i class="icon-plus"></i>
                 Nuevo
             </div>
@@ -17,92 +17,16 @@
     </div>
     <div class="SnCard">
         <div class="SnCard-body">
-            <div class="SnTable-wrapper">
-                <table class="SnTable">
-                    <thead>
-                        <tr>
-                            <th>Avatar</th>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>Estado</th>
-                            <th style="width: 100px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($user['data'] as $row) : ?>
-                            <tr>
-                                <td>
-                                    <div class="SnAvatar">
-                                        <img src="<?= URL_PATH ?>/assets/images/logo.png" alt="avatar">
-                                    </div>
-                                </td>
-                                <td><?= $row['user_name'] ?></td>
-                                <td><?= $row['email'] ?></td>
-                                <td><?= $row['state'] ?></td>
-                                <td>
-                                    <div class="SnTable-action">
-                                        <div class="SnBtn jsUserOption" onclick="UserForm.executeUpdatePassword(<?= $row['id'] ?>)">
-                                            <i class="icon-lock"></i>
-                                        </div>
-                                        <div class="SnBtn jsUserOption" onclick="UserForm.executeUpdateNormal(<?= $row['id'] ?>)">
-                                            <i class="icon-edit"></i>
-                                        </div>
-                                        <div class="SnBtn jsUserOption" onclick="UserForm.delete(<?= $row['id'] ?>,'<?= $row['user_name'] ?>')">
-                                            <i class="icon-trash"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+            <div class="SnInput-wrapper SnMb-16">
+                <input type="text" class="SnForm-input" onkeyup="UserForm.search(event)">
+                <span class="SnInput-suffix icon-search"></span>
             </div>
-            <?php
-            $currentPage = $user['current'];
-            $totalPage = $user['pages'];
-            $limitPage = $user['limit'];
-            $additionalQuery = '';
-            $linksQuantity = 3;
-
-            if ($totalPage > 1) {
-                $lastPage       = $totalPage;
-                $startPage      = (($currentPage - $linksQuantity) > 0) ? $currentPage - $linksQuantity : 1;
-                $endPage        = (($currentPage + $linksQuantity) < $lastPage) ? $currentPage + $linksQuantity : $lastPage;
-
-                $htmlPaginate       = '<nav aria-label="..."><ul class="SnPagination">';
-
-                $class      = ($currentPage == 1) ? "disabled" : "";
-                $htmlPaginate       .= '<li class="SnPagination-item ' . $class . '"><a href="?limit=' . $limitPage . '&page=' . ($currentPage - 1) . $additionalQuery . '" class="SnPagination-link">Anterior</a></li>';
-
-                if ($startPage > 1) {
-                    $htmlPaginate   .= '<li class="SnPagination-item"><a href="?limit=' . $limitPage . '&page=1' . $additionalQuery . '" class="SnPagination-link">1</a></li>';
-                    $htmlPaginate   .= '<li class="SnPagination-item disabled"><span class="SnPagination-link">...</span></li>';
-                }
-
-                for ($i = $startPage; $i <= $endPage; $i++) {
-                    $class  = ($currentPage == $i) ? "active" : "";
-                    $htmlPaginate   .= '<li class="SnPagination-item ' . $class . '"><a href="?limit=' . $limitPage . '&page=' . $i . $additionalQuery . '" class="SnPagination-link">' . $i . '</a></li>';
-                }
-
-                if ($endPage < $lastPage) {
-                    $htmlPaginate   .= '<li class="SnPagination-item disabled"><span class="SnPagination-link">...</span></li>';
-                    $htmlPaginate   .= '<li><a href="?limit=' . $limitPage . '&page=' . $lastPage . $additionalQuery . '" class="SnPagination-link">' . $lastPage . '</a></li>';
-                }
-
-                $class      = ($currentPage == $lastPage || $totalPage == 0) ? "disabled" : "";
-                $htmlPaginate       .= '<li class="SnPagination-item ' . $class . '"><a href="?limit=' . $limitPage . '&page=' . ($currentPage + 1) . $additionalQuery . '" class="SnPagination-link">Siguiente</a></li>';
-
-                $htmlPaginate       .= '</ul></nav>';
-
-                echo  $htmlPaginate;
-            }
-            ?>
-
+            <div id="userTable"></div>
         </div>
     </div>
 </div>
-<script src="<?= URL_PATH ?>/assets/build/script/user-min.js"></script>
 
+<script src="<?= URL_PATH ?>/assets/dist/script/user-min.js"></script>
 
 <div class="SnModal-wrapper" data-modal="userModalForm">
     <div class="SnModal">
@@ -141,8 +65,9 @@
                     <label for="userUserRoleId" class="SnForm-label">Rol</label>
                     <select id="userUserRoleId" class="SnForm-select">
                         <option value="">Seleccionar</option>
-                        <option value="admin">Admin</option>
-                        <option value="user">User</option>
+                        <?php foreach ($userRole ?? [] as $row): ?>
+                            <option value="<?= $row['user_role_id'] ?>"><?= $row['name'] ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="SnForm-item">
@@ -157,6 +82,4 @@
     </div>
 </div>
 
-<?php
-require_once __DIR__ . '/layout/footer.php'
-?>
+<?php require_once __DIR__ . '/layout/footer.php' ?>

@@ -17,61 +17,33 @@
                 <li>
                     <a href="<?= URL_PATH ?>/invoice"> <i class="icon-rocket"></i> <span>Comprobantes </span> </a>
                     <ul>
-                        <li><a href="">Lista comprobantes</a></li>
-                        <li><a href="">Emitir factura</a></li>
-                        <li><a href="">Emitir boleta</a></li>
-                        <li><a href="">Emitir nota crédito</a></li>
-                        <li>
-                            <a href="">Emitir nota débito</a>
-                            <ul>
-                                <li><a href="">Venta diaria</a></li>
-                                <li><a href="">Venta diaria</a></li>
-                                <li><a href="">Venta diaria</a></li>
-                                <li>
-                                    <a href="">Venta diaria</a>
-                                    <ul>
-                                        <li><a href="">Lista comprobantes</a></li>
-                                        <li><a href="">Emitir factura</a></li>
-                                        <li><a href="">Emitir boleta</a></li>
-                                        <li><a href="">Emitir nota crédito</a></li>
-                                        <li>
-                                            <a href="">Emitir nota débito</a>
-                                            <ul>
-                                                <li><a href="">Venta diaria</a></li>
-                                                <li><a href="">Venta diaria</a></li>
-                                                <li><a href="">Venta diaria</a></li>
-                                                <li>
-                                                    <a href="">Venta diaria</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
+                        <li><a href="<?= URL_PATH ?>/invoice">Lista comprobantes</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newInvoice">Emitir factura</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newInvoiceTiket">Emitir boleta</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newInvoiceNC">Emitir nota crédito</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newInvoiceND">Emitir nota débito</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="<?= URL_PATH ?>/user"> <i class="icon-ioxhost"></i> <span>Anulaciones </span> </a>
+                    <a href="<?= URL_PATH ?>/voided"> <i class="icon-ioxhost"></i> <span>Anulaciones </span> </a>
                 </li>
                 <li>
-                    <a href="<?= URL_PATH ?>/user"> <i class="icon-clone"></i> <span>Resumenes </span> </a>
+                    <a href="<?= URL_PATH ?>/summary"> <i class="icon-clone"></i> <span>Resumenes </span> </a>
                 </li>
                 <li>
-                    <a href="<?= URL_PATH ?>/invoice"> <i class="icon-cube"></i> <span>Mantenimiento </span> </a>
+                    <a href="#"> <i class="icon-cube"></i> <span>Mantenimiento </span> </a>
                     <ul>
-                        <li><a href="">Categorias</a></li>
-                        <li><a href="">Productos</a></li>
-                        <li><a href="">Clientes</a></li>
+                        <li><a href="<?= URL_PATH ?>/category">Categorias</a></li>
+                        <li><a href="<?= URL_PATH ?>/product">Productos</a></li>
+                        <li><a href="<?= URL_PATH ?>/customer">Clientes</a></li>
+                        <li><a href="<?= URL_PATH ?>/user">Usuarios</a></li>
+                        <li><a href="<?= URL_PATH ?>/userRole">Roles</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="<?= URL_PATH ?>/customer"> <i class="icon-user"></i> <span>Usuarios </span> </a>
-                </li>
-                <li>
-                    <a href="<?= URL_PATH ?>/invoice"> <i class="icon-pie-chart"></i> <span>Reportes </span> </a>
+                    <a href="<?= URL_PATH ?>/report"> <i class="icon-pie-chart"></i> <span>Reportes </span> </a>
                     <ul>
-                        <li><a href="">Venta diaria</a></li>
+                        <li><a href="<?= URL_PATH ?>/report/sale">Venta diaria</a></li>
                     </ul>
                 </li>
                 <li>
@@ -86,10 +58,10 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="<?= URL_PATH ?>/invoice"> <i class="icon-book"></i> <span>Manual </span> </a>
+                    <a href="<?= URL_PATH ?>/documentation"> <i class="icon-book"></i> <span>Manual </span> </a>
                     <ul>
-                        <li><a href="">Manual API</a></li>
-                        <li><a href="">Manual core</a></li>
+                        <li><a href="<?= URL_PATH ?>/documentation/api">Manual API</a></li>
+                        <li><a href="<?= URL_PATH ?>/documentation/core">Manual core</a></li>
                     </ul>
                 </li>
             </ul>

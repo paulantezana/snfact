@@ -24,13 +24,31 @@
                     <ul class="HeaderMenu SnMenu">
                         <li>
                             <div class="Header-action">
-                                <input class="SnSwitch SnSwitch-ios" id="themeMode" type="checkbox">
-                                <label class="SnSwitch-btn" for="themeMode"></label>
+                                <select class="SnForm-select">
+                                    <option value="">Seleccionar local</option>
+                                    <?php
+                                        if (isset($_SESSION[SESS_LOCALS]) && isset($_SESSION[SESS_CURRENT_LOCAL])):
+                                            foreach ($_SESSION[SESS_LOCALS] as $row):
+                                                ?>
+                                                    <option value="<?= $row['business_local_id'] ?>" <?php echo $_SESSION[SESS_CURRENT_LOCAL] === $row['business_local_id'] ? 'selected' : '' ?>>
+                                                        <?= $row['short_name'] ?>
+                                                    </option>
+                                                <?php
+                                            endforeach;
+                                        endif;
+                                    ?>
+                                </select>
                             </div>
                         </li>
                         <li>
                             <a href="<?= URL_PATH ?>/customer" class="Header-action">
-                                <i class="icon-search"></i>
+                                <i class="icon-check"></i>
+                                Produción
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= URL_PATH ?>/busines" class="Header-action">
+                                <i class="icon-bell-o"></i>
                             </a>
                         </li>
                         <li>
@@ -50,7 +68,9 @@
                                     </div>
                                 </li>
                                 <li><a href="<?= URL_PATH ?>/auth/profile"> <i class="icon-user"></i> Perfil</a></li>
-                                <li><a href="<?= URL_PATH ?>/auth/logout"> <i class="icon-sign-out"></i> Salir</a></li>
+                                <li><a href="<?= URL_PATH ?>/"> <i class="icon-sign-out"></i> Soporte</a></li>
+                                <li><a href="<?= URL_PATH ?>/business/update"> <i class="icon-cog"></i> Configurar empresa</a></li>
+                                <li><a href="<?= URL_PATH ?>/auth/logout"> <i class="icon-sign-out"></i> Cerrar sesión</a></li>
                             </ul>
                         </li>
                     </ul>

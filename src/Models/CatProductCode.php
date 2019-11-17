@@ -9,7 +9,7 @@ class CatProductCode extends Model
     }
     public function Search($search){
         try{
-            $sql = "SELECT * FROM product_code WHERE description LIKE :description OR code LIKE :code LIMIT 8";
+            $sql = "SELECT * FROM cat_product_code WHERE description LIKE :description OR code LIKE :code LIMIT 8";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 ":description" => '%' . $search . '%',
