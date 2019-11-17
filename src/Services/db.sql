@@ -170,9 +170,6 @@ CREATE TABLE business_local(
     short_name VARCHAR(64),
     sunat_code varchar(64),
     location_code varchar(8),
-    department varchar(64),
-    province varchar(64),
-    district varchar(64),
     address varchar(255),
     pdf_invoice_size varchar(8),
     pdf_header varchar(255),
@@ -243,6 +240,7 @@ CREATE TABLE user(
     created_user_id INT,
     updated_user_id INT,
 
+    business_id INT,
     password varchar(64) NOT NULL,
     email varchar(64),
     temp_key varchar(32),
@@ -320,6 +318,7 @@ CREATE TABLE customer(
     fiscal_address VARCHAR(255),
     email VARCHAR(64),
     telephone VARCHAR(255),
+    state BOOLEAN DEFAULT true,
     CONSTRAINT pk_customer PRIMARY KEY (customer_id),
     CONSTRAINT fk_customer_identity_document_code FOREIGN KEY (identity_document_code) REFERENCES cat_identity_document_type_code (code)
         ON UPDATE RESTRICT ON DELETE RESTRICT
@@ -871,8 +870,6 @@ INSERT INTO cat_subject_detraction_code (code, description) VALUES
 -- DATOS ADICIONALES
 -- ADITIONAL DATA
 INSERT INTO user_role(name) VALUES ('Administrador'),('Personal'),('Invitado');
-INSERT INTO user(user_name,password,email,user_role_id) VALUES ('yoel', sha1('yoel'), 'data@gmail.com', 1);
-
 INSERT INTO app_authorization(module, action, description, state) VALUES
 ('reporte','listar','listar reporte',true),
 
@@ -881,6 +878,21 @@ INSERT INTO app_authorization(module, action, description, state) VALUES
 ('usuario','eliminar','Eliminar un usuario',true),
 ('usuario','modificar','Acualizar los datos del usuario exepto la contraseña',true),
 ('usuario','actualizarContraseña','Solo se permite actualizar la contraseña',true),
+
+('categoria','listar','Listar categorias',true),
+('categoria','crear','Crear nuevo categoria',true),
+('categoria','eliminar','Eliminar una categoria',true),
+('categoria','modificar','Acualizar una categoria',true),
+
+('producto','listar','Listar productos',true),
+('producto','crear','Crear nuevo producto',true),
+('producto','eliminar','Eliminar un producto',true),
+('producto','modificar','Acualizar un producto',true),
+
+('cliente','listar','Listar clientes',true),
+('cliente','crear','Crear nuevo cliente',true),
+('cliente','eliminar','Eliminar un cliente',true),
+('cliente','modificar','Acualizar un cliente',true),
 
 ('rol','listar','listar roles',true),
 ('rol','crear','crear nuevos rol',true),
@@ -900,13 +912,26 @@ INSERT INTO user_role_authorization(user_role_id, app_authorization_id) VALUES
 (1,8),
 (1,9),
 (1,10),
-(1,11);
+(1,11),
+(1,12),
+(1,13),
+(1,14),
+(1,15),
+(1,16),
+(1,17),
+(1,18),
+(1,19),
+(1,20),
+(1,21),
+(1,22),
+(1,23);
 
 INSERT INTO business( continue_payment, ruc, social_reason, commercial_reason, email, phone, web_site, logo)
 VALUES (false,'99999999999','abc company','abc','abc@gmail.com','966254123','abc.com','');
+INSERT INTO user(user_name,password,email,user_role_id, business_id) VALUES ('yoel', sha1('yoel'), 'data@gmail.com', 1, 1);
 INSERT INTO business_user (business_id, user_id) VALUES (1,1);
-INSERT INTO business_local(updated_at, created_at, created_user_id, updated_user_id, short_name, sunat_code, location_code, department, province, district, address, pdf_invoice_size, pdf_header, description, business_id)
-VALUES (now(),now(),1,1,'Local principal','','080800','cusco','cusco','cusco','','A4','','',1);
+INSERT INTO business_local(updated_at, created_at, created_user_id, updated_user_id, short_name, sunat_code, location_code, address, pdf_invoice_size, pdf_header, description, business_id)
+VALUES (now(),now(),1,1,'Local principal','','080800','','A4','','',1);
 INSERT INTO business_serie(updated_at, delete_at, business_local_id, serie, document_code, max_correlative, contingency)
 VALUES (now(),null,1,'F001','01',0,false),
        (now(),null,1,'B001','03',0,false),

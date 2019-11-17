@@ -44,7 +44,7 @@
                             <label for="productProductKey" class="SnForm-label">Código</label>
                             <input type="text" class="SnForm-input" id="productProductKey">
                         </div>
-                        <div class="SnForm-item">
+                        <div class="SnForm-item required">
                             <label for="productProductCode" class="SnForm-label">Codigo Producto</label>
                             <select id="productProductCode" class="SnForm-select">
                                 <option value="">Seleccionar</option>
@@ -54,12 +54,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="SnForm-item">
+                    <div class="SnForm-item required">
                         <label for="productDescription" class="SnForm-label">Nombre del Producto o Servicio</label>
                         <input type="text" class="SnForm-input" id="productDescription">
                     </div>
 
-                    <div class="SnForm-item">
+                    <div class="SnForm-item required">
                         <label for="productAffectationCode" class="SnForm-label">Tipo de IGV</label>
                         <select id="productAffectationCode" class="SnForm-select">
                             <option value="">Seleccionar</option>
@@ -69,16 +69,16 @@
                         </select>
                     </div>
                     <div class="SnGrid s-2">
-                        <div class="SnForm-item">
+                        <div class="SnForm-item required">
                             <label for="productUnitPrice" class="SnForm-label">PrecioVenta(Inc.IGV)</label>
                             <input type="number" step="any" class="SnForm-input" id="productUnitPrice">
                         </div>
-                        <div class="SnForm-item">
+                        <div class="SnForm-item required">
                             <label for="productUnitValue" class="SnForm-label">PrecioVenta(Sin IGV)</label>
                             <input type="number" step="any" class="SnForm-input" id="productUnitValue">
                         </div>
                     </div>
-                    <div class="SnForm-item">
+                    <div class="SnForm-item required">
                         <label for="productCategoryId" class="SnForm-label">Categoría</label>
                         <select id="productCategoryId" class="SnForm-select">
                             <option value="">Seleccionar</option>
@@ -87,7 +87,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="SnForm-item">
+                    <div class="SnForm-item required">
                         <label for="productUnitMeasureCode" class="SnForm-label">Unidad de Medida</label>
                         <select id="productUnitMeasureCode" class="SnForm-select">
                             <option value="">Seleccionar</option>

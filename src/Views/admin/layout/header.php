@@ -41,9 +41,8 @@
                             </div>
                         </li>
                         <li>
-                            <a href="<?= URL_PATH ?>/customer" class="Header-action">
-                                <i class="icon-check"></i>
-                                Produción
+                            <a href="<?= URL_PATH ?>/business/update" class="Header-action Header-sunatState production">
+                                <i class="icon-check"></i> Produción
                             </a>
                         </li>
                         <li>

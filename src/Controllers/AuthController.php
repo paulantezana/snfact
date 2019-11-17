@@ -9,11 +9,15 @@ class AuthController extends Controller
 {
     protected $connection;
     protected $userModel;
+    protected $businessModel;
+    protected $businessLocalModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
         $this->userModel = new User($connection);
+        $this->businessModel = new Business($connection);
+        $this->businessLocalModel = new BusinessLocal($connection);
     }
 
     public function login(){
@@ -47,6 +51,91 @@ class AuthController extends Controller
         }
     }
 
+    public function register(){
+        try{
+            $message = '';
+            $messageType = 'info';
+            $error = [];
+            $register = [];
+
+            try{
+                $this->connection->beginTransaction();
+                if (isset($_POST['commit'])) {
+                    $register = $_POST['register'];
+                    $validate = $this->validateRegister($register);
+
+                    if (!$validate->success) {
+                        $error = $validate->error;
+                        throw new Exception($validate->message);
+                    }
+
+                    $userId = $this->userModel->Insert([
+                        "password" => $register['password'],
+                        "email" => $register['email'],
+                        "avatar" => '',
+                        "userName" => $register['userName'],
+                        "state" => true,
+                        "userRoleId" => 1,
+                    ],1);
+
+                    $businessId = $this->businessModel->Insert([
+                        'continue_payment' => false,
+                        'ruc' => $register['ruc'],
+                        'social_reason' => '',
+                        'commercial_reason' => '',
+                        'email' => $register['email'],
+                        'phone' => '',
+                        'web_site' => '',
+                    ],$userId);
+
+                    $businessLocalId = $this->businessLocalModel->Insert([
+                        'short_name' => 'Local principal',
+                        'sunat_code' => '',
+                        'location_code' => '',
+                        'address' => '',
+                        'pdf_invoice_size' => 'A4',
+                        'pdf_header' => 'Email: ' . $register['email'],
+                        'description' => '',
+                        'business_id' => $businessId,
+                        'item' => [
+                            [
+                                'serie' => 'F001',
+                                'document_code' => '01',
+                            ],
+                            [
+                                'serie' => 'B001',
+                                'document_code' => '03',
+                            ],
+                            [
+                                'serie' => 'FP01',
+                                'document_code' => '07',
+                            ],
+                            [
+                                'serie' => 'FP01',
+                                'document_code' => '08',
+                            ],
+                            [
+                                'serie' => 'T001',
+                                'document_code' => '09',
+                            ],
+                        ]
+                    ],$userId);
+                }
+            } catch (Exception $e){
+                $this->connection->rollBack();
+                $this->render('pages/register.php', [
+                    'messageType' => 'error',
+                    'message' => $e->getMessage()
+                ]);
+                return;
+            }
+            $this->connection->commit();
+            $this->redirect('/');
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
     private function initApp($user) {
         unset($user['password']);
         unset($user['temp_key']);
@@ -58,11 +147,8 @@ class AuthController extends Controller
 
         try{
             // Set Default Business
-            $businessModel = new Business($this->connection);
-            $businessLocalModel = new BusinessLocal($this->connection);
-
-            $business = $businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $businessLocals = $businessLocalModel->GetAllByBusinessId($business['business_id']);
+            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $businessLocals = $this->businessLocalModel->GetAllByBusinessId($business['business_id']);
 
             $_SESSION[SESS_LOCALS] = $businessLocals;
             $_SESSION[SESS_CURRENT_LOCAL] = $businessLocals[0]['business_local_id'];
@@ -142,5 +228,27 @@ class AuthController extends Controller
             'message' => $message,
             'messageType' => $messageType,
         ]);
+    }
+
+    private function validateRegister($body)
+    {
+        $collector = new ErrorCollector();
+        if (($body['email'] ?? '') == '') {
+            $collector->addError('email','Falta ingresar el correo electrónico');
+        }
+        if (($body['userName'] ?? '') == '') {
+            $collector->addError('userName','Falta ingresar el nombre de usuario');
+        }
+        if (($body['password'] ?? '') == '') {
+            $collector->addError('password','Falta ingresar la contraseña');
+        }
+        if (($body['passwordConfirm'] ?? '') == '') {
+            $collector->addError('passwordConfirm','Falta ingresar la confirmación contraseña');
+        }
+        if ($body['password'] != $body['passwordConfirm']){
+            $collector->addError('password','Las contraseñas no coinciden');
+        }
+
+        return $collector->getResult();
     }
 }

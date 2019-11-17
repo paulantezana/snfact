@@ -77,3 +77,23 @@
         }
     }
 }
+
+.Header{
+    &-sunatState{
+        [class*="icon"]{
+            margin-right: 8px;
+        }
+        &.demo{
+            color: var(--snError);
+            &:hover{
+                color: var(--snError);
+            }
+        }
+        &.production{
+            color: var(--snSuccess);
+            &:hover{
+                color: var(--snSuccess);
+            }
+        }
+    }
+}

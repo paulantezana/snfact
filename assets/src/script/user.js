@@ -189,7 +189,7 @@ let  UserForm = {
             if (res.success){
                 document.getElementById('userEmail').value  = res.result.email;
                 document.getElementById('userUserName').value  = res.result.user_name;
-                document.getElementById('userState').checked  = res.result.state;
+                document.getElementById('userState').checked  = res.result.state == '0' ? false : true;
                 document.getElementById('userUserRoleId').value  = res.result.user_role_id;
                 document.getElementById('userId').value = res.result.user_id;
                 SnModal.open(this.modalName);

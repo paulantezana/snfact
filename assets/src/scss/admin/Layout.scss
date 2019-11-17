@@ -132,3 +132,13 @@ $headerHeight: 56px;
   }
 }
 
+.SnContentAside{
+  display: grid;
+  grid-template-columns: 1fr;
+  @include from(l){
+    grid-template-columns: 1fr 2fr;
+  }
+  height: calc(100vh - 60px);
+  padding: 1rem;
+  grid-gap: 1rem;
+}

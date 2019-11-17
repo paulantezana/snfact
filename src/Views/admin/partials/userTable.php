@@ -7,6 +7,7 @@
                 <th>Telefono</th>
                 <th>Estado</th>
                 <th>Perfil</th>
+                <th>Estado</th>
                 <th style="width: 100px"></th>
             </tr>
         </thead>
@@ -23,14 +24,18 @@
                     <td><?= $row['state'] ?></td>
                     <td><?= $row['user_role'] ?></td>
                     <td>
+                        <input class="SnSwitch SnSwitch-ios" id="userState<?= $row['user_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
+                        <label class="SnSwitch-btn" for="userState<?= $row['user_id']?>"></label>
+                    </td>
+                    <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn jsUserOption" onclick="UserForm.executeUpdatePassword(<?= $row['user_id'] ?>)">
+                            <div class="SnBtn jsUserOption" data-tooltip="Cambiar contraseña" onclick="UserForm.executeUpdatePassword(<?= $row['user_id'] ?>)">
                                 <i class="icon-key"></i>
                             </div>
-                            <div class="SnBtn jsUserOption" onclick="UserForm.executeUpdateNormal(<?= $row['user_id'] ?>)">
+                            <div class="SnBtn jsUserOption" data-tooltip="Editar" onclick="UserForm.executeUpdateNormal(<?= $row['user_id'] ?>)">
                                 <i class="icon-pencil"></i>
                             </div>
-                            <div class="SnBtn jsUserOption" onclick="UserForm.delete(<?= $row['user_id'] ?>,'<?= $row['user_name'] ?>')">
+                            <div class="SnBtn jsUserOption" data-tooltip="Eliminar" onclick="UserForm.delete(<?= $row['user_id'] ?>,'<?= $row['user_name'] ?>')">
                                 <i class="icon-trash"></i>
                             </div>
                         </div>

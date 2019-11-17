@@ -2,7 +2,7 @@
     <div class="SnContent">
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class="icon-braille"></i> Clientes
+                <i class="icon-angle-right"></i> Clientes
             </div>
             <div class="SnToolbar-right">
                 <div class="SnBtn jsCustomerOption" onclick="CustomerForm.list()">
@@ -52,7 +52,7 @@
                         <label for="customerDocumentNumber" class="SnForm-label">Documento de Identidad</label>
                         <input type="text" class="SnForm-input" id="customerDocumentNumber">
                     </div>
-                    <div class="SnForm-item">
+                    <div class="SnForm-item required">
                         <label for="customerSocialReason" class="SnForm-label">Razón social/Nombre Completo</label>
                         <input type="text" class="SnForm-input" id="customerSocialReason">
                     </div>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="SnForm-item">
                         <label for="customerEmail" class="SnForm-label">Email</label>
-                        <input type="text" class="SnForm-input" id="customerEmail">
+                        <input type="email" class="SnForm-input" id="customerEmail">
                     </div>
                     <div class="SnForm-item">
                         <label for="customerTelephone" class="SnForm-label">Teléfono</label>

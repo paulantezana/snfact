@@ -8,20 +8,21 @@ class CustomerController extends Controller
 {
     protected $connection;
     protected $customerModel;
+    protected $businessModel;
     protected $catIdentityDocumentTypeCodeModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
         $this->customerModel = new Customer($connection);
+        $this->businessModel = new Business($connection);
         $this->catIdentityDocumentTypeCodeModel = new CatIdentityDocumentTypeCode($connection);
     }
 
     public function index()
     {
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
-
+            Authorization($this->connection, 'cliente', 'listar');
             $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
 
             $this->render('admin/customer.php',[
@@ -35,12 +36,13 @@ class CustomerController extends Controller
     public function table()
     {
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'cliente', 'listar');
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $customer = $this->customerModel->Paginate($page, $limit, $search);
+            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $customer = $this->customerModel->Paginate($page, $limit, $search, $business['business_id']);
 
             $this->render('admin/partials/customerTable.php', [
                 'customer' => $customer,
@@ -54,7 +56,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'cliente', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -70,7 +72,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'cliente', 'crear');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -79,8 +81,7 @@ class CustomerController extends Controller
                 throw new Exception($validate->message);
             }
 
-            $businessModel = new Business($this->connection);
-            $body['businessId'] = $businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
 
             $res->result = $this->customerModel->Insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
@@ -95,7 +96,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'cliente', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -110,6 +111,7 @@ class CustomerController extends Controller
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
                 'document_number' => $body['documentNumber'],
+                'state' => $body['state'],
                 'identity_document_code' => $body['identityDocumentCode'],
                 'social_reason' => $body['socialReason'],
                 'commercial_reason' => $body['commercialReason'],
@@ -129,7 +131,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'cliente', 'eliminar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -144,14 +146,23 @@ class CustomerController extends Controller
 
     public function validateInput($body)
     {
-        $res = new Result();
-        $res->success = true;
-
-        if (($body['documentNumber']) == '') {
-            $res->message .= 'Falta ingresar el nombre | ';
-            $res->success = false;
+        $collector = new ErrorCollector();
+        $collector->setSeparator('</br>');
+        if (trim($body['documentNumber'] ?? '') == ''){
+            $collector->addError('documentNumber','El número del documento es inválido');
+        }
+        if (trim($body['identityDocumentCode'] ?? '') == ''){
+            $collector->addError('identityDocumentCode','No se especificó el tipo de documento de identificación');
+        }
+        if (trim($body['socialReason'] ?? '') == ''){
+            $collector->addError('socialReason','No se especificó la razón social');
         }
 
-        return $res;
+        $identityDocValidate = ValidateIdentityDocumentNumber($body['documentNumber'],$body['identityDocumentCode']);
+        if (!$identityDocValidate->success){
+            $collector->addError('documentNumber',$identityDocValidate->message);
+        }
+
+        return $collector->getResult();
     }
 }

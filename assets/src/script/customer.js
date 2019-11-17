@@ -73,6 +73,7 @@ let  CustomerForm = {
         customerSendData.fiscalAddress =  document.getElementById('customerFiscalAddress').value || '';
         customerSendData.email =  document.getElementById('customerEmail').value || '';
         customerSendData.telephone =  document.getElementById('customerTelephone').value || '';
+        customerSendData.state =  document.getElementById('customerState').checked || false;
 
         if (this.currentModeForm === 'create'){
             url = '/customer/create';
@@ -157,6 +158,7 @@ let  CustomerForm = {
                 document.getElementById('customerFiscalAddress').value = res.result.fiscal_address;
                 document.getElementById('customerEmail').value = res.result.email;
                 document.getElementById('customerTelephone').value = res.result.telephone;
+                document.getElementById('customerState').checked = res.result.state == '0' ? false : true;;
                 document.getElementById('customerId').value = res.result.customer_id;
                 SnModal.open(this.modalName);
             }else {

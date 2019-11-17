@@ -12,29 +12,32 @@ class ProductController extends Controller
 {
     protected $connection;
     protected $productModel;
+    protected $businessModel;
     protected $catIdentityDocumentTypeCodeModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
         $this->productModel = new Product($connection);
+        $this->businessModel = new Business($connection);
     }
 
     public function index()
     {
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'producto', 'listar');
             $catAffectationIgvTypeCodeModel = new CatAffectationIgvTypeCode($this->connection);
             $catUnitMeasureTypeCodeModel = new CatUnitMeasureTypeCode($this->connection);
             $catSystemIscTypeCodeModel = new CatSystemIscTypeCode($this->connection);
             $catProductCodeModel = new CatProductCode($this->connection);
             $categoryModel = new Category($this->connection);
+            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
 
             $catAffectationIgvTypeCodes = $catAffectationIgvTypeCodeModel->GetAll();
             $catUnitMeasureTypeCodes = $catUnitMeasureTypeCodeModel->GetAll();
             $catSystemIscTypeCodes = $catSystemIscTypeCodeModel->GetAll();
             $catProductCodes = $catProductCodeModel->GetAll();
-            $categories = $categoryModel->GetAll();
+            $categories = $categoryModel->GetAllByBusinessId($business['business_id']);
 
             $this->render('admin/product.php', [
                 'catAffectationIgvTypeCodes' => $catAffectationIgvTypeCodes,
@@ -51,12 +54,13 @@ class ProductController extends Controller
     public function table()
     {
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'producto', 'listar');
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $product = $this->productModel->Paginate($page, $limit, $search);
+            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $product = $this->productModel->Paginate($page, $limit, $search, $business['business_id']);
 
             $this->render('admin/partials/productTable.php', [
                 'product' => $product,
@@ -70,7 +74,7 @@ class ProductController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'producto', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -86,7 +90,7 @@ class ProductController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'producto', 'crear');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -96,8 +100,7 @@ class ProductController extends Controller
                 throw new Exception($validate->message);
             }
 
-            $businessModel = new Business($this->connection);
-            $body['businessId'] = $businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
 
             $res->result = $this->productModel->Insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
@@ -112,7 +115,7 @@ class ProductController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'producto', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -129,6 +132,7 @@ class ProductController extends Controller
 
                 'description' => $body['description'],
                 'unit_price' => $body['unitPrice'],
+                'unit_value' => $body['unitValue'],
                 'product_key' => $body['productKey'],
                 'product_code' => $body['productCode'],
                 'unit_measure_code' => $body['unitMeasureCode'],
@@ -149,7 +153,7 @@ class ProductController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'producto', 'eliminar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 

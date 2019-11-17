@@ -8,12 +8,11 @@
                 <th>Unidad</th>
                 <th>TipoAfec.IGV</th>
                 <th>Precio Venta</th>
-                <th>Estado</th>
                 <th style="width: 100px"></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($product['data'] as $row) : ?>
+            <?php foreach ($businessLocal['data'] as $row) : ?>
                 <tr>
                     <td><?= $row['product_key'] ?></td>
                     <td><?= $row['category_description'] ?></td>
@@ -21,10 +20,6 @@
                     <td><?= $row['unit_measure_code'] ?></td>
                     <td><?= $row['affectation_igv_description'] ?></td>
                     <td><?= $row['unit_price'] ?></td>
-                    <td>
-                        <input class="SnSwitch SnSwitch-ios" id="productState<?= $row['product_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
-                        <label class="SnSwitch-btn" for="productState<?= $row['product_id']?>"></label>
-                    </td>
                     <td>
                         <div class="SnTable-action">
                             <div class="SnBtn jsProductOption" data-tooltip="Editar" onclick="ProductForm.executeUpdateNormal(<?= $row['product_id'] ?>)">
@@ -41,9 +36,9 @@
     </table>
 </div>
 <?php
-$currentPage = $product['current'];
-$totalPage = $product['pages'];
-$limitPage = $product['limit'];
+$currentPage = $businessLocal['current'];
+$totalPage = $businessLocal['pages'];
+$limitPage = $businessLocal['limit'];
 $additionalQuery = '';
 $linksQuantity = 3;
 

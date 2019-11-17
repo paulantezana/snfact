@@ -2,22 +2,25 @@
 
 require_once MODEL_PATH . '/User.php';
 require_once MODEL_PATH . '/UserRole.php';
+require_once MODEL_PATH . '/Business.php';
 
 class UserController extends Controller
 {
     protected $connection;
     protected $userModel;
+    protected $businessModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
         $this->userModel = new User($connection);
+        $this->businessModel = new Business($connection);
     }
 
     public function index()
     {
         try {
-//            Authorization($this->connection, 'usuario', 'listar');
+            Authorization($this->connection, 'usuario', 'listar');
             $userRoleModel = new UserRole($this->connection);
             $userRole = $userRoleModel->GetAll();
 
@@ -32,12 +35,13 @@ class UserController extends Controller
     public function table()
     {
         try {
-//            Authorization($this->connection, 'usuario', 'listar');
+            Authorization($this->connection, 'usuario', 'listar');
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $user = $this->userModel->Paginate($page, $limit, $search);
+            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $user = $this->userModel->Paginate($page, $limit, $search, $business['business_id']);
 
             $this->render('admin/partials/userTable.php', [
                 'user' => $user,
@@ -51,7 +55,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-//            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -67,7 +71,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-//            Authorization($this->connection, 'usuario', 'crear');
+            Authorization($this->connection, 'usuario', 'crear');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -75,6 +79,8 @@ class UserController extends Controller
             if (!$validate->success) {
                 throw new Exception($validate->message);
             }
+
+            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
 
             $res->result = $this->userModel->Insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
@@ -88,8 +94,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-//            Authorization($this->connection, 'usuario', 'modificar');
-
+            Authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -121,7 +126,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-//            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -148,7 +153,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-//            Authorization($this->connection, 'usuario', 'eliminar');
+            Authorization($this->connection, 'usuario', 'eliminar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 

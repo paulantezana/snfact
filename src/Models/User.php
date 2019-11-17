@@ -8,19 +8,21 @@ class User extends Model
         parent::__construct("user","user_id",$db);
     }
 
-    public function Paginate($page = 1, $limit = 10, $search = '')
+    public function Paginate($page, $limit = 10, $search = '', $businessId = 0)
     {
         try {
             $offset = ($page - 1) * $limit;
-            $totalRows = $this->db->query("SELECT COUNT(*) FROM user WHERE user_name LIKE '%{$search}%'")->fetchColumn();
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM user WHERE business_id = '$businessId' AND user_name LIKE '%{$search}%'")->fetchColumn();
             $totalPages = ceil($totalRows / $limit);
 
             $sql = "SELECT user.*, ur.name as user_role FROM user
                     INNER JOIN user_role ur on user.user_role_id = ur.user_role_id
-                    WHERE user_name LIKE '%{$search}%' LIMIT $offset, $limit";
+                    WHERE business_id = :business_id AND user_name LIKE '%{$search}%' LIMIT $offset, $limit";
             $stmt = $this->db->prepare($sql);
 
-            $stmt->execute();
+            $stmt->execute([
+                ':business_id' => $businessId
+            ]);
             $data = $stmt->fetchAll();
 
             $paginate = [
@@ -83,10 +85,9 @@ class User extends Model
             $currentDate = date('Y-m-d H:i:s');
 
             $sql = "INSERT INTO user (updated_at, created_at, created_user_id, updated_user_id, password, email,
-                                        avatar, user_name, state, user_role_id)
+                                        avatar, user_name, state, user_role_id, business_id)
                     VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :password, :email,
-                                        :avatar, :user_name, :state, :user_role_id)";
-
+                                        :avatar, :user_name, :state, :user_role_id, :business_id)";
             $stmt = $this->db->prepare($sql);
 
             if(!$stmt->execute([
@@ -95,13 +96,14 @@ class User extends Model
                 ":created_user_id" => $userId,
                 ":updated_user_id" => $userId,
 
-                ":password" => sha1($user['password'] ?? '') ,
-                ":email" => $user['email'] ?? '',
+                ":password" => sha1($user['password']) ,
+                ":email" => $user['email'],
                 ":avatar" => '',
-                ":user_name" => $user['userName'] ?? '',
+                ":user_name" => $user['userName'],
                 ":state" => $user['state'] ?? false,
 
                 ":user_role_id" => $user['userRoleId'],
+                ":business_id" => $user['businessId'],
             ])){
                 throw new Exception('No se pudo insertar el registro');
             }

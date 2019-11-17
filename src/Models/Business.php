@@ -67,4 +67,37 @@ class Business extends Model
             throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }
     }
+
+    public function Insert($business, $userReferId){
+        try{
+            $sql = "INSERT INTO business (continue_payment, ruc, social_reason, commercial_reason, email, phone, web_site)
+                    VALUES (:continue_payment, :ruc, :social_reason, :commercial_reason, :email, :phone, :web_site)";
+            $stmt = $this->db->prepare($sql);
+            if(!$stmt->execute([
+                ':continue_payment' => (bool)$business['continue_payment'] ?? false,
+                ':ruc' => $business['ruc'],
+                ':social_reason' => $business['social_reason'],
+                ':commercial_reason' => $business['commercial_reason'],
+                ':email' => $business['email'],
+                ':phone' => $business['phone'],
+                ':web_site' => $business['web_site'],
+            ])){
+                throw new Exception("Error al insertar el registro");
+            }
+            $businessId = (int)$this->db->lastInsertId();
+
+            $sql = "INSERT INTO business_user (business_id, user_id) VALUES (:business_id, :user_id)";
+            $stmt = $this->db->prepare($sql);
+            if(!$stmt->execute([
+                ':business_id' => $businessId,
+                ':user_id' => $userReferId,
+            ])){
+                throw new Exception("Error al insertar el registro");
+            }
+
+            return $businessId;
+        } catch (Exception $e) {
+            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+        }
+    }
 }

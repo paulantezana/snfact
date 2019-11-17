@@ -10,10 +10,13 @@
                     </a>
                 </div>
             </div>
+            <?php $asideMenu = $_SESSION[SESS_MENU] ?? []; ?>
             <ul class="AsideMenu" id="AsideMenu">
-                <li>
-                    <a href="<?= URL_PATH ?>/dashboard"> <i class="icon-home"></i> <span>Inicio </span> </a>
-                </li>
+                <?php if (ArrayFindIndexByColumn($asideMenu,'module','escritorio')): ?>
+                    <li>
+                        <a href="<?= URL_PATH ?>/dashboard"> <i class="icon-home"></i> <span>Inicio </span> </a>
+                    </li>
+                <?php endif; ?>
                 <li>
                     <a href="<?= URL_PATH ?>/invoice"> <i class="icon-rocket"></i> <span>Comprobantes </span> </a>
                     <ul>
@@ -33,11 +36,21 @@
                 <li>
                     <a href="#"> <i class="icon-cube"></i> <span>Mantenimiento </span> </a>
                     <ul>
-                        <li><a href="<?= URL_PATH ?>/category">Categorias</a></li>
-                        <li><a href="<?= URL_PATH ?>/product">Productos</a></li>
-                        <li><a href="<?= URL_PATH ?>/customer">Clientes</a></li>
-                        <li><a href="<?= URL_PATH ?>/user">Usuarios</a></li>
-                        <li><a href="<?= URL_PATH ?>/userRole">Roles</a></li>
+                        <?php if (ArrayFindIndexByColumn($asideMenu,'module','categoria')): ?>
+                            <li><a href="<?= URL_PATH ?>/category">Categorias</a></li>
+                        <?php endif; ?>
+                        <?php if (ArrayFindIndexByColumn($asideMenu,'module','producto')): ?>
+                            <li><a href="<?= URL_PATH ?>/product">Productos</a></li>
+                        <?php endif; ?>
+                        <?php if (ArrayFindIndexByColumn($asideMenu,'module','cliente')): ?>
+                            <li><a href="<?= URL_PATH ?>/customer">Clientes</a></li>
+                        <?php endif; ?>
+                        <?php if (ArrayFindIndexByColumn($asideMenu,'module','usuario')): ?>
+                            <li><a href="<?= URL_PATH ?>/user">Usuarios</a></li>
+                        <?php endif; ?>
+                        <?php if (ArrayFindIndexByColumn($asideMenu,'module','rol')): ?>
+                            <li><a href="<?= URL_PATH ?>/userRole">Roles</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
                 <li>
@@ -49,12 +62,12 @@
                 <li>
                     <a href="<?= URL_PATH ?>/invoice"> <i class="icon-cog"></i> <span>Configuración </span> </a>
                     <ul>
-                        <li><a href="">Empresa</a></li>
-                        <li><a href="">Sucursales</a></li>
-                        <li><a href="">API</a></li>
-                        <li><a href="">Cuentas bancarias</a></li>
-                        <li><a href="">BackUp</a></li>
-                        <li><a href="">General</a></li>
+                        <li><a href="<?= URL_PATH ?>/business/update">Empresa</a></li>
+                        <li><a href="<?= URL_PATH ?>/businessLocal">Sucursales</a></li>
+                        <li><a href="<?= URL_PATH ?>/business/api">API</a></li>
+<!--                        <li><a href="--><?//= URL_PATH ?><!--/business/update">Cuentas bancarias</a></li>-->
+<!--                        <li><a href="--><?//= URL_PATH ?><!--/business/update">BackUp</a></li>-->
+<!--                        <li><a href="--><?//= URL_PATH ?><!--/business/update">General</a></li>-->
                     </ul>
                 </li>
                 <li>

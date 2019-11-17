@@ -1,14 +1,14 @@
-let  CategoryForm = {
+let  BusinessLocalForm = {
     currentModeForm : 'create',
-    modalName : 'categoryModalForm',
+    modalName : 'businessLocalModalForm',
 
     currentForm : null,
     submitButton : null,
 
     loading : false,
     init() {
-        this.currentForm = document.getElementById('categoryForm');
-        this.submitButton = document.getElementById('categoryFormSubmit');
+        this.currentForm = document.getElementById('businessLocalForm');
+        this.submitButton = document.getElementById('businessLocalFormSubmit');
         this.list();
     },
     search(event){
@@ -16,13 +16,13 @@ let  CategoryForm = {
         this.list(1,10,event.target.value);
     },
     list(page = 1, limit = 10, search = ''){
-        let categoryTable = document.getElementById('categoryTable');
-        if(categoryTable){
+        let businessLocalTable = document.getElementById('businessLocalTable');
+        if(businessLocalTable){
             this.setLoading(true);
-            RequestApi.fetchText(`/category/table?limit=${limit}&page=${page}&search=${search}`,{
+            RequestApi.fetchText(`/businessLocal/table?limit=${limit}&page=${page}&search=${search}`,{
                 method: 'GET',
             }).then(res => {
-                categoryTable.innerHTML = res;
+                businessLocalTable.innerHTML = res;
             }).finally(e =>{
                 this.setLoading(false);
             })
@@ -30,14 +30,14 @@ let  CategoryForm = {
     },
     setLoading(state){
         this.loading = state;
-        let jsCategoryOption = document.querySelectorAll('.jsCategoryOption');
+        let jsBusinessLocalOption = document.querySelectorAll('.jsBusinessLocalOption');
         if (this.loading){
             if(this.submitButton){
                 this.submitButton.setAttribute('disabled','disabled');
                 this.submitButton.classList.add('loading');
             }
-            if (jsCategoryOption) {
-                jsCategoryOption.forEach(item => {
+            if (jsBusinessLocalOption) {
+                jsBusinessLocalOption.forEach(item => {
                     item.setAttribute('disabled', 'disabled');
                 });
             }
@@ -46,8 +46,8 @@ let  CategoryForm = {
                 this.submitButton.removeAttribute('disabled');
                 this.submitButton.classList.remove('loading');
             }
-            if (jsCategoryOption) {
-                jsCategoryOption.forEach(item => {
+            if (jsBusinessLocalOption) {
+                jsBusinessLocalOption.forEach(item => {
                     item.removeAttribute('disabled');
                 });
             }
@@ -65,23 +65,26 @@ let  CategoryForm = {
         this.setLoading(true);
 
         let url = '';
-        let categorySendData = {};
-        categorySendData.name =  document.getElementById('categoryName').value || '';
-        categorySendData.description =  document.getElementById('categoryDescription').value || '';
-        categorySendData.state =  document.getElementById('categoryState').checked || false;
-        categorySendData.parentId =  0;
+        let businessLocalSendData = {};
+        businessLocalSendData.documentNumber =  document.getElementById('businessLocalDocumentNumber').value || '';
+        businessLocalSendData.identityDocumentCode =  document.getElementById('businessLocalIdentityDocumentCode').value || '';
+        businessLocalSendData.socialReason =  document.getElementById('businessLocalSocialReason').value || '';
+        businessLocalSendData.commercialReason =  document.getElementById('businessLocalCommercialReason').value || '';
+        businessLocalSendData.fiscalAddress =  document.getElementById('businessLocalFiscalAddress').value || '';
+        businessLocalSendData.email =  document.getElementById('businessLocalEmail').value || '';
+        businessLocalSendData.telephone =  document.getElementById('businessLocalTelephone').value || '';
 
         if (this.currentModeForm === 'create'){
-            url = '/category/create';
+            url = '/businessLocal/create';
         }
         if (this.currentModeForm === 'update'){
-            url = '/category/update';
-            categorySendData.categoryId = document.getElementById('categoryId').value || 0;
+            url = '/businessLocal/update';
+            businessLocalSendData.businessLocalId = document.getElementById('businessLocalId').value || 0;
         }
 
         RequestApi.fetch(url,{
             method: 'POST',
-            body: categorySendData
+            body: businessLocalSendData
         }).then(res => {
             if (res.success){
                 SnModal.close(this.modalName);
@@ -94,7 +97,7 @@ let  CategoryForm = {
             this.setLoading(false);
         })
     },
-    delete(categoryId, content = '') {
+    delete(businessLocalId, content = '') {
         let _setLoading = this.setLoading;
         let _list = this.list;
 
@@ -106,10 +109,10 @@ let  CategoryForm = {
             cancelText: 'No',
             onOk() {
                 _setLoading(true);
-                RequestApi.fetch('/category/delete', {
+                RequestApi.fetch('/businessLocal/delete', {
                     method: 'POST',
                     body: {
-                        categoryId: categoryId || 0
+                        businessLocalId: businessLocalId || 0
                     }
                 }).then(res => {
                     if (res.success) {
@@ -131,26 +134,30 @@ let  CategoryForm = {
         SnModal.open(this.modalName);
     },
 
-    executeUpdateNormal(categoryId){
+    executeUpdateNormal(businessLocalId){
         this.currentModeForm = 'update';
-        this.showModalUpdate(categoryId);
+        this.showModalUpdate(businessLocalId);
     },
 
-    showModalUpdate(categoryId){
+    showModalUpdate(businessLocalId){
         this.clearForm();
 
         this.setLoading(true);
-        RequestApi.fetch('/category/id',{
+        RequestApi.fetch('/businessLocal/id',{
             method: 'POST',
             body: {
-                categoryId: categoryId || 0
+                businessLocalId: businessLocalId || 0
             }
         }).then(res => {
             if (res.success){
-                document.getElementById('categoryName').value  = res.result.name;
-                document.getElementById('categoryDescription').value  = res.result.description;
-                document.getElementById('categoryState').checked = res.result.state == '0' ? false : true;
-                document.getElementById('categoryId').value = res.result.category_id;
+                document.getElementById('businessLocalDocumentNumber').value = res.result.document_number;
+                document.getElementById('businessLocalIdentityDocumentCode').value = res.result.identity_document_code;
+                document.getElementById('businessLocalSocialReason').value = res.result.social_reason;
+                document.getElementById('businessLocalCommercialReason').value = res.result.commercial_reason;
+                document.getElementById('businessLocalFiscalAddress').value = res.result.fiscal_address;
+                document.getElementById('businessLocalEmail').value = res.result.email;
+                document.getElementById('businessLocalTelephone').value = res.result.telephone;
+                document.getElementById('businessLocalId').value = res.result.businessLocal_id;
                 SnModal.open(this.modalName);
             }else {
                 SnModal.error({ title: 'Algo salió mal', content: res.message })
@@ -162,5 +169,5 @@ let  CategoryForm = {
 };
 
 document.addEventListener('DOMContentLoaded',()=>{
-    CategoryForm.init();
+    BusinessLocalForm.init();
 });

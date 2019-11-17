@@ -68,7 +68,8 @@ let  ProductForm = {
         let productSendData = {};
         productSendData.categoryId =  document.getElementById('productCategoryId').value || '';
         productSendData.description =  document.getElementById('productDescription').value || '';
-        productSendData.unitPrice =  document.getElementById('productUnitPrice').value || '';
+        productSendData.unitPrice =  document.getElementById('productUnitPrice').value || 0;
+        productSendData.unitValue =  document.getElementById('productUnitValue').value || 0;
         productSendData.productKey=  document.getElementById('productProductKey').value || '';
         productSendData.productCode=  document.getElementById('productProductCode').value || '';
         productSendData.unitMeasureCode=  document.getElementById('productUnitMeasureCode').value || '';
@@ -156,13 +157,14 @@ let  ProductForm = {
                 document.getElementById('productCategoryId').value = res.result.category_id;
                 document.getElementById('productDescription').value = res.result.description;
                 document.getElementById('productUnitPrice').value = res.result.unit_price;
+                document.getElementById('productUnitValue').value = res.result.unit_value;
                 document.getElementById('productProductKey').value = res.result.product_key;
                 document.getElementById('productProductCode').value = res.result.product_code;
                 document.getElementById('productUnitMeasureCode').value = res.result.unit_measure_code;
                 document.getElementById('productAffectationCode').value = res.result.affectation_code;
                 document.getElementById('productSystemIscCode').value = res.result.system_isc_code;
                 document.getElementById('productIsc').value = res.result.isc;
-                document.getElementById('productState').checked = res.result.state;
+                document.getElementById('productState').checked = res.result.state == '0' ? false : true;
                 document.getElementById('productId').value = res.result.product_id;
                 SnModal.open(this.modalName);
             }else {

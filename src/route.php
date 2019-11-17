@@ -6,13 +6,17 @@ $routePaths = [
     '/500' => ['controller' => 'PageController', 'method' => 'error500'],
     '/403' => ['controller' => 'PageController', 'method' => 'error403'],
 
+    '/forgot' => ['controller' => 'PageController', 'method' => 'forgot'],
+    '/register' => ['controller' => 'PageController', 'method' => 'register'],
+    '/term' => ['controller' => 'PageController', 'method' => 'term'],
+
     '/dashboard' => ['controller' => 'PageController', 'method' => 'dashboard'],
-    '/doc' => ['controller' => 'PageController', 'method' => 'doc'],
 
     // Auth
     '/auth/login' => ['controller' => 'AuthController', 'method' => 'login'],
     '/auth/logout' => ['controller' => 'AuthController', 'method' => 'logout'],
     '/auth/forgot' => ['controller' => 'AuthController', 'method' => 'forgot'],
+    '/auth/register' => ['controller' => 'AuthController', 'method' => 'register'],
     '/auth/forgotValidate' => ['controller' => 'AuthController', 'method' => 'forgotValidate'],
     '/auth/profile' => ['controller' => 'AuthController', 'method' => 'profile'],
 
@@ -65,6 +69,15 @@ $routePaths = [
     '/customer/create' => ['controller' => 'CustomerController', 'method' => 'create'],
     '/customer/update' => ['controller' => 'CustomerController', 'method' => 'update'],
     '/customer/delete' => ['controller' => 'CustomerController', 'method' => 'delete'],
+
+    // Business
+    '/businessLocal' => ['controller' => 'BusinessLocalController', 'method' => 'index'],
+    '/businessLocal/table' => ['controller' => 'BusinessLocalController', 'method' => 'table'],
+    '/businessLocal/search' => ['controller' => 'BusinessLocalController', 'method' => 'search'],
+    '/businessLocal/id' => ['controller' => 'BusinessLocalController', 'method' => 'id'],
+    '/businessLocal/create' => ['controller' => 'BusinessLocalController', 'method' => 'create'],
+    '/businessLocal/update' => ['controller' => 'BusinessLocalController', 'method' => 'update'],
+    '/businessLocal/delete' => ['controller' => 'BusinessLocalController', 'method' => 'delete'],
 ];
 
 $apiPublicPath = [

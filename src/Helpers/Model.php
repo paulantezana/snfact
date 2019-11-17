@@ -26,7 +26,7 @@ class Model
         }
     }
 
-    public function Paginate($page = 1, $limit = 10)
+    public function Paginate($page, $limit = 10)
     {
         try {
             $offset = ($page - 1) * $limit;

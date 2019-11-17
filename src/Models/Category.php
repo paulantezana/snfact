@@ -7,17 +7,34 @@ class Category extends Model
         parent::__construct("category", "category_id", $connection);
     }
 
-    public function Paginate($page = 1, $limit = 10, $search = '')
+    public function GetAllByBusinessId($businessId)
+    {
+        try {
+            $sql = "SELECT * FROM category WHERE business_id = :business_id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':business_id' => $businessId,
+            ]);
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+        }
+    }
+    public function Paginate($page, $limit = 10, $search = '', $businessId = 0)
     {
         try {
             $offset = ($page - 1) * $limit;
-            $totalRows = $this->db->query("SELECT COUNT(*) FROM category WHERE name LIKE '%{$search}%'")->fetchColumn();
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM category WHERE business_id = '$businessId' AND name LIKE '%{$search}%'")->fetchColumn();
+
             $totalPages = ceil($totalRows / $limit);
 
-            $sql = "SELECT * FROM category WHERE name LIKE '%{$search}%' LIMIT $offset, $limit";
+            $sql = "SELECT * FROM category 
+                    WHERE business_id = :business_id AND name LIKE '%{$search}%' LIMIT $offset, $limit";
             $stmt = $this->db->prepare($sql);
 
-            $stmt->execute();
+            $stmt->execute([
+                ':business_id' => $businessId
+            ]);
             $data = $stmt->fetchAll();
 
             $paginate = [

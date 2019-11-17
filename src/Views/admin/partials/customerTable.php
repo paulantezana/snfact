@@ -6,6 +6,7 @@
                 <th>Tipo de Documento</th>
                 <th>N° Documento</th>
                 <th>Razón Social / Nombre Completo</th>
+                <th>Estado</th>
                 <th style="width: 100px"></th>
             </tr>
         </thead>
@@ -13,9 +14,13 @@
             <?php foreach ($customer['data'] as $row) : ?>
                 <tr>
                     <td><?= $row['created_at'] ?></td>
-                    <td><?= $row['identity_document_code'] ?></td>
+                    <td><?= $row['identity_document_description'] ?></td>
                     <td><?= $row['document_number'] ?></td>
                     <td><?= $row['social_reason'] ?></td>
+                    <td>
+                        <input class="SnSwitch SnSwitch-ios" id="customerState<?= $row['customer_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
+                        <label class="SnSwitch-btn" for="customerState<?= $row['customer_id']?>"></label>
+                    </td>
                     <td>
                         <div class="SnTable-action">
                             <div class="SnBtn jsCustomerOption" data-tooltip="Editar" onclick="CustomerForm.executeUpdateNormal(<?= $row['customer_id'] ?>)">

@@ -12,9 +12,25 @@ class PageController extends Controller
     public function login()
     {
         if (isset($_SESSION[SESS_KEY])){
-            $this->redirect('/admin');
+            $this->redirect('/dashboard');
         }
         $this->render('pages/login.php');
+    }
+
+    public function register()
+    {
+        if (isset($_SESSION[SESS_KEY])){
+            $this->redirect('/dashboard');
+        }
+        $this->render('pages/register.php');
+    }
+
+    public function forgot()
+    {
+        if (isset($_SESSION[SESS_KEY])){
+            $this->redirect('/dashboard');
+        }
+        $this->render('pages/forgot.php');
     }
 
     public function error404(){

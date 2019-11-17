@@ -71,8 +71,9 @@
                     </select>
                 </div>
                 <div class="SnForm-item">
-                    <label for="userState" class="SnForm-label">Estado</label>
-                    <input type="checkbox" class="SnForm-input" id="userState">
+                    <p>Estado</p>
+                    <input class="SnSwitch SnSwitch-ios" id="userState" type="checkbox">
+                    <label class="SnSwitch-btn" for="userState"></label>
                 </div>
                 <div class="SnForm-item">
                     <button type="submit" class="SnBtn primary block" id="userFormSubmit">Guardar</button>
