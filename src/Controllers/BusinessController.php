@@ -77,55 +77,6 @@ class BusinessController extends Controller
         }
     }
 
-    private function SaveFile(){
-        if (isset($_POST['businessCommit'])) {
-            try{
-                $businessLogo = $_FILES['businessLogo'] ?? [];
-                $business = $_POST['business'] ?? [];
-
-                $validate = $this->BusinessValidateLogo($businessLogo);
-                if (!$validate->success){
-                    $parameter['error'] = $validate->error;
-                    throw new Exception($validate->errorMessage);
-                }
-
-                $business = $this->businessModel->GetById($business['business_id']);
-                $business = $business;
-                if ($business){
-                    if(!($businessLogo['tmp_name'] ?? '') == ''){
-                        $rootPath = dirname(getcwd());
-                        $folderName = '/Assets/Images/';
-                        if (!file_exists($rootPath . $folderName)) {
-                            mkdir($rootPath . $folderName);
-                        }
-
-                        $filesName = 'L' . $business['ruc'] . '-' . $business['business_id'] . '.' . pathinfo($businessLogo['name'])['extension'];
-                        if(!copy($businessLogo['tmp_name'], $rootPath . $folderName . $filesName)){
-                            throw new Exception("Error al subir el logo", 1);
-                        }
-
-                        $modelResponse = $this->businessModel->UpdateById($business['business_id'],[
-                            'logo' => '..' . $folderName . $filesName,
-                        ]);
-
-                        $parameter['message'] = $modelResponse['message'];
-                        $parameter['messageType'] = $modelResponse['success'] ? 'success' : 'error';
-                    }
-                }
-            }catch (Exception $e){
-                $parameter['message'] = $e->getMessage();
-                $parameter['messageType'] = 'error';
-            }
-        } else {
-            $business = $this->businessModel->GetByUserId();
-        }
-
-        $parameter['business'] = $business;
-
-        $content = requireToVar(VIEW_PATH . "User/Business.php", $parameter);
-        require_once(VIEW_PATH. "User/Layout/main.php");
-    }
-
     public function BusinessValidate($business){
         $collector = new ErrorCollector();
         if (!ValidateRUC($business['ruc'] ?? '')){
