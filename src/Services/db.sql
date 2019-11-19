@@ -324,6 +324,11 @@ CREATE TABLE customer(
         ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
+CREATE TABLE invoice_state (
+    invoice_state_id SMALLINT AUTO_INCREMENT NOT NULL,
+    state VARCHAR(64),
+    CONSTRAINT pk_invoice_state PRIMARY KEY (invoice_state_id)
+);
 
 CREATE TABLE invoice(
     invoice_id INT AUTO_INCREMENT NOT NULL,
@@ -345,10 +350,6 @@ CREATE TABLE invoice(
     document_code VARCHAR(2),               # CODIGO TIPO DE DOCUMENTO
     currency_code VARCHAR(8),               # CODIGO TIPO DE MONEDA
     operation_code VARCHAR(8),              # CODIGO TIPO DE OPERACION
-    customer_id INT NOT NULL,               # ID del cliente
-
-#     sunat_state SMALLINT,
-#     sunat_error_message VARCHAR(255),
 
     total_prepayment FLOAT,                 # total_anticipos
     total_free FLOAT,                       # total_operaciones_gratuitas
@@ -385,12 +386,9 @@ CREATE TABLE invoice(
     pdf_url varchar(255),
     xml_url VARCHAR(255),
     cdr_url varchar(255),
-    sent_to_client BOOLEAN,
 
     CONSTRAINT pk_invoice PRIMARY KEY (invoice_id),
     CONSTRAINT uk_invoice UNIQUE (invoice_key),
-    CONSTRAINT fk_invoice_customer FOREIGN KEY (customer_id) REFERENCES customer (customer_id)
-    ON UPDATE RESTRICT ON DELETE RESTRICT,
     CONSTRAINT fk_invoice_currency_type_code FOREIGN KEY (currency_code) REFERENCES cat_currency_type_code (code)
     ON UPDATE RESTRICT ON DELETE RESTRICT,
     CONSTRAINT fk_invoice_operation_type_code FOREIGN KEY (operation_code) REFERENCES cat_operation_type_code (code)
@@ -398,6 +396,68 @@ CREATE TABLE invoice(
     CONSTRAINT fk_invoice_document_type_code FOREIGN KEY (document_code) REFERENCES cat_document_type_code (code)
     ON UPDATE RESTRICT ON DELETE RESTRICT
 );
+
+CREATE TABLE invoice_sunat(
+    invoice_sunat_id INT AUTO_INCREMENT NOT NULL,
+    invoice_state_id SMALLINT,
+    send BOOLEAN,
+    code BOOLEAN,
+    response VARCHAR(15),
+    other TEXT,
+    CONSTRAINT pk_invoice_sunat PRIMARY KEY (invoice_sunat_id),
+    CONSTRAINT uk_invoice_sunat UNIQUE KEY (invoice_state_id),
+     CONSTRAINT fk_invoice_sunat_invoice_state FOREIGN KEY (invoice_state_id) REFERENCES invoice_state (invoice_state_id)
+         ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+CREATE TABLE invoice_customer(
+     invoice_customer_id INT AUTO_INCREMENT NOT NULL,
+     document_number VARCHAR(16) NOT NULL,
+     identity_document_code VARCHAR(64) NOT NULL,
+     social_reason VARCHAR(255),
+     fiscal_address VARCHAR(255),
+     email VARCHAR(64),
+     telephone VARCHAR(255),
+     sent_to_client BOOLEAN,
+     CONSTRAINT pk_invoice_customer PRIMARY KEY (invoice_customer_id),
+     CONSTRAINT fk_invoice_customer_identity_document_type_code FOREIGN KEY (identity_document_code) REFERENCES cat_identity_document_type_code (code)
+         ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+CREATE TABLE invoice_referral_guide(
+   invoice_referral_guide_id INT AUTO_INCREMENT NOT NULL,
+   invoice_id INT NOT NULL,
+    document_code VARCHAR(2) NOT NULL,
+    whit_guide BOOLEAN,
+
+    transfer_code VARCHAR(2),
+    transport_code VARCHAR(2),
+    transfer_start_date DATE,
+    total_gross_weight FLOAT,
+
+    carrier_document_code VARCHAR(1),
+    carrier_document_number VARCHAR(24),
+    carrier_denomination VARCHAR(255),
+    carrier_plate_number VARCHAR(64),
+
+    driver_document_code VARCHAR(1),
+    driver_document_number VARCHAR(24),
+    driver_full_name VARCHAR(255),
+
+    location_starting_code VARCHAR(6),
+    address_starting_point VARCHAR(128),
+
+    location_arrival_code VARCHAR(6),
+    address_arrival_point VARCHAR(128),
+    CONSTRAINT pk_invoice_referral_guide PRIMARY KEY (invoice_referral_guide_id),
+    CONSTRAINT uk_invoice_referral_guide UNIQUE KEY (invoice_id),
+    CONSTRAINT fk_invoice_referral_guide FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_invoice_referral_guide_location_starting_code FOREIGN KEY (location_starting_code) REFERENCES cat_geographical_location_code (code)
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_invoice_referral_guide_location_arrival_code FOREIGN KEY (location_arrival_code) REFERENCES cat_geographical_location_code (code)
+        ON UPDATE RESTRICT ON DELETE RESTRICT
+)ENGINE = InnoDB;
 
 CREATE TABLE invoice_item(
     invoice_item_id INT AUTO_INCREMENT NOT NULL,
@@ -436,7 +496,6 @@ CREATE TABLE invoice_item(
     CONSTRAINT fk_invoice_item_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
     ON UPDATE RESTRICT ON DELETE RESTRICT
 )ENGINE = InnoDB;
-
 
 CREATE TABLE invoice_summary(
     invoice_summary_id INT AUTO_INCREMENT NOT NULL,
@@ -510,14 +569,6 @@ CREATE TABLE invoice_voided(
     CONSTRAINT fk_invoice_voided_sale FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
     ON UPDATE RESTRICT ON DELETE RESTRICT
 ) ENGINE = InnoDB;
-
-
-CREATE TABLE invoice_state (
-    invoice_state_id SMALLINT AUTO_INCREMENT NOT NULL,
-    state VARCHAR(64),
-    CONSTRAINT pk_invoice_state PRIMARY KEY (invoice_state_id)
-);
-
 
 
 

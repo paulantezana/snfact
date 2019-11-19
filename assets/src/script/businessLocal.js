@@ -64,6 +64,17 @@ let  BusinessLocalForm = {
         event.preventDefault();
         this.setLoading(true);
 
+
+        if (this.currentForm){
+            const formData = new FormData(this.currentForm);
+            const data = Array.from(formData.entries()).reduce((memo, pair) => ({
+                ...memo,
+                [pair[0]]: pair[1],
+            }), {});
+            console.log(data);
+        }
+        return;
+
         let url = '';
         let businessLocalSendData = {};
         businessLocalSendData.documentNumber =  document.getElementById('businessLocalDocumentNumber').value || '';

@@ -1,5 +1,6 @@
 <?php require_once __DIR__ . '/layout/header.php'; ?>
     <div class="SnContent">
+        <?php require_once  __DIR__ . '/partials/invoiceToolbar.php'; ?>
         <div class="SnToolbar">
             <div class="SnToolbar-left">
                 <i class="icon-angle-right"></i> Producto

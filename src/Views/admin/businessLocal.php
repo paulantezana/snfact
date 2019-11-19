@@ -41,36 +41,36 @@
                     <input type="hidden" class="SnForm-input" id="businessLocalId">
                     <div class="SnGrid m-2 l-3">
                         <div class="SnForm-item required">
-                            <label for="businessLocalDocumentNumber" class="SnForm-label">Código SUNAT</label>
-                            <input type="text" class="SnForm-input" id="businessLocalDocumentNumber">
+                            <label for="businessLocalSunatCode" class="SnForm-label">Código SUNAT</label>
+                            <input type="text" class="SnForm-input" id="businessLocalSunatCode" name="businessLocalSunatCode">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalSocialReason" class="SnForm-label">Nombre de Sucursal</label>
-                            <input type="text" class="SnForm-input" id="businessLocalSocialReason">
+                            <label for="businessLocalSubsidiary" class="SnForm-label">Nombre de Sucursal</label>
+                            <input type="text" class="SnForm-input" id="businessLocalSubsidiary" name="businessLocalSubsidiary">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalFiscalAddress" class="SnForm-label">Ubigeo</label>
-                            <input type="text" class="SnForm-input" id="businessLocalFiscalAddress">
+                            <label for="businessLocalLocation" class="SnForm-label">Ubigeo</label>
+                            <input type="text" class="SnForm-input" id="businessLocalLocation" name="businessLocalLocation">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalCommercialReason" class="SnForm-label">Dirección</label>
-                            <input type="text" class="SnForm-input" id="businessLocalCommercialReason">
+                            <label for="businessLocalAddress" class="SnForm-label">Dirección</label>
+                            <input type="text" class="SnForm-input" id="businessLocalAddress" name="businessLocalAddress">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalEmail" class="SnForm-label">Información Adicional</label>
-                            <input type="text" class="SnForm-input" id="businessLocalEmail">
+                            <label for="businessLocalOptionalInfo" class="SnForm-label">Información Adicional</label>
+                            <input type="text" class="SnForm-input" id="businessLocalOptionalInfo" name="businessLocalOptionalInfo">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalTelephone" class="SnForm-label">pdf_invoice_size</label>
-                            <input type="text" class="SnForm-input" id="businessLocalTelephone">
+                            <label for="businessLocalPdfInvoiceSize" class="SnForm-label">pdf_invoice_size</label>
+                            <input type="text" class="SnForm-input" id="businessLocalPdfInvoiceSize" name="businessLocalPdfInvoiceSize">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalTelephone" class="SnForm-label">pdf_header</label>
-                            <input type="text" class="SnForm-input" id="businessLocalTelephone">
+                            <label for="businessLocalPdfHeader" class="SnForm-label">pdf_header</label>
+                            <input type="text" class="SnForm-input" id="businessLocalPdfHeader" name="businessLocalPdfHeader">
                         </div>
                         <div class="SnForm-item">
                             <p>Estado</p>
-                            <input class="SnSwitch SnSwitch-ios" id="businessLocalState" type="checkbox">
+                            <input class="SnSwitch SnSwitch-ios" id="businessLocalState" type="checkbox" name="businessLocalState">
                             <label class="SnSwitch-btn" for="businessLocalState"></label>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                             <?php foreach ($catDocumentTypeCode ?? [] as $key => $row): ?>
                                 <tr id="businessLocalItem<?= $key ?>" data-uniqueId="<?= $key ?>">
                                     <td>
-                                        <select class="SnForm-select" id="documentCode<?= $key ?>" name="businessLocal[item][<?= $key ?>][document_code]" required>
+                                        <select class="SnForm-select" id="documentCode<?= $key ?>" name="item<?= $key ?>DocumentCode" required>
                                             <?php foreach ($catDocumentTypeCode as $keyOpt => $rowOpt): ?>
                                                 <?php if (($row['document_code'] ?? '') == $rowOpt['code']): ?>
                                                     <option value="<?= $rowOpt['code'] ?>" selected><?= $rowOpt['description'] ?></option>
@@ -97,11 +97,11 @@
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </select>
-                                        <input type="hidden" name="businessLocal[item][<?= $key ?>][business_serie_id]" value="<?= isset($row['business_serie_id']) ? $row['business_serie_id'] : 0 ?>">
+                                        <input type="hidden" name="item<?= $key ?>BusinessSerieId" value="<?= isset($row['business_serie_id']) ? $row['business_serie_id'] : 0 ?>">
                                     </td>
                                     <td>
                                         <input type="text" class="SnForm-input" id="serie<?= $key ?>"
-                                               name="businessLocal[item][<?= $key ?>][serie]" value="<?= isset($row['serie']) ? $row['serie'] : '1' ?>"  required>
+                                               name="item<?= $key ?>Serie" value="<?= isset($row['serie']) ? $row['serie'] : '1' ?>"  required>
                                     </td>
                                     <td>
                                         <button type="button" class="SnBtn" onclick="BusinessLocal.removeItem(<?= $key ?>)">
