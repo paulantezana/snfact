@@ -4,13 +4,13 @@
 <head>
     <?php require_once __DIR__ . '/../../head.php'; ?>
 
-    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/dist/css/admin.css">
-    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/dist/css/nprogress.css">
+    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/admin.css">
+    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/nprogress.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/styles.css">
 
-    <script src="<?= URL_PATH ?>/assets/dist/script/nprogress-min.js"></script>
-    <script src="<?= URL_PATH ?>/assets/dist/script/sedna-min.js"></script>
-    <script src="<?= URL_PATH ?>/assets/dist/script/conmon-min.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/nprogress.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/sedna.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/conmon.js"></script>
 </head>
 
 <body>

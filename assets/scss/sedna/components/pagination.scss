@@ -1,0 +1,46 @@
+@mixin SnPagination(){
+  .#{$classPrefix}Pagination{
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    @extend %snList;
+    &-link{
+      @include SnBtnStnd();
+      margin-right: 8px;
+      min-width: 30px;
+    }
+    &-item{
+
+      &.disabled{
+        .SnPagination-link{
+          opacity: 0.6;
+          box-shadow: none;
+          pointer-events: none;
+          cursor: auto;
+        }
+      }
+      &.active{
+        .SnPagination-link{
+          color: var(--snColor1Inverse);
+          background-color: var(--snColor1);
+          border-color: var(--snColor1);
+          text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+          box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+          &:hover {
+            background-color: var(--snColor1Light);
+            border-color: var(--snColor1Light);
+          }
+          &:focus,
+          &:active {
+            background-color: var(--snColor1Dark);
+            border-color: var(--snColor1Dark);
+          }
+          &.loading::before {
+            border: 2px solid var(--snColor1Inverse);
+          }
+        }
+      }
+    }
+  }
+}

@@ -78,6 +78,32 @@ $routePaths = [
     '/businessLocal/create' => ['controller' => 'BusinessLocalController', 'method' => 'create'],
     '/businessLocal/update' => ['controller' => 'BusinessLocalController', 'method' => 'update'],
     '/businessLocal/delete' => ['controller' => 'BusinessLocalController', 'method' => 'delete'],
+
+    // Invoice
+    '/invoice' => ['controller' => 'InvoiceController', 'method' => 'index'],
+    '/invoice/newFormF' => ['controller' => 'InvoiceController', 'method' => 'newFormF'],
+    '/invoice/newFormB' => ['controller' => 'InvoiceController', 'method' => 'newFormB'],
+    '/invoice/newFormCreditNote' => ['controller' => 'InvoiceController', 'method' => 'newFormCreditNote'],
+    '/invoice/newFormDebitNote' => ['controller' => 'InvoiceController', 'method' => 'newFormDebitNote'],
+
+    '/invoice/table' => ['controller' => 'InvoiceController', 'method' => 'table'],
+    '/invoice/resend' => ['controller' => 'InvoiceController', 'method' => 'resend'],
+    '/invoice/sendEmail' => ['controller' => 'InvoiceController', 'method' => 'sendEmail'],
+    '/invoice/search' => ['controller' => 'InvoiceController', 'method' => 'search'],
+    '/invoice/createF' => ['controller' => 'InvoiceController', 'method' => 'createF'],
+    '/invoice/createB' => ['controller' => 'InvoiceController', 'method' => 'createB'],
+    '/invoice/createCreditNote' => ['controller' => 'InvoiceController', 'method' => 'createCreditNote'],
+    '/invoice/createDebitNote' => ['controller' => 'InvoiceController', 'method' => 'createDebitNote'],
+
+    // Voided
+    '/invoiceVoided' => ['controller' => 'InvoiceVoidedController', 'method' => 'index'],
+    '/invoiceVoided/create' => ['controller' => 'InvoiceVoidedController', 'method' => 'create'],
+    '/invoiceVoided/resend' => ['controller' => 'InvoiceVoidedController', 'method' => 'resend'],
+
+    // Summary
+    '/invoiceSummary' => ['controller' => 'InvoiceSummaryController', 'method' => 'index'],
+    '/invoiceSummary/create' => ['controller' => 'InvoiceSummaryController', 'method' => 'create'],
+    '/invoiceSummary/resend' => ['controller' => 'InvoiceSummaryController', 'method' => 'resend'],
 ];
 
 $apiPublicPath = [

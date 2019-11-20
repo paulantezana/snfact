@@ -1,0 +1,25 @@
+@mixin SnMargin {
+    // 16
+    .#{$classPrefix}Mt-16{
+        margin-top: 16px;
+    }
+    .#{$classPrefix}Mb-16{
+        margin-bottom: 16px;
+    }
+
+    // 32
+    .#{$classPrefix}Mt-32{
+        margin-top: 32px;
+    }
+    .#{$classPrefix}Mb-32{
+        margin-bottom: 32px;
+    }
+
+    // 64
+    .#{$classPrefix}Mt-64{
+        margin-top: 64px;
+    }
+    .#{$classPrefix}Mb-64{
+        margin-bottom: 64px;
+    }
+}

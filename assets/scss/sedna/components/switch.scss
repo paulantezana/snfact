@@ -1,0 +1,66 @@
+@mixin SnSwitch() {
+  $SnSwitchSize: 2.5rem;
+  $SnSwitchBorderColor: var(--snColorTextAlt);
+  .#{$classPrefix}Switch {
+    display: none;
+    + .#{$classPrefix}Switch-btn {
+      outline: 0;
+      display: block;
+      width: $SnSwitchSize;
+      height: $SnSwitchSize / 2;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      &:after {
+        position: relative;
+        display: block;
+        content: "";
+        width: 50%;
+        height: 100%;
+        left: 0;
+      }
+    }
+  
+    &:checked + .#{$classPrefix}Switch-btn:after {
+      left: 50%;
+    }
+  }
+  
+  // themes
+  .#{$classPrefix}Switch-ios {
+    + .#{$classPrefix}Switch-btn {
+      background: var(--snColorBg);
+      border-radius: $SnSwitchSize / 2;
+      padding: 2px;
+      transition: all 0.4s ease;
+      border: 1px solid $SnSwitchBorderColor;
+      &:after {
+        border-radius: 2em;
+        background: $SnSwitchBorderColor;
+        transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+      }
+  
+      &:hover:after {
+        will-change: padding;
+      }
+  
+      &:active {
+        &:after {
+          padding-right: 0.8em;
+        }
+      }
+    }
+  
+    &:checked + .#{$classPrefix}Switch-btn {
+      border: 1px solid var(--snColor1) !important;
+      &:active {
+        &:after {
+          margin-left: -0.8em;
+        }
+      }
+      &:after {
+        background: var(--snColor1);
+      }
+    }
+  }
+}

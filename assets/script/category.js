@@ -105,7 +105,7 @@ let  CategoryForm = {
             okType: 'error',
             cancelText: 'No',
             onOk() {
-                _setLoading(true);
+                this.setLoading(true);
                 RequestApi.fetch('/category/delete', {
                     method: 'POST',
                     body: {
@@ -114,12 +114,14 @@ let  CategoryForm = {
                 }).then(res => {
                     if (res.success) {
                         SnMessage.success({ content: res.message });
-                        _list();
+                        // _list();
+                        this.list();
                     } else {
                         SnModal.error({ title: 'Algo salió mal', content: res.message })
                     }
                 }).finally(e => {
-                    _setLoading(false);
+                    this.setLoading(false);
+                    // _setLoading(false);
                 })
             }
         });

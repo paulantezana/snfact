@@ -21,10 +21,10 @@
                     <a href="<?= URL_PATH ?>/invoice"> <i class="icon-rocket"></i> <span>Comprobantes </span> </a>
                     <ul>
                         <li><a href="<?= URL_PATH ?>/invoice">Lista comprobantes</a></li>
-                        <li><a href="<?= URL_PATH ?>/invoice/newInvoice">Emitir factura</a></li>
-                        <li><a href="<?= URL_PATH ?>/invoice/newInvoiceTiket">Emitir boleta</a></li>
-                        <li><a href="<?= URL_PATH ?>/invoice/newInvoiceNC">Emitir nota crédito</a></li>
-                        <li><a href="<?= URL_PATH ?>/invoice/newInvoiceND">Emitir nota débito</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newFormF">Emitir factura</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newFormB">Emitir boleta</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newFormCreditNote">Emitir nota crédito</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newFormDebitNote">Emitir nota débito</a></li>
                     </ul>
                 </li>
                 <li>
@@ -82,8 +82,8 @@
     </div>
 </div>
 </div>
-<script src="<?= URL_PATH ?>/assets/dist/script/admin-min.js"></script>
-<script src="<?= URL_PATH ?>/assets/dist/script/themingApp-min.js"></script>
+<script src="<?= URL_PATH ?>/assets/script/admin.js"></script>
+<script src="<?= URL_PATH ?>/assets/script/themingApp.js"></script>
 </body>
 
 </html>

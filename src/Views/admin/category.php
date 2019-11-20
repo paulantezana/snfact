@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <script src="<?= URL_PATH ?>/assets/dist/script/category-min.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/category.js"></script>
 
     <div class="SnModal-wrapper" data-modal="categoryModalForm">
         <div class="SnModal">

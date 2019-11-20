@@ -3,10 +3,10 @@
 <head>
     <?php require_once __DIR__ . '/../../head.php'; ?>
 
-    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/dist/css/basic.css">
+    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/basic.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/styles.css">
 
-    <script src="<?= URL_PATH ?>/assets/dist/script/sedna-min.js"></script>
+    <script src="<?= URL_PATH ?>/assets/js/sedna.js"></script>
 
 </head>
 <body>
