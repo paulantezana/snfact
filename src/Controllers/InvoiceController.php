@@ -1,8 +1,27 @@
 <?php
 
+require_once MODEL_PATH . '/Invoice.php';
+require_once MODEL_PATH . '/CatCurrencyTypeCode.php';
+require_once MODEL_PATH . '/CatDocumentTypeCode.php';
+require_once MODEL_PATH . '/Business.php';
 
 class InvoiceController extends Controller
 {
+    private $catCurrencyTypeCodeModel;
+    private $catDocumentTypeCodeModel;
+    private $invoiceModel;
+    private $businessModel;
+    private $connection;
+
+    public function __construct(PDO $connection)
+    {
+        $this->connection = $connection;
+        $this->invoiceModel = new Invoice($connection);
+        $this->catCurrencyTypeCodeModel = new CatCurrencyTypeCode($connection);
+        $this->catDocumentTypeCodeModel = new CatDocumentTypeCode($connection);
+        $this->businessModel = new Business($connection);
+    }
+
     public function index(){
         try {
             $message = '';
@@ -45,10 +64,15 @@ class InvoiceController extends Controller
             $messageType = 'info';
             $error = [];
 
+            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
+            $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->GetAll();
+
             $this->render('admin/newFormF.php',[
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
+                'catDocumentTypeCode' => $catDocumentTypeCode,
+                'catCurrencyTypeCode' => $catCurrencyTypeCode,
             ]);
         } catch (Exception $e) {
             $this->render('pages/500.php',[

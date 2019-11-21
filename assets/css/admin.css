@@ -1065,6 +1065,28 @@ body {
   color: var(--snColorDarkInverse);
   cursor: pointer; }
 
+.SnTab-header {
+  margin: 0 0 16px 0;
+  border-bottom: 1px solid var(--snColorBorder); }
+
+.SnTab-title {
+  display: inline-block;
+  padding: 12px 16px;
+  cursor: pointer;
+  margin: 0 32px 0 0; }
+  .SnTab-title:last-child {
+    margin: 0; }
+  .SnTab-title:hover {
+    color: var(--snColor1); }
+  .SnTab-title.is-active {
+    -webkit-box-shadow: 0 2px var(--snColor1);
+    box-shadow: 0 2px var(--snColor1); }
+
+.SnTab-content {
+  display: none; }
+  .SnTab-content.is-active {
+    display: block; }
+
 .AdminLayout-header {
   line-height: 56px;
   position: fixed;
