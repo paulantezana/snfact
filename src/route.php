@@ -1,6 +1,6 @@
 <?php
 
-$routePaths = [
+$routeCompanyPaths = [
     '/' => ['controller' => 'PageController', 'method' => 'login'],
     '/404' => ['controller' => 'PageController', 'method' => 'error404'],
     '/500' => ['controller' => 'PageController', 'method' => 'error500'],
@@ -106,6 +106,14 @@ $routePaths = [
     '/invoiceSummary/resend' => ['controller' => 'InvoiceSummaryController', 'method' => 'resend'],
 ];
 
+$routePublicPaths = [
+
+];
+
+$routeManagerPaths = [
+
+];
+
 $apiPublicPath = [
     '/setting' => ['controller' => 'PageController', 'method' => 'adminAvailabilities'],
     '/months' => ['controller' => 'AvailabilityController', 'method' => 'index'],
@@ -119,7 +127,7 @@ class Router
     public $url;
     public $controller;
     public $method;
-    public $param;
+    public $group;
 
     public function __construct()
     {
@@ -131,21 +139,36 @@ class Router
     {
         global $routePaths;
         global $apiPublicPath;
+        global $routePublicPaths;
         $path = null;
 
-        if (isset($routePaths[$this->url])) {
-            $path = $routePaths[$this->url];
-        } else if (preg_match('/^\/api\/v1\/public/', $this->url)) {
-            $url = '/' . trim(preg_replace('/^\/api\/v1\/public/', '', $this->url), '/');
-            $path = isset($apiPublicPath[$url]) ? $apiPublicPath[$url] : $routePaths['/404'];
+        if (isset($routePublicPaths[$this->url])) {
+            $path = $routePublicPaths[$this->url];
+            $this->group = 'Public';
+        } elseif (preg_match('/^\/manager/', $this->url)){
+            $url = '/' . trim(preg_replace('/^\/manager/', '', $this->url), '/');
+            if ()
+            $path = isset($routeManagerPaths[$url]) ? $routeManagerPaths[$url] : $routePaths['/404'];
+            $this->group = 'Manager';
+        } elseif (preg_match('/^\/online/', $this->url)){
+            $this->group = 'Company';
+        } else if (preg_match('/^\/api\/v1\/online/', $this->url)) {
+//            $url = '/' . trim(preg_replace('/^\/api\/v1\/public/', '', $this->url), '/');
+//            $path = isset($apiPublicPath[$url]) ? $apiPublicPath[$url] : $routePaths['/404'];
+            $path = $routePaths['/404'];
+            $this->group = 'Public';
+        } else if (preg_match('/^\/api\/v1\/manager/', $this->url)) {
+            $path = $routePaths['/404'];
+            $this->group = 'Public';
         } else {
             $path = $routePaths['/404'];
+            $this->group = 'Public';
         }
 
         $this->controller = $path['controller'];
         $this->method = $path['method'];
 
-        require_once CONTROLLER_PATH . "/{$this->controller}.php";
+        require_once CONTROLLER_PATH . "/{$this->group}/{$this->controller}.php";
     }
 
     public function run()

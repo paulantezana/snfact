@@ -15,6 +15,7 @@ define('CONTROLLER_PATH', ROOT_DIR. '/src/Controllers');
 define('MODEL_PATH', ROOT_DIR. '/src/Models');
 define('VIEW_PATH', ROOT_DIR. '/src/Views');
 
+define('SESS_GROUP','SnGroup');
 define('SESS_KEY','SnId');
 define('SESS_DATA','SnData');
 define('SESS_MENU','SnMenu');
