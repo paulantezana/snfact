@@ -19,7 +19,7 @@
         <div class="SnCard">
             <div class="SnCard-body">
                 <div class="SnInput-wrapper SnMb-16">
-                    <input type="text" class="SnForm-input" onkeyup="CustomerForm.search(event)">
+                    <input type="text" class="SnForm-control" onkeyup="CustomerForm.search(event)">
                     <span class="SnInput-suffix icon-search"></span>
                 </div>
                 <div id="customerTable"></div>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <script src="<?= URL_PATH ?>/assets/dist/script/customer-min.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/company/customer.js"></script>
 
     <div class="SnModal-wrapper" data-modal="customerModalForm">
         <div class="SnModal">
@@ -39,7 +39,7 @@
             <div class="SnModal-header">Cliente</div>
             <div class="SnModal-body">
                 <form action="" class="SnForm" id="customerForm" onsubmit="CustomerForm.submit(event)">
-                    <input type="hidden" class="SnForm-input" id="customerId">
+                    <input type="hidden" class="SnForm-control" id="customerId">
                     <div class="SnForm-item required">
                         <label for="customerIdentityDocumentCode" class="SnForm-label">Tipo de Documento de Identidad</label>
                         <select id="customerIdentityDocumentCode" class="SnForm-select">
@@ -51,27 +51,27 @@
                     </div>
                     <div class="SnForm-item required">
                         <label for="customerDocumentNumber" class="SnForm-label">Documento de Identidad</label>
-                        <input type="text" class="SnForm-input" id="customerDocumentNumber">
+                        <input type="text" class="SnForm-control" id="customerDocumentNumber">
                     </div>
                     <div class="SnForm-item required">
                         <label for="customerSocialReason" class="SnForm-label">Razón social/Nombre Completo</label>
-                        <input type="text" class="SnForm-input" id="customerSocialReason">
+                        <input type="text" class="SnForm-control" id="customerSocialReason">
                     </div>
                     <div class="SnForm-item">
                         <label for="customerCommercialReason" class="SnForm-label">Razón comercial</label>
-                        <input type="text" class="SnForm-input" id="customerCommercialReason">
+                        <input type="text" class="SnForm-control" id="customerCommercialReason">
                     </div>
                     <div class="SnForm-item">
                         <label for="customerFiscalAddress" class="SnForm-label">Dirección fiscal</label>
-                        <input type="text" class="SnForm-input" id="customerFiscalAddress">
+                        <input type="text" class="SnForm-control" id="customerFiscalAddress">
                     </div>
                     <div class="SnForm-item">
                         <label for="customerEmail" class="SnForm-label">Email</label>
-                        <input type="email" class="SnForm-input" id="customerEmail">
+                        <input type="email" class="SnForm-control" id="customerEmail">
                     </div>
                     <div class="SnForm-item">
                         <label for="customerTelephone" class="SnForm-label">Teléfono</label>
-                        <input type="text" class="SnForm-input" id="customerTelephone">
+                        <input type="text" class="SnForm-control" id="customerTelephone">
                     </div>
                     <div class="SnForm-item">
                         <p>Estado</p>

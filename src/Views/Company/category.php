@@ -18,16 +18,16 @@
         </div>
         <div class="SnCard">
             <div class="SnCard-body">
-                <div class="SnInput-wrapper SnMb-16">
-                    <input type="text" class="SnForm-input" onkeyup="CategoryForm.search(event)">
-                    <span class="SnInput-suffix icon-search"></span>
+                <div class="SnControl-wrapper SnMb-16">
+                    <input type="text" class="SnForm-control SnControl" onkeyup="CategoryForm.search(event)">
+                    <span class="SnControl-suffix icon-search"></span>
                 </div>
                 <div id="categoryTable"></div>
             </div>
         </div>
     </div>
 
-    <script src="<?= URL_PATH ?>/assets/script/category.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/company/category.js"></script>
 
     <div class="SnModal-wrapper" data-modal="categoryModalForm">
         <div class="SnModal">
@@ -39,14 +39,14 @@
             <div class="SnModal-header">Categoria</div>
             <div class="SnModal-body">
                 <form action="" class="SnForm" id="categoryForm" onsubmit="CategoryForm.submit(event)">
-                    <input type="hidden" class="SnForm-input" id="categoryId">
+                    <input type="hidden" class="SnForm-control" id="categoryId">
                     <div class="SnForm-item required">
                         <label for="categoryName" class="SnForm-label">Categoria</label>
-                        <input type="text" class="SnForm-input" id="categoryName">
+                        <input type="text" class="SnForm-control" id="categoryName">
                     </div>
                     <div class="SnForm-item">
                         <label for="categoryDescription" class="SnForm-label"> Descripción</label>
-                        <input type="text" class="SnForm-input" id="categoryDescription">
+                        <input type="text" class="SnForm-control" id="categoryDescription">
                     </div>
                     <div class="SnForm-item">
                         <p>Estado</p>

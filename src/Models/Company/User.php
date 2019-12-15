@@ -76,7 +76,7 @@ class User extends Model
 
             return $data;
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw $e;
         }
     }
 

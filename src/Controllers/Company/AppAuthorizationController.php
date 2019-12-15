@@ -1,6 +1,6 @@
 <?php
 
-require_once MODEL_PATH . '/AppAuthorization.php';
+require_once MODEL_PATH . '/Company/AppAuthorization.php';
 
 class AppAuthorizationController extends  Controller
 {
@@ -13,14 +13,15 @@ class AppAuthorizationController extends  Controller
         $this->appAuthorizationModel = new AppAuthorization($connection);
     }
 
-    public function byUserRoleId(){
+    public function byUserRoleId()
+    {
         $res = new Result();
-        try{
-            Authorization($this->connection,'rol','modificar');
+        try {
+            Authorization($this->connection, 'rol', 'modificar');
 
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
-            if (!$body){
+            if (!$body) {
                 echo '';
                 return;
             }
@@ -33,10 +34,11 @@ class AppAuthorizationController extends  Controller
         echo json_encode($res);
     }
 
-    public function save(){
+    public function save()
+    {
         $res = new Result();
-        try{
-            Authorization($this->connection,'rol','modificar');
+        try {
+            Authorization($this->connection, 'rol', 'modificar');
 
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);

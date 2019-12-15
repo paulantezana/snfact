@@ -1,9 +1,9 @@
 <?php
 
-require_once MODEL_PATH . '/Business.php';
-require_once MODEL_PATH . '/BusinessLocal.php';
-require_once MODEL_PATH . '/BusinessSerie.php';
-require_once MODEL_PATH . '/CatDocumentTypeCode.php';
+require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Company/BusinessLocal.php';
+require_once MODEL_PATH . '/Company/BusinessSerie.php';
+require_once MODEL_PATH . '/Catalogue/CatDocumentTypeCode.php';
 
 class BusinessLocalController extends Controller
 {
@@ -30,7 +30,7 @@ class BusinessLocalController extends Controller
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
             $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
 
-            $this->render('admin/businessLocal.php',[
+            $this->render('company/businessLocal.php', [
                 'business' => $business,
                 'catDocumentTypeCode' => $catDocumentTypeCode,
             ]);
@@ -49,7 +49,7 @@ class BusinessLocalController extends Controller
 
             $businessLocal = $this->businessLocalModel->Paginate($page, $limit, $search);
 
-            $this->render('admin/partials/businessLocalTable.php', [
+            $this->render('company/partials/businessLocalTable.php', [
                 'businessLocal' => $businessLocal,
             ]);
         } catch (Exception $e) {

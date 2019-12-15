@@ -10,11 +10,10 @@
     // Components
     @include SnMenu();
     @include SnBtn();
-    @include SnBtns();
     @include SnAlert();
     @include SnCard();
     @include SnForm();
-    @include SnInput();
+    @include SnControl();
     @include SnGrid();
     @include SnList();
     @include SnLoading();
@@ -28,6 +27,9 @@
     @include SnFreeze();
     @include SnTab();
     @include SnTooltip();
+    @include SnCollapse();
+    @include SnDivider();
+    @include SnHide();
 
     // Leyout
     @include SnContainer();

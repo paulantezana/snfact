@@ -1,12 +1,12 @@
 <?php
 
-require_once MODEL_PATH . '/Product.php';
-require_once MODEL_PATH. '/Business.php';
-require_once MODEL_PATH. '/CatAffectationIgvTypeCode.php';
-require_once MODEL_PATH. '/CatUnitMeasureTypeCode.php';
-require_once MODEL_PATH. '/Category.php';
-require_once MODEL_PATH. '/CatSystemIscTypeCode.php';
-require_once MODEL_PATH. '/CatProductCode.php';
+require_once MODEL_PATH . '/Company/Product.php';
+require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Catalogue/CatAffectationIgvTypeCode.php';
+require_once MODEL_PATH . '/Catalogue/CatUnitMeasureTypeCode.php';
+require_once MODEL_PATH . '/Company/Category.php';
+require_once MODEL_PATH . '/Catalogue/CatSystemIscTypeCode.php';
+require_once MODEL_PATH . '/Catalogue/CatProductCode.php';
 
 class ProductController extends Controller
 {
@@ -39,7 +39,7 @@ class ProductController extends Controller
             $catProductCodes = $catProductCodeModel->GetAll();
             $categories = $categoryModel->GetAllByBusinessId($business['business_id']);
 
-            $this->render('admin/product.php', [
+            $this->render('company/product.php', [
                 'catAffectationIgvTypeCodes' => $catAffectationIgvTypeCodes,
                 'catUnitMeasureTypeCodes' => $catUnitMeasureTypeCodes,
                 'catSystemIscTypeCodes' => $catSystemIscTypeCodes,
@@ -62,7 +62,7 @@ class ProductController extends Controller
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
             $product = $this->productModel->Paginate($page, $limit, $search, $business['business_id']);
 
-            $this->render('admin/partials/productTable.php', [
+            $this->render('company/partials/productTable.php', [
                 'product' => $product,
             ]);
         } catch (Exception $e) {
@@ -166,23 +166,42 @@ class ProductController extends Controller
         echo json_encode($res);
     }
 
+    public function search(){
+        $res = new Result();
+        try{
+            Authorization($this->connection, 'producto', 'modificar');
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+
+            $search['search'] = $body['search'];
+            $search['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $response = $this->productModel->Search($search);
+
+            $res->result = $response;
+            $res->success = true;
+        } catch (Exception $e){
+            $res->errorMessage = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
     public function validateInput($body)
     {
         $collector = new ErrorCollector();
-        if (trim($body['unitMeasureCode'] ?? '') == ""){
-            $collector->addError('unitMeasureCode','No se especificó el código de unidad de medida SUNAT');
+        if (trim($body['unitMeasureCode'] ?? '') == "") {
+            $collector->addError('unitMeasureCode', 'No se especificó el código de unidad de medida SUNAT');
         }
-        if (trim($body['description'] ?? '') == ""){
-            $collector->addError('description','El campo descripción es obligatorio');
+        if (trim($body['description'] ?? '') == "") {
+            $collector->addError('description', 'El campo descripción es obligatorio');
         }
-        if (trim($body['productCode'] ?? '') == ""){
-            $collector->addError('productCode','El campo codigo producto es obligatorio');
+        if (trim($body['productCode'] ?? '') == "") {
+            $collector->addError('productCode', 'El campo codigo producto es obligatorio');
         }
-        if (trim($body['categoryId'] ?? '') == ""){
-            $collector->addError('productCode','El campo categoria es obligatorio');
+        if (trim($body['categoryId'] ?? '') == "") {
+            $collector->addError('productCode', 'El campo categoria es obligatorio');
         }
-        if (trim($body['affectationCode'] ?? '') == ""){
-            $collector->addError('affectationCode','No se especifico el tipo de afectación del producto');
+        if (trim($body['affectationCode'] ?? '') == "") {
+            $collector->addError('affectationCode', 'No se especifico el tipo de afectación del producto');
         }
         return $collector->getResult();
     }

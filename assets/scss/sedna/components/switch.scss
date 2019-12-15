@@ -1,65 +1,52 @@
 @mixin SnSwitch() {
-  $SnSwitchSize: 2.5rem;
-  $SnSwitchBorderColor: var(--snColorTextAlt);
-  .#{$classPrefix}Switch {
+  $SnSwitchPadding: .2;
+  $SnSwitchWidth: 2.3rem;
+  $SnSwitchSpaceRight: .7rem;
+
+  $SnSwitchHeight: $SnSwitchWidth / 2;
+  $SnSwitchCircleWidth: $SnSwitchHeight - ($SnSwitchPadding * 2);
+  $SnSwitchCircleHeight: $SnSwitchHeight - ($SnSwitchPadding * 2);
+  $SnSwitchSpace: $SnSwitchWidth + $SnSwitchSpaceRight;
+
+  .#{$classPrefix}Switch{
+    padding-left: $SnSwitchSpace;
+  }
+  .#{$classPrefix}Switch-input {
     display: none;
-    + .#{$classPrefix}Switch-btn {
-      outline: 0;
-      display: block;
-      width: $SnSwitchSize;
-      height: $SnSwitchSize / 2;
-      position: relative;
+    + .#{$classPrefix}Switch-label {
       cursor: pointer;
-      user-select: none;
-      &:after {
-        position: relative;
+      position: relative;
+      &::before{
+        content: "";
+        position: absolute;
+        display: block;
+        border-radius: $SnSwitchHeight / 2;
+        width: $SnSwitchWidth;
+        left: -#{$SnSwitchSpace};
+        height: $SnSwitchHeight;
+        border: 1px solid var(--snColorTextAlt);
+      }
+      &::after {
+        background: var(--snColorTextAlt);
+        position: absolute;
+        top: #{$SnSwitchPadding}rem;
         display: block;
         content: "";
-        width: 50%;
-        height: 100%;
-        left: 0;
-      }
-    }
-  
-    &:checked + .#{$classPrefix}Switch-btn:after {
-      left: 50%;
-    }
-  }
-  
-  // themes
-  .#{$classPrefix}Switch-ios {
-    + .#{$classPrefix}Switch-btn {
-      background: var(--snColorBg);
-      border-radius: $SnSwitchSize / 2;
-      padding: 2px;
-      transition: all 0.4s ease;
-      border: 1px solid $SnSwitchBorderColor;
-      &:after {
-        border-radius: 2em;
-        background: $SnSwitchBorderColor;
+        width: $SnSwitchCircleWidth;
+        height: $SnSwitchCircleHeight;
+        border-radius: $SnSwitchCircleHeight / 2;
+        left: -#{$SnSwitchSpace - $SnSwitchPadding};
         transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
       }
-  
-      &:hover:after {
-        will-change: padding;
-      }
-  
-      &:active {
-        &:after {
-          padding-right: 0.8em;
-        }
-      }
     }
   
-    &:checked + .#{$classPrefix}Switch-btn {
-      border: 1px solid var(--snColor1) !important;
-      &:active {
-        &:after {
-          margin-left: -0.8em;
-        }
-      }
-      &:after {
+    &:checked + .#{$classPrefix}Switch-label {
+      &:after{
+        left: -#{$SnSwitchSpaceRight + $SnSwitchCircleWidth + $SnSwitchPadding};
         background: var(--snColor1);
+      }
+      &:before{
+        border-color: var(--snColor1);
       }
     }
   }

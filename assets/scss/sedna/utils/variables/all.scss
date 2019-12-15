@@ -1,6 +1,7 @@
-$max-width : 1200px !default;
-$gap : .5rem * 4 !default;  // 2rem
-$max-grid-columns : 12 !default;
+$maxWidth           : 1200px !default;
+$lUnit              : .5rem !default;
+$gap                : $lUnit * 4 !default;  // 2rem
+$maxGridColumns     : 12 !default;
 
 $breakpoints : (
     s : 0,
@@ -11,8 +12,17 @@ $breakpoints : (
 );
 $sizes: map-keys($breakpoints);
 
+//
 $cssCore: false !default;
 $classPrefix: 'Sn' !default;
 
+// Control size
+$controlHeight: 32px;
+$controlHeightSm: 24px;
+$controlHeightLg: 40px;
+
 @import "color";
 
+:root{
+  --gap: #{$lUnit * 2};  // 1rem
+}

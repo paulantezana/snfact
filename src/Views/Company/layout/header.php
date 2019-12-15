@@ -2,15 +2,15 @@
 <html lang="es">
 
 <head>
-    <?php require_once __DIR__ . '/../../head.php'; ?>
+    <?php require_once __DIR__ . '/../../Helpes/head.php'; ?>
 
-    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/admin.css">
+    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/company.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/nprogress.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/styles.css">
 
-    <script src="<?= URL_PATH ?>/assets/script/nprogress.js"></script>
-    <script src="<?= URL_PATH ?>/assets/script/sedna.js"></script>
-    <script src="<?= URL_PATH ?>/assets/script/conmon.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/company/nprogress.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/common/common.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/common/sedna.js"></script>
 </head>
 
 <body>

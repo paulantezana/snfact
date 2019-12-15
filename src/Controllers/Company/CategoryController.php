@@ -1,7 +1,7 @@
 <?php
 
-require_once MODEL_PATH . '/Category.php';
-require_once MODEL_PATH.'/Business.php';
+require_once MODEL_PATH . '/Company/Category.php';
+require_once MODEL_PATH . '/Company/Business.php';
 
 class CategoryController extends Controller
 {
@@ -21,7 +21,7 @@ class CategoryController extends Controller
     {
         try {
             Authorization($this->connection, 'categoria', 'listar');
-            $this->render('admin/category.php');
+            $this->render('company/category.php');
         } catch (Exception $e) {
             echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
         }
@@ -38,7 +38,7 @@ class CategoryController extends Controller
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
             $category = $this->categoryModel->Paginate($page, $limit, $search, $business['business_id']);
 
-            $this->render('admin/partials/categoryTable.php', [
+            $this->render('company/partials/categoryTable.php', [
                 'category' => $category,
             ]);
         } catch (Exception $e) {
@@ -104,7 +104,7 @@ class CategoryController extends Controller
                 'created_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
-//                'parent_id' => $body['parentId'],
+                //                'parent_id' => $body['parentId'],
                 'name' => $body['name'],
                 'description' => $body['description'],
                 'state' => $body['state'],

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <?php require_once __DIR__ . '/../../head.php'; ?>
+    <?php require_once __DIR__ . '/../../Helpes/head.php'; ?>
 
-    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/basic.css">
+    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/public.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/styles.css">
 
-    <script src="<?= URL_PATH ?>/assets/js/sedna.js"></script>
+<!--    <script src="--><?//= URL_PATH ?><!--/assets/js/sedna.js"></script>-->
 
 </head>
 <body>

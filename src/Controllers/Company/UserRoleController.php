@@ -1,7 +1,7 @@
 <?php
 
-require_once MODEL_PATH . '/UserRole.php';
-require_once MODEL_PATH . '/AppAuthorization.php';
+require_once MODEL_PATH . '/Company/UserRole.php';
+require_once MODEL_PATH . '/Company/AppAuthorization.php';
 
 class UserRoleController extends Controller
 {
@@ -22,7 +22,7 @@ class UserRoleController extends Controller
             $appAuthorizationModel = new AppAuthorization($this->connection);
             $appAuthorization = $appAuthorizationModel->GetAll();
 
-            $this->render('admin/role.php', [
+            $this->render('company/role.php', [
                 'appAuthorization' => $appAuthorization
             ]);
         } catch (Exception $e) {
@@ -38,7 +38,7 @@ class UserRoleController extends Controller
             Authorization($this->connection, 'rol', 'listar');
 
             $userRole = $this->userRoleModel->GetAll();
-            $this->render('admin/partials/roleList.php', [
+            $this->render('company/partials/roleList.php', [
                 'userRole' => $userRole
             ]);
         } catch (Exception $e) {
@@ -49,7 +49,7 @@ class UserRoleController extends Controller
     public function id()
     {
         $res = new Result();
-        try{
+        try {
             Authorization($this->connection, 'rol', 'listar');
 
             $postData = file_get_contents("php://input");
@@ -70,7 +70,7 @@ class UserRoleController extends Controller
     public function create()
     {
         $res = new Result();
-        try{
+        try {
             Authorization($this->connection, 'rol', 'crear');
 
             $postData = file_get_contents("php://input");
@@ -89,12 +89,11 @@ class UserRoleController extends Controller
             $res->message = $e->getMessage();
         }
         echo json_encode($res);
-
     }
     public function update()
     {
         $res = new Result();
-        try{
+        try {
             Authorization($this->connection, 'rol', 'modificar');
 
             $postData = file_get_contents("php://input");
@@ -115,12 +114,11 @@ class UserRoleController extends Controller
             $res->message = $e->getMessage();
         }
         echo json_encode($res);
-
     }
     public function delete()
     {
         $res = new Result();
-        try{
+        try {
             Authorization($this->connection, 'rol', 'eliminar');
 
             $postData = file_get_contents("php://input");

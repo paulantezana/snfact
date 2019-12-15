@@ -31,7 +31,7 @@
             </div>
 
             <input type="submit" value="Registrarse" name="commit" class="SnBtn primary block SnMb-16">
-            <a href="<?= URL_PATH ?>" class="SnBtn block">Login</a>
+            <a href="<?= URL_PATH ?>/login" class="SnBtn block">Login</a>
         </form>
     </div>
 

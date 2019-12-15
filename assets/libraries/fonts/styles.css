@@ -80,7 +80,7 @@
 .icon-search-plus:before {
   content: "\6e";
 }
-.icon-floppy-o:before {
+.icon-floppy:before {
   content: "\70";
 }
 .icon-angle-down:before {
@@ -133,4 +133,61 @@
 }
 .icon-key:before {
   content: "\46";
+}
+.icon-calendar:before {
+  content: "\47";
+}
+.icon-dollar-bill:before {
+  content: "\48";
+}
+.icon-backend:before {
+  content: "\49";
+}
+.icon-file-text:before {
+  content: "\4a";
+}
+.icon-file-pdf:before {
+  content: "\4b";
+}
+.icon-file-code:before {
+  content: "\4c";
+}
+.icon-file-archive:before {
+  content: "\4d";
+}
+.icon-eye:before {
+  content: "\4e";
+}
+.icon-eye-slash:before {
+  content: "\4f";
+}
+.icon-vcard:before {
+  content: "\50";
+}
+.icon-lock:before {
+  content: "\51";
+}
+.icon-email-streamline:before {
+  content: "\52";
+}
+.icon-facebook:before {
+  content: "\53";
+}
+.icon-heart:before {
+  content: "\54";
+}
+.icon-heart-o:before {
+  content: "\55";
+}
+.icon-youtube-play:before {
+  content: "\56";
+}
+.icon-twitter:before {
+  content: "\57";
+}
+.icon-world:before {
+  content: "\58";
+}
+.icon-file-add:before {
+  content: "\59";
 }

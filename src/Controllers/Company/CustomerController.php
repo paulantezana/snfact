@@ -1,8 +1,8 @@
 <?php
 
-require_once MODEL_PATH . '/Customer.php';
-require_once MODEL_PATH.'/Business.php';
-require_once MODEL_PATH . '/CatIdentityDocumentTypeCode.php';
+require_once MODEL_PATH . '/Company/Customer.php';
+require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Catalogue/CatIdentityDocumentTypeCode.php';
 
 class CustomerController extends Controller
 {
@@ -25,7 +25,7 @@ class CustomerController extends Controller
             Authorization($this->connection, 'cliente', 'listar');
             $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
 
-            $this->render('admin/customer.php',[
+            $this->render('company/customer.php', [
                 'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
             ]);
         } catch (Exception $e) {
@@ -44,7 +44,7 @@ class CustomerController extends Controller
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
             $customer = $this->customerModel->Paginate($page, $limit, $search, $business['business_id']);
 
-            $this->render('admin/partials/customerTable.php', [
+            $this->render('company/partials/customerTable.php', [
                 'customer' => $customer,
             ]);
         } catch (Exception $e) {
@@ -148,19 +148,19 @@ class CustomerController extends Controller
     {
         $collector = new ErrorCollector();
         $collector->setSeparator('</br>');
-        if (trim($body['documentNumber'] ?? '') == ''){
-            $collector->addError('documentNumber','El número del documento es inválido');
+        if (trim($body['documentNumber'] ?? '') == '') {
+            $collector->addError('documentNumber', 'El número del documento es inválido');
         }
-        if (trim($body['identityDocumentCode'] ?? '') == ''){
-            $collector->addError('identityDocumentCode','No se especificó el tipo de documento de identificación');
+        if (trim($body['identityDocumentCode'] ?? '') == '') {
+            $collector->addError('identityDocumentCode', 'No se especificó el tipo de documento de identificación');
         }
-        if (trim($body['socialReason'] ?? '') == ''){
-            $collector->addError('socialReason','No se especificó la razón social');
+        if (trim($body['socialReason'] ?? '') == '') {
+            $collector->addError('socialReason', 'No se especificó la razón social');
         }
 
-        $identityDocValidate = ValidateIdentityDocumentNumber($body['documentNumber'],$body['identityDocumentCode']);
-        if (!$identityDocValidate->success){
-            $collector->addError('documentNumber',$identityDocValidate->message);
+        $identityDocValidate = ValidateIdentityDocumentNumber($body['documentNumber'], $body['identityDocumentCode']);
+        if (!$identityDocValidate->success) {
+            $collector->addError('documentNumber', $identityDocValidate->message);
         }
 
         return $collector->getResult();

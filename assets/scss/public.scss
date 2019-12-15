@@ -5,14 +5,14 @@
 @import "_base";
 
 @include SnBtn();
-@include SnBtns();
 @include SnAlert();
 @include SnCard();
 @include SnForm();
-@include SnInput();
+@include SnControl();
 @include SnMargin();
+@include SnSwitch();
 
-@import "basic/Layout";
-@import "basic/Result";
-@import "basic/Branding";
-@import "basic/Login";
+@import "public/Layout";
+@import "public/Result";
+@import "public/Branding";
+@import "public/Login";

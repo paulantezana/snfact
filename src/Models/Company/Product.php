@@ -82,4 +82,19 @@ class Product extends Model
         }
         return false;
     }
+
+    public function Search($search){
+        try{
+            $sql = 'SELECT * FROM product WHERE (description LIKE :description OR product_code LIKE :product_code) AND business_id = :business_id LIMIT 8';
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':description' => '%' . $search['search'] . '%',
+                ':product_code' => '%' . $search['search'] . '%',
+                ':business_id' => $search['businessId'],
+            ]);
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+        }
+    }
 }

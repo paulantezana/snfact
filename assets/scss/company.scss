@@ -8,11 +8,10 @@
 // Components
 @include SnMenu();
 @include SnBtn();
-@include SnBtns();
 @include SnAlert();
 @include SnCard();
 @include SnForm();
-@include SnInput();
+@include SnControl();
 @include SnAvatar();
 @include SnGrid();
 @include SnLoading();
@@ -24,23 +23,23 @@
 @include SnSwitch();
 @include SnTooltip();
 @include SnTab();
+@include SnContainer();
+@include SnCollapse();
+@include SnDivider();
+@include SnHide();
 
-@import "admin/Layout";
-@import "admin/Header";
-@import "admin/HeaderMenu";
-@import "admin/AsideMenu";
-@import "admin/SnToolbar";
+@import "company/Layout";
+@import "company/Header";
+@import "company/HeaderMenu";
+@import "company/AsideMenu";
+@import "company/SnToolbar";
 
-@import "admin/InfiniteScroll";
-@import "admin/CustomerRow";
+@import "company/InfiniteScroll";
+@import "company/CustomerRow";
 
-@import "admin/dashboard";
-@import "admin/User";
-
-.hidden{
-  opacity: 0;
-  pointer-events: none;
-}
+@import "company/dashboard";
+@import "company/User";
+@import "company/Invoice";
 
 .SnTag{
   font-size: .8rem;
@@ -93,5 +92,32 @@
   grid-gap: 16px;
   @include  from(l){
     grid-template-columns: 1fr 280px;
+  }
+}
+
+.SnLiveList{
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid var(--snColorBorder);
+  border-top: none;
+  background: var(--snColorBgAlt);
+  z-index: 100000;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #333;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  &-item{
+    border-bottom: 1px solid var(--snColorBorder);
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+    &:last-child{
+      border-bottom: 0;
+    }
   }
 }

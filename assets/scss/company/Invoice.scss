@@ -1,0 +1,56 @@
+.Invoice{
+  &-header{
+    display: flex;
+    margin-bottom: 1rem;
+    & > div {
+      margin-right: 1rem;
+    }
+  }
+  &-body{
+    border-top: 1px dashed var(--snColorBorder);
+    padding-top: 1rem;
+  }
+  &-footer{
+    padding-top: 2rem;
+  }
+  &-send{
+    border-top: 1px dashed var(--snColorBorder);
+    padding-top: 2rem;
+    margin-top: 2rem;
+  }
+
+  &-totals{
+    width: 100%;
+    border-collapse: collapse;
+    th{
+      text-align: left;
+    }
+    td,
+    th{
+      border-top: 1px solid var(--snColorBorder);
+      padding: .7rem;
+    }
+  }
+}
+
+.InvoiceFooter{
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+  grid-gap: 1rem;
+  &-item{
+    grid-column-start: 1;
+    grid-column-end: 7;
+  }
+  &-total{
+    grid-column-start: 8;
+    grid-column-end: 13;
+  }
+}
+
+.InvoiceTotal{
+  display: flex;
+  justify-content: space-between;
+  &-amount{
+    color: var(--snColorTextAlt);
+  }
+}

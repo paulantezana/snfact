@@ -1,0 +1,5 @@
+@mixin SnHide(){
+  .#{$classPrefix}Hide{
+    display: none;
+  }
+}

@@ -20,5 +20,8 @@
 }
 
 .BasicLayout{
-  background: url('./../../images/background.svg') no-repeat center center;
+  background-image: url(./../images/background.svg);
+  background-repeat: no-repeat;
+  background-position: center 110px;
+  background-size: 100%;
 }

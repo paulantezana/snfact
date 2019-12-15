@@ -26,7 +26,7 @@
   --snColorBg: #EFF3F6;
   --snColorBgAlt: #ffffff;
   --snColorHover: #0000000d;
-  --snColorText: #262626;
+  --snColorText: #333333;
   --snColorTextAlt: #ABABAB;
   --snColorBorder: #DFE2E2;
   --snColorDarkSmoother: #4f7087;
@@ -35,6 +35,9 @@
   --snColorDarker: #22303a;
   --snColorDarkest: #1a252d;
   --snColorDarkInverse: #b6bcc0; }
+
+:root {
+  --gap: 1rem; }
 
 #autoComplete_list {
   list-style: none;
@@ -270,27 +273,6 @@ body {
     touch-action: none;
     pointer-events: none; }
 
-.SnBtns {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap; }
-  .SnBtns .SnBtn {
-    border-radius: 0; }
-    .SnBtns .SnBtn:last-child {
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px; }
-    .SnBtns .SnBtn:first-child {
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px; }
-
 .SnAlert {
   margin: 0;
   color: rgba(0, 0, 0, 0.65);
@@ -385,7 +367,7 @@ body {
   line-height: 1.5;
   color: var(--snColorText); }
 
-.SnForm-textarea, .SnForm-select, .SnForm-input {
+.SnForm-control {
   border: 1px solid var(--snColorBorder);
   background: var(--snColorBg);
   -webkit-box-shadow: none;
@@ -395,46 +377,68 @@ body {
   color: var(--snColorText);
   border-radius: 4px;
   line-height: 1.5em;
+  display: inline-block;
+  height: 32px;
   width: 100%; }
-  .SnForm-textarea:hover, .SnForm-select:hover, .SnForm-input:hover {
+  .SnForm-control:hover {
     border-color: var(--snColor1Light); }
-  .SnForm-textarea:active, .SnForm-textarea:focus, .SnForm-select:active, .SnForm-select:focus, .SnForm-input:active, .SnForm-input:focus {
+  .SnForm-control:active, .SnForm-control:focus {
     border-color: var(--snColor1Light);
     outline: 0;
     border-right-width: 1px !important; }
+  .SnForm-control::-webkit-input-placeholder {
+    color: var(--snColorBorder); }
+  .SnForm-control:-ms-input-placeholder {
+    color: var(--snColorBorder); }
+  .SnForm-control::-ms-input-placeholder {
+    color: var(--snColorBorder); }
+  .SnForm-control::placeholder {
+    color: var(--snColorBorder); }
+  .SnForm-control.sm {
+    height: 24px; }
+  .SnForm-control.lg {
+    height: 40px; }
 
-.SnInput {
-  padding-left: 32px;
+textarea.SnForm-control {
+  font-family: inherit;
+  font-size: inherit;
+  height: auto; }
+
+.SnControl:not(:first-child) {
+  padding-left: 32px; }
+
+.SnControl:not(:last-child) {
   padding-right: 32px; }
-  .SnInput-wrapper {
-    position: relative; }
-  .SnInput-prefix, .SnInput-suffix {
-    position: absolute;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    opacity: .4;
-    cursor: pointer; }
-  .SnInput-prefix {
-    left: 12px; }
-  .SnInput-suffix {
-    right: 12px; }
-  .SnInput-group {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center; }
-    .SnInput-group > * {
-      border-radius: 0; }
-      .SnInput-group > *:last-child {
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px; }
-      .SnInput-group > *:first-child {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px; }
+
+.SnControl-wrapper {
+  position: relative; }
+
+.SnControl-prefix, .SnControl-suffix {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--snColorBorder); }
+
+.SnControl-prefix {
+  left: 12px; }
+
+.SnControl-suffix {
+  right: 12px; }
+
+.SnControl-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+  .SnControl-group > div:not(.SnBtn) {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto; }
 
 .SnMt-16 {
   margin-top: 16px; }
@@ -453,6 +457,42 @@ body {
 
 .SnMb-64 {
   margin-bottom: 64px; }
+
+.SnSwitch {
+  padding-left: 3rem; }
+
+.SnSwitch-input {
+  display: none; }
+  .SnSwitch-input + .SnSwitch-label {
+    cursor: pointer;
+    position: relative; }
+    .SnSwitch-input + .SnSwitch-label::before {
+      content: "";
+      position: absolute;
+      display: block;
+      border-radius: 0.575rem;
+      width: 2.3rem;
+      left: -3rem;
+      height: 1.15rem;
+      border: 1px solid var(--snColorTextAlt); }
+    .SnSwitch-input + .SnSwitch-label::after {
+      background: var(--snColorTextAlt);
+      position: absolute;
+      top: 0.2rem;
+      display: block;
+      content: "";
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 0.375rem;
+      left: -2.8rem;
+      -webkit-transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+      -o-transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+      transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease; }
+  .SnSwitch-input:checked + .SnSwitch-label:after {
+    left: -1.65rem;
+    background: var(--snColor1); }
+  .SnSwitch-input:checked + .SnSwitch-label:before {
+    border-color: var(--snColor1); }
 
 .BasicLayout {
   padding: 3rem 1rem 1rem;
@@ -478,7 +518,10 @@ body {
     padding: 1rem 0; }
 
 .BasicLayout {
-  background: url("./../../images/background.svg") no-repeat center center; }
+  background-image: url(./../images/background.svg);
+  background-repeat: no-repeat;
+  background-position: center 110px;
+  background-size: 100%; }
 
 .Result {
   text-align: center; }
@@ -514,9 +557,12 @@ body {
   @media screen and (min-width: 1024px) {
     .Login {
       width: 320px; } }
+  .Login a {
+    text-decoration: none;
+    color: var(--snColor1); }
   .Login .SnForm-input {
     background: var(--snColorBgAlt); }
-  .Login .SnFlex {
+  .Login-flex {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -526,7 +572,3 @@ body {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center; }
-    .Login .SnFlex a {
-      text-decoration: none;
-      color: var(--snColor1);
-      margin-left: 8px; }

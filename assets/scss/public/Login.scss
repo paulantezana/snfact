@@ -4,17 +4,19 @@
   @include from(l){
     width: 320px;
   }
+
+  a{
+    text-decoration: none;
+    color: var(--snColor1);
+  }
+
   .SnForm-input{
       background: var(--snColorBgAlt);
   }
-  .SnFlex{
+
+  &-flex{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    a{
-      text-decoration: none;
-      color: var(--snColor1);
-      margin-left: 8px;
-    }
   }
 }

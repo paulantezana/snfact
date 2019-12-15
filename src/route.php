@@ -1,125 +1,16 @@
 <?php
 
-$routeCompanyPaths = [
-    '/' => ['controller' => 'PageController', 'method' => 'login'],
+$routePublicPaths = [
+    '/' => ['controller' => 'PageController', 'method' => 'index'],
     '/404' => ['controller' => 'PageController', 'method' => 'error404'],
     '/500' => ['controller' => 'PageController', 'method' => 'error500'],
     '/403' => ['controller' => 'PageController', 'method' => 'error403'],
 
     '/forgot' => ['controller' => 'PageController', 'method' => 'forgot'],
     '/register' => ['controller' => 'PageController', 'method' => 'register'],
+    '/login' => ['controller' => 'PageController', 'method' => 'login'],
+    '/managerLogin' => ['controller' => 'PageController', 'method' => 'managerLogin'],
     '/term' => ['controller' => 'PageController', 'method' => 'term'],
-
-    '/dashboard' => ['controller' => 'PageController', 'method' => 'dashboard'],
-
-    // Auth
-    '/auth/login' => ['controller' => 'AuthController', 'method' => 'login'],
-    '/auth/logout' => ['controller' => 'AuthController', 'method' => 'logout'],
-    '/auth/forgot' => ['controller' => 'AuthController', 'method' => 'forgot'],
-    '/auth/register' => ['controller' => 'AuthController', 'method' => 'register'],
-    '/auth/forgotValidate' => ['controller' => 'AuthController', 'method' => 'forgotValidate'],
-    '/auth/profile' => ['controller' => 'AuthController', 'method' => 'profile'],
-
-    // User
-    '/user' => ['controller' => 'UserController', 'method' => 'index'],
-    '/user/table' => ['controller' => 'UserController', 'method' => 'table'],
-    '/user/id' => ['controller' => 'UserController', 'method' => 'id'],
-    '/user/create' => ['controller' => 'UserController', 'method' => 'create'],
-    '/user/update' => ['controller' => 'UserController', 'method' => 'update'],
-    '/user/updatePassword' => ['controller' => 'UserController', 'method' => 'updatePassword'],
-    '/user/delete' => ['controller' => 'UserController', 'method' => 'delete'],
-
-    // User Role
-    '/userRole' => ['controller' => 'UserRoleController', 'method' => 'index'],
-    '/userRole/id' => ['controller' => 'UserRoleController', 'method' => 'id'],
-    '/userRole/list' => ['controller' => 'UserRoleController', 'method' => 'list'],
-    '/userRole/create' => ['controller' => 'UserRoleController', 'method' => 'create'],
-    '/userRole/update' => ['controller' => 'UserRoleController', 'method' => 'update'],
-    '/userRole/delete' => ['controller' => 'UserRoleController', 'method' => 'delete'],
-
-    '/appAuthorization/save' => ['controller' => 'AppAuthorizationController', 'method' => 'save'],
-    '/appAuthorization/byUserRoleId' => ['controller' => 'AppAuthorizationController', 'method' => 'byUserRoleId'],
-
-    // Business
-    '/business/update' => ['controller' => 'BusinessController', 'method' => 'update'],
-
-    // Category
-    '/category' => ['controller' => 'CategoryController', 'method' => 'index'],
-    '/category/table' => ['controller' => 'CategoryController', 'method' => 'table'],
-    '/category/search' => ['controller' => 'CategoryController', 'method' => 'search'],
-    '/category/id' => ['controller' => 'CategoryController', 'method' => 'id'],
-    '/category/create' => ['controller' => 'CategoryController', 'method' => 'create'],
-    '/category/update' => ['controller' => 'CategoryController', 'method' => 'update'],
-    '/category/delete' => ['controller' => 'CategoryController', 'method' => 'delete'],
-
-    // Product
-    '/product' => ['controller' => 'ProductController', 'method' => 'index'],
-    '/product/table' => ['controller' => 'ProductController', 'method' => 'table'],
-    '/product/search' => ['controller' => 'ProductController', 'method' => 'search'],
-    '/product/id' => ['controller' => 'ProductController', 'method' => 'id'],
-    '/product/create' => ['controller' => 'ProductController', 'method' => 'create'],
-    '/product/update' => ['controller' => 'ProductController', 'method' => 'update'],
-    '/product/delete' => ['controller' => 'ProductController', 'method' => 'delete'],
-
-    // Customer
-    '/customer' => ['controller' => 'CustomerController', 'method' => 'index'],
-    '/customer/table' => ['controller' => 'CustomerController', 'method' => 'table'],
-    '/customer/search' => ['controller' => 'CustomerController', 'method' => 'search'],
-    '/customer/id' => ['controller' => 'CustomerController', 'method' => 'id'],
-    '/customer/create' => ['controller' => 'CustomerController', 'method' => 'create'],
-    '/customer/update' => ['controller' => 'CustomerController', 'method' => 'update'],
-    '/customer/delete' => ['controller' => 'CustomerController', 'method' => 'delete'],
-
-    // Business
-    '/businessLocal' => ['controller' => 'BusinessLocalController', 'method' => 'index'],
-    '/businessLocal/table' => ['controller' => 'BusinessLocalController', 'method' => 'table'],
-    '/businessLocal/search' => ['controller' => 'BusinessLocalController', 'method' => 'search'],
-    '/businessLocal/id' => ['controller' => 'BusinessLocalController', 'method' => 'id'],
-    '/businessLocal/create' => ['controller' => 'BusinessLocalController', 'method' => 'create'],
-    '/businessLocal/update' => ['controller' => 'BusinessLocalController', 'method' => 'update'],
-    '/businessLocal/delete' => ['controller' => 'BusinessLocalController', 'method' => 'delete'],
-
-    // Invoice
-    '/invoice' => ['controller' => 'InvoiceController', 'method' => 'index'],
-    '/invoice/newFormF' => ['controller' => 'InvoiceController', 'method' => 'newFormF'],
-    '/invoice/newFormB' => ['controller' => 'InvoiceController', 'method' => 'newFormB'],
-    '/invoice/newFormCreditNote' => ['controller' => 'InvoiceController', 'method' => 'newFormCreditNote'],
-    '/invoice/newFormDebitNote' => ['controller' => 'InvoiceController', 'method' => 'newFormDebitNote'],
-
-    '/invoice/table' => ['controller' => 'InvoiceController', 'method' => 'table'],
-    '/invoice/resend' => ['controller' => 'InvoiceController', 'method' => 'resend'],
-    '/invoice/sendEmail' => ['controller' => 'InvoiceController', 'method' => 'sendEmail'],
-    '/invoice/search' => ['controller' => 'InvoiceController', 'method' => 'search'],
-    '/invoice/createF' => ['controller' => 'InvoiceController', 'method' => 'createF'],
-    '/invoice/createB' => ['controller' => 'InvoiceController', 'method' => 'createB'],
-    '/invoice/createCreditNote' => ['controller' => 'InvoiceController', 'method' => 'createCreditNote'],
-    '/invoice/createDebitNote' => ['controller' => 'InvoiceController', 'method' => 'createDebitNote'],
-
-    // Voided
-    '/invoiceVoided' => ['controller' => 'InvoiceVoidedController', 'method' => 'index'],
-    '/invoiceVoided/create' => ['controller' => 'InvoiceVoidedController', 'method' => 'create'],
-    '/invoiceVoided/resend' => ['controller' => 'InvoiceVoidedController', 'method' => 'resend'],
-
-    // Summary
-    '/invoiceSummary' => ['controller' => 'InvoiceSummaryController', 'method' => 'index'],
-    '/invoiceSummary/create' => ['controller' => 'InvoiceSummaryController', 'method' => 'create'],
-    '/invoiceSummary/resend' => ['controller' => 'InvoiceSummaryController', 'method' => 'resend'],
-];
-
-$routePublicPaths = [
-
-];
-
-$routeManagerPaths = [
-
-];
-
-$apiPublicPath = [
-    '/setting' => ['controller' => 'PageController', 'method' => 'adminAvailabilities'],
-    '/months' => ['controller' => 'AvailabilityController', 'method' => 'index'],
-    '/parameters' => ['controller' => 'AvailabilityController', 'method' => 'parameters'],
-    '/availabilities' => ['controller' => 'AvailabilityController', 'method' => 'availabilities'],
-    '/sendEmail' => ['controller' => 'AvailabilityController', 'method' => 'sendEmail'],
 ];
 
 class Router
@@ -127,7 +18,6 @@ class Router
     public $url;
     public $controller;
     public $method;
-    public $group;
 
     public function __construct()
     {
@@ -137,38 +27,22 @@ class Router
 
     private function matchRoute()
     {
-        global $routePaths;
-        global $apiPublicPath;
         global $routePublicPaths;
-        $path = null;
+        $url = explode('/', $this->url);
 
-        if (isset($routePublicPaths[$this->url])) {
-            $path = $routePublicPaths[$this->url];
-            $this->group = 'Public';
-        } elseif (preg_match('/^\/manager/', $this->url)){
-            $url = '/' . trim(preg_replace('/^\/manager/', '', $this->url), '/');
-            if ()
-            $path = isset($routeManagerPaths[$url]) ? $routeManagerPaths[$url] : $routePaths['/404'];
-            $this->group = 'Manager';
-        } elseif (preg_match('/^\/online/', $this->url)){
-            $this->group = 'Company';
-        } else if (preg_match('/^\/api\/v1\/online/', $this->url)) {
-//            $url = '/' . trim(preg_replace('/^\/api\/v1\/public/', '', $this->url), '/');
-//            $path = isset($apiPublicPath[$url]) ? $apiPublicPath[$url] : $routePaths['/404'];
-            $path = $routePaths['/404'];
-            $this->group = 'Public';
-        } else if (preg_match('/^\/api\/v1\/manager/', $this->url)) {
-            $path = $routePaths['/404'];
-            $this->group = 'Public';
+        if (!isset($_SESSION[SESS_KEY])){
+            if (isset($routePublicPaths[$this->url])) {
+                $this->controller = $routePublicPaths[$this->url]['controller'];
+                $this->method = $routePublicPaths[$this->url]['method'];
+            } else {
+                $this->controller = $routePublicPaths['/404']['controller'];
+                $this->method = $routePublicPaths['/404']['method'];
+            }
+            $_SESSION[CONTROLLER_GROUP] = 'Public';
         } else {
-            $path = $routePaths['/404'];
-            $this->group = 'Public';
+            $this->controller = (!empty($url[1]) ? $url[1] : $_SESSION[CONTROLLER_GROUP]) . 'Controller';
+            $this->method = !empty($url[2]) ? $url[2] : 'index';
         }
-
-        $this->controller = $path['controller'];
-        $this->method = $path['method'];
-
-        require_once CONTROLLER_PATH . "/{$this->group}/{$this->controller}.php";
     }
 
     public function run()
@@ -176,6 +50,7 @@ class Router
         try {
             $database = new Database();
 
+            require_once CONTROLLER_PATH . "/{$_SESSION[CONTROLLER_GROUP]}/{$this->controller}.php";
             $controller = new $this->controller($database->getConnection());
             $method = $this->method;
             $controller->$method();

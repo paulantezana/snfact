@@ -26,7 +26,7 @@
   --snColorBg: #EFF3F6;
   --snColorBgAlt: #ffffff;
   --snColorHover: #0000000d;
-  --snColorText: #262626;
+  --snColorText: #333333;
   --snColorTextAlt: #ABABAB;
   --snColorBorder: #DFE2E2;
   --snColorDarkSmoother: #4f7087;
@@ -35,6 +35,19 @@
   --snColorDarker: #22303a;
   --snColorDarkest: #1a252d;
   --snColorDarkInverse: #b6bcc0; }
+
+:root {
+  --gap: 1rem; }
+
+.SnContainer {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1200px; }
+  @media screen and (max-width: 1199px) {
+    .SnContainer {
+      width: calc(100% - 2rem);
+      margin-right: 1rem;
+      margin-left: 1rem; } }
 
 #autoComplete_list, .SnMenu, .SnMenu li ul, .SnPagination, .HeaderMenu, .AsideMenu, .AsideMenu ul, .CustomerList, .SnDoc-titles {
   list-style: none;
@@ -327,27 +340,6 @@ body {
     touch-action: none;
     pointer-events: none; }
 
-.SnBtns {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap; }
-  .SnBtns .SnBtn {
-    border-radius: 0; }
-    .SnBtns .SnBtn:last-child {
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px; }
-    .SnBtns .SnBtn:first-child {
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px; }
-
 .SnAlert {
   margin: 0;
   color: rgba(0, 0, 0, 0.65);
@@ -442,7 +434,7 @@ body {
   line-height: 1.5;
   color: var(--snColorText); }
 
-.SnForm-textarea, .SnForm-select, .SnForm-input {
+.SnForm-control {
   border: 1px solid var(--snColorBorder);
   background: var(--snColorBg);
   -webkit-box-shadow: none;
@@ -452,46 +444,68 @@ body {
   color: var(--snColorText);
   border-radius: 4px;
   line-height: 1.5em;
+  display: inline-block;
+  height: 32px;
   width: 100%; }
-  .SnForm-textarea:hover, .SnForm-select:hover, .SnForm-input:hover {
+  .SnForm-control:hover {
     border-color: var(--snColor1Light); }
-  .SnForm-textarea:active, .SnForm-textarea:focus, .SnForm-select:active, .SnForm-select:focus, .SnForm-input:active, .SnForm-input:focus {
+  .SnForm-control:active, .SnForm-control:focus {
     border-color: var(--snColor1Light);
     outline: 0;
     border-right-width: 1px !important; }
+  .SnForm-control::-webkit-input-placeholder {
+    color: var(--snColorBorder); }
+  .SnForm-control:-ms-input-placeholder {
+    color: var(--snColorBorder); }
+  .SnForm-control::-ms-input-placeholder {
+    color: var(--snColorBorder); }
+  .SnForm-control::placeholder {
+    color: var(--snColorBorder); }
+  .SnForm-control.sm {
+    height: 24px; }
+  .SnForm-control.lg {
+    height: 40px; }
 
-.SnInput {
-  padding-left: 32px;
+textarea.SnForm-control {
+  font-family: inherit;
+  font-size: inherit;
+  height: auto; }
+
+.SnControl:not(:first-child) {
+  padding-left: 32px; }
+
+.SnControl:not(:last-child) {
   padding-right: 32px; }
-  .SnInput-wrapper {
-    position: relative; }
-  .SnInput-prefix, .SnInput-suffix {
-    position: absolute;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    opacity: .4;
-    cursor: pointer; }
-  .SnInput-prefix {
-    left: 12px; }
-  .SnInput-suffix {
-    right: 12px; }
-  .SnInput-group {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center; }
-    .SnInput-group > * {
-      border-radius: 0; }
-      .SnInput-group > *:last-child {
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px; }
-      .SnInput-group > *:first-child {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px; }
+
+.SnControl-wrapper {
+  position: relative; }
+
+.SnControl-prefix, .SnControl-suffix {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--snColorBorder); }
+
+.SnControl-prefix {
+  left: 12px; }
+
+.SnControl-suffix {
+  right: 12px; }
+
+.SnControl-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+  .SnControl-group > div:not(.SnBtn) {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto; }
 
 .SnAvatar {
   width: 32px;
@@ -510,192 +524,983 @@ body {
   display: grid;
   -ms-grid-columns: 100%;
   grid-template-columns: 100%;
-  grid-column-gap: 2rem;
-  grid-row-gap: 2rem; }
-  .SnGrid.s-1 {
-    -ms-grid-columns: (calc((100% - 2rem * 0) / 1))[1];
-    grid-template-columns: repeat(1, calc((100% - 2rem * 0) / 1)); }
-  .SnGrid.s-2 {
-    -ms-grid-columns: (calc((100% - 2rem * 1) / 2))[2];
-    grid-template-columns: repeat(2, calc((100% - 2rem * 1) / 2)); }
-  .SnGrid.s-3 {
-    -ms-grid-columns: (calc((100% - 2rem * 2) / 3))[3];
-    grid-template-columns: repeat(3, calc((100% - 2rem * 2) / 3)); }
-  .SnGrid.s-4 {
-    -ms-grid-columns: (calc((100% - 2rem * 3) / 4))[4];
-    grid-template-columns: repeat(4, calc((100% - 2rem * 3) / 4)); }
-  .SnGrid.s-5 {
-    -ms-grid-columns: (calc((100% - 2rem * 4) / 5))[5];
-    grid-template-columns: repeat(5, calc((100% - 2rem * 4) / 5)); }
-  .SnGrid.s-6 {
-    -ms-grid-columns: (calc((100% - 2rem * 5) / 6))[6];
-    grid-template-columns: repeat(6, calc((100% - 2rem * 5) / 6)); }
-  .SnGrid.s-7 {
-    -ms-grid-columns: (calc((100% - 2rem * 6) / 7))[7];
-    grid-template-columns: repeat(7, calc((100% - 2rem * 6) / 7)); }
-  .SnGrid.s-8 {
-    -ms-grid-columns: (calc((100% - 2rem * 7) / 8))[8];
-    grid-template-columns: repeat(8, calc((100% - 2rem * 7) / 8)); }
-  .SnGrid.s-9 {
-    -ms-grid-columns: (calc((100% - 2rem * 8) / 9))[9];
-    grid-template-columns: repeat(9, calc((100% - 2rem * 8) / 9)); }
-  .SnGrid.s-10 {
-    -ms-grid-columns: (calc((100% - 2rem * 9) / 10))[10];
-    grid-template-columns: repeat(10, calc((100% - 2rem * 9) / 10)); }
-  .SnGrid.s-11 {
-    -ms-grid-columns: (calc((100% - 2rem * 10) / 11))[11];
-    grid-template-columns: repeat(11, calc((100% - 2rem * 10) / 11)); }
-  .SnGrid.s-12 {
-    -ms-grid-columns: (calc((100% - 2rem * 11) / 12))[12];
-    grid-template-columns: repeat(12, calc((100% - 2rem * 11) / 12)); }
+  grid-column-gap: var(--gap); }
+  .SnGrid.gap-0 {
+    --gap: 0rem; }
+  .SnGrid.gap-1 {
+    --gap: 0.5rem; }
+  .SnGrid.gap-2 {
+    --gap: 1rem; }
+  .SnGrid.gap-3 {
+    --gap: 1.5rem; }
+  .SnGrid.gap-4 {
+    --gap: 2rem; }
+  .SnGrid.row-gap, .SnGrid.rows-gap {
+    grid-row-gap: var(--gap); }
+  .SnGrid.s-grid-1 {
+    -ms-grid-columns: 100%;
+    grid-template-columns: 100%; }
+  .SnGrid > .span-s-1,
+  .SnGrid > .s-cols-1 {
+    -ms-grid-column-span: 1;
+    grid-column-end: span 1; }
+  .SnGrid > .s-rows-1 {
+    -ms-grid-row-span: 1;
+    grid-row-end: span 1; }
+  .SnGrid > .s-x-1 {
+    -ms-grid-column: 1;
+    grid-column-start: 1; }
+  .SnGrid > .s-y-1 {
+    -ms-grid-row: 1;
+    grid-row-start: 1; }
+  .SnGrid.s-grid-2 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 1) / 2))[2];
+    grid-template-columns: repeat(2, calc((100% - var(--gap) * 1) / 2)); }
+  .SnGrid > .span-s-2,
+  .SnGrid > .s-cols-2 {
+    -ms-grid-column-span: 2;
+    grid-column-end: span 2; }
+  .SnGrid > .s-rows-2 {
+    -ms-grid-row-span: 2;
+    grid-row-end: span 2; }
+  .SnGrid > .s-x-2 {
+    -ms-grid-column: 2;
+    grid-column-start: 2; }
+  .SnGrid > .s-y-2 {
+    -ms-grid-row: 2;
+    grid-row-start: 2; }
+  .SnGrid.s-grid-3 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 2) / 3))[3];
+    grid-template-columns: repeat(3, calc((100% - var(--gap) * 2) / 3)); }
+  .SnGrid > .span-s-3,
+  .SnGrid > .s-cols-3 {
+    -ms-grid-column-span: 3;
+    grid-column-end: span 3; }
+  .SnGrid > .s-rows-3 {
+    -ms-grid-row-span: 3;
+    grid-row-end: span 3; }
+  .SnGrid > .s-x-3 {
+    -ms-grid-column: 3;
+    grid-column-start: 3; }
+  .SnGrid > .s-y-3 {
+    -ms-grid-row: 3;
+    grid-row-start: 3; }
+  .SnGrid.s-grid-4 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 3) / 4))[4];
+    grid-template-columns: repeat(4, calc((100% - var(--gap) * 3) / 4)); }
+  .SnGrid > .span-s-4,
+  .SnGrid > .s-cols-4 {
+    -ms-grid-column-span: 4;
+    grid-column-end: span 4; }
+  .SnGrid > .s-rows-4 {
+    -ms-grid-row-span: 4;
+    grid-row-end: span 4; }
+  .SnGrid > .s-x-4 {
+    -ms-grid-column: 4;
+    grid-column-start: 4; }
+  .SnGrid > .s-y-4 {
+    -ms-grid-row: 4;
+    grid-row-start: 4; }
+  .SnGrid.s-grid-5 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 4) / 5))[5];
+    grid-template-columns: repeat(5, calc((100% - var(--gap) * 4) / 5)); }
+  .SnGrid > .span-s-5,
+  .SnGrid > .s-cols-5 {
+    -ms-grid-column-span: 5;
+    grid-column-end: span 5; }
+  .SnGrid > .s-rows-5 {
+    -ms-grid-row-span: 5;
+    grid-row-end: span 5; }
+  .SnGrid > .s-x-5 {
+    -ms-grid-column: 5;
+    grid-column-start: 5; }
+  .SnGrid > .s-y-5 {
+    -ms-grid-row: 5;
+    grid-row-start: 5; }
+  .SnGrid.s-grid-6 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 5) / 6))[6];
+    grid-template-columns: repeat(6, calc((100% - var(--gap) * 5) / 6)); }
+  .SnGrid > .span-s-6,
+  .SnGrid > .s-cols-6 {
+    -ms-grid-column-span: 6;
+    grid-column-end: span 6; }
+  .SnGrid > .s-rows-6 {
+    -ms-grid-row-span: 6;
+    grid-row-end: span 6; }
+  .SnGrid > .s-x-6 {
+    -ms-grid-column: 6;
+    grid-column-start: 6; }
+  .SnGrid > .s-y-6 {
+    -ms-grid-row: 6;
+    grid-row-start: 6; }
+  .SnGrid.s-grid-7 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 6) / 7))[7];
+    grid-template-columns: repeat(7, calc((100% - var(--gap) * 6) / 7)); }
+  .SnGrid > .span-s-7,
+  .SnGrid > .s-cols-7 {
+    -ms-grid-column-span: 7;
+    grid-column-end: span 7; }
+  .SnGrid > .s-rows-7 {
+    -ms-grid-row-span: 7;
+    grid-row-end: span 7; }
+  .SnGrid > .s-x-7 {
+    -ms-grid-column: 7;
+    grid-column-start: 7; }
+  .SnGrid > .s-y-7 {
+    -ms-grid-row: 7;
+    grid-row-start: 7; }
+  .SnGrid.s-grid-8 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 7) / 8))[8];
+    grid-template-columns: repeat(8, calc((100% - var(--gap) * 7) / 8)); }
+  .SnGrid > .span-s-8,
+  .SnGrid > .s-cols-8 {
+    -ms-grid-column-span: 8;
+    grid-column-end: span 8; }
+  .SnGrid > .s-rows-8 {
+    -ms-grid-row-span: 8;
+    grid-row-end: span 8; }
+  .SnGrid > .s-x-8 {
+    -ms-grid-column: 8;
+    grid-column-start: 8; }
+  .SnGrid > .s-y-8 {
+    -ms-grid-row: 8;
+    grid-row-start: 8; }
+  .SnGrid.s-grid-9 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 8) / 9))[9];
+    grid-template-columns: repeat(9, calc((100% - var(--gap) * 8) / 9)); }
+  .SnGrid > .span-s-9,
+  .SnGrid > .s-cols-9 {
+    -ms-grid-column-span: 9;
+    grid-column-end: span 9; }
+  .SnGrid > .s-rows-9 {
+    -ms-grid-row-span: 9;
+    grid-row-end: span 9; }
+  .SnGrid > .s-x-9 {
+    -ms-grid-column: 9;
+    grid-column-start: 9; }
+  .SnGrid > .s-y-9 {
+    -ms-grid-row: 9;
+    grid-row-start: 9; }
+  .SnGrid.s-grid-10 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 9) / 10))[10];
+    grid-template-columns: repeat(10, calc((100% - var(--gap) * 9) / 10)); }
+  .SnGrid > .span-s-10,
+  .SnGrid > .s-cols-10 {
+    -ms-grid-column-span: 10;
+    grid-column-end: span 10; }
+  .SnGrid > .s-rows-10 {
+    -ms-grid-row-span: 10;
+    grid-row-end: span 10; }
+  .SnGrid > .s-x-10 {
+    -ms-grid-column: 10;
+    grid-column-start: 10; }
+  .SnGrid > .s-y-10 {
+    -ms-grid-row: 10;
+    grid-row-start: 10; }
+  .SnGrid.s-grid-11 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 10) / 11))[11];
+    grid-template-columns: repeat(11, calc((100% - var(--gap) * 10) / 11)); }
+  .SnGrid > .span-s-11,
+  .SnGrid > .s-cols-11 {
+    -ms-grid-column-span: 11;
+    grid-column-end: span 11; }
+  .SnGrid > .s-rows-11 {
+    -ms-grid-row-span: 11;
+    grid-row-end: span 11; }
+  .SnGrid > .s-x-11 {
+    -ms-grid-column: 11;
+    grid-column-start: 11; }
+  .SnGrid > .s-y-11 {
+    -ms-grid-row: 11;
+    grid-row-start: 11; }
+  .SnGrid.s-grid-12 {
+    -ms-grid-columns: (calc((100% - var(--gap) * 11) / 12))[12];
+    grid-template-columns: repeat(12, calc((100% - var(--gap) * 11) / 12)); }
+  .SnGrid > .span-s-12,
+  .SnGrid > .s-cols-12 {
+    -ms-grid-column-span: 12;
+    grid-column-end: span 12; }
+  .SnGrid > .s-rows-12 {
+    -ms-grid-row-span: 12;
+    grid-row-end: span 12; }
+  .SnGrid > .s-x-12 {
+    -ms-grid-column: 12;
+    grid-column-start: 12; }
+  .SnGrid > .s-y-12 {
+    -ms-grid-row: 12;
+    grid-row-start: 12; }
   @media screen and (min-width: 640px) {
-    .SnGrid.m-1 {
-      -ms-grid-columns: (calc((100% - 2rem * 0) / 1))[1];
-      grid-template-columns: repeat(1, calc((100% - 2rem * 0) / 1)); }
-    .SnGrid.m-2 {
-      -ms-grid-columns: (calc((100% - 2rem * 1) / 2))[2];
-      grid-template-columns: repeat(2, calc((100% - 2rem * 1) / 2)); }
-    .SnGrid.m-3 {
-      -ms-grid-columns: (calc((100% - 2rem * 2) / 3))[3];
-      grid-template-columns: repeat(3, calc((100% - 2rem * 2) / 3)); }
-    .SnGrid.m-4 {
-      -ms-grid-columns: (calc((100% - 2rem * 3) / 4))[4];
-      grid-template-columns: repeat(4, calc((100% - 2rem * 3) / 4)); }
-    .SnGrid.m-5 {
-      -ms-grid-columns: (calc((100% - 2rem * 4) / 5))[5];
-      grid-template-columns: repeat(5, calc((100% - 2rem * 4) / 5)); }
-    .SnGrid.m-6 {
-      -ms-grid-columns: (calc((100% - 2rem * 5) / 6))[6];
-      grid-template-columns: repeat(6, calc((100% - 2rem * 5) / 6)); }
-    .SnGrid.m-7 {
-      -ms-grid-columns: (calc((100% - 2rem * 6) / 7))[7];
-      grid-template-columns: repeat(7, calc((100% - 2rem * 6) / 7)); }
-    .SnGrid.m-8 {
-      -ms-grid-columns: (calc((100% - 2rem * 7) / 8))[8];
-      grid-template-columns: repeat(8, calc((100% - 2rem * 7) / 8)); }
-    .SnGrid.m-9 {
-      -ms-grid-columns: (calc((100% - 2rem * 8) / 9))[9];
-      grid-template-columns: repeat(9, calc((100% - 2rem * 8) / 9)); }
-    .SnGrid.m-10 {
-      -ms-grid-columns: (calc((100% - 2rem * 9) / 10))[10];
-      grid-template-columns: repeat(10, calc((100% - 2rem * 9) / 10)); }
-    .SnGrid.m-11 {
-      -ms-grid-columns: (calc((100% - 2rem * 10) / 11))[11];
-      grid-template-columns: repeat(11, calc((100% - 2rem * 10) / 11)); }
-    .SnGrid.m-12 {
-      -ms-grid-columns: (calc((100% - 2rem * 11) / 12))[12];
-      grid-template-columns: repeat(12, calc((100% - 2rem * 11) / 12)); } }
+    .SnGrid.m-grid-1 {
+      -ms-grid-columns: 100%;
+      grid-template-columns: 100%; }
+    .SnGrid > .span-m-1,
+    .SnGrid > .m-cols-1 {
+      -ms-grid-column-span: 1;
+      grid-column-end: span 1; }
+    .SnGrid > .m-rows-1 {
+      -ms-grid-row-span: 1;
+      grid-row-end: span 1; }
+    .SnGrid > .m-x-1 {
+      -ms-grid-column: 1;
+      grid-column-start: 1; }
+    .SnGrid > .m-y-1 {
+      -ms-grid-row: 1;
+      grid-row-start: 1; }
+    .SnGrid.m-grid-2 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 1) / 2))[2];
+      grid-template-columns: repeat(2, calc((100% - var(--gap) * 1) / 2)); }
+    .SnGrid > .span-m-2,
+    .SnGrid > .m-cols-2 {
+      -ms-grid-column-span: 2;
+      grid-column-end: span 2; }
+    .SnGrid > .m-rows-2 {
+      -ms-grid-row-span: 2;
+      grid-row-end: span 2; }
+    .SnGrid > .m-x-2 {
+      -ms-grid-column: 2;
+      grid-column-start: 2; }
+    .SnGrid > .m-y-2 {
+      -ms-grid-row: 2;
+      grid-row-start: 2; }
+    .SnGrid.m-grid-3 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 2) / 3))[3];
+      grid-template-columns: repeat(3, calc((100% - var(--gap) * 2) / 3)); }
+    .SnGrid > .span-m-3,
+    .SnGrid > .m-cols-3 {
+      -ms-grid-column-span: 3;
+      grid-column-end: span 3; }
+    .SnGrid > .m-rows-3 {
+      -ms-grid-row-span: 3;
+      grid-row-end: span 3; }
+    .SnGrid > .m-x-3 {
+      -ms-grid-column: 3;
+      grid-column-start: 3; }
+    .SnGrid > .m-y-3 {
+      -ms-grid-row: 3;
+      grid-row-start: 3; }
+    .SnGrid.m-grid-4 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 3) / 4))[4];
+      grid-template-columns: repeat(4, calc((100% - var(--gap) * 3) / 4)); }
+    .SnGrid > .span-m-4,
+    .SnGrid > .m-cols-4 {
+      -ms-grid-column-span: 4;
+      grid-column-end: span 4; }
+    .SnGrid > .m-rows-4 {
+      -ms-grid-row-span: 4;
+      grid-row-end: span 4; }
+    .SnGrid > .m-x-4 {
+      -ms-grid-column: 4;
+      grid-column-start: 4; }
+    .SnGrid > .m-y-4 {
+      -ms-grid-row: 4;
+      grid-row-start: 4; }
+    .SnGrid.m-grid-5 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 4) / 5))[5];
+      grid-template-columns: repeat(5, calc((100% - var(--gap) * 4) / 5)); }
+    .SnGrid > .span-m-5,
+    .SnGrid > .m-cols-5 {
+      -ms-grid-column-span: 5;
+      grid-column-end: span 5; }
+    .SnGrid > .m-rows-5 {
+      -ms-grid-row-span: 5;
+      grid-row-end: span 5; }
+    .SnGrid > .m-x-5 {
+      -ms-grid-column: 5;
+      grid-column-start: 5; }
+    .SnGrid > .m-y-5 {
+      -ms-grid-row: 5;
+      grid-row-start: 5; }
+    .SnGrid.m-grid-6 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 5) / 6))[6];
+      grid-template-columns: repeat(6, calc((100% - var(--gap) * 5) / 6)); }
+    .SnGrid > .span-m-6,
+    .SnGrid > .m-cols-6 {
+      -ms-grid-column-span: 6;
+      grid-column-end: span 6; }
+    .SnGrid > .m-rows-6 {
+      -ms-grid-row-span: 6;
+      grid-row-end: span 6; }
+    .SnGrid > .m-x-6 {
+      -ms-grid-column: 6;
+      grid-column-start: 6; }
+    .SnGrid > .m-y-6 {
+      -ms-grid-row: 6;
+      grid-row-start: 6; }
+    .SnGrid.m-grid-7 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 6) / 7))[7];
+      grid-template-columns: repeat(7, calc((100% - var(--gap) * 6) / 7)); }
+    .SnGrid > .span-m-7,
+    .SnGrid > .m-cols-7 {
+      -ms-grid-column-span: 7;
+      grid-column-end: span 7; }
+    .SnGrid > .m-rows-7 {
+      -ms-grid-row-span: 7;
+      grid-row-end: span 7; }
+    .SnGrid > .m-x-7 {
+      -ms-grid-column: 7;
+      grid-column-start: 7; }
+    .SnGrid > .m-y-7 {
+      -ms-grid-row: 7;
+      grid-row-start: 7; }
+    .SnGrid.m-grid-8 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 7) / 8))[8];
+      grid-template-columns: repeat(8, calc((100% - var(--gap) * 7) / 8)); }
+    .SnGrid > .span-m-8,
+    .SnGrid > .m-cols-8 {
+      -ms-grid-column-span: 8;
+      grid-column-end: span 8; }
+    .SnGrid > .m-rows-8 {
+      -ms-grid-row-span: 8;
+      grid-row-end: span 8; }
+    .SnGrid > .m-x-8 {
+      -ms-grid-column: 8;
+      grid-column-start: 8; }
+    .SnGrid > .m-y-8 {
+      -ms-grid-row: 8;
+      grid-row-start: 8; }
+    .SnGrid.m-grid-9 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 8) / 9))[9];
+      grid-template-columns: repeat(9, calc((100% - var(--gap) * 8) / 9)); }
+    .SnGrid > .span-m-9,
+    .SnGrid > .m-cols-9 {
+      -ms-grid-column-span: 9;
+      grid-column-end: span 9; }
+    .SnGrid > .m-rows-9 {
+      -ms-grid-row-span: 9;
+      grid-row-end: span 9; }
+    .SnGrid > .m-x-9 {
+      -ms-grid-column: 9;
+      grid-column-start: 9; }
+    .SnGrid > .m-y-9 {
+      -ms-grid-row: 9;
+      grid-row-start: 9; }
+    .SnGrid.m-grid-10 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 9) / 10))[10];
+      grid-template-columns: repeat(10, calc((100% - var(--gap) * 9) / 10)); }
+    .SnGrid > .span-m-10,
+    .SnGrid > .m-cols-10 {
+      -ms-grid-column-span: 10;
+      grid-column-end: span 10; }
+    .SnGrid > .m-rows-10 {
+      -ms-grid-row-span: 10;
+      grid-row-end: span 10; }
+    .SnGrid > .m-x-10 {
+      -ms-grid-column: 10;
+      grid-column-start: 10; }
+    .SnGrid > .m-y-10 {
+      -ms-grid-row: 10;
+      grid-row-start: 10; }
+    .SnGrid.m-grid-11 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 10) / 11))[11];
+      grid-template-columns: repeat(11, calc((100% - var(--gap) * 10) / 11)); }
+    .SnGrid > .span-m-11,
+    .SnGrid > .m-cols-11 {
+      -ms-grid-column-span: 11;
+      grid-column-end: span 11; }
+    .SnGrid > .m-rows-11 {
+      -ms-grid-row-span: 11;
+      grid-row-end: span 11; }
+    .SnGrid > .m-x-11 {
+      -ms-grid-column: 11;
+      grid-column-start: 11; }
+    .SnGrid > .m-y-11 {
+      -ms-grid-row: 11;
+      grid-row-start: 11; }
+    .SnGrid.m-grid-12 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 11) / 12))[12];
+      grid-template-columns: repeat(12, calc((100% - var(--gap) * 11) / 12)); }
+    .SnGrid > .span-m-12,
+    .SnGrid > .m-cols-12 {
+      -ms-grid-column-span: 12;
+      grid-column-end: span 12; }
+    .SnGrid > .m-rows-12 {
+      -ms-grid-row-span: 12;
+      grid-row-end: span 12; }
+    .SnGrid > .m-x-12 {
+      -ms-grid-column: 12;
+      grid-column-start: 12; }
+    .SnGrid > .m-y-12 {
+      -ms-grid-row: 12;
+      grid-row-start: 12; } }
   @media screen and (min-width: 1024px) {
-    .SnGrid.l-1 {
-      -ms-grid-columns: (calc((100% - 2rem * 0) / 1))[1];
-      grid-template-columns: repeat(1, calc((100% - 2rem * 0) / 1)); }
-    .SnGrid.l-2 {
-      -ms-grid-columns: (calc((100% - 2rem * 1) / 2))[2];
-      grid-template-columns: repeat(2, calc((100% - 2rem * 1) / 2)); }
-    .SnGrid.l-3 {
-      -ms-grid-columns: (calc((100% - 2rem * 2) / 3))[3];
-      grid-template-columns: repeat(3, calc((100% - 2rem * 2) / 3)); }
-    .SnGrid.l-4 {
-      -ms-grid-columns: (calc((100% - 2rem * 3) / 4))[4];
-      grid-template-columns: repeat(4, calc((100% - 2rem * 3) / 4)); }
-    .SnGrid.l-5 {
-      -ms-grid-columns: (calc((100% - 2rem * 4) / 5))[5];
-      grid-template-columns: repeat(5, calc((100% - 2rem * 4) / 5)); }
-    .SnGrid.l-6 {
-      -ms-grid-columns: (calc((100% - 2rem * 5) / 6))[6];
-      grid-template-columns: repeat(6, calc((100% - 2rem * 5) / 6)); }
-    .SnGrid.l-7 {
-      -ms-grid-columns: (calc((100% - 2rem * 6) / 7))[7];
-      grid-template-columns: repeat(7, calc((100% - 2rem * 6) / 7)); }
-    .SnGrid.l-8 {
-      -ms-grid-columns: (calc((100% - 2rem * 7) / 8))[8];
-      grid-template-columns: repeat(8, calc((100% - 2rem * 7) / 8)); }
-    .SnGrid.l-9 {
-      -ms-grid-columns: (calc((100% - 2rem * 8) / 9))[9];
-      grid-template-columns: repeat(9, calc((100% - 2rem * 8) / 9)); }
-    .SnGrid.l-10 {
-      -ms-grid-columns: (calc((100% - 2rem * 9) / 10))[10];
-      grid-template-columns: repeat(10, calc((100% - 2rem * 9) / 10)); }
-    .SnGrid.l-11 {
-      -ms-grid-columns: (calc((100% - 2rem * 10) / 11))[11];
-      grid-template-columns: repeat(11, calc((100% - 2rem * 10) / 11)); }
-    .SnGrid.l-12 {
-      -ms-grid-columns: (calc((100% - 2rem * 11) / 12))[12];
-      grid-template-columns: repeat(12, calc((100% - 2rem * 11) / 12)); } }
+    .SnGrid.l-grid-1 {
+      -ms-grid-columns: 100%;
+      grid-template-columns: 100%; }
+    .SnGrid > .span-l-1,
+    .SnGrid > .l-cols-1 {
+      -ms-grid-column-span: 1;
+      grid-column-end: span 1; }
+    .SnGrid > .l-rows-1 {
+      -ms-grid-row-span: 1;
+      grid-row-end: span 1; }
+    .SnGrid > .l-x-1 {
+      -ms-grid-column: 1;
+      grid-column-start: 1; }
+    .SnGrid > .l-y-1 {
+      -ms-grid-row: 1;
+      grid-row-start: 1; }
+    .SnGrid.l-grid-2 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 1) / 2))[2];
+      grid-template-columns: repeat(2, calc((100% - var(--gap) * 1) / 2)); }
+    .SnGrid > .span-l-2,
+    .SnGrid > .l-cols-2 {
+      -ms-grid-column-span: 2;
+      grid-column-end: span 2; }
+    .SnGrid > .l-rows-2 {
+      -ms-grid-row-span: 2;
+      grid-row-end: span 2; }
+    .SnGrid > .l-x-2 {
+      -ms-grid-column: 2;
+      grid-column-start: 2; }
+    .SnGrid > .l-y-2 {
+      -ms-grid-row: 2;
+      grid-row-start: 2; }
+    .SnGrid.l-grid-3 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 2) / 3))[3];
+      grid-template-columns: repeat(3, calc((100% - var(--gap) * 2) / 3)); }
+    .SnGrid > .span-l-3,
+    .SnGrid > .l-cols-3 {
+      -ms-grid-column-span: 3;
+      grid-column-end: span 3; }
+    .SnGrid > .l-rows-3 {
+      -ms-grid-row-span: 3;
+      grid-row-end: span 3; }
+    .SnGrid > .l-x-3 {
+      -ms-grid-column: 3;
+      grid-column-start: 3; }
+    .SnGrid > .l-y-3 {
+      -ms-grid-row: 3;
+      grid-row-start: 3; }
+    .SnGrid.l-grid-4 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 3) / 4))[4];
+      grid-template-columns: repeat(4, calc((100% - var(--gap) * 3) / 4)); }
+    .SnGrid > .span-l-4,
+    .SnGrid > .l-cols-4 {
+      -ms-grid-column-span: 4;
+      grid-column-end: span 4; }
+    .SnGrid > .l-rows-4 {
+      -ms-grid-row-span: 4;
+      grid-row-end: span 4; }
+    .SnGrid > .l-x-4 {
+      -ms-grid-column: 4;
+      grid-column-start: 4; }
+    .SnGrid > .l-y-4 {
+      -ms-grid-row: 4;
+      grid-row-start: 4; }
+    .SnGrid.l-grid-5 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 4) / 5))[5];
+      grid-template-columns: repeat(5, calc((100% - var(--gap) * 4) / 5)); }
+    .SnGrid > .span-l-5,
+    .SnGrid > .l-cols-5 {
+      -ms-grid-column-span: 5;
+      grid-column-end: span 5; }
+    .SnGrid > .l-rows-5 {
+      -ms-grid-row-span: 5;
+      grid-row-end: span 5; }
+    .SnGrid > .l-x-5 {
+      -ms-grid-column: 5;
+      grid-column-start: 5; }
+    .SnGrid > .l-y-5 {
+      -ms-grid-row: 5;
+      grid-row-start: 5; }
+    .SnGrid.l-grid-6 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 5) / 6))[6];
+      grid-template-columns: repeat(6, calc((100% - var(--gap) * 5) / 6)); }
+    .SnGrid > .span-l-6,
+    .SnGrid > .l-cols-6 {
+      -ms-grid-column-span: 6;
+      grid-column-end: span 6; }
+    .SnGrid > .l-rows-6 {
+      -ms-grid-row-span: 6;
+      grid-row-end: span 6; }
+    .SnGrid > .l-x-6 {
+      -ms-grid-column: 6;
+      grid-column-start: 6; }
+    .SnGrid > .l-y-6 {
+      -ms-grid-row: 6;
+      grid-row-start: 6; }
+    .SnGrid.l-grid-7 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 6) / 7))[7];
+      grid-template-columns: repeat(7, calc((100% - var(--gap) * 6) / 7)); }
+    .SnGrid > .span-l-7,
+    .SnGrid > .l-cols-7 {
+      -ms-grid-column-span: 7;
+      grid-column-end: span 7; }
+    .SnGrid > .l-rows-7 {
+      -ms-grid-row-span: 7;
+      grid-row-end: span 7; }
+    .SnGrid > .l-x-7 {
+      -ms-grid-column: 7;
+      grid-column-start: 7; }
+    .SnGrid > .l-y-7 {
+      -ms-grid-row: 7;
+      grid-row-start: 7; }
+    .SnGrid.l-grid-8 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 7) / 8))[8];
+      grid-template-columns: repeat(8, calc((100% - var(--gap) * 7) / 8)); }
+    .SnGrid > .span-l-8,
+    .SnGrid > .l-cols-8 {
+      -ms-grid-column-span: 8;
+      grid-column-end: span 8; }
+    .SnGrid > .l-rows-8 {
+      -ms-grid-row-span: 8;
+      grid-row-end: span 8; }
+    .SnGrid > .l-x-8 {
+      -ms-grid-column: 8;
+      grid-column-start: 8; }
+    .SnGrid > .l-y-8 {
+      -ms-grid-row: 8;
+      grid-row-start: 8; }
+    .SnGrid.l-grid-9 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 8) / 9))[9];
+      grid-template-columns: repeat(9, calc((100% - var(--gap) * 8) / 9)); }
+    .SnGrid > .span-l-9,
+    .SnGrid > .l-cols-9 {
+      -ms-grid-column-span: 9;
+      grid-column-end: span 9; }
+    .SnGrid > .l-rows-9 {
+      -ms-grid-row-span: 9;
+      grid-row-end: span 9; }
+    .SnGrid > .l-x-9 {
+      -ms-grid-column: 9;
+      grid-column-start: 9; }
+    .SnGrid > .l-y-9 {
+      -ms-grid-row: 9;
+      grid-row-start: 9; }
+    .SnGrid.l-grid-10 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 9) / 10))[10];
+      grid-template-columns: repeat(10, calc((100% - var(--gap) * 9) / 10)); }
+    .SnGrid > .span-l-10,
+    .SnGrid > .l-cols-10 {
+      -ms-grid-column-span: 10;
+      grid-column-end: span 10; }
+    .SnGrid > .l-rows-10 {
+      -ms-grid-row-span: 10;
+      grid-row-end: span 10; }
+    .SnGrid > .l-x-10 {
+      -ms-grid-column: 10;
+      grid-column-start: 10; }
+    .SnGrid > .l-y-10 {
+      -ms-grid-row: 10;
+      grid-row-start: 10; }
+    .SnGrid.l-grid-11 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 10) / 11))[11];
+      grid-template-columns: repeat(11, calc((100% - var(--gap) * 10) / 11)); }
+    .SnGrid > .span-l-11,
+    .SnGrid > .l-cols-11 {
+      -ms-grid-column-span: 11;
+      grid-column-end: span 11; }
+    .SnGrid > .l-rows-11 {
+      -ms-grid-row-span: 11;
+      grid-row-end: span 11; }
+    .SnGrid > .l-x-11 {
+      -ms-grid-column: 11;
+      grid-column-start: 11; }
+    .SnGrid > .l-y-11 {
+      -ms-grid-row: 11;
+      grid-row-start: 11; }
+    .SnGrid.l-grid-12 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 11) / 12))[12];
+      grid-template-columns: repeat(12, calc((100% - var(--gap) * 11) / 12)); }
+    .SnGrid > .span-l-12,
+    .SnGrid > .l-cols-12 {
+      -ms-grid-column-span: 12;
+      grid-column-end: span 12; }
+    .SnGrid > .l-rows-12 {
+      -ms-grid-row-span: 12;
+      grid-row-end: span 12; }
+    .SnGrid > .l-x-12 {
+      -ms-grid-column: 12;
+      grid-column-start: 12; }
+    .SnGrid > .l-y-12 {
+      -ms-grid-row: 12;
+      grid-row-start: 12; } }
   @media screen and (min-width: 1024px) {
-    .SnGrid.lg-1 {
-      -ms-grid-columns: (calc((100% - 2rem * 0) / 1))[1];
-      grid-template-columns: repeat(1, calc((100% - 2rem * 0) / 1)); }
-    .SnGrid.lg-2 {
-      -ms-grid-columns: (calc((100% - 2rem * 1) / 2))[2];
-      grid-template-columns: repeat(2, calc((100% - 2rem * 1) / 2)); }
-    .SnGrid.lg-3 {
-      -ms-grid-columns: (calc((100% - 2rem * 2) / 3))[3];
-      grid-template-columns: repeat(3, calc((100% - 2rem * 2) / 3)); }
-    .SnGrid.lg-4 {
-      -ms-grid-columns: (calc((100% - 2rem * 3) / 4))[4];
-      grid-template-columns: repeat(4, calc((100% - 2rem * 3) / 4)); }
-    .SnGrid.lg-5 {
-      -ms-grid-columns: (calc((100% - 2rem * 4) / 5))[5];
-      grid-template-columns: repeat(5, calc((100% - 2rem * 4) / 5)); }
-    .SnGrid.lg-6 {
-      -ms-grid-columns: (calc((100% - 2rem * 5) / 6))[6];
-      grid-template-columns: repeat(6, calc((100% - 2rem * 5) / 6)); }
-    .SnGrid.lg-7 {
-      -ms-grid-columns: (calc((100% - 2rem * 6) / 7))[7];
-      grid-template-columns: repeat(7, calc((100% - 2rem * 6) / 7)); }
-    .SnGrid.lg-8 {
-      -ms-grid-columns: (calc((100% - 2rem * 7) / 8))[8];
-      grid-template-columns: repeat(8, calc((100% - 2rem * 7) / 8)); }
-    .SnGrid.lg-9 {
-      -ms-grid-columns: (calc((100% - 2rem * 8) / 9))[9];
-      grid-template-columns: repeat(9, calc((100% - 2rem * 8) / 9)); }
-    .SnGrid.lg-10 {
-      -ms-grid-columns: (calc((100% - 2rem * 9) / 10))[10];
-      grid-template-columns: repeat(10, calc((100% - 2rem * 9) / 10)); }
-    .SnGrid.lg-11 {
-      -ms-grid-columns: (calc((100% - 2rem * 10) / 11))[11];
-      grid-template-columns: repeat(11, calc((100% - 2rem * 10) / 11)); }
-    .SnGrid.lg-12 {
-      -ms-grid-columns: (calc((100% - 2rem * 11) / 12))[12];
-      grid-template-columns: repeat(12, calc((100% - 2rem * 11) / 12)); } }
+    .SnGrid.lg-grid-1 {
+      -ms-grid-columns: 100%;
+      grid-template-columns: 100%; }
+    .SnGrid > .span-lg-1,
+    .SnGrid > .lg-cols-1 {
+      -ms-grid-column-span: 1;
+      grid-column-end: span 1; }
+    .SnGrid > .lg-rows-1 {
+      -ms-grid-row-span: 1;
+      grid-row-end: span 1; }
+    .SnGrid > .lg-x-1 {
+      -ms-grid-column: 1;
+      grid-column-start: 1; }
+    .SnGrid > .lg-y-1 {
+      -ms-grid-row: 1;
+      grid-row-start: 1; }
+    .SnGrid.lg-grid-2 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 1) / 2))[2];
+      grid-template-columns: repeat(2, calc((100% - var(--gap) * 1) / 2)); }
+    .SnGrid > .span-lg-2,
+    .SnGrid > .lg-cols-2 {
+      -ms-grid-column-span: 2;
+      grid-column-end: span 2; }
+    .SnGrid > .lg-rows-2 {
+      -ms-grid-row-span: 2;
+      grid-row-end: span 2; }
+    .SnGrid > .lg-x-2 {
+      -ms-grid-column: 2;
+      grid-column-start: 2; }
+    .SnGrid > .lg-y-2 {
+      -ms-grid-row: 2;
+      grid-row-start: 2; }
+    .SnGrid.lg-grid-3 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 2) / 3))[3];
+      grid-template-columns: repeat(3, calc((100% - var(--gap) * 2) / 3)); }
+    .SnGrid > .span-lg-3,
+    .SnGrid > .lg-cols-3 {
+      -ms-grid-column-span: 3;
+      grid-column-end: span 3; }
+    .SnGrid > .lg-rows-3 {
+      -ms-grid-row-span: 3;
+      grid-row-end: span 3; }
+    .SnGrid > .lg-x-3 {
+      -ms-grid-column: 3;
+      grid-column-start: 3; }
+    .SnGrid > .lg-y-3 {
+      -ms-grid-row: 3;
+      grid-row-start: 3; }
+    .SnGrid.lg-grid-4 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 3) / 4))[4];
+      grid-template-columns: repeat(4, calc((100% - var(--gap) * 3) / 4)); }
+    .SnGrid > .span-lg-4,
+    .SnGrid > .lg-cols-4 {
+      -ms-grid-column-span: 4;
+      grid-column-end: span 4; }
+    .SnGrid > .lg-rows-4 {
+      -ms-grid-row-span: 4;
+      grid-row-end: span 4; }
+    .SnGrid > .lg-x-4 {
+      -ms-grid-column: 4;
+      grid-column-start: 4; }
+    .SnGrid > .lg-y-4 {
+      -ms-grid-row: 4;
+      grid-row-start: 4; }
+    .SnGrid.lg-grid-5 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 4) / 5))[5];
+      grid-template-columns: repeat(5, calc((100% - var(--gap) * 4) / 5)); }
+    .SnGrid > .span-lg-5,
+    .SnGrid > .lg-cols-5 {
+      -ms-grid-column-span: 5;
+      grid-column-end: span 5; }
+    .SnGrid > .lg-rows-5 {
+      -ms-grid-row-span: 5;
+      grid-row-end: span 5; }
+    .SnGrid > .lg-x-5 {
+      -ms-grid-column: 5;
+      grid-column-start: 5; }
+    .SnGrid > .lg-y-5 {
+      -ms-grid-row: 5;
+      grid-row-start: 5; }
+    .SnGrid.lg-grid-6 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 5) / 6))[6];
+      grid-template-columns: repeat(6, calc((100% - var(--gap) * 5) / 6)); }
+    .SnGrid > .span-lg-6,
+    .SnGrid > .lg-cols-6 {
+      -ms-grid-column-span: 6;
+      grid-column-end: span 6; }
+    .SnGrid > .lg-rows-6 {
+      -ms-grid-row-span: 6;
+      grid-row-end: span 6; }
+    .SnGrid > .lg-x-6 {
+      -ms-grid-column: 6;
+      grid-column-start: 6; }
+    .SnGrid > .lg-y-6 {
+      -ms-grid-row: 6;
+      grid-row-start: 6; }
+    .SnGrid.lg-grid-7 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 6) / 7))[7];
+      grid-template-columns: repeat(7, calc((100% - var(--gap) * 6) / 7)); }
+    .SnGrid > .span-lg-7,
+    .SnGrid > .lg-cols-7 {
+      -ms-grid-column-span: 7;
+      grid-column-end: span 7; }
+    .SnGrid > .lg-rows-7 {
+      -ms-grid-row-span: 7;
+      grid-row-end: span 7; }
+    .SnGrid > .lg-x-7 {
+      -ms-grid-column: 7;
+      grid-column-start: 7; }
+    .SnGrid > .lg-y-7 {
+      -ms-grid-row: 7;
+      grid-row-start: 7; }
+    .SnGrid.lg-grid-8 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 7) / 8))[8];
+      grid-template-columns: repeat(8, calc((100% - var(--gap) * 7) / 8)); }
+    .SnGrid > .span-lg-8,
+    .SnGrid > .lg-cols-8 {
+      -ms-grid-column-span: 8;
+      grid-column-end: span 8; }
+    .SnGrid > .lg-rows-8 {
+      -ms-grid-row-span: 8;
+      grid-row-end: span 8; }
+    .SnGrid > .lg-x-8 {
+      -ms-grid-column: 8;
+      grid-column-start: 8; }
+    .SnGrid > .lg-y-8 {
+      -ms-grid-row: 8;
+      grid-row-start: 8; }
+    .SnGrid.lg-grid-9 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 8) / 9))[9];
+      grid-template-columns: repeat(9, calc((100% - var(--gap) * 8) / 9)); }
+    .SnGrid > .span-lg-9,
+    .SnGrid > .lg-cols-9 {
+      -ms-grid-column-span: 9;
+      grid-column-end: span 9; }
+    .SnGrid > .lg-rows-9 {
+      -ms-grid-row-span: 9;
+      grid-row-end: span 9; }
+    .SnGrid > .lg-x-9 {
+      -ms-grid-column: 9;
+      grid-column-start: 9; }
+    .SnGrid > .lg-y-9 {
+      -ms-grid-row: 9;
+      grid-row-start: 9; }
+    .SnGrid.lg-grid-10 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 9) / 10))[10];
+      grid-template-columns: repeat(10, calc((100% - var(--gap) * 9) / 10)); }
+    .SnGrid > .span-lg-10,
+    .SnGrid > .lg-cols-10 {
+      -ms-grid-column-span: 10;
+      grid-column-end: span 10; }
+    .SnGrid > .lg-rows-10 {
+      -ms-grid-row-span: 10;
+      grid-row-end: span 10; }
+    .SnGrid > .lg-x-10 {
+      -ms-grid-column: 10;
+      grid-column-start: 10; }
+    .SnGrid > .lg-y-10 {
+      -ms-grid-row: 10;
+      grid-row-start: 10; }
+    .SnGrid.lg-grid-11 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 10) / 11))[11];
+      grid-template-columns: repeat(11, calc((100% - var(--gap) * 10) / 11)); }
+    .SnGrid > .span-lg-11,
+    .SnGrid > .lg-cols-11 {
+      -ms-grid-column-span: 11;
+      grid-column-end: span 11; }
+    .SnGrid > .lg-rows-11 {
+      -ms-grid-row-span: 11;
+      grid-row-end: span 11; }
+    .SnGrid > .lg-x-11 {
+      -ms-grid-column: 11;
+      grid-column-start: 11; }
+    .SnGrid > .lg-y-11 {
+      -ms-grid-row: 11;
+      grid-row-start: 11; }
+    .SnGrid.lg-grid-12 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 11) / 12))[12];
+      grid-template-columns: repeat(12, calc((100% - var(--gap) * 11) / 12)); }
+    .SnGrid > .span-lg-12,
+    .SnGrid > .lg-cols-12 {
+      -ms-grid-column-span: 12;
+      grid-column-end: span 12; }
+    .SnGrid > .lg-rows-12 {
+      -ms-grid-row-span: 12;
+      grid-row-end: span 12; }
+    .SnGrid > .lg-x-12 {
+      -ms-grid-column: 12;
+      grid-column-start: 12; }
+    .SnGrid > .lg-y-12 {
+      -ms-grid-row: 12;
+      grid-row-start: 12; } }
   @media screen and (min-width: 1440px) {
-    .SnGrid.xl-1 {
-      -ms-grid-columns: (calc((100% - 2rem * 0) / 1))[1];
-      grid-template-columns: repeat(1, calc((100% - 2rem * 0) / 1)); }
-    .SnGrid.xl-2 {
-      -ms-grid-columns: (calc((100% - 2rem * 1) / 2))[2];
-      grid-template-columns: repeat(2, calc((100% - 2rem * 1) / 2)); }
-    .SnGrid.xl-3 {
-      -ms-grid-columns: (calc((100% - 2rem * 2) / 3))[3];
-      grid-template-columns: repeat(3, calc((100% - 2rem * 2) / 3)); }
-    .SnGrid.xl-4 {
-      -ms-grid-columns: (calc((100% - 2rem * 3) / 4))[4];
-      grid-template-columns: repeat(4, calc((100% - 2rem * 3) / 4)); }
-    .SnGrid.xl-5 {
-      -ms-grid-columns: (calc((100% - 2rem * 4) / 5))[5];
-      grid-template-columns: repeat(5, calc((100% - 2rem * 4) / 5)); }
-    .SnGrid.xl-6 {
-      -ms-grid-columns: (calc((100% - 2rem * 5) / 6))[6];
-      grid-template-columns: repeat(6, calc((100% - 2rem * 5) / 6)); }
-    .SnGrid.xl-7 {
-      -ms-grid-columns: (calc((100% - 2rem * 6) / 7))[7];
-      grid-template-columns: repeat(7, calc((100% - 2rem * 6) / 7)); }
-    .SnGrid.xl-8 {
-      -ms-grid-columns: (calc((100% - 2rem * 7) / 8))[8];
-      grid-template-columns: repeat(8, calc((100% - 2rem * 7) / 8)); }
-    .SnGrid.xl-9 {
-      -ms-grid-columns: (calc((100% - 2rem * 8) / 9))[9];
-      grid-template-columns: repeat(9, calc((100% - 2rem * 8) / 9)); }
-    .SnGrid.xl-10 {
-      -ms-grid-columns: (calc((100% - 2rem * 9) / 10))[10];
-      grid-template-columns: repeat(10, calc((100% - 2rem * 9) / 10)); }
-    .SnGrid.xl-11 {
-      -ms-grid-columns: (calc((100% - 2rem * 10) / 11))[11];
-      grid-template-columns: repeat(11, calc((100% - 2rem * 10) / 11)); }
-    .SnGrid.xl-12 {
-      -ms-grid-columns: (calc((100% - 2rem * 11) / 12))[12];
-      grid-template-columns: repeat(12, calc((100% - 2rem * 11) / 12)); } }
+    .SnGrid.xl-grid-1 {
+      -ms-grid-columns: 100%;
+      grid-template-columns: 100%; }
+    .SnGrid > .span-xl-1,
+    .SnGrid > .xl-cols-1 {
+      -ms-grid-column-span: 1;
+      grid-column-end: span 1; }
+    .SnGrid > .xl-rows-1 {
+      -ms-grid-row-span: 1;
+      grid-row-end: span 1; }
+    .SnGrid > .xl-x-1 {
+      -ms-grid-column: 1;
+      grid-column-start: 1; }
+    .SnGrid > .xl-y-1 {
+      -ms-grid-row: 1;
+      grid-row-start: 1; }
+    .SnGrid.xl-grid-2 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 1) / 2))[2];
+      grid-template-columns: repeat(2, calc((100% - var(--gap) * 1) / 2)); }
+    .SnGrid > .span-xl-2,
+    .SnGrid > .xl-cols-2 {
+      -ms-grid-column-span: 2;
+      grid-column-end: span 2; }
+    .SnGrid > .xl-rows-2 {
+      -ms-grid-row-span: 2;
+      grid-row-end: span 2; }
+    .SnGrid > .xl-x-2 {
+      -ms-grid-column: 2;
+      grid-column-start: 2; }
+    .SnGrid > .xl-y-2 {
+      -ms-grid-row: 2;
+      grid-row-start: 2; }
+    .SnGrid.xl-grid-3 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 2) / 3))[3];
+      grid-template-columns: repeat(3, calc((100% - var(--gap) * 2) / 3)); }
+    .SnGrid > .span-xl-3,
+    .SnGrid > .xl-cols-3 {
+      -ms-grid-column-span: 3;
+      grid-column-end: span 3; }
+    .SnGrid > .xl-rows-3 {
+      -ms-grid-row-span: 3;
+      grid-row-end: span 3; }
+    .SnGrid > .xl-x-3 {
+      -ms-grid-column: 3;
+      grid-column-start: 3; }
+    .SnGrid > .xl-y-3 {
+      -ms-grid-row: 3;
+      grid-row-start: 3; }
+    .SnGrid.xl-grid-4 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 3) / 4))[4];
+      grid-template-columns: repeat(4, calc((100% - var(--gap) * 3) / 4)); }
+    .SnGrid > .span-xl-4,
+    .SnGrid > .xl-cols-4 {
+      -ms-grid-column-span: 4;
+      grid-column-end: span 4; }
+    .SnGrid > .xl-rows-4 {
+      -ms-grid-row-span: 4;
+      grid-row-end: span 4; }
+    .SnGrid > .xl-x-4 {
+      -ms-grid-column: 4;
+      grid-column-start: 4; }
+    .SnGrid > .xl-y-4 {
+      -ms-grid-row: 4;
+      grid-row-start: 4; }
+    .SnGrid.xl-grid-5 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 4) / 5))[5];
+      grid-template-columns: repeat(5, calc((100% - var(--gap) * 4) / 5)); }
+    .SnGrid > .span-xl-5,
+    .SnGrid > .xl-cols-5 {
+      -ms-grid-column-span: 5;
+      grid-column-end: span 5; }
+    .SnGrid > .xl-rows-5 {
+      -ms-grid-row-span: 5;
+      grid-row-end: span 5; }
+    .SnGrid > .xl-x-5 {
+      -ms-grid-column: 5;
+      grid-column-start: 5; }
+    .SnGrid > .xl-y-5 {
+      -ms-grid-row: 5;
+      grid-row-start: 5; }
+    .SnGrid.xl-grid-6 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 5) / 6))[6];
+      grid-template-columns: repeat(6, calc((100% - var(--gap) * 5) / 6)); }
+    .SnGrid > .span-xl-6,
+    .SnGrid > .xl-cols-6 {
+      -ms-grid-column-span: 6;
+      grid-column-end: span 6; }
+    .SnGrid > .xl-rows-6 {
+      -ms-grid-row-span: 6;
+      grid-row-end: span 6; }
+    .SnGrid > .xl-x-6 {
+      -ms-grid-column: 6;
+      grid-column-start: 6; }
+    .SnGrid > .xl-y-6 {
+      -ms-grid-row: 6;
+      grid-row-start: 6; }
+    .SnGrid.xl-grid-7 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 6) / 7))[7];
+      grid-template-columns: repeat(7, calc((100% - var(--gap) * 6) / 7)); }
+    .SnGrid > .span-xl-7,
+    .SnGrid > .xl-cols-7 {
+      -ms-grid-column-span: 7;
+      grid-column-end: span 7; }
+    .SnGrid > .xl-rows-7 {
+      -ms-grid-row-span: 7;
+      grid-row-end: span 7; }
+    .SnGrid > .xl-x-7 {
+      -ms-grid-column: 7;
+      grid-column-start: 7; }
+    .SnGrid > .xl-y-7 {
+      -ms-grid-row: 7;
+      grid-row-start: 7; }
+    .SnGrid.xl-grid-8 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 7) / 8))[8];
+      grid-template-columns: repeat(8, calc((100% - var(--gap) * 7) / 8)); }
+    .SnGrid > .span-xl-8,
+    .SnGrid > .xl-cols-8 {
+      -ms-grid-column-span: 8;
+      grid-column-end: span 8; }
+    .SnGrid > .xl-rows-8 {
+      -ms-grid-row-span: 8;
+      grid-row-end: span 8; }
+    .SnGrid > .xl-x-8 {
+      -ms-grid-column: 8;
+      grid-column-start: 8; }
+    .SnGrid > .xl-y-8 {
+      -ms-grid-row: 8;
+      grid-row-start: 8; }
+    .SnGrid.xl-grid-9 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 8) / 9))[9];
+      grid-template-columns: repeat(9, calc((100% - var(--gap) * 8) / 9)); }
+    .SnGrid > .span-xl-9,
+    .SnGrid > .xl-cols-9 {
+      -ms-grid-column-span: 9;
+      grid-column-end: span 9; }
+    .SnGrid > .xl-rows-9 {
+      -ms-grid-row-span: 9;
+      grid-row-end: span 9; }
+    .SnGrid > .xl-x-9 {
+      -ms-grid-column: 9;
+      grid-column-start: 9; }
+    .SnGrid > .xl-y-9 {
+      -ms-grid-row: 9;
+      grid-row-start: 9; }
+    .SnGrid.xl-grid-10 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 9) / 10))[10];
+      grid-template-columns: repeat(10, calc((100% - var(--gap) * 9) / 10)); }
+    .SnGrid > .span-xl-10,
+    .SnGrid > .xl-cols-10 {
+      -ms-grid-column-span: 10;
+      grid-column-end: span 10; }
+    .SnGrid > .xl-rows-10 {
+      -ms-grid-row-span: 10;
+      grid-row-end: span 10; }
+    .SnGrid > .xl-x-10 {
+      -ms-grid-column: 10;
+      grid-column-start: 10; }
+    .SnGrid > .xl-y-10 {
+      -ms-grid-row: 10;
+      grid-row-start: 10; }
+    .SnGrid.xl-grid-11 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 10) / 11))[11];
+      grid-template-columns: repeat(11, calc((100% - var(--gap) * 10) / 11)); }
+    .SnGrid > .span-xl-11,
+    .SnGrid > .xl-cols-11 {
+      -ms-grid-column-span: 11;
+      grid-column-end: span 11; }
+    .SnGrid > .xl-rows-11 {
+      -ms-grid-row-span: 11;
+      grid-row-end: span 11; }
+    .SnGrid > .xl-x-11 {
+      -ms-grid-column: 11;
+      grid-column-start: 11; }
+    .SnGrid > .xl-y-11 {
+      -ms-grid-row: 11;
+      grid-row-start: 11; }
+    .SnGrid.xl-grid-12 {
+      -ms-grid-columns: (calc((100% - var(--gap) * 11) / 12))[12];
+      grid-template-columns: repeat(12, calc((100% - var(--gap) * 11) / 12)); }
+    .SnGrid > .span-xl-12,
+    .SnGrid > .xl-cols-12 {
+      -ms-grid-column-span: 12;
+      grid-column-end: span 12; }
+    .SnGrid > .xl-rows-12 {
+      -ms-grid-row-span: 12;
+      grid-row-end: span 12; }
+    .SnGrid > .xl-x-12 {
+      -ms-grid-column: 12;
+      grid-column-start: 12; }
+    .SnGrid > .xl-y-12 {
+      -ms-grid-row: 12;
+      grid-row-start: 12; } }
 
 .SnLoading {
   position: relative; }
@@ -1008,53 +1813,40 @@ body {
       margin-right: 8px; }
 
 .SnSwitch {
+  padding-left: 3rem; }
+
+.SnSwitch-input {
   display: none; }
-  .SnSwitch + .SnSwitch-btn {
-    outline: 0;
-    display: block;
-    width: 2.5rem;
-    height: 1.25rem;
-    position: relative;
+  .SnSwitch-input + .SnSwitch-label {
     cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-    .SnSwitch + .SnSwitch-btn:after {
-      position: relative;
+    position: relative; }
+    .SnSwitch-input + .SnSwitch-label::before {
+      content: "";
+      position: absolute;
+      display: block;
+      border-radius: 0.575rem;
+      width: 2.3rem;
+      left: -3rem;
+      height: 1.15rem;
+      border: 1px solid var(--snColorTextAlt); }
+    .SnSwitch-input + .SnSwitch-label::after {
+      background: var(--snColorTextAlt);
+      position: absolute;
+      top: 0.2rem;
       display: block;
       content: "";
-      width: 50%;
-      height: 100%;
-      left: 0; }
-  .SnSwitch:checked + .SnSwitch-btn:after {
-    left: 50%; }
-
-.SnSwitch-ios + .SnSwitch-btn {
-  background: var(--snColorBg);
-  border-radius: 1.25rem;
-  padding: 2px;
-  -webkit-transition: all 0.4s ease;
-  -o-transition: all 0.4s ease;
-  transition: all 0.4s ease;
-  border: 1px solid var(--snColorTextAlt); }
-  .SnSwitch-ios + .SnSwitch-btn:after {
-    border-radius: 2em;
-    background: var(--snColorTextAlt);
-    -webkit-transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
-    -o-transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
-    transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease; }
-  .SnSwitch-ios + .SnSwitch-btn:hover:after {
-    will-change: padding; }
-  .SnSwitch-ios + .SnSwitch-btn:active:after {
-    padding-right: 0.8em; }
-
-.SnSwitch-ios:checked + .SnSwitch-btn {
-  border: 1px solid var(--snColor1) !important; }
-  .SnSwitch-ios:checked + .SnSwitch-btn:active:after {
-    margin-left: -0.8em; }
-  .SnSwitch-ios:checked + .SnSwitch-btn:after {
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 0.375rem;
+      left: -2.8rem;
+      -webkit-transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+      -o-transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+      transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease; }
+  .SnSwitch-input:checked + .SnSwitch-label:after {
+    left: -1.65rem;
     background: var(--snColor1); }
+  .SnSwitch-input:checked + .SnSwitch-label:before {
+    border-color: var(--snColor1); }
 
 .SnTooltip {
   padding: 6px 8px;
@@ -1086,6 +1878,46 @@ body {
   display: none; }
   .SnTab-content.is-active {
     display: block; }
+
+.SnCollapse {
+  display: none; }
+  .SnCollapse-expanded {
+    display: block; }
+
+.SnDivider {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+  .SnDivider-innerText {
+    display: inline-block;
+    padding: 0 10px;
+    font-weight: 500; }
+  .SnDivider::after, .SnDivider::before {
+    top: 0;
+    position: relative;
+    border-top: 1px solid #e8e8e8;
+    content: '';
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto; }
+  .SnDivider.textLeft::before {
+    width: 5%;
+    -webkit-box-flex: inherit;
+    -ms-flex: inherit;
+    flex: inherit; }
+  .SnDivider.textRight::after {
+    width: 5%;
+    -webkit-box-flex: inherit;
+    -ms-flex: inherit;
+    flex: inherit; }
+
+.SnHide {
+  display: none; }
 
 .AdminLayout-header {
   line-height: 56px;
@@ -1604,9 +2436,62 @@ body {
 .User-description, .User-title {
   margin: 0; }
 
-.hidden {
-  opacity: 0;
-  pointer-events: none; }
+.Invoice-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 1rem; }
+  .Invoice-header > div {
+    margin-right: 1rem; }
+
+.Invoice-body {
+  border-top: 1px dashed var(--snColorBorder);
+  padding-top: 1rem; }
+
+.Invoice-footer {
+  padding-top: 2rem; }
+
+.Invoice-send {
+  border-top: 1px dashed var(--snColorBorder);
+  padding-top: 2rem;
+  margin-top: 2rem; }
+
+.Invoice-totals {
+  width: 100%;
+  border-collapse: collapse; }
+  .Invoice-totals th {
+    text-align: left; }
+  .Invoice-totals td,
+  .Invoice-totals th {
+    border-top: 1px solid var(--snColorBorder);
+    padding: .7rem; }
+
+.InvoiceFooter {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[12];
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: 1rem; }
+  .InvoiceFooter-item {
+    -ms-grid-column: 1;
+    grid-column-start: 1;
+    -ms-grid-column-span: 6;
+    grid-column-end: 7; }
+  .InvoiceFooter-total {
+    -ms-grid-column: 8;
+    grid-column-start: 8;
+    -ms-grid-column-span: 5;
+    grid-column-end: 13; }
+
+.InvoiceTotal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between; }
+  .InvoiceTotal-amount {
+    color: var(--snColorTextAlt); }
 
 .SnTag {
   font-size: .8rem;
@@ -1647,3 +2532,28 @@ body {
     .SnDoc {
       -ms-grid-columns: 1fr 280px;
       grid-template-columns: 1fr 280px; } }
+
+.SnLiveList {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid var(--snColorBorder);
+  border-top: none;
+  background: var(--snColorBgAlt);
+  z-index: 100000;
+  max-height: 300px;
+  overflow-y: auto;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #333;
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+  .SnLiveList-item {
+    border-bottom: 1px solid var(--snColorBorder);
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer; }
+    .SnLiveList-item:last-child {
+      border-bottom: 0; }

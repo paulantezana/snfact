@@ -19,7 +19,7 @@
         <div class="SnCard">
             <div class="SnCard-body">
                 <div class="SnInput-wrapper SnMb-16">
-                    <input type="text" class="SnForm-input" onkeyup="ProductForm.search(event)">
+                    <input type="text" class="SnForm-control" onkeyup="ProductForm.search(event)">
                     <span class="SnInput-suffix icon-search"></span>
                 </div>
                 <div id="productTable"></div>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <script src="<?= URL_PATH ?>/assets/dist/script/product-min.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/company/product.js"></script>
 
     <div class="SnModal-wrapper" data-modal="productModalForm">
         <div class="SnModal">
@@ -39,11 +39,11 @@
             <div class="SnModal-header">Producto</div>
             <div class="SnModal-body">
                 <form action="" class="SnForm" id="productForm" onsubmit="ProductForm.submit(event)">
-                    <input type="hidden" class="SnForm-input" id="productId">
+                    <input type="hidden" class="SnForm-control" id="productId">
                     <div class="SnGrid s-2">
                         <div class="SnForm-item required">
                             <label for="productProductKey" class="SnForm-label">Código</label>
-                            <input type="text" class="SnForm-input" id="productProductKey">
+                            <input type="text" class="SnForm-control" id="productProductKey">
                         </div>
                         <div class="SnForm-item required">
                             <label for="productProductCode" class="SnForm-label">Codigo Producto</label>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="SnForm-item required">
                         <label for="productDescription" class="SnForm-label">Nombre del Producto o Servicio</label>
-                        <input type="text" class="SnForm-input" id="productDescription">
+                        <input type="text" class="SnForm-control" id="productDescription">
                     </div>
 
                     <div class="SnForm-item required">
@@ -72,11 +72,11 @@
                     <div class="SnGrid s-2">
                         <div class="SnForm-item required">
                             <label for="productUnitPrice" class="SnForm-label">PrecioVenta(Inc.IGV)</label>
-                            <input type="number" step="any" class="SnForm-input" id="productUnitPrice">
+                            <input type="number" step="any" class="SnForm-control" id="productUnitPrice">
                         </div>
                         <div class="SnForm-item required">
                             <label for="productUnitValue" class="SnForm-label">PrecioVenta(Sin IGV)</label>
-                            <input type="number" step="any" class="SnForm-input" id="productUnitValue">
+                            <input type="number" step="any" class="SnForm-control" id="productUnitValue">
                         </div>
                     </div>
                     <div class="SnForm-item required">
@@ -109,7 +109,7 @@
                         </div>
                         <div class="SnForm-item">
                             <label for="productIsc" class="SnForm-label">ISC</label>
-                            <input type="number" step="any" class="SnForm-input" id="productIsc">
+                            <input type="number" step="any" class="SnForm-control" id="productIsc">
                         </div>
                     </div>
                     <div class="SnForm-item">

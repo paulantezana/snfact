@@ -1,8 +1,8 @@
 <?php
 
-require_once MODEL_PATH . '/User.php';
-require_once MODEL_PATH . '/UserRole.php';
-require_once MODEL_PATH . '/Business.php';
+require_once MODEL_PATH . '/Company/User.php';
+require_once MODEL_PATH . '/Company/UserRole.php';
+require_once MODEL_PATH . '/Company/Business.php';
 
 class UserController extends Controller
 {
@@ -24,7 +24,7 @@ class UserController extends Controller
             $userRoleModel = new UserRole($this->connection);
             $userRole = $userRoleModel->GetAll();
 
-            $this->render('admin/user.php', [
+            $this->render('company/user.php', [
                 'userRole' => $userRole,
             ]);
         } catch (Exception $e) {
@@ -43,7 +43,7 @@ class UserController extends Controller
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
             $user = $this->userModel->Paginate($page, $limit, $search, $business['business_id']);
 
-            $this->render('admin/partials/userTable.php', [
+            $this->render('company/partials/userTable.php', [
                 'user' => $user,
             ]);
         } catch (Exception $e) {
@@ -171,7 +171,7 @@ class UserController extends Controller
         $res = new Result();
         $res->success = true;
 
-        if ($type == 'create' || $type == 'update' ) {
+        if ($type == 'create' || $type == 'update') {
             if (($body['email'] ?? '') == '') {
                 $res->message .= 'Falta ingresar el correo electrónico | ';
                 $res->success = false;
@@ -188,14 +188,14 @@ class UserController extends Controller
             }
         }
 
-        if ($type == 'update' ) {
+        if ($type == 'update') {
             if (($body['userId'] ?? '') == '') {
                 $res->message .= 'Falta ingresar el userId | ';
                 $res->success = false;
             }
         }
 
-        if ($type == 'create' || $type == 'updatePassword' ) {
+        if ($type == 'create' || $type == 'updatePassword') {
             if (($body['password'] ?? '') == '') {
                 $res->message .= 'Falta ingresar la contraseña | ';
                 $res->success = false;
@@ -204,7 +204,7 @@ class UserController extends Controller
                 $res->message .= 'Falta ingresar la confirmación contraseña | ';
                 $res->success = false;
             }
-            if ($body['password'] != $body['passwordConfirm']){
+            if ($body['password'] != $body['passwordConfirm']) {
                 $res->message .= 'Las contraseñas no coinciden | ';
                 $res->success = false;
             }

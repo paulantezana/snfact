@@ -1,9 +1,9 @@
 <?php
 
-require_once MODEL_PATH . '/User.php';
-require_once MODEL_PATH . '/AppAuthorization.php';
-require_once MODEL_PATH.'/Business.php';
-require_once MODEL_PATH.'/BusinessLocal.php';
+require_once MODEL_PATH . '/Company/User.php';
+require_once MODEL_PATH . '/Company/AppAuthorization.php';
+require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Company/BusinessLocal.php';
 
 class AuthController extends Controller
 {
@@ -20,11 +20,12 @@ class AuthController extends Controller
         $this->businessLocalModel = new BusinessLocal($connection);
     }
 
-    public function login(){
-        try{
-            if (!$_POST || !$_POST['user'] || !$_POST['password']){
+    public function login()
+    {
+        try {
+            if (!$_POST || !$_POST['user'] || !$_POST['password']) {
                 $this->render('pages/login.php', [
-                    'messageType'=>'error',
+                    'messageType' => 'error',
                     'message' => 'Los campos usuario y contraseña son requeridos',
                 ]);
                 return;
@@ -32,33 +33,34 @@ class AuthController extends Controller
 
             $user = $_POST['user'];
             $password = $_POST['password'];
-            try{
-                $loginUser = $this->userModel->login($user,$password);
-                if(!$this->initApp($loginUser)){
+            try {
+                $loginUser = $this->userModel->login($user, $password);
+                if (!$this->initApp($loginUser)) {
                     $this->logout();
-                    $this->redirect('/403?message=' .urlencode('Comuniquese con el administrador'));
+                    $this->redirect('/403?message=' . urlencode('Comuniquese con el administrador'));
                     return;
                 }
                 $this->redirect('/dashboard');
-            } catch (Exception $e){
+            } catch (Exception $e) {
                 $this->render('pages/login.php', [
-                    'messageType'=>'error',
+                    'messageType' => 'error',
                     'message' => 'EL nombre usuario o contraseña es incorrecta',
                 ]);
             }
-        } catch (Exception $e){
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
-    public function register(){
-        try{
+    public function register()
+    {
+        try {
             $message = '';
             $messageType = 'info';
             $error = [];
             $register = [];
 
-            try{
+            try {
                 $this->connection->beginTransaction();
                 if (isset($_POST['commit'])) {
                     $register = $_POST['register'];
@@ -76,7 +78,7 @@ class AuthController extends Controller
                         "userName" => $register['userName'],
                         "state" => true,
                         "userRoleId" => 1,
-                    ],1);
+                    ], 1);
 
                     $businessId = $this->businessModel->Insert([
                         'continue_payment' => false,
@@ -86,7 +88,7 @@ class AuthController extends Controller
                         'email' => $register['email'],
                         'phone' => '',
                         'web_site' => '',
-                    ],$userId);
+                    ], $userId);
 
                     $businessLocalId = $this->businessLocalModel->Insert([
                         'short_name' => 'Local principal',
@@ -119,9 +121,9 @@ class AuthController extends Controller
                                 'document_code' => '09',
                             ],
                         ]
-                    ],$userId);
+                    ], $userId);
                 }
-            } catch (Exception $e){
+            } catch (Exception $e) {
                 $this->connection->rollBack();
                 $this->render('pages/register.php', [
                     'messageType' => 'error',
@@ -131,12 +133,13 @@ class AuthController extends Controller
             }
             $this->connection->commit();
             $this->redirect('/');
-        }catch (Exception $e){
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
-    private function initApp($user) {
+    private function initApp($user)
+    {
         unset($user['password']);
         unset($user['temp_key']);
         unset($user['last_update_temp_key']);
@@ -145,7 +148,7 @@ class AuthController extends Controller
         $_SESSION[SESS_KEY] = $user['user_id'];
         $_SESSION[SESS_DATA] = $user;
 
-        try{
+        try {
             // Set Default Business
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
             $businessLocals = $this->businessLocalModel->GetAllByBusinessId($business['business_id']);
@@ -156,34 +159,37 @@ class AuthController extends Controller
             // Menu
             $appAuthorizationModel = new AppAuthorization($this->connection);
             $appAuthorization = $appAuthorizationModel->GetMenu($user['user_role_id']);
-            if (count($appAuthorization)<1){
+            if (count($appAuthorization) < 1) {
                 return false;
             }
             $_SESSION[SESS_MENU] = $appAuthorization;
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return false;
         }
 
         return true;
     }
 
-    public function logout(){
+    public function logout()
+    {
         session_destroy();
         $this->redirect('/');
     }
 
-    public function  forgot(){
+    public function  forgot()
+    {
         $this->render('pages/forgot.php');
     }
 
-    public  function forgotValidate(){
+    public  function forgotValidate()
+    {
         $key = $_GET['key'] ?? '';
-        if ($key == ''){
+        if ($key == '') {
             $this->redirect('/403');
         }
 
         $user = $this->userModel->GetBy('temp_key', $key);
-        if (!$user->success){
+        if (!$user->success) {
             $this->redirect('/403?message=' . $user->message);
         }
 
@@ -223,7 +229,7 @@ class AuthController extends Controller
         }
 
         $user = $this->userModel->GetById((int) $_SESSION[SESS_KEY]);
-        $this->render('admin/profile.php', [
+        $this->render('company/profile.php', [
             'user' => $user,
             'message' => $message,
             'messageType' => $messageType,
@@ -234,19 +240,19 @@ class AuthController extends Controller
     {
         $collector = new ErrorCollector();
         if (($body['email'] ?? '') == '') {
-            $collector->addError('email','Falta ingresar el correo electrónico');
+            $collector->addError('email', 'Falta ingresar el correo electrónico');
         }
         if (($body['userName'] ?? '') == '') {
-            $collector->addError('userName','Falta ingresar el nombre de usuario');
+            $collector->addError('userName', 'Falta ingresar el nombre de usuario');
         }
         if (($body['password'] ?? '') == '') {
-            $collector->addError('password','Falta ingresar la contraseña');
+            $collector->addError('password', 'Falta ingresar la contraseña');
         }
         if (($body['passwordConfirm'] ?? '') == '') {
-            $collector->addError('passwordConfirm','Falta ingresar la confirmación contraseña');
+            $collector->addError('passwordConfirm', 'Falta ingresar la confirmación contraseña');
         }
-        if ($body['password'] != $body['passwordConfirm']){
-            $collector->addError('password','Las contraseñas no coinciden');
+        if ($body['password'] != $body['passwordConfirm']) {
+            $collector->addError('password', 'Las contraseñas no coinciden');
         }
 
         return $collector->getResult();

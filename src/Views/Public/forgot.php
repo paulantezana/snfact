@@ -6,10 +6,13 @@
     <form action="<?= URL_PATH ?>/auth/forgot" method="post" class="SnForm">
         <div class="SnForm-item required">
             <label for="email" class="SnForm-label">Email</label>
-            <input type="email" class="SnForm-input" required id="email" name="email">
+            <div class="SnControl-wrapper">
+                <i class="icon-email-streamline SnControl-prefix"></i>
+                <input type="email" class="SnForm-control SnControl" required id="email" name="email" placeholder="Email">
+            </div>
         </div>
         <button type="submit" class="SnBtn block primary SnMb-16" name="commit">Buscar</button>
-        <a href="<?= URL_PATH ?>" class="SnBtn block">Login</a>
+        <a href="<?= URL_PATH ?>/login" class="SnBtn block">Login</a>
     </form>
 </div>
 

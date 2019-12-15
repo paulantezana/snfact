@@ -82,8 +82,8 @@
     </div>
 </div>
 </div>
-<script src="<?= URL_PATH ?>/assets/script/admin.js"></script>
-<script src="<?= URL_PATH ?>/assets/script/themingApp.js"></script>
+<script src="<?= URL_PATH ?>/assets/script/company/admin.js"></script>
+<script src="<?= URL_PATH ?>/assets/script/company/themingApp.js"></script>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 <?php
 
 
-class AdminController extends Controller
+class ApiController
 {
     protected $connection;
     public function __construct(PDO $connection)
@@ -9,7 +9,6 @@ class AdminController extends Controller
         $this->connection = $connection;
     }
 
-    public function  index(){
-        $this->render('/admin/index.php');
-    }
+    public function  index()
+    { }
 }
