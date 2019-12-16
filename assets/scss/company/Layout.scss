@@ -23,6 +23,9 @@ $headerHeight: 56px;
     left: -100%;
     z-index: 110;
     width: 100%;
+    i{
+      line-height: inherit;
+    }
   }
 }
 

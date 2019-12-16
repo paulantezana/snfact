@@ -18,7 +18,7 @@ class BusinessLocal extends Model
             ]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -136,7 +136,7 @@ class BusinessLocal extends Model
             }
         } catch (Exception $e) {
             $this->db->rollBack();
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -190,7 +190,7 @@ class BusinessLocal extends Model
 
             return $businessLocalId;
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 }

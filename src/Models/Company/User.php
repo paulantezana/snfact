@@ -33,7 +33,7 @@ class User extends Model
             ];
             return $paginate;
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -111,7 +111,7 @@ class User extends Model
 
             return $lastInsertId;
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -123,7 +123,7 @@ class User extends Model
 
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -135,7 +135,7 @@ class User extends Model
 
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -147,7 +147,7 @@ class User extends Model
 
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 }

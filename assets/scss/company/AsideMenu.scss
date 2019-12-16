@@ -1,11 +1,12 @@
 $hoverMenuBg: var(--snColor1);
 $hoverMenuColor: white;
 $menuBorderColor: var(--snColorDark);
+$asideFooterHeight: 32px;
 
 // General styles
 .AsideMenu {
   @extend %snList;
-  height: calc(100vh - #{$headerHeight});
+  height: calc(100vh - #{$headerHeight + $asideFooterHeight});
   background: var(--snColorDarker);
   overflow-y: auto;
   &-container{
@@ -63,8 +64,6 @@ $menuBorderColor: var(--snColorDark);
     }
   }
 }
-
-//
 
 // Divider
 .AsideMenu {
@@ -165,6 +164,12 @@ $menuBorderColor: var(--snColorDark);
   height: $headerHeight;
   padding: 10px 20px;
   border-bottom: 1px solid $menuBorderColor;
+}
+
+// ----------------------------------------------------------------------------
+.AsideFooter{
+   height: $asideFooterHeight;
+   padding: 0 14px 0 14px;
 }
 
 // Branding

@@ -17,13 +17,14 @@ class BusinessSerie extends Model
             ]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
     public function GetNextCorrelative(array $document) {
         try{
-            $sql = 'SELECT max_correlative as correlative, serie, document_code FROM business_serie 
+            $sql = 'SELECT (max_correlative + 1) as number, serie, document_code, cdtc.description FROM business_serie
+                    INNER JOIN cat_document_type_code cdtc on business_serie.document_code = cdtc.code
                     WHERE business_local_id = :business_local_id AND document_code = :document_code';
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':business_local_id',$document['localId']);
@@ -41,14 +42,14 @@ class BusinessSerie extends Model
 //                    ':max_correlative' => $startCorrelative,
 //                    ':state' => true,
 //                ])){
-                throw new Exception('Error correlativo');
+                throw new Exception('Documento no soportado');
 //                }
 //                $data = $startCorrelative;
             } else {
                 return $dataCorrelative;
             }
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 }

@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/company.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/nprogress.css">
-    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/styles.css">
+    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/style.css">
 
     <script src="<?= URL_PATH ?>/assets/script/company/nprogress.js"></script>
     <script src="<?= URL_PATH ?>/assets/script/common/common.js"></script>
@@ -18,13 +18,13 @@
         <div class="AdminLayout-header">
             <header class="Header">
                 <div class="Header-left">
-                    <div id="AsideMenu-toggle"> <i class="icon-menu"></i> </div>
+                    <div id="AsideMenu-toggle"> <i class="icon-list2"></i> </div>
                 </div>
                 <div class="Header-right">
                     <ul class="HeaderMenu SnMenu">
                         <li>
                             <div class="Header-action">
-                                <select class="SnForm-select">
+                                <select class="SnForm-control">
                                     <option value="">Seleccionar local</option>
                                     <?php
                                         if (isset($_SESSION[SESS_LOCALS]) && isset($_SESSION[SESS_CURRENT_LOCAL])):
@@ -42,12 +42,12 @@
                         </li>
                         <li>
                             <a href="<?= URL_PATH ?>/business/update" class="Header-action Header-sunatState production">
-                                <i class="icon-check"></i> Produción
+                                <i class="icon-check SnMr-2"></i> Produción
                             </a>
                         </li>
                         <li>
                             <a href="<?= URL_PATH ?>/busines" class="Header-action">
-                                <i class="icon-bell-o"></i>
+                                <i class="icon-bell3"></i>
                             </a>
                         </li>
                         <li>
@@ -66,10 +66,10 @@
                                         <div class="User-description"><?= $_SESSION[SESS_DATA]['email'] ?></div>
                                     </div>
                                 </li>
-                                <li><a href="<?= URL_PATH ?>/auth/profile"> <i class="icon-user"></i> Perfil</a></li>
-                                <li><a href="<?= URL_PATH ?>/"> <i class="icon-sign-out"></i> Soporte</a></li>
-                                <li><a href="<?= URL_PATH ?>/business/update"> <i class="icon-cog"></i> Configurar empresa</a></li>
-                                <li><a href="<?= URL_PATH ?>/auth/logout"> <i class="icon-sign-out"></i> Cerrar sesión</a></li>
+                                <li><a href="<?= URL_PATH ?>/auth/profile"> <i class="icon-user-plus SnMr-2"></i> Perfil</a></li>
+                                <li><a href="<?= URL_PATH ?>/"> <i class="icon-help SnMr-2"></i> Soporte</a></li>
+                                <li><a href="<?= URL_PATH ?>/business/update"> <i class="icon-cog SnMr-2"></i> Configurar empresa</a></li>
+                                <li><a href="<?= URL_PATH ?>/auth/logout"> <i class="icon-switch2 SnMr-2"></i> Cerrar sesión</a></li>
                             </ul>
                         </li>
                     </ul>

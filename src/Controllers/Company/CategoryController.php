@@ -23,7 +23,9 @@ class CategoryController extends Controller
             Authorization($this->connection, 'categoria', 'listar');
             $this->render('company/category.php');
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -42,7 +44,9 @@ class CategoryController extends Controller
                 'category' => $category,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 

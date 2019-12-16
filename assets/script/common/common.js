@@ -126,29 +126,3 @@ const groupBy = function(data, key) {
         return a;
     }, {});
 };
-
-
-let SnCollapse = {
-    init(){
-        let dataCollapses = document.querySelectorAll('[data-collapsetrigger]');
-        for (let i = 0; i < dataCollapses.length; i++) {
-            dataCollapses[i].addEventListener('click', (e) => {
-                let collapseName = dataCollapses[i].dataset.collapsetrigger;
-                let collapse = document.querySelector(`[data-collapse="${collapseName}"]`);
-                collapse.classList.toggle('SnCollapse-expanded');
-            })
-        }
-    },
-    open(collapseName){
-        let collapse = document.querySelector(`[data-collapse="${collapseName}"]`);
-        collapse.classList.add('SnCollapse-expanded');
-    },
-    close(collapseName){
-        let collapse = document.querySelector(`[data-collapse="${collapseName}"]`);
-        collapse.classList.remove('SnCollapse-expanded');
-    },
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-    SnCollapse.init();
-});

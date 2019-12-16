@@ -68,15 +68,31 @@ let Invoice = {
         this.invoiceCurrencyInput = document.getElementById('invoiceCurrencyCode');
         this.invoiceDocumentInput = document.getElementById('invoiceDocumentCode');
 
+        // Set Currency Symbol
+        this.setCurrencySymbol();
         this.invoiceCurrencyInput.addEventListener('change',e =>{
-            document.querySelectorAll('.jsCurrencySymbol').forEach(item => {
-                item.textContent = this.invoiceCurrencyInput.options[this.invoiceCurrencyInput.options.selectedIndex].dataset.symbol;
-            });
+            this.setCurrencySymbol();
         });
+
+        this.setListenersTotalById([
+            'invoiceTotalDiscountPercentage',
+            'invoiceTotalOtherCharger',
+        ]);
+
 
         let includeIgv = document.getElementById('includeIgv');
         includeIgv.addEventListener('change',e =>{
             this.includeIgv = includeIgv.checked;
+        });
+    },
+
+    setLoading(){
+
+    },
+
+    setCurrencySymbol(){
+        document.querySelectorAll('.jsCurrencySymbol').forEach(item => {
+            item.textContent = this.invoiceCurrencyInput.options[this.invoiceCurrencyInput.options.selectedIndex].dataset.symbol;
         });
     },
 
@@ -94,7 +110,7 @@ let Invoice = {
         let plasticBagTaxInput = [...document.querySelectorAll('.jsInvoicePlasticBagTax')];
 
         // let invoiceSaleCreditNoteCode = $('#invoiceSaleCreditNoteCode');
-        let invoiceGlobalDiscountPercentage = document.getElementById('invoiceTotalDiscountPercentage').value;
+        let invoiceGlobalDiscountPercentage = document.getElementById('invoiceGlobalDiscountPercentage').value;
 
         // CALC prepayment
         // let sumPrepaymentTotalItem = 0;
@@ -258,6 +274,7 @@ let Invoice = {
     },
 
     calcItem(uniqueId){
+        console.log('Me ejecute' + uniqueId);
         let affectationIgvInput = document.getElementById(`invoiceItemAffectationCode${uniqueId}`);
         let taxIscInput = document.getElementById(`invoiceItemIscTax${uniqueId}`);
         let systemIscCodeInput = document.getElementById(`invoiceItemIscSystem${uniqueId}`);
@@ -421,9 +438,20 @@ let Invoice = {
         this.calcTotal();
     },
 
-    setListeners(list, uniqueId){
-        [...list].forEach(itemId => {
-            let elementListener = document.getElementById(itemId);
+    setListenersTotalById(list){
+        [...list].forEach(element => {
+            let elementListener = document.getElementById(`${element}`);
+            if (elementListener){
+                elementListener.addEventListener('change',()=>this.calcTotal());
+                elementListener.addEventListener('keyup',()=>this.calcTotal());
+                elementListener.addEventListener('paste',()=>this.calcTotal());
+            }
+        })
+    },
+
+    setListenersItemById(list, uniqueId){
+        [...list].forEach(element => {
+            let elementListener = document.getElementById(`${element}`);
             if (elementListener){
                 elementListener.addEventListener('change',()=>this.calcItem(uniqueId));
                 elementListener.addEventListener('keyup',()=>this.calcItem(uniqueId));
@@ -451,6 +479,7 @@ let Invoice = {
             onSelect: (target, data) => {
                 document.getElementById(`invoiceItemAffectationCode${uniqueId}`).value = data.affectation_code;
                 document.getElementById(`invoiceItemUnitMeasure${uniqueId}`).value = data.unit_measure_code;
+                document.getElementById(`invoiceProductCode${uniqueId}`).value = data.product_code;
                 document.getElementById(`invoiceItemDescription${uniqueId}`).value = data.description;
                 document.getElementById(`invoiceItemUnitPrice${uniqueId}`).value = data.unit_price;
                 document.getElementById(`invoiceItemUnitValue${uniqueId}`).value = data.unit_value;
@@ -462,7 +491,7 @@ let Invoice = {
             }
         });
 
-        this.setListeners([
+        this.setListenersItemById([
             `invoiceItemQuantity${uniqueId}`,
             `invoiceItemUnitPrice${uniqueId}`,
             `invoiceItemUnitValue${uniqueId}`,
@@ -478,6 +507,8 @@ let Invoice = {
         invoiceItemDescription.addEventListener('keyup',e => {
             document.getElementById(`invoiceItemDescriptionText${uniqueId}`).textContent =  invoiceItemDescription.value;
         });
+
+        this.setCurrencySymbol();
     },
 
     openItemModal(uniqueId){
@@ -492,19 +523,18 @@ let Invoice = {
         let elem = document.getElementById(`invoiceItem${uniqueId}`);
         if (elem){
             elem.parentNode.removeChild(elem);
-            this.calcItem();
+            this.calcTotal();
         }
     },
 
     addItem(){
         let uniqueId = generateUniqueId();
-
         let addInvoiceItem = document.getElementById('addInvoiceItem');
         if (addInvoiceItem){
             let itemTemplate = addInvoiceItem.dataset.itemtemplate;
             itemTemplate = eval('`' + itemTemplate + '`');
             if (this.invoiceItemTableBody){
-                this.invoiceItemTableBody.innerHTML = this.invoiceItemTableBody.innerHTML + itemTemplate;
+                this.invoiceItemTableBody.insertAdjacentHTML('beforeend',itemTemplate);
                 this.openItemModal(`${uniqueId}`);
                 this.executeItem(uniqueId);
             }
@@ -513,7 +543,8 @@ let Invoice = {
 
     submit(event){
         event.preventDefault();
-        //let _setLoading = this.setLoading();
+
+        // let _setLoading = this.setLoading();
 
         SnModal.confirm({
             title: 'Necesitamos de tu Confirmación\n',
@@ -521,6 +552,7 @@ let Invoice = {
             okText: 'Si, Adelante!',
             cancelText: 'Cancelar',
             onOk() {
+                SnFreeze.freeze({selector: '#invoiceFormTemplateContainer'});
                 let invoiceForm = document.getElementById('invoiceForm');
                 RequestApi.fetch('/invoice/createF',{
                     method: 'POST',
@@ -536,19 +568,42 @@ let Invoice = {
 
                             },
                             onCancel() {
-                                console.log('onCancel')
+                                // InvoiceFormTemplate.load();
                             }
                         });
                     } else {
                         SnModal.error({ title: 'Algo salió mal', content: res.message })
                     }
                 }).finally(e => {
-                    _setLoading(false);
+                    SnFreeze.unFreeze('#invoiceFormTemplateContainer');
                 });
             },
         });
     }
 };
+//
+// let InvoiceFormTemplate = {
+//     load(){
+//
+//         let invoiceFormTemplateContainer = document.getElementById('invoiceFormTemplateContainer');
+//         if (invoiceFormTemplateContainer){
+//             SnFreeze.freeze({selector: '#invoiceFormTemplateContainer'});
+//             RequestApi.fetchText(`/invoice/formTemplate`,{
+//                 method: 'GET',
+//             }).then(res => {
+//                 invoiceFormTemplateContainer.innerHTML = res;
+//                 // Reload Sedna
+//                 SnCollapse.reload();
+//                 SnTab.reload();
+//
+//                 // Init Invoice
+//                 Invoice.init();
+//             }).finally(e =>{
+//                 SnFreeze.unFreeze('#invoiceFormTemplateContainer');
+//             })
+//         }
+//     },
+// };
 
 document.addEventListener('DOMContentLoaded',()=>{
     Invoice.init();

@@ -18,7 +18,7 @@ class UserRole extends Model
             }
             return  (int)$this->db->lastInsertId();
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 }

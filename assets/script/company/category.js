@@ -10,21 +10,23 @@ let  CategoryForm = {
         this.currentForm = document.getElementById('categoryForm');
         this.submitButton = document.getElementById('categoryFormSubmit');
         this.list();
-    },
-    search(event){
-        event.preventDefault();
-        this.list(1,10,event.target.value);
+
+        document.getElementById('searchContent').addEventListener('input',e=>{
+            this.list(1,10,e.target.value);
+        });
     },
     list(page = 1, limit = 10, search = ''){
         let categoryTable = document.getElementById('categoryTable');
         if(categoryTable){
             this.setLoading(true);
+            SnFreeze.freeze({selector: '#categoryTable'});
             RequestApi.fetchText(`/category/table?limit=${limit}&page=${page}&search=${search}`,{
                 method: 'GET',
             }).then(res => {
                 categoryTable.innerHTML = res;
             }).finally(e =>{
                 this.setLoading(false);
+                SnFreeze.unFreeze('#categoryTable');
             })
         }
     },
@@ -114,14 +116,12 @@ let  CategoryForm = {
                 }).then(res => {
                     if (res.success) {
                         SnMessage.success({ content: res.message });
-                        // _list();
                         this.list();
                     } else {
                         SnModal.error({ title: 'Algo salió mal', content: res.message })
                     }
                 }).finally(e => {
                     this.setLoading(false);
-                    // _setLoading(false);
                 })
             }
         });
@@ -133,12 +133,8 @@ let  CategoryForm = {
         SnModal.open(this.modalName);
     },
 
-    executeUpdateNormal(categoryId){
-        this.currentModeForm = 'update';
-        this.showModalUpdate(categoryId);
-    },
-
     showModalUpdate(categoryId){
+        this.currentModeForm = 'update';
         this.clearForm();
 
         this.setLoading(true);

@@ -3,16 +3,19 @@
 require_once MODEL_PATH . '/Company/Invoice.php';
 require_once MODEL_PATH . '/Catalogue/CatCurrencyTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatDocumentTypeCode.php';
+require_once MODEL_PATH . '/Catalogue/CatOperationTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatAffectationIgvTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatSystemIscTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatUnitMeasureTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatIdentityDocumentTypeCode.php';
 require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Company/BusinessSerie.php';
 
 class InvoiceController extends Controller
 {
     private $catCurrencyTypeCodeModel;
     private $catDocumentTypeCodeModel;
+    private $catOperationTypeCodeModel;
     private $catIdentityDocumentTypeCodeModel;
     private $catAffectationIgvTypeCodeModel;
     private $catSystemIscTypeCodeModel;
@@ -27,6 +30,7 @@ class InvoiceController extends Controller
         $this->invoiceModel = new Invoice($connection);
         $this->catCurrencyTypeCodeModel = new CatCurrencyTypeCode($connection);
         $this->catDocumentTypeCodeModel = new CatDocumentTypeCode($connection);
+        $this->catOperationTypeCodeModel = new CatOperationTypeCode($connection);
         $this->catAffectationIgvTypeCodeModel = new CatAffectationIgvTypeCode($connection);
         $this->catSystemIscTypeCodeModel = new CatSystemIscTypeCode($connection);
         $this->catUnitMeasureTypeCodeModel = new CatUnitMeasureTypeCode($connection);
@@ -47,8 +51,8 @@ class InvoiceController extends Controller
                 'messageType' => $messageType,
             ]);
         } catch (Exception $e) {
-            $this->render('pages/500.php', [
-                'message' => $e->getMessage() . "</br>" . $e->getTraceAsString(),
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -66,97 +70,121 @@ class InvoiceController extends Controller
                 'messageType' => $messageType,
             ]);
         } catch (Exception $e) {
-            $this->render('pages/500.php', [
-                'message' => $e->getMessage() . "</br>" . $e->getTraceAsString(),
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
             ]);
         }
     }
 
-    public function newFormF()
-    {
+    public function formTemplate(){
         try {
-            $message = '';
-            $messageType = 'info';
-            $error = [];
+            $businessSerieModel = new BusinessSerie($this->connection);
 
             $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
             $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->GetAll();
             $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
+            $catOperationTypeCode = $this->catOperationTypeCodeModel->GetAll();
 
             $invoiceItemTemplate = $this->invoiceItemTemplate();
 
-            $this->render('company/newFormF.php', [
-                'message' => $message,
-                'error' => $error,
-                'messageType' => $messageType,
+            $invoiceType = $businessSerieModel->GetNextCorrelative([
+                'localId' => $_SESSION[SESS_CURRENT_LOCAL],
+                'documentCode' => '01',
+            ]);
+
+            $this->render('Company/partials/invoiceFormTemplate.php', [
                 'catDocumentTypeCode' => $catDocumentTypeCode,
+                'catOperationTypeCode' => $catOperationTypeCode,
                 'catCurrencyTypeCode' => $catCurrencyTypeCode,
                 'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
 
                 'invoiceItemTemplate' => $invoiceItemTemplate,
+                'invoiceType' => $invoiceType,
             ]);
         } catch (Exception $e) {
-            $this->render('pages/500.php', [
-                'message' => $e->getMessage() . "</br>" . $e->getTraceAsString(),
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
             ]);
         }
     }
 
-    public function newFormB()
-    {
+    public function newInvoice(){
         try {
             $message = '';
             $messageType = 'info';
-            $error = [];
+            $invoice = [];
 
-            $this->render('company/newFormB.php', [
+            if (!isset($_GET['documentCode'])){
+                throw new Exception('No se ningun documento');
+            }
+            if (isset($_GET['invoiceId'])){
+                $invoice = $this->invoiceModel->GetById($_GET['invoiceId']);
+            }
+
+            $businessSerieModel = new BusinessSerie($this->connection);
+            $invoiceType = $businessSerieModel->GetNextCorrelative([
+                'localId' => $_SESSION[SESS_CURRENT_LOCAL],
+                'documentCode' => $_GET['documentCode'],
+            ]);
+
+            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
+            $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->GetAll();
+            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
+            $catOperationTypeCode = $this->catOperationTypeCodeModel->GetAll();
+            $invoiceItemTemplate = $this->invoiceItemTemplate();
+
+            $this->render('Company/newInvoice.php', [
                 'message' => $message,
-                'error' => $error,
                 'messageType' => $messageType,
+
+                'catDocumentTypeCode' => $catDocumentTypeCode,
+                'catOperationTypeCode' => $catOperationTypeCode,
+                'catCurrencyTypeCode' => $catCurrencyTypeCode,
+                'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
+
+                'invoiceItemTemplate' => $invoiceItemTemplate,
+                'invoiceType' => $invoiceType,
+                'invoice' => $invoice,
             ]);
         } catch (Exception $e) {
-            $this->render('pages/500.php', [
-                'message' => $e->getMessage() . "</br>" . $e->getTraceAsString(),
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
             ]);
         }
     }
 
-    public function newFormCreditNote()
-    {
+    public function createInvoice(){
+        $res = new Result();
         try {
-            $message = '';
-            $messageType = 'info';
-            $error = [];
+            $invoice = $_POST['invoice'];
 
-            $this->render('company/newFormCreditNote.php', [
-                'message' => $message,
-                'error' => $error,
-                'messageType' => $messageType,
-            ]);
+//            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $invoice['localId'] = $_SESSION[SESS_CURRENT_LOCAL];
+            $invoice['timeOfIssue'] = date('H:i:s');
+            $invoice['percentageIgv'] = 18.00;
+//            $invoice['itinerant_enable'] = ($invoice['itinerant_enable'] ?? false) == 'on' ? 1 : 0;
+//            $invoice['prepayment_regulation'] = ($invoice['prepayment_regulation'] ?? false) == 'on' ? 1 : 0;
+            $invoice['totalValue'] = $invoice['totalUnaffected'] + $invoice['totalTaxed'] + $invoice['totalExonerated'];
+            $response = $this->invoiceModel->Insert($invoice, $_SESSION[SESS_KEY]);
+
+            $res->result = $response;
+            $res->success = true;
         } catch (Exception $e) {
-            $this->render('pages/500.php', [
-                'message' => $e->getMessage() . "</br>" . $e->getTraceAsString(),
-            ]);
+            $res->message = $e->getMessage();
         }
+        echo json_encode($res);
     }
 
-    public function newFormDebitNote()
-    {
-        try {
-            $message = '';
-            $messageType = 'info';
-            $error = [];
+    public function viewInvoice(){
+        echo 'viewInvoice';
+    }
 
-            $this->render('company/newFormCreditNote.php', [
-                'message' => $message,
-                'error' => $error,
-                'messageType' => $messageType,
-            ]);
-        } catch (Exception $e) {
-            $this->render('pages/500.php', [
-                'message' => $e->getMessage() . "</br>" . $e->getTraceAsString(),
-            ]);
-        }
+    public function viewUpdateInvoice(){
+        echo 'viewUpdateInvoice';
+    }
+
+    public function updateInvoice(){
+        echo 'updateInvoice';
     }
 
     public function search()
@@ -178,44 +206,6 @@ class InvoiceController extends Controller
     }
 
     public function sendEmail()
-    {
-        $res = new Result();
-        try { } catch (Exception $e) {
-            $res->message = $e->getMessage();
-        }
-        echo json_encode($res);
-    }
-
-    public function createF()
-    {
-        $res = new Result();
-        try {
-            $res->result = $_POST;
-        } catch (Exception $e) {
-            $res->message = $e->getMessage();
-        }
-        echo json_encode($res);
-    }
-
-    public function createB()
-    {
-        $res = new Result();
-        try { } catch (Exception $e) {
-            $res->message = $e->getMessage();
-        }
-        echo json_encode($res);
-    }
-
-    public function createCreditNote()
-    {
-        $res = new Result();
-        try { } catch (Exception $e) {
-            $res->message = $e->getMessage();
-        }
-        echo json_encode($res);
-    }
-
-    public function createDebitNote()
     {
         $res = new Result();
         try { } catch (Exception $e) {
@@ -254,70 +244,67 @@ class InvoiceController extends Controller
                 <td  id="invoiceItemUnitPriceText${uniqueId}"></td>
                 <td>
                     <div class="SnControl-group">
-                        <div class="SnBtn"><i class="icon-plus"></i></div>
+                        <div class="SnBtn"><i class="icon-plus2"></i></div>
                         <input class="SnForm-control" type="number" step="any" style="width: 80px">
-                        <div class="SnBtn"><i class="icon-plus"></i></div>
+                        <div class="SnBtn"><i class="icon-plus2"></i></div>
                     </div>
                 </td>
                 <td id="invoiceItemTotalValueText${uniqueId}"></td>
                 <td id="invoiceItemTotalText${uniqueId}"></td>
                 <td>
                     <div class="SnBtn" onclick="Invoice.openItemModal(\'${uniqueId}\')"><i class="icon-pencil"></i></div>
-                    <div class="SnBtn error" onclick="Invoice.removeItem(\'${uniqueId}\')"><i class="icon-trash"></i></div>
+                    <div class="SnBtn error" onclick="Invoice.removeItem(\'${uniqueId}\')"><i class="icon-trash-alt"></i></div>
                     <div>
                         <div class="SnModal-wrapper" data-modal="invoiceItemModal${uniqueId}">
                             <div class="SnModal">
                                 <div class="SnModal-close" data-modalclose="invoiceItemModal${uniqueId}"
                                     onclick="Invoice.closeItemModal(\'${uniqueId}\')">
-                                    <svg viewBox="64 64 896 896" class="" data-icon="close" width="1em" height="1em"
-                                        fill="currentColor" aria-hidden="true" focusable="false">
-                                        <path
-                                            d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z">
-                                        </path>
-                                    </svg></div>
-                                <div class="SnModal-header">Seleccionar un Producto/Servicio</div>
+                                        <i class="icon-cross"></i>
+                                </div>
+                                <div class="SnModal-header"><i class="icon-list2 SnMr-2"></i> Seleccionar un Producto/Servicio</div>
                                 <div class="SnModal-body">
                                     <div class="SnForm-item">
-                                        <label class="SnForm-label" for="invoiceItemProductSearch${uniqueId}">Aquí puedes buscar y seleccionar tu producto/servicio!</label>
+                                        <label class="SnForm-label" for="invoiceItemProductSearch${uniqueId}"><i class="icon-cart-add SnMr-2"></i> Aquí puedes buscar y seleccionar tu producto/servicio!</label>
                                         <div class="SnControl-wrapper">
-                                            <input class="SnForm-control SnControl" type="text" id="invoiceItemProductSearch${uniqueId}">
-                                            <i class="icon-search SnControl-suffix"></i>
+                                            <input class="SnForm-control lg SnControl" type="text" id="invoiceItemProductSearch${uniqueId}">
+                                            <i class="icon-search4 SnControl-suffix"></i>
                                         </div>
+                                       <input type="hidden" id="invoiceProductCode${uniqueId}" name="invoice[item][${uniqueId}][productCode]">
                                     </div>
                                     <div class="SnCollapse" data-collapse="invoiceProductData${uniqueId}">
                                         <div class="SnGrid m-grid-3">
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemAffectationCode${uniqueId}">Tipo Afectación IGV</label>
                                                 <select name="invoice[item][${uniqueId}][affectationCode]" id="invoiceItemAffectationCode${uniqueId}" class="SnForm-control jsInvoiceItemAffectationCode">
                                                     ' . $affectationIgvTemplate . '
                                                 </select>
                                             </div>
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemUnitMeasure${uniqueId}">Und/Medida</label>
                                                 <select name="invoice[item][${uniqueId}][unitMeasure]" id="invoiceItemUnitMeasure${uniqueId}" class="SnForm-control">
                                                     ' . $unitMeasureTemplate . '
                                                 </select>
                                             </div>
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemQuantity${uniqueId}">Cantidad</label>
                                                 <div class="SnControl-wrapper">
-                                                    <i class="icon-world SnControl-prefix"></i>
+                                                    <span class="jsCurrencySymbol SnControl-prefix"></span>
                                                     <input class="SnForm-control SnControl" type="number" step="any" min="0"
                                                         id="invoiceItemQuantity${uniqueId}" name="invoice[item][${uniqueId}][quantity]">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="SnForm-item">
+                                        <div class="SnForm-item required">
                                             <label class="SnForm-label" for="invoiceItemDescription${uniqueId}">Descripcion</label>
                                             <div class="SnControl-wrapper">
-                                                <i class="icon-file-text SnControl-prefix"></i>
+                                                <i class="icon-file-text2 SnControl-prefix"></i>
                                                 <input class="SnForm-control SnControl" type="text"
                                                     id="invoiceItemDescription${uniqueId}"
-                                                    name="invoice[item][${uniqueId}][descripcion]">
+                                                    name="invoice[item][${uniqueId}][description]">
                                             </div>
                                         </div>
                                         <div class="SnGrid m-grid-3">
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemUnitPrice${uniqueId}">Precio/Uni(Inc.IGV)</label>
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
@@ -326,7 +313,7 @@ class InvoiceController extends Controller
                                                         name="invoice[item][${uniqueId}][unitPrice]">
                                                 </div>
                                             </div>
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemUnitValue${uniqueId}">Precio/Uni(Sin.IGV)</label>
                                                 <div class="SnControl-wrapper">
                                                     <i class="jsCurrencySymbol SnControl-prefix"></i>
@@ -335,7 +322,7 @@ class InvoiceController extends Controller
                                                         name="invoice[item][${uniqueId}][unitValue]">
                                                 </div>
                                             </div>
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemTotalValue${uniqueId}">Sub.Total</label>
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
@@ -372,7 +359,7 @@ class InvoiceController extends Controller
                                             </div>
                                         </div>
                                         <div class="SnGrid m-grid-3">
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemDiscount${uniqueId}">Descuento</label>
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
@@ -380,7 +367,7 @@ class InvoiceController extends Controller
                                                         id="invoiceItemDiscount${uniqueId}" name="invoice[item][${uniqueId}][discount]">
                                                 </div>
                                             </div>
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemIgv${uniqueId}">IGV (18%)</label>
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
@@ -389,7 +376,7 @@ class InvoiceController extends Controller
                                                 </div>
                                                 <input type="hidden" id="invoiceItemTotalBaseIgv${uniqueId}" name="invoice[item][${uniqueId}][totalBaseIgv]">
                                             </div>
-                                            <div class="SnForm-item">
+                                            <div class="SnForm-item required">
                                                 <label class="SnForm-label" for="invoiceItemTotal${uniqueId}">Total</label>
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>

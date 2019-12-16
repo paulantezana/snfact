@@ -22,7 +22,7 @@ class Model
             $stmt->execute();
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ class Model
             ];
             return $paginate;
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ class Model
             $stmt->execute([":$this->tableID" => $id]);
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ class Model
             $stmt->execute([":$columnName" => $value]);
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ class Model
             }
             return $id;
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -104,7 +104,7 @@ class Model
             }
             return $value;
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -130,7 +130,7 @@ class Model
             }
             return $id;
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -156,7 +156,7 @@ class Model
             }
             return $value;
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -171,7 +171,7 @@ class Model
 
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception("Error en metodo : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 }

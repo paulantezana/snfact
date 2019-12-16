@@ -17,16 +17,16 @@
     </div>
     <div class="SnCard">
         <div class="SnCard-body">
-            <div class="SnInput-wrapper SnMb-16">
-                <input type="text" class="SnForm-input" onkeyup="UserForm.search(event)">
-                <span class="SnInput-suffix icon-search"></span>
+            <div class="SnControl-wrapper SnMb-16">
+                <input type="text" class="SnForm-control SnControl" onkeyup="UserForm.search(event)">
+                <span class="SnControl-suffix icon-search"></span>
             </div>
             <div id="userTable"></div>
         </div>
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/dist/script/user-min.js"></script>
+<script src="<?= URL_PATH ?>/assets/script/company/user.js"></script>
 
 <div class="SnModal-wrapper" data-modal="userModalForm">
     <div class="SnModal">
@@ -38,27 +38,27 @@
         <div class="SnModal-header">Usuario</div>
         <div class="SnModal-body">
             <form action="" class="SnForm" id="userForm" onsubmit="UserForm.submit(event)">
-                <input type="hidden" class="SnForm-input" id="userId">
+                <input type="hidden" class="SnForm-control" id="userId">
                 <div class="SnForm-item required">
                     <label for="userEmail" class="SnForm-label">Email</label>
-                    <input type="email" class="SnForm-input" id="userEmail">
+                    <input type="email" class="SnForm-control" id="userEmail">
                 </div>
                 <div class="SnForm-item required">
                     <label for="userUserName" class="SnForm-label">Nombre de usuario</label>
-                    <input type="text" class="SnForm-input" id="userUserName">
+                    <input type="text" class="SnForm-control" id="userUserName">
                 </div>
                 <div class="SnForm-item required">
                     <label for="userPassword" class="SnForm-label">Contraseña</label>
-                    <div class="SnInput-wrapper">
-                        <input type="password" class="SnForm-input" id="userPassword">
-                        <span class="SnInput-suffix icon-eye togglePassword"></span>
+                    <div class="SnControl-wrapper">
+                        <input type="password" class="SnForm-control" id="userPassword">
+                        <span class="SnControl-suffix icon-eye togglePassword"></span>
                     </div>
                 </div>
                 <div class="SnForm-item required">
                     <label for="userPasswordConfirm" class="SnForm-label">Confirmar contraseña</label>
-                    <div class="SnInput-wrapper">
-                        <input type="password" class="SnForm-input" id="userPasswordConfirm">
-                        <span class="SnInput-suffix icon-eye togglePassword"></span>
+                    <div class="SnControl-wrapper">
+                        <input type="password" class="SnForm-control" id="userPasswordConfirm">
+                        <span class="SnControl-suffix icon-eye togglePassword"></span>
                     </div>
                 </div>
                 <div class="SnForm-item required">

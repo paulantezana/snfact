@@ -14,24 +14,24 @@
             <ul class="AsideMenu" id="AsideMenu">
                 <?php if (ArrayFindIndexByColumn($asideMenu,'module','escritorio')): ?>
                     <li>
-                        <a href="<?= URL_PATH ?>/dashboard"> <i class="icon-home"></i> <span>Inicio </span> </a>
+                        <a href="<?= URL_PATH ?>/"> <i class="icon-home"></i> <span>Inicio </span> </a>
                     </li>
                 <?php endif; ?>
                 <li>
                     <a href="<?= URL_PATH ?>/invoice"> <i class="icon-rocket"></i> <span>Comprobantes </span> </a>
                     <ul>
                         <li><a href="<?= URL_PATH ?>/invoice">Lista comprobantes</a></li>
-                        <li><a href="<?= URL_PATH ?>/invoice/newFormF">Emitir factura</a></li>
-                        <li><a href="<?= URL_PATH ?>/invoice/newFormB">Emitir boleta</a></li>
-                        <li><a href="<?= URL_PATH ?>/invoice/newFormCreditNote">Emitir nota crédito</a></li>
-                        <li><a href="<?= URL_PATH ?>/invoice/newFormDebitNote">Emitir nota débito</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07">Emitir nota crédito</a></li>
+                        <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08">Emitir nota débito</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="<?= URL_PATH ?>/voided"> <i class="icon-ioxhost"></i> <span>Anulaciones </span> </a>
+                    <a href="<?= URL_PATH ?>/voided"> <i class="icon-warning"></i> <span>Anulaciones </span> </a>
                 </li>
                 <li>
-                    <a href="<?= URL_PATH ?>/summary"> <i class="icon-clone"></i> <span>Resumenes </span> </a>
+                    <a href="<?= URL_PATH ?>/summary"> <i class="icon-make-group"></i> <span>Resumenes </span> </a>
                 </li>
                 <li>
                     <a href="#"> <i class="icon-cube"></i> <span>Mantenimiento </span> </a>
@@ -78,12 +78,17 @@
                     </ul>
                 </li>
             </ul>
+            <div class="AsideFooter">
+                <div class="SnSwitch">
+                    <input class="SnSwitch-input" type="checkbox" id="themeMode" >
+                    <label class="SnSwitch-label" for="themeMode"></label>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 </div>
 <script src="<?= URL_PATH ?>/assets/script/company/admin.js"></script>
-<script src="<?= URL_PATH ?>/assets/script/company/themingApp.js"></script>
 </body>
 
 </html>

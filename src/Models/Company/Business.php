@@ -17,7 +17,7 @@ class Business extends Model
             $stmt->execute([":user_id" => $userReferID]);
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ class Business extends Model
                 return $businessId;
             }
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 
@@ -97,7 +97,7 @@ class Business extends Model
 
             return $businessId;
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }
 }

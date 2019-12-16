@@ -26,8 +26,8 @@ class UserRoleController extends Controller
                 'appAuthorization' => $appAuthorization
             ]);
         } catch (Exception $e) {
-            $this->render('pages/500', [
-                'error' => $e->getMessage()
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -42,7 +42,9 @@ class UserRoleController extends Controller
                 'userRole' => $userRole
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 

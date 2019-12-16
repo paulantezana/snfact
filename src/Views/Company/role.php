@@ -77,7 +77,7 @@
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/dist/script/userRole-min.js"></script>
+<script src="<?= URL_PATH ?>/assets/script/company/userRole.js"></script>
 
 <div class="SnModal-wrapper" data-modal="userRoleModalForm">
     <div class="SnModal">
@@ -89,10 +89,10 @@
         <div class="SnModal-header">Rol</div>
         <div class="SnModal-body">
             <form action="" class="SnForm" id="userRoleForm" onsubmit="UserRoleForm.submit(event)">
-                <input type="hidden" class="SnForm-input" id="userRoleFormId">
+                <input type="hidden" class="SnForm-control" id="userRoleFormId">
                 <div class="SnForm-item">
                     <label for="userRoleFormName" class="SnForm-label">Nombre</label>
-                    <input type="text" class="SnForm-input" id="userRoleFormName">
+                    <input type="text" class="SnForm-control" id="userRoleFormName">
                 </div>
                 <div class="SnForm-item">
                     <button type="submit" class="SnBtn primary block" id="userRoleFormSubmit">Guardar</button>

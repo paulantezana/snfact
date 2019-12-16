@@ -19,10 +19,10 @@
                     </td>
                     <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn jsCategoryOption" data-tooltip="Editar" onclick="CategoryForm.executeUpdateNormal(<?= $row['category_id'] ?>)">
+                            <div class="SnBtn jsCategoryOption" data-tooltip="Editar" onclick="CategoryForm.showModalUpdate(<?= $row['category_id'] ?>)">
                                 <i class="icon-pencil"></i>
                             </div>
-                            <div class="SnBtn jsCategoryOption" data-tooltip="Eliminar" onclick="CategoryForm.delete(<?= $row['category_id'] ?>,'<?= $row['name'] ?>')">
+                            <div class="SnBtn error jsCategoryOption" data-tooltip="Eliminar" onclick="CategoryForm.delete(<?= $row['category_id'] ?>,'<?= $row['name'] ?>')">
                                 <i class="icon-trash"></i>
                             </div>
                         </div>

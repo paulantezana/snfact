@@ -31,10 +31,6 @@
             justify-content: space-between;
             padding-right: 0;
         }
-        [class*="icon-"]:before{
-            position: relative;
-            top: 2px;
-        }
     }
     li {
         &:hover{
@@ -80,9 +76,7 @@
 
 .Header{
     &-sunatState{
-        [class*="icon"]{
-            margin-right: 8px;
-        }
+        font-weight: 500;
         &.demo{
             color: var(--snError);
             &:hover{

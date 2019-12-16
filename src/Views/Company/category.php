@@ -1,26 +1,23 @@
 <?php require_once __DIR__ . '/layout/header.php'; ?>
     <div class="SnContent">
-        <?php require_once __DIR__ . '/partials/invoiceToolbar.php'; ?>
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class="icon-angle-right"></i> Categorias
+                <i class="icon-dots SnMr-2"></i> Categorias
             </div>
             <div class="SnToolbar-right">
-                <div class="SnBtn jsCategoryOption" onclick="CategoryForm.list()">
-                    <i class="icon-refresh"></i>
-                    Actualizar
+                <div class="SnBtn jsCategoryOption SnMr-2" onclick="CategoryForm.list()">
+                    <i class="icon-reload-alt SnMr-2"></i> Actualizar
                 </div>
                 <div class="SnBtn primary jsCategoryOption" onclick="CategoryForm.showModalCreate()">
-                    <i class="icon-plus"></i>
-                    Nuevo
+                    <i class="icon-plus2 SnMr-2"></i> Nuevo
                 </div>
             </div>
         </div>
         <div class="SnCard">
             <div class="SnCard-body">
-                <div class="SnControl-wrapper SnMb-16">
-                    <input type="text" class="SnForm-control SnControl" onkeyup="CategoryForm.search(event)">
-                    <span class="SnControl-suffix icon-search"></span>
+                <div class="SnControl-wrapper SnMb-5">
+                    <input type="text" class="SnForm-control SnControl" id="searchContent">
+                    <span class="SnControl-suffix icon-search4"></span>
                 </div>
                 <div id="categoryTable"></div>
             </div>

@@ -399,19 +399,23 @@ CREATE TABLE invoice(
 
 CREATE TABLE invoice_sunat(
     invoice_sunat_id INT AUTO_INCREMENT NOT NULL,
+    invoice_id INT NOT NULL,
     invoice_state_id SMALLINT,
     send BOOLEAN,
     code BOOLEAN,
     response VARCHAR(15),
     other TEXT,
     CONSTRAINT pk_invoice_sunat PRIMARY KEY (invoice_sunat_id),
-    CONSTRAINT uk_invoice_sunat UNIQUE KEY (invoice_state_id),
+    CONSTRAINT uk_invoice_sunat UNIQUE KEY (invoice_state_id,invoice_id),
+    CONSTRAINT fk_invoice_sunat_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
      CONSTRAINT fk_invoice_sunat_invoice_state FOREIGN KEY (invoice_state_id) REFERENCES invoice_state (invoice_state_id)
          ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
 CREATE TABLE invoice_customer(
      invoice_customer_id INT AUTO_INCREMENT NOT NULL,
+     invoice_id INT NOT NULL,
      document_number VARCHAR(16) NOT NULL,
      identity_document_code VARCHAR(64) NOT NULL,
      social_reason VARCHAR(255),
@@ -420,6 +424,9 @@ CREATE TABLE invoice_customer(
      telephone VARCHAR(255),
      sent_to_client BOOLEAN,
      CONSTRAINT pk_invoice_customer PRIMARY KEY (invoice_customer_id),
+     CONSTRAINT uk_invoice_customer UNIQUE KEY (invoice_id),
+     CONSTRAINT fk_invoice_customer_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
+         ON UPDATE RESTRICT ON DELETE RESTRICT,
      CONSTRAINT fk_invoice_customer_identity_document_type_code FOREIGN KEY (identity_document_code) REFERENCES cat_identity_document_type_code (code)
          ON UPDATE RESTRICT ON DELETE RESTRICT
 );

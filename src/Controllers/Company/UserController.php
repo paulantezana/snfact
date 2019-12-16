@@ -28,7 +28,9 @@ class UserController extends Controller
                 'userRole' => $userRole,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -47,7 +49,9 @@ class UserController extends Controller
                 'user' => $user,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 

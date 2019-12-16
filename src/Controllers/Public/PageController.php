@@ -99,7 +99,42 @@ class PageController extends Controller
 
     public function managerLogin()
     {
-//        $this->render('public/login.php');
+        try {
+            if (isset($_POST['commit'])) {
+
+                if (!isset($_POST['user']) || !isset($_POST['password'])) {
+                    $this->render('public/managerLogin.php', [
+                        'messageType' => 'error',
+                        'message' => 'Los campos usuario y contraseña son requeridos',
+                    ]);
+                    return;
+                }
+
+                try {
+                    $user = $_POST['user'];
+                    $password = $_POST['password'];
+                    $userModel = new User($this->connection);
+
+                    $loginUser = $userModel->login($user, $password);
+                    if (!$this->initAppCompany($loginUser)) {
+                        session_destroy();
+                        $this->redirect('/403?message=' . urlencode('Comuniquese con el administrador'));
+                        return;
+                    }
+
+                    $this->redirect('/');
+                } catch (Exception $e) {
+                    $this->render('public/managerLogin.php', [
+                        'messageType' => 'error',
+                        'message' => $e->getMessage(),
+                    ]);
+                }
+            } else {
+                $this->render('public/managerLogin.php');
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     public function register()

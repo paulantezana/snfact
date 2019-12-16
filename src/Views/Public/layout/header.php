@@ -4,7 +4,7 @@
     <?php require_once __DIR__ . '/../../Helpes/head.php'; ?>
 
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/public.css">
-    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/styles.css">
+    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/style.css">
 
 <!--    <script src="--><?//= URL_PATH ?><!--/assets/js/sedna.js"></script>-->
 

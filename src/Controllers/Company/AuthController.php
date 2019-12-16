@@ -48,7 +48,9 @@ class AuthController extends Controller
                 ]);
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -134,7 +136,9 @@ class AuthController extends Controller
             $this->connection->commit();
             $this->redirect('/');
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -198,42 +202,48 @@ class AuthController extends Controller
 
     public function profile()
     {
-        $message = '';
-        $messageType = 'info';
-        $currentDate = date('Y-m-d H:i:s');
+        try{
+            $message = '';
+            $messageType = 'info';
+            $currentDate = date('Y-m-d H:i:s');
 
-        try {
-            if (isset($_POST['commitUser'])) {
-                $this->userModel->UpdateById((int) $_SESSION[SESS_KEY], [
-                    "updated_at" => $currentDate,
-                    "updated_user_id" => $_SESSION[SESS_KEY],
+            try {
+                if (isset($_POST['commitUser'])) {
+                    $this->userModel->UpdateById((int) $_SESSION[SESS_KEY], [
+                        "updated_at" => $currentDate,
+                        "updated_user_id" => $_SESSION[SESS_KEY],
 
-                    'email' => $_POST['userEmail'],
-                    'user_name' => $_POST['userUserName'],
-                ]);
-                $message = 'El registro se actualizó exitosamente';
-                $messageType = 'success';
-            } else if (isset($_POST['commitChangePassword'])) {
-                $this->userModel->UpdateById((int) $_SESSION[SESS_KEY], [
-                    "updated_at" => $currentDate,
-                    "updated_user_id" => $_SESSION[SESS_KEY],
+                        'email' => $_POST['userEmail'],
+                        'user_name' => $_POST['userUserName'],
+                    ]);
+                    $message = 'El registro se actualizó exitosamente';
+                    $messageType = 'success';
+                } else if (isset($_POST['commitChangePassword'])) {
+                    $this->userModel->UpdateById((int) $_SESSION[SESS_KEY], [
+                        "updated_at" => $currentDate,
+                        "updated_user_id" => $_SESSION[SESS_KEY],
 
-                    'password' => sha1($_POST['userPassword']),
-                ]);
-                $message = 'El registro se actualizó exitosamente';
-                $messageType = 'success';
+                        'password' => sha1($_POST['userPassword']),
+                    ]);
+                    $message = 'El registro se actualizó exitosamente';
+                    $messageType = 'success';
+                }
+            } catch (Exception $e) {
+                $message = $e->getMessage();
+                $messageType =  'error';
             }
-        } catch (Exception $e) {
-            $message = $e->getMessage();
-            $messageType =  'error';
-        }
 
-        $user = $this->userModel->GetById((int) $_SESSION[SESS_KEY]);
-        $this->render('company/profile.php', [
-            'user' => $user,
-            'message' => $message,
-            'messageType' => $messageType,
-        ]);
+            $user = $this->userModel->GetById((int) $_SESSION[SESS_KEY]);
+            $this->render('company/profile.php', [
+                'user' => $user,
+                'message' => $message,
+                'messageType' => $messageType,
+            ]);
+        }catch (Exception $e){
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     private function validateRegister($body)

@@ -35,7 +35,9 @@ class BusinessLocalController extends Controller
                 'catDocumentTypeCode' => $catDocumentTypeCode,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -53,7 +55,9 @@ class BusinessLocalController extends Controller
                 'businessLocal' => $businessLocal,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 

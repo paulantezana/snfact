@@ -47,7 +47,9 @@ class ProductController extends Controller
                 'catProductCodes' => $catProductCodes,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -66,7 +68,9 @@ class ProductController extends Controller
                 'product' => $product,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 

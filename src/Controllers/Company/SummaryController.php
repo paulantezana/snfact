@@ -1,10 +1,9 @@
 <?php
 
 
-class CompanyController extends Controller
+class SummaryController extends Controller
 {
     protected $connection;
-
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
@@ -13,7 +12,8 @@ class CompanyController extends Controller
     public function index()
     {
         try {
-            $this->render('Company/dashboard.php');
+            Authorization($this->connection, 'categoria', 'listar');
+            $this->render('company/summary.php');
         } catch (Exception $e) {
             $this->render('Public/500.php', [
                 'message' => $e->getMessage(),

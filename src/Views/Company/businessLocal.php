@@ -18,7 +18,7 @@
         <div class="SnCard">
             <div class="SnCard-body">
                 <div class="SnInput-wrapper SnMb-16">
-                    <input type="text" class="SnForm-input" onkeyup="BusinessLocalForm.search(event)">
+                    <input type="text" class="SnForm-control" onkeyup="BusinessLocalForm.search(event)">
                     <span class="SnInput-suffix icon-search"></span>
                 </div>
                 <div id="businessLocalTable"></div>
@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <script src="<?= URL_PATH ?>/assets/dist/script/businessLocal-min.js"></script>
+    <script src="<?= URL_PATH ?>/assets/script/company/businessLocal.js"></script>
 
     <div class="SnModal-wrapper" data-modal="businessLocalModalForm">
         <div class="SnModal" style="max-width: 90vw; top: 50px;">
@@ -38,35 +38,35 @@
             <div class="SnModal-header">Sucursal</div>
             <div class="SnModal-body">
                 <form action="" class="SnForm" id="businessLocalForm" onsubmit="BusinessLocalForm.submit(event)">
-                    <input type="hidden" class="SnForm-input" id="businessLocalId">
+                    <input type="hidden" class="SnForm-control" id="businessLocalId">
                     <div class="SnGrid m-2 l-3">
                         <div class="SnForm-item required">
                             <label for="businessLocalSunatCode" class="SnForm-label">Código SUNAT</label>
-                            <input type="text" class="SnForm-input" id="businessLocalSunatCode" name="businessLocalSunatCode">
+                            <input type="text" class="SnForm-control" id="businessLocalSunatCode" name="businessLocalSunatCode">
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalSubsidiary" class="SnForm-label">Nombre de Sucursal</label>
-                            <input type="text" class="SnForm-input" id="businessLocalSubsidiary" name="businessLocalSubsidiary">
+                            <input type="text" class="SnForm-control" id="businessLocalSubsidiary" name="businessLocalSubsidiary">
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalLocation" class="SnForm-label">Ubigeo</label>
-                            <input type="text" class="SnForm-input" id="businessLocalLocation" name="businessLocalLocation">
+                            <input type="text" class="SnForm-control" id="businessLocalLocation" name="businessLocalLocation">
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalAddress" class="SnForm-label">Dirección</label>
-                            <input type="text" class="SnForm-input" id="businessLocalAddress" name="businessLocalAddress">
+                            <input type="text" class="SnForm-control" id="businessLocalAddress" name="businessLocalAddress">
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalOptionalInfo" class="SnForm-label">Información Adicional</label>
-                            <input type="text" class="SnForm-input" id="businessLocalOptionalInfo" name="businessLocalOptionalInfo">
+                            <input type="text" class="SnForm-control" id="businessLocalOptionalInfo" name="businessLocalOptionalInfo">
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalPdfInvoiceSize" class="SnForm-label">pdf_invoice_size</label>
-                            <input type="text" class="SnForm-input" id="businessLocalPdfInvoiceSize" name="businessLocalPdfInvoiceSize">
+                            <input type="text" class="SnForm-control" id="businessLocalPdfInvoiceSize" name="businessLocalPdfInvoiceSize">
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalPdfHeader" class="SnForm-label">pdf_header</label>
-                            <input type="text" class="SnForm-input" id="businessLocalPdfHeader" name="businessLocalPdfHeader">
+                            <input type="text" class="SnForm-control" id="businessLocalPdfHeader" name="businessLocalPdfHeader">
                         </div>
                         <div class="SnForm-item">
                             <p>Estado</p>
@@ -100,7 +100,7 @@
                                         <input type="hidden" name="item<?= $key ?>BusinessSerieId" value="<?= isset($row['business_serie_id']) ? $row['business_serie_id'] : 0 ?>">
                                     </td>
                                     <td>
-                                        <input type="text" class="SnForm-input" id="serie<?= $key ?>"
+                                        <input type="text" class="SnForm-control" id="serie<?= $key ?>"
                                                name="item<?= $key ?>Serie" value="<?= isset($row['serie']) ? $row['serie'] : '1' ?>"  required>
                                     </td>
                                     <td>

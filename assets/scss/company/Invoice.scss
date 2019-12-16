@@ -1,22 +1,36 @@
+#invoiceFormTemplateContainer{
+  min-height: 500px;
+}
+
 .Invoice{
+  &-body,
+  &-footer,
+  &-send,
   &-header{
+    border-top: 1px dashed var(--snColorBorder);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  &-top{
     display: flex;
     margin-bottom: 1rem;
     & > div {
       margin-right: 1rem;
     }
   }
+  &-header{
+    //padding-top: 1rem;
+    padding-bottom: 3rem;
+  }
   &-body{
-    border-top: 1px dashed var(--snColorBorder);
-    padding-top: 1rem;
+
   }
   &-footer{
-    padding-top: 2rem;
+
   }
   &-send{
-    border-top: 1px dashed var(--snColorBorder);
-    padding-top: 2rem;
-    margin-top: 2rem;
+    //padding-top: 2rem;
+    //margin-top: 2rem;
   }
 
   &-totals{

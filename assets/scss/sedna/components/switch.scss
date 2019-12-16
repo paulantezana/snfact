@@ -1,7 +1,7 @@
 @mixin SnSwitch() {
-  $SnSwitchPadding: .2;
-  $SnSwitchWidth: 2.3rem;
-  $SnSwitchSpaceRight: .7rem;
+  $SnSwitchPadding: 3;
+  $SnSwitchWidth: 36px;
+  $SnSwitchSpaceRight: 11px;
 
   $SnSwitchHeight: $SnSwitchWidth / 2;
   $SnSwitchCircleWidth: $SnSwitchHeight - ($SnSwitchPadding * 2);
@@ -23,13 +23,14 @@
         border-radius: $SnSwitchHeight / 2;
         width: $SnSwitchWidth;
         left: -#{$SnSwitchSpace};
+        top: 0;
         height: $SnSwitchHeight;
         border: 1px solid var(--snColorTextAlt);
       }
       &::after {
         background: var(--snColorTextAlt);
         position: absolute;
-        top: #{$SnSwitchPadding}rem;
+        top: #{$SnSwitchPadding}px;
         display: block;
         content: "";
         width: $SnSwitchCircleWidth;

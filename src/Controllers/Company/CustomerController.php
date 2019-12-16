@@ -29,7 +29,9 @@ class CustomerController extends Controller
                 'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -48,7 +50,9 @@ class CustomerController extends Controller
                 'customer' => $customer,
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            $this->render('Public/500.php', [
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
