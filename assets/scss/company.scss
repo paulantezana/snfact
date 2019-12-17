@@ -28,6 +28,7 @@
 @include SnDivider();
 @include SnHide();
 @include SnFreeze();
+@include SnEmpty();
 
 @import "company/Layout";
 @import "company/Header";

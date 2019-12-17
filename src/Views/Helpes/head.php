@@ -4,7 +4,7 @@
 <title><?= APP_NAME ?></title>
 <meta name="description" content="<?= APP_DESCRIPTION ?>">
 <link rel="shortcut icon" href="<?= URL_PATH ?>/assets/images/logo.png">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+<!--<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">-->
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">

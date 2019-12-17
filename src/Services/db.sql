@@ -155,7 +155,7 @@ CREATE TABLE business(
     phone VARCHAR(32),
     web_site VARCHAR(64),
     logo VARCHAR(255),
-    production BOOLEAN,
+    environment BOOLEAN,
     UNIQUE KEY uk_company (web_site,email),
     CONSTRAINT pk_company PRIMARY KEY (business_id)
 )ENGINE = InnoDB;

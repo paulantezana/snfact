@@ -17,27 +17,27 @@
       display: block;
       max-width: 125px;
       position: absolute;
-      top: 50%;
+      top: calc(50% + 12px);
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 20px;
+      //font-size: 20px;
       font-family: sans-serif;
-      color: var(--snColorDarkInverse);;
+      color: var(--snColorTextAlt);;
       text-align: center;
-      text-transform: uppercase;
+      //text-transform: uppercase;
     }
     &::before {
       content: "";
       display: block;
-      width: 150px;
-      height: 150px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       border-width: 2px;
       border-style: solid;
       border-color: transparent var(--snColor1) var(--snColor1) var(--snColor1);
       position: absolute;
-      top: calc(50% - 75px);
-      left: calc(50% - 75px);
+      top: calc(50% - 24px);
+      left: calc(50% - 12px);
       will-change: transform;
       animation: spin 0.75s infinite ease-in-out;
     }

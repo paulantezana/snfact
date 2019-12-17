@@ -30,6 +30,7 @@
     @include SnCollapse();
     @include SnDivider();
     @include SnHide();
+    @include SnEmpty();
 
     // Leyout
     @include SnContainer();

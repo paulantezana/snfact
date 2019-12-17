@@ -150,14 +150,11 @@ class AuthController extends Controller
         unset($user['fa2_secret']);
 
         $_SESSION[SESS_KEY] = $user['user_id'];
-        $_SESSION[SESS_DATA] = $user;
 
         try {
             // Set Default Business
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
             $businessLocals = $this->businessLocalModel->GetAllByBusinessId($business['business_id']);
-
-            $_SESSION[SESS_LOCALS] = $businessLocals;
             $_SESSION[SESS_CURRENT_LOCAL] = $businessLocals[0]['business_local_id'];
 
             // Menu

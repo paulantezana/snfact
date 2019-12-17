@@ -24,26 +24,13 @@
                     <ul class="HeaderMenu SnMenu">
                         <li>
                             <div class="Header-action">
-                                <select class="SnForm-control">
+                                <select class="SnForm-control" id="businessCurrentLocalInfo">
                                     <option value="">Seleccionar local</option>
-                                    <?php
-                                        if (isset($_SESSION[SESS_LOCALS]) && isset($_SESSION[SESS_CURRENT_LOCAL])):
-                                            foreach ($_SESSION[SESS_LOCALS] as $row):
-                                                ?>
-                                                    <option value="<?= $row['business_local_id'] ?>" <?php echo $_SESSION[SESS_CURRENT_LOCAL] === $row['business_local_id'] ? 'selected' : '' ?>>
-                                                        <?= $row['short_name'] ?>
-                                                    </option>
-                                                <?php
-                                            endforeach;
-                                        endif;
-                                    ?>
                                 </select>
                             </div>
                         </li>
                         <li>
-                            <a href="<?= URL_PATH ?>/business/update" class="Header-action Header-sunatState production">
-                                <i class="icon-check SnMr-2"></i> Produción
-                            </a>
+                            <a href="<?= URL_PATH ?>/business/update" class="Header-action Header-sunatState" id="businessEnvironmentInfo"></a>
                         </li>
                         <li>
                             <a href="<?= URL_PATH ?>/busines" class="Header-action">
@@ -61,9 +48,9 @@
                                     <a href="<?= URL_PATH ?>/auth/profile" class="SnAvatar">
                                         <img src="<?= URL_PATH ?>/assets/images/logo.png" alt="avatar">
                                     </a>
-                                    <div class="small s-text-ellipsis">
-                                        <div class="User-title"><?= $_SESSION[SESS_DATA]['user_name'] ?></div>
-                                        <div class="User-description"><?= $_SESSION[SESS_DATA]['email'] ?></div>
+                                    <div class="">
+                                        <div class="User-title" id="userTitleInfo"></div>
+                                        <div class="User-description" id="userDescriptionInfo"></div>
                                     </div>
                                 </li>
                                 <li><a href="<?= URL_PATH ?>/auth/profile"> <i class="icon-user-plus SnMr-2"></i> Perfil</a></li>

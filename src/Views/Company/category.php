@@ -5,10 +5,10 @@
                 <i class="icon-dots SnMr-2"></i> Categorias
             </div>
             <div class="SnToolbar-right">
-                <div class="SnBtn jsCategoryOption SnMr-2" onclick="CategoryForm.list()">
+                <div class="SnBtn jsCategoryAction SnMr-2" onclick="CategoryList()">
                     <i class="icon-reload-alt SnMr-2"></i> Actualizar
                 </div>
-                <div class="SnBtn primary jsCategoryOption" onclick="CategoryForm.showModalCreate()">
+                <div class="SnBtn primary jsCategoryAction" onclick="CategoryShowModalCreate()">
                     <i class="icon-plus2 SnMr-2"></i> Nuevo
                 </div>
             </div>
@@ -29,30 +29,33 @@
     <div class="SnModal-wrapper" data-modal="categoryModalForm">
         <div class="SnModal">
             <div class="SnModal-close" data-modalclose="categoryModalForm">
-                <svg viewBox="64 64 896 896" class="" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false">
-                    <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path>
-                </svg>
+                <i class="icon-cross"></i>
             </div>
-            <div class="SnModal-header">Categoria</div>
+            <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Categoria</div>
             <div class="SnModal-body">
-                <form action="" class="SnForm" id="categoryForm" onsubmit="CategoryForm.submit(event)">
+                <form action="" class="SnForm" id="categoryForm" onsubmit="CategorySubmit(event)">
                     <input type="hidden" class="SnForm-control" id="categoryId">
                     <div class="SnForm-item required">
                         <label for="categoryName" class="SnForm-label">Categoria</label>
-                        <input type="text" class="SnForm-control" id="categoryName">
+                        <div class="SnControl-wrapper">
+                            <i class="icon-package SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="categoryName" placeholder="Nombre de la categoría">
+                        </div>
                     </div>
                     <div class="SnForm-item">
                         <label for="categoryDescription" class="SnForm-label"> Descripción</label>
-                        <input type="text" class="SnForm-control" id="categoryDescription">
+                        <div class="SnControl-wrapper">
+                            <i class="icon-file-text2 SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="categoryDescription">
+                        </div>
                     </div>
                     <div class="SnForm-item">
-                        <p>Estado</p>
-                        <input class="SnSwitch SnSwitch-ios" id="categoryState" type="checkbox">
-                        <label class="SnSwitch-btn" for="categoryState"></label>
+                        <div class="SnSwitch">
+                            <input class="SnSwitch-input" type="checkbox" id="categoryState">
+                            <label class="SnSwitch-label" for="categoryState">Estado</label>
+                        </div>
                     </div>
-                    <div class="SnForm-item">
-                        <button type="submit" class="SnBtn primary block" id="categoryFormSubmit">Guardar</button>
-                    </div>
+                    <button type="submit" class="SnBtn primary block" id="categoryFormSubmit">Guardar</button>
                 </form>
             </div>
         </div>

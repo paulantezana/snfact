@@ -12,7 +12,7 @@
   touch-action: manipulation;
   padding: 0 15px;
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: $borderRadiusBase;
   color: var(--snColorText);
   border: 1px solid var(--snColorBorder);
   text-decoration: none;

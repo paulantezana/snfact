@@ -29,19 +29,26 @@
       & > div:not(.#{$classPrefix}Btn) {
         flex: 1 1 auto;
       }
-      //align-items: center;
-      //flex-wrap: wrap;
-      //& > * {
-      //  border-radius: 0;
-      //  &:last-child {
-      //    border-top-right-radius: 4px;
-      //    border-bottom-right-radius: 4px;
-      //  }
-      //  &:first-child {
-      //    border-top-left-radius: 4px;
-      //    border-bottom-left-radius: 4px;
-      //  }
-      //}
+      & > * {
+        border-radius: 0;
+        .#{$classPrefix}Form-control{ border-radius: 0 }
+        &:last-child {
+          border-top-right-radius: $borderRadiusBase;
+          border-bottom-right-radius: $borderRadiusBase;
+          .#{$classPrefix}Form-control{
+            border-top-right-radius: $borderRadiusBase;
+            border-bottom-right-radius: $borderRadiusBase;
+          }
+        }
+        &:first-child {
+          border-top-left-radius: $borderRadiusBase;
+          border-bottom-left-radius: $borderRadiusBase;
+          .#{$classPrefix}Form-control{
+            border-top-left-radius: $borderRadiusBase;
+            border-bottom-left-radius: $borderRadiusBase;
+          }
+        }
+      }
     }
   }
 }
