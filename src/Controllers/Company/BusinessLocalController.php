@@ -28,11 +28,11 @@ class BusinessLocalController extends Controller
             //            Authorization($this->connection, 'usuario', 'modificar');
 
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
+            $itemTemplate = $this->GetItemTemplate();
 
             $this->render('company/businessLocal.php', [
                 'business' => $business,
-                'catDocumentTypeCode' => $catDocumentTypeCode,
+                'itemTemplate' => $itemTemplate,
             ]);
         } catch (Exception $e) {
             $this->render('Public/500.php', [
@@ -82,13 +82,12 @@ class BusinessLocalController extends Controller
         $res = new Result();
         try {
             //            Authorization($this->connection, 'usuario', 'modificar');
-            $postData = file_get_contents("php://input");
-            $body = json_decode($postData, true);
+            $body = $_POST['businessLocal'];
 
-            $validate = $this->validateInput($body);
-            if (!$validate->success) {
-                throw new Exception($validate->message);
-            }
+//            $validate = $this->validateInput($body);
+//            if (!$validate->success) {
+//                throw new Exception($validate->message);
+//            }
 
             $businessModel = new Business($this->connection);
             $body['businessId'] = $businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
@@ -107,27 +106,15 @@ class BusinessLocalController extends Controller
         $res = new Result();
         try {
             //            Authorization($this->connection, 'usuario', 'modificar');
-            $postData = file_get_contents("php://input");
-            $body = json_decode($postData, true);
+            $body = $_POST['businessLocal'];
 
-            $validate = $this->validateInput($body);
-            if (!$validate->success) {
-                throw new Exception($validate->message);
-            }
+//            $validate = $this->validateInput($body);
+//            if (!$validate->success) {
+//                throw new Exception($validate->message);
+//            }
 
-            $currentDate = date('Y-m-d H:i:s');
-            $this->businessLocalModel->UpdateById($body['businessLocalId'], [
-                'updated_at' => $currentDate,
-                'updated_user_id' => $_SESSION[SESS_KEY],
+            $this->businessLocalModel->Update($body, $_SESSION[SESS_KEY]);
 
-                'document_number' => $body['documentNumber'],
-                'identity_document_code' => $body['identityDocumentCode'],
-                'social_reason' => $body['socialReason'],
-                'commercial_reason' => $body['commercialReason'],
-                'fiscal_address' => $body['fiscalAddress'],
-                'email' => $body['email'],
-                'telephone' => $body['telephone'],
-            ]);
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
         } catch (Exception $e) {
@@ -147,5 +134,31 @@ class BusinessLocalController extends Controller
         }
 
         return $res;
+    }
+
+    private function GetItemTemplate(){
+        $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
+
+        $documentTypeCodeTemplate = '';
+        foreach ($catDocumentTypeCode ?? [] as $row){
+            $documentTypeCodeTemplate .= "<option value='{$row['code']}'>{$row['description']}</option>" . PHP_EOL;
+        }
+
+        return '<tr id="businessLocalItem${uniqueId}" data-uniqueId="${uniqueId}">
+            <td>
+                <select class="form-control form-control-sm" id="documentCode${uniqueId}" name="businessLocal[item][${uniqueId}][document_code]" required>
+                    ' . $documentTypeCodeTemplate . '
+                </select>
+                <input type="hidden" name="businessLocal[item][${uniqueId}][business_serie_id]" value="0">
+            </td>
+            <td>
+                <input type="text" class="form-control form-control-sm" name="businessLocal[item][${uniqueId}][serie]" id="serie${uniqueId}" required>
+            </td>
+            <td>
+                <button type="button" class="btn btn-sm btn-light" title="Quitar item" onclick="BusinessLocalSerieRemoveItem(${uniqueId})">
+                    <i class="fas fa-times text-danger"></i>
+                </button>
+            </td>
+        </tr>';
     }
 }

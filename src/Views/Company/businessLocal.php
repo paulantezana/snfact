@@ -2,24 +2,22 @@
     <div class="SnContent">
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class="icon-angle-right"></i> Sucursales
+                <i class="icon-dots SnMr-2"></i> Sucursales
             </div>
             <div class="SnToolbar-right">
-                <div class="SnBtn jsBusinessLocalOption" onclick="BusinessLocalForm.list()">
-                    <i class="icon-refresh"></i>
-                    Actualizar
+                <div class="SnBtn jsBusinessLocalAction SnMr-2" onclick="BusinessLocalList()">
+                    <i class="icon-reload-alt SnMr-2"></i> Actualizar
                 </div>
-                <div class="SnBtn primary jsBusinessLocalOption" onclick="BusinessLocalForm.showModalCreate()">
-                    <i class="icon-plus"></i>
-                    Nuevo
+                <div class="SnBtn primary jsBusinessLocalAction" onclick="BusinessLocalShowModalCreate()">
+                    <i class="icon-plus2 SnMr-2"></i> Nuevo
                 </div>
             </div>
         </div>
         <div class="SnCard">
             <div class="SnCard-body">
-                <div class="SnInput-wrapper SnMb-16">
-                    <input type="text" class="SnForm-control" onkeyup="BusinessLocalForm.search(event)">
-                    <span class="SnInput-suffix icon-search"></span>
+                <div class="SnControl-wrapper SnMb-5">
+                    <input type="text" class="SnForm-control" id="searchContent">
+                    <i class="SnControl-suffix icon-search4"></i>
                 </div>
                 <div id="businessLocalTable"></div>
             </div>
@@ -37,41 +35,42 @@
             </div>
             <div class="SnModal-header">Sucursal</div>
             <div class="SnModal-body">
-                <form action="" class="SnForm" id="businessLocalForm" onsubmit="BusinessLocalForm.submit(event)">
-                    <input type="hidden" class="SnForm-control" id="businessLocalId">
-                    <div class="SnGrid m-2 l-3">
+                <form action="" class="SnForm" id="businessLocalForm" onsubmit="BusinessLocalSubmit(event)">
+                    <input type="hidden" class="SnForm-control" id="businessLocalId" name="businessLocal[id]">
+                    <div class="SnGrid m-grid-2 l-grid-3">
                         <div class="SnForm-item required">
                             <label for="businessLocalSunatCode" class="SnForm-label">Código SUNAT</label>
-                            <input type="text" class="SnForm-control" id="businessLocalSunatCode" name="businessLocalSunatCode">
+                            <input type="text" class="SnForm-control" id="businessLocalSunatCode" name="businessLocal[sunatCode]">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalSubsidiary" class="SnForm-label">Nombre de Sucursal</label>
-                            <input type="text" class="SnForm-control" id="businessLocalSubsidiary" name="businessLocalSubsidiary">
+                            <label for="businessLocalShortName" class="SnForm-label">Nombre de Sucursal</label>
+                            <input type="text" class="SnForm-control" id="businessLocalShortName" name="businessLocal[shortName]">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalLocation" class="SnForm-label">Ubigeo</label>
-                            <input type="text" class="SnForm-control" id="businessLocalLocation" name="businessLocalLocation">
+                            <label for="businessLocalLocationCode" class="SnForm-label">Ubigeo</label>
+                            <input type="text" class="SnForm-control" id="businessLocalLocationCode" name="businessLocal[locationCode]">
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalAddress" class="SnForm-label">Dirección</label>
-                            <input type="text" class="SnForm-control" id="businessLocalAddress" name="businessLocalAddress">
+                            <input type="text" class="SnForm-control" id="businessLocalAddress" name="businessLocal[address]">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalOptionalInfo" class="SnForm-label">Información Adicional</label>
-                            <input type="text" class="SnForm-control" id="businessLocalOptionalInfo" name="businessLocalOptionalInfo">
+                            <label for="businessLocalDescription" class="SnForm-label">Información Adicional</label>
+                            <input type="text" class="SnForm-control" id="businessLocalDescription" name="businessLocal[description]">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalPdfInvoiceSize" class="SnForm-label">pdf_invoice_size</label>
-                            <input type="text" class="SnForm-control" id="businessLocalPdfInvoiceSize" name="businessLocalPdfInvoiceSize">
+                            <label for="businessLocalPdfInvoiceSize" class="SnForm-label">PDF formato</label>
+                            <input type="text" class="SnForm-control" id="businessLocalPdfInvoiceSize" name="businessLocal[pdfInvoiceSize]">
                         </div>
                         <div class="SnForm-item">
-                            <label for="businessLocalPdfHeader" class="SnForm-label">pdf_header</label>
-                            <input type="text" class="SnForm-control" id="businessLocalPdfHeader" name="businessLocalPdfHeader">
+                            <label for="businessLocalPdfHeader" class="SnForm-label">PDF header</label>
+                            <input type="text" class="SnForm-control" id="businessLocalPdfHeader" name="businessLocal[pdfHeader]">
                         </div>
                         <div class="SnForm-item">
-                            <p>Estado</p>
-                            <input class="SnSwitch SnSwitch-ios" id="businessLocalState" type="checkbox" name="businessLocalState">
-                            <label class="SnSwitch-btn" for="businessLocalState"></label>
+                            <div class="SnSwitch">
+                                <input class="SnSwitch-input" type="checkbox" id="businessLocalState" name="businessLocal[state]">
+                                <label class="SnSwitch-label" for="businessLocalState">Estado</label>
+                            </div>
                         </div>
                     </div>
 
@@ -84,46 +83,25 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody id="businessLocalSeriesTableBody">
-                            <?php foreach ($catDocumentTypeCode ?? [] as $key => $row): ?>
-                                <tr id="businessLocalItem<?= $key ?>" data-uniqueId="<?= $key ?>">
-                                    <td>
-                                        <select class="SnForm-select" id="documentCode<?= $key ?>" name="item<?= $key ?>DocumentCode" required>
-                                            <?php foreach ($catDocumentTypeCode as $keyOpt => $rowOpt): ?>
-                                                <?php if (($row['document_code'] ?? '') == $rowOpt['code']): ?>
-                                                    <option value="<?= $rowOpt['code'] ?>" selected><?= $rowOpt['description'] ?></option>
-                                                <?php else: ?>
-                                                    <option value="<?= $rowOpt['code'] ?>"><?= $rowOpt['description'] ?></option>
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <input type="hidden" name="item<?= $key ?>BusinessSerieId" value="<?= isset($row['business_serie_id']) ? $row['business_serie_id'] : 0 ?>">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="SnForm-control" id="serie<?= $key ?>"
-                                               name="item<?= $key ?>Serie" value="<?= isset($row['serie']) ? $row['serie'] : '1' ?>"  required>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="SnBtn" onclick="BusinessLocal.removeItem(<?= $key ?>)">
-                                            <i class="icon-trash"></i>
-                                        </button>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="SnBtn block" data-itemtemplate="<?php echo htmlspecialchars(($itemTemplate ?? ''),ENT_QUOTES) ?>" onclick="BusinessLocalSerieAddItem()" id="businessLocalAddItem">Agregar serie</div>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            </tfoot>
+                            <tbody id="businessLocalSeriesTableBody">
+
                             </tbody>
                         </table>
                     </div>
-<!--                    <div class="btn btn-secondary btn-block btn-sm" data-itemtemplate="--><?php //echo htmlspecialchars(($parameter['itemTemplate'] ?? ''),ENT_QUOTES) ?><!--" onclick="BusinessLocal.addItem()" id="businessLocalAddItem">Agregar serie</div>-->
 
 
-                    <div class="SnForm-item">
-                        <button type="submit" class="SnBtn primary block" id="businessLocalFormSubmit">Guardar</button>
-                    </div>
+
+                    <button type="submit" class="SnBtn primary block" id="businessLocalFormSubmit">Guardar</button>
                 </form>
             </div>
         </div>
     </div>
 
-<?php
-require_once __DIR__ . '/layout/footer.php'
-?>
+<?php require_once __DIR__ . '/layout/footer.php' ?>

@@ -93,34 +93,34 @@ class AuthController extends Controller
                     ], $userId);
 
                     $businessLocalId = $this->businessLocalModel->Insert([
-                        'short_name' => 'Local principal',
-                        'sunat_code' => '',
-                        'location_code' => '',
+                        'shortName' => 'Local principal',
+                        'sunatCode' => '',
+                        'locationCode' => '',
                         'address' => '',
-                        'pdf_invoice_size' => 'A4',
-                        'pdf_header' => 'Email: ' . $register['email'],
+                        'pdfInvoiceSize' => 'A4',
+                        'pdfHeader' => 'Email: ' . $register['email'],
                         'description' => '',
-                        'business_id' => $businessId,
+                        'businessId' => $businessId,
                         'item' => [
                             [
                                 'serie' => 'F001',
-                                'document_code' => '01',
+                                'documentCode' => '01',
                             ],
                             [
                                 'serie' => 'B001',
-                                'document_code' => '03',
+                                'documentCode' => '03',
                             ],
                             [
                                 'serie' => 'FP01',
-                                'document_code' => '07',
+                                'documentCode' => '07',
                             ],
                             [
                                 'serie' => 'FP01',
-                                'document_code' => '08',
+                                'documentCode' => '08',
                             ],
                             [
                                 'serie' => 'T001',
-                                'document_code' => '09',
+                                'documentCode' => '09',
                             ],
                         ]
                     ], $userId);

@@ -3,29 +3,27 @@
         <thead>
             <tr>
                 <th>CÓDIGO</th>
-                <th>Categoría</th>
-                <th>Producto/Servicio</th>
-                <th>Unidad</th>
-                <th>TipoAfec.IGV</th>
-                <th>Precio Venta</th>
+                <th>Nombre de Sucursal</th>
+                <th>Ubigeo</th>
+                <th>Dirección</th>
+                <th>pdf_invoice_size</th>
                 <th style="width: 100px"></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($businessLocal['data'] as $row) : ?>
                 <tr>
-                    <td><?= $row['product_key'] ?></td>
-                    <td><?= $row['category_description'] ?></td>
-                    <td><?= $row['description'] ?></td>
-                    <td><?= $row['unit_measure_code'] ?></td>
-                    <td><?= $row['affectation_igv_description'] ?></td>
-                    <td><?= $row['unit_price'] ?></td>
+                    <td><?= $row['sunat_code'] ?></td>
+                    <td><?= $row['short_name'] ?></td>
+                    <td><?= $row['location_code'] ?></td>
+                    <td><?= $row['address'] ?></td>
+                    <td><?= $row['pdf_invoice_size'] ?></td>
                     <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn jsProductOption" data-tooltip="Editar" onclick="ProductForm.executeUpdateNormal(<?= $row['product_id'] ?>)">
+                            <div class="SnBtn jsProductOption" data-tooltip="Editar" onclick="BusinessLocalShowModalUpdate(<?= $row['business_local_id'] ?>)">
                                 <i class="icon-pencil"></i>
                             </div>
-                            <div class="SnBtn jsProductOption" data-tooltip="Eliminar" onclick="ProductForm.delete(<?= $row['product_id'] ?>,'<?= $row['description'] ?>')">
+                            <div class="SnBtn jsProductOption" data-tooltip="Eliminar" onclick="BusinessLocalDelete(<?= $row['business_local_id'] ?>,'<?= $row['short_name'] ?>')">
                                 <i class="icon-trash"></i>
                             </div>
                         </div>
