@@ -242,26 +242,4 @@ class AuthController extends Controller
             ]);
         }
     }
-
-    private function validateRegister($body)
-    {
-        $collector = new ErrorCollector();
-        if (($body['email'] ?? '') == '') {
-            $collector->addError('email', 'Falta ingresar el correo electrónico');
-        }
-        if (($body['userName'] ?? '') == '') {
-            $collector->addError('userName', 'Falta ingresar el nombre de usuario');
-        }
-        if (($body['password'] ?? '') == '') {
-            $collector->addError('password', 'Falta ingresar la contraseña');
-        }
-        if (($body['passwordConfirm'] ?? '') == '') {
-            $collector->addError('passwordConfirm', 'Falta ingresar la confirmación contraseña');
-        }
-        if ($body['password'] != $body['passwordConfirm']) {
-            $collector->addError('password', 'Las contraseñas no coinciden');
-        }
-
-        return $collector->getResult();
-    }
 }

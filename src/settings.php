@@ -5,7 +5,9 @@ date_default_timezone_set('America/Lima');
 $scriptName = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
 $requestUri = parse_url('http://example.com' . $_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $virtualPath = '/' . ltrim(substr($requestUri, strlen($scriptName)), '/');
+$hostName = stripos($_SERVER['REQUEST_SCHEME'], 'https') === 0 ? 'https://' : 'http://' . $_SERVER['SERVER_NAME'];
 
+define('HOST', $hostName);
 define('URI', $requestUri);
 define('URL_PATH', $scriptName === '/' ? '' : ('/'. trim($scriptName,'/')));
 define('URL',$virtualPath);

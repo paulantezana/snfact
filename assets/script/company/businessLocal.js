@@ -50,6 +50,10 @@ function BusinessLocalClearForm(){
     if (currentForm){
         currentForm.reset();
     }
+    let tableBody = document.getElementById('businessLocalSeriesTableBody');
+    if (tableBody){
+        tableBody.innerHTML = '';
+    }
 }
 
 function BusinessLocalSubmit(event){
@@ -113,6 +117,12 @@ function BusinessLocalShowModalCreate(){
     BusinessLocalState.modalType = 'create';
     BusinessLocalClearForm();
     SnModal.open(BusinessLocalState.modalName);
+
+    BusinessLocalSerieAddItem(0,'01','F001');
+    BusinessLocalSerieAddItem(0,'03','B001');
+    BusinessLocalSerieAddItem(0,'07','FF01');
+    BusinessLocalSerieAddItem(0,'08','BB01');
+    BusinessLocalSerieAddItem(0,'09','T001');
 }
 
 function BusinessLocalShowModalUpdate(businessLocalId){
@@ -135,6 +145,11 @@ function BusinessLocalShowModalUpdate(businessLocalId){
             document.getElementById('businessLocalPdfInvoiceSize').value = res.result.pdf_invoice_size;
             document.getElementById('businessLocalPdfHeader').value = res.result.pdf_header;
             document.getElementById('businessLocalId').value = res.result.business_local_id;
+
+            [...res.result.item].forEach(item => {
+                BusinessLocalSerieAddItem(item.business_serie_id, item.document_code, item.serie);
+            });
+
             SnModal.open(BusinessLocalState.modalName);
         }else {
             SnModal.error({ title: 'Algo salió mal', content: res.message })
@@ -144,19 +159,21 @@ function BusinessLocalShowModalUpdate(businessLocalId){
     })
 }
 
-
-
-function BusinessLocalSerieAddItem(){
-    console.log('hola');
+function BusinessLocalSerieAddItem(businessSerieId, documentCode, serie){
     let uniqueId = generateUniqueId();
     let businessLocalAddItem = document.getElementById('businessLocalAddItem');
     let tableBody = document.getElementById('businessLocalSeriesTableBody');
-    console.log(tableBody);
     if (tableBody){
         let itemTemplate = businessLocalAddItem.dataset.itemtemplate;
         itemTemplate = eval('`' + itemTemplate + '`');
-        console.log(itemTemplate);
         tableBody.insertAdjacentHTML('beforeend',itemTemplate);
+
+        let businessSerieIdItem = document.getElementById(`businessSerieId${uniqueId}`);
+        let documentCodeItem = document.getElementById(`documentCode${uniqueId}`);
+        let serieItem = document.getElementById(`serie${uniqueId}`);
+        businessSerieIdItem.value = businessSerieId;
+        documentCodeItem.value = documentCode;
+        serieItem.value = serie;
     }
 }
 
@@ -171,8 +188,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('searchContent').addEventListener('input',e=>{
         BusinessLocalList(1,10,e.target.value);
     });
-
-
 
     BusinessLocalList();
 });

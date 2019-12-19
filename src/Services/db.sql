@@ -243,12 +243,12 @@ CREATE TABLE user(
     business_id INT,
     password varchar(64) NOT NULL,
     email varchar(64),
-    temp_key varchar(32),
+    request_key varchar(32),
+    request_key_date DATETIME,
     avatar varchar(64),
     user_name varchar(32) NOT NULL,
     state BOOLEAN DEFAULT true,
     login_count SMALLINT,
-    last_update_temp_key DATETIME,
     fa2_secret VARCHAR(64),
     user_role_id INT NOT NULL,
 
@@ -1000,3 +1000,89 @@ VALUES (now(),null,1,'F001','01',0,false),
 
 -- TEMP
 INSERT INTO cat_product_code(code, description) VALUES ('100000','TEST');
+
+
+
+-- -----------------------------------------------------------------------------------
+-- MANAGE APP
+CREATE TABLE mng_app_authorization(
+    mng_app_authorization_id INT AUTO_INCREMENT NOT NULL,
+    module varchar(64) NOT NULL,
+    action varchar(64),
+    description varchar(64),
+    state BOOLEAN,
+    CONSTRAINT pk_mng_app_authorization PRIMARY KEY (mng_app_authorization_id)
+);
+
+CREATE TABLE mng_user_role(
+    mng_user_role_id INT AUTO_INCREMENT NOT NULL,
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+
+    name varchar(64) NOT NULL,
+    CONSTRAINT pk_mng_user_role PRIMARY KEY (mng_user_role_id)
+);
+
+CREATE TABLE mng_user_role_authorization(
+    mng_user_role_id INT NOT NULL,
+    mng_app_authorization_id INT NOT NULL,
+    CONSTRAINT fk_mng_user_role_authorization_mng_user_role FOREIGN KEY (mng_user_role_id) REFERENCES mng_user_role (mng_user_role_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_mng_user_role_authorization_mng_app_authorization FOREIGN KEY (mng_app_authorization_id) REFERENCES mng_app_authorization (mng_app_authorization_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+CREATE TABLE mng_user(
+    mng_user_id INT AUTO_INCREMENT NOT NULL,
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+
+    password varchar(64) NOT NULL,
+    email varchar(64),
+    request_key varchar(32),
+    request_key_date DATETIME,
+    avatar varchar(64),
+    user_name varchar(32) NOT NULL,
+    state BOOLEAN DEFAULT true,
+    login_count SMALLINT,
+    fa2_secret VARCHAR(64),
+    mng_user_role_id INT NOT NULL,
+
+    CONSTRAINT pk_mng_user PRIMARY KEY (mng_user_id),
+    CONSTRAINT uk_mng_user UNIQUE INDEX (email,user_name),
+    CONSTRAINT fk_mng_user_mng_user_role FOREIGN KEY (mng_user_role_id) REFERENCES mng_user_role (mng_user_role_id)
+     ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+INSERT INTO mng_user_role(name) VALUES ('Administrador'),('Personal'),('Invitado');
+INSERT INTO mng_app_authorization(module, action, description, state) VALUES
+('usuario','listar','listar usuarios',true),
+('usuario','crear','crear nuevo usuarios',true),
+('usuario','eliminar','Eliminar un usuario',true),
+('usuario','modificar','Acualizar los datos del usuario exepto la contraseña',true),
+('usuario','actualizarContraseña','Solo se permite actualizar la contraseña',true),
+
+('rol','listar','listar roles',true),
+('rol','crear','crear nuevos rol',true),
+('rol','eliminar','Eliminar un rol',true),
+('rol','modificar','Acualizar los roles',true),
+
+('escritorio','general','vista general',true);
+
+INSERT INTO mng_user_role_authorization(mng_user_role_id, mng_app_authorization_id) VALUES
+(1,1),
+(1,2),
+(1,3),
+(1,4),
+(1,5),
+(1,6),
+(1,7),
+(1,8),
+(1,9),
+(1,10);
+
+INSERT INTO mng_user(user_name,password,email,mng_user_role_id) VALUES ('yoel', sha1('yoel'), 'data@gmail.com', 1);

@@ -7,8 +7,10 @@ $routePublicPaths = [
     '/403' => ['controller' => 'PageController', 'method' => 'error403'],
 
     '/forgot' => ['controller' => 'PageController', 'method' => 'forgot'],
+    '/forgot/validate' => ['controller' => 'PageController', 'method' => 'forgotValidate'],
     '/register' => ['controller' => 'PageController', 'method' => 'register'],
     '/login' => ['controller' => 'PageController', 'method' => 'login'],
+    '/login/fa2' => ['controller' => 'PageController', 'method' => 'postLogin'],
     '/managerLogin' => ['controller' => 'PageController', 'method' => 'managerLogin'],
     '/term' => ['controller' => 'PageController', 'method' => 'term'],
 ];

@@ -1,9 +1,9 @@
-<?php require_once __DIR__ . '/layout/header.php'; ?>
+<?php require_once __DIR__ . '/../layout/header.php'; ?>
 
 <div class="Login">
-    <?php require_once __DIR__ . '/partials/alertMessage.php' ?>
+    <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
     <p>Ingresa tu correo electrónico para buscar tu cuenta</p>
-    <form action="<?= URL_PATH ?>/auth/forgot" method="post" class="SnForm">
+    <form action="" method="post" class="SnForm">
         <div class="SnForm-item required">
             <label for="email" class="SnForm-label">Email</label>
             <div class="SnControl-wrapper">
@@ -11,9 +11,9 @@
                 <input type="email" class="SnForm-control SnControl" required id="email" name="email" placeholder="Email">
             </div>
         </div>
-        <button type="submit" class="SnBtn block primary SnMb-16" name="commit">Buscar</button>
+        <button type="submit" class="SnBtn block primary SnMb-5" name="commit">Buscar</button>
         <a href="<?= URL_PATH ?>/login" class="SnBtn block">Login</a>
     </form>
 </div>
 
-<?php require_once __DIR__ . '/layout/footer.php' ?>
+<?php require_once __DIR__ . '/../layout/footer.php' ?>

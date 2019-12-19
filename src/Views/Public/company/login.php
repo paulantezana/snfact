@@ -1,7 +1,7 @@
-<?php require_once __DIR__ . '/layout/header.php'; ?>
+<?php require_once __DIR__ . '/../layout/header.php'; ?>
 
     <div class="Login">
-        <?php require_once __DIR__ . '/partials/alertMessage.php' ?>
+        <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
         <form action="" method="post" class="SnForm">
             <div class="SnForm-item required">
                 <label for="username" class="SnForm-label">Nombre de usuario</label>
@@ -30,4 +30,4 @@
         </form>
     </div>
 
-<?php require_once __DIR__ . '/layout/footer.php' ?>
+<?php require_once __DIR__ . '/../layout/footer.php' ?>

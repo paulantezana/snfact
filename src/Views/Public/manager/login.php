@@ -26,7 +26,6 @@
                 <a href="<?= URL_PATH ?>/forgot"> ¿Olvido su contraseña?</a>
             </div>
             <button type="submit" class="SnBtn block primary" name="commit">Login</button>
-            <p>O <a href="<?= URL_PATH ?>/register"> Registrate ahora</a></p>
         </form>
     </div>
 

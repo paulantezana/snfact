@@ -86,7 +86,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="3">
-                                        <div class="SnBtn block" data-itemtemplate="<?php echo htmlspecialchars(($itemTemplate ?? ''),ENT_QUOTES) ?>" onclick="BusinessLocalSerieAddItem()" id="businessLocalAddItem">Agregar serie</div>
+                                        <div class="SnBtn block" data-itemtemplate="<?php echo htmlspecialchars(($itemTemplate ?? ''),ENT_QUOTES) ?>" onclick="BusinessLocalSerieAddItem(0,'','')" id="businessLocalAddItem">Agregar serie</div>
                                     </td>
                                 </tr>
                             </tfoot>

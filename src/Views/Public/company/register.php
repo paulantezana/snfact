@@ -1,8 +1,7 @@
-<?php require_once __DIR__ . '/layout/header.php'; ?>
-
+<?php require_once __DIR__ . '/../layout/header.php'; ?>
     <div class="Login">
-        <?php require_once __DIR__ . '/partials/alertMessage.php' ?>
-        <form action="<?= URL_PATH ?>/auth/register" method="post" class="SnForm">
+        <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
+        <form action="" method="post" class="SnForm">
             <div class="SnForm-item required">
                 <label for="registerRuc" class="SnForm-label">RUC</label>
                 <input type="text" class="SnForm-control" name="register[ruc]" id="registerRuc" required>
@@ -30,9 +29,9 @@
                 </div>
             </div>
 
-            <input type="submit" value="Registrarse" name="commit" class="SnBtn primary block SnMb-16">
+            <input type="submit" value="Registrarse" name="commit" class="SnBtn primary block SnMb-5">
             <a href="<?= URL_PATH ?>/login" class="SnBtn block">Login</a>
         </form>
     </div>
 
-<?php require_once __DIR__ . '/layout/footer.php' ?>
+<?php require_once __DIR__ . '/../layout/footer.php' ?>

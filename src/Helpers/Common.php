@@ -25,13 +25,19 @@ function ArrayFindIndexByColumn(array $data, string $column, $value)
 
 function Authorization(PDO $connection, string $module, string $action, string $redirect = '', string $errorMessage = '')
 {
+    $sql = 'SELECT user_id, user_role_id FROM user WHERE user_id = ' . $_SESSION[SESS_KEY];
+    $stmt = $connection->prepare($sql);
+    $stmt->execute();
+    $user = $stmt->fetch();
+
     $sql = 'SELECT count(*) as count FROM user_role_authorization as ur
                         INNER JOIN app_authorization app ON ur.app_authorization_id = app.app_authorization_id
                         WHERE ur.user_role_id = :user_role_id AND app.module = :module AND app.action = :action
                         GROUP BY app.module';
     $stmt = $connection->prepare($sql);
+
     $stmt->execute([
-        ':user_role_id' => $_SESSION[SESS_DATA]['user_role_id'] ?? 0,
+        ':user_role_id' =>$user['user_role_id'] ?? 0,
         ':module' => $module,
         ':action' => $action,
     ]);

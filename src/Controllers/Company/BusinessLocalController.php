@@ -69,7 +69,7 @@ class BusinessLocalController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->businessLocalModel->GetById($body['businessLocalId']);
+            $res->result = $this->businessLocalModel->GetByIdDetail($body['businessLocalId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -146,18 +146,18 @@ class BusinessLocalController extends Controller
 
         return '<tr id="businessLocalItem${uniqueId}" data-uniqueId="${uniqueId}">
             <td>
-                <select class="form-control form-control-sm" id="documentCode${uniqueId}" name="businessLocal[item][${uniqueId}][document_code]" required>
+                <select class="SnForm-control" name="businessLocal[item][${uniqueId}][documentCode]" id="documentCode${uniqueId}" required>
                     ' . $documentTypeCodeTemplate . '
                 </select>
-                <input type="hidden" name="businessLocal[item][${uniqueId}][business_serie_id]" value="0">
+                <input type="hidden" name="businessLocal[item][${uniqueId}][businessSerieId]" id="businessSerieId${uniqueId}">
             </td>
             <td>
-                <input type="text" class="form-control form-control-sm" name="businessLocal[item][${uniqueId}][serie]" id="serie${uniqueId}" required>
+                <input type="text" class="SnForm-control" name="businessLocal[item][${uniqueId}][serie]" id="serie${uniqueId}" required>
             </td>
             <td>
-                <button type="button" class="btn btn-sm btn-light" title="Quitar item" onclick="BusinessLocalSerieRemoveItem(${uniqueId})">
-                    <i class="fas fa-times text-danger"></i>
-                </button>
+                <div class="SnBtn" title="Quitar item" onclick="BusinessLocalSerieRemoveItem(${uniqueId})">
+                    <i class="icon-trash-alt"></i>
+                </div>
             </td>
         </tr>';
     }

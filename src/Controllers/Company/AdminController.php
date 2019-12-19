@@ -21,7 +21,11 @@ class AdminController extends Controller
 
     public function  index()
     {
-        $this->render('/company/index.php');
+        $this->render('/Company/index.php');
+    }
+
+    public function fa2(){
+        $this->render('/Company/fa2.php');
     }
 
     public function getGlobalInfo(){
