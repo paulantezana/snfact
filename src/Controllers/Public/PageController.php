@@ -61,10 +61,6 @@ class PageController extends Controller
                         return;
                     }
 
-                    if (!$loginUser['fa2_secret_enabled']){
-                        $this->redirect('/admin/fa2');
-                        return;
-                    }
                     $this->redirect('/');
                 } catch (Exception $e) {
                     $this->render('public/company/login.php', [

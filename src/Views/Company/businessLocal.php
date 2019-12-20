@@ -40,31 +40,53 @@
                     <div class="SnGrid m-grid-2 l-grid-3">
                         <div class="SnForm-item required">
                             <label for="businessLocalSunatCode" class="SnForm-label">Código SUNAT</label>
-                            <input type="text" class="SnForm-control" id="businessLocalSunatCode" name="businessLocal[sunatCode]">
+                            <div class="SnControl-wrapper">
+                                <i class="icon-package SnControl-prefix"></i>
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalSunatCode" placeholder="Código SUNAT" name="businessLocal[sunatCode]">
+                            </div>
                         </div>
-                        <div class="SnForm-item">
+                        <div class="SnForm-item required">
                             <label for="businessLocalShortName" class="SnForm-label">Nombre de Sucursal</label>
-                            <input type="text" class="SnForm-control" id="businessLocalShortName" name="businessLocal[shortName]">
+                            <div class="SnControl-wrapper">
+                                <i class="icon-package SnControl-prefix"></i>
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalShortName" placeholder="Nombre de Sucursal" name="businessLocal[shortName]">
+                            </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalLocationCode" class="SnForm-label">Ubigeo</label>
-                            <input type="text" class="SnForm-control" id="businessLocalLocationCode" name="businessLocal[locationCode]">
+                            <div class="SnControl-wrapper">
+                                <i class="icon-package SnControl-prefix"></i>
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalLocationCode" placeholder="Ubigeo" name="businessLocal[locationCode]">
+                            </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalAddress" class="SnForm-label">Dirección</label>
-                            <input type="text" class="SnForm-control" id="businessLocalAddress" name="businessLocal[address]">
+                            <div class="SnControl-wrapper">
+                                <i class="icon-package SnControl-prefix"></i>
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalAddress" placeholder="Dirección" name="businessLocal[address]">
+                            </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalDescription" class="SnForm-label">Información Adicional</label>
-                            <input type="text" class="SnForm-control" id="businessLocalDescription" name="businessLocal[description]">
+                            <div class="SnControl-wrapper">
+                                <i class="icon-package SnControl-prefix"></i>
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalDescription" placeholder="Información Adicional" name="businessLocal[description]">
+                            </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalPdfInvoiceSize" class="SnForm-label">PDF formato</label>
-                            <input type="text" class="SnForm-control" id="businessLocalPdfInvoiceSize" name="businessLocal[pdfInvoiceSize]">
+                            <select id="businessLocalPdfInvoiceSize" class="SnForm-control" name="businessLocal[pdfInvoiceSize]">
+                                <option value="A4">A4</option>
+                                <option value="A5">A5</option>
+                                <option value="TICKET">TICKET</option>
+                            </select>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalPdfHeader" class="SnForm-label">PDF header</label>
-                            <input type="text" class="SnForm-control" id="businessLocalPdfHeader" name="businessLocal[pdfHeader]">
+                            <div class="SnControl-wrapper">
+                                <i class="icon-package SnControl-prefix"></i>
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalPdfHeader" placeholder="PDF header" name="businessLocal[pdfHeader]">
+                            </div>
                         </div>
                         <div class="SnForm-item">
                             <div class="SnSwitch">

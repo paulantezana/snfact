@@ -58,4 +58,23 @@ class AdminController extends Controller
         }
         echo json_encode($res);
     }
+
+    public function setCurrentLocal(){
+        $res = new Result();
+        try {
+//            Authorization($this->connection, 'producto', 'modificar');
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+
+            if (!$body['businessLocalId']){
+                throw new Exception('No se especificó ningún local');
+            }
+            $_SESSION[SESS_CURRENT_LOCAL] = $body['businessLocalId'];
+
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
 }

@@ -31,7 +31,18 @@ document.addEventListener('DOMContentLoaded',()=>{
                 businessCurrentLocalInfo.innerHTML = businessLocalsOptions;
                 businessCurrentLocalInfo.addEventListener('change',()=>{
                     if (businessCurrentLocalInfo.value !== ''){
-
+                        RequestApi.fetch('/admin/setCurrentLocal',{
+                            method: 'POST',
+                            body: {
+                                businessLocalId: businessCurrentLocalInfo.value
+                            }
+                        }).then(res => {
+                            if (res.success){
+                                location.reload();
+                            } else {
+                                SnModal.error({ title: 'Algo salió mal', content: res.message });
+                            }
+                        });
                     }
                 });
             }
@@ -47,7 +58,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                 }
             }
         }else {
-            SnModal.error({ title: 'Algo salió mal', content: res.message })
+            SnModal.error({ title: 'Algo salió mal', content: res.message });
         }
     });
 });
