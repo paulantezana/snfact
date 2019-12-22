@@ -15,6 +15,12 @@ $asideFooterHeight: 32px;
   }
   li {
     position: relative;
+    //&.is-active{
+    //  a{
+    //    background: $hoverMenuBg;
+    //    color: $hoverMenuColor;
+    //  }
+    //}
   }
   ul {
     @extend %snList;

@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($businessLocal['data'] as $row) : ?>
+            <?php if (count($businessLocal['data']) >= 1): foreach ($businessLocal['data'] as $row) : ?>
                 <tr>
                     <td><?= $row['sunat_code'] ?></td>
                     <td><?= $row['short_name'] ?></td>
@@ -23,13 +23,22 @@
                             <div class="SnBtn jsProductOption" data-tooltip="Editar" onclick="BusinessLocalShowModalUpdate(<?= $row['business_local_id'] ?>)">
                                 <i class="icon-pencil"></i>
                             </div>
-                            <div class="SnBtn jsProductOption" data-tooltip="Eliminar" onclick="BusinessLocalDelete(<?= $row['business_local_id'] ?>,'<?= $row['short_name'] ?>')">
+                            <div class="SnBtn error jsProductOption" data-tooltip="Eliminar" onclick="BusinessLocalDelete(<?= $row['business_local_id'] ?>,'<?= $row['short_name'] ?>')">
                                 <i class="icon-trash"></i>
                             </div>
                         </div>
                     </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endforeach; else: ?>
+                <tr>
+                    <td colspan="6">
+                        <div class="SnEmpty">
+                            <img src="<?= URL_PATH . '/assets/images/empty.svg' ?>" alt="">
+                            <div>No hay datos</div>
+                        </div>
+                    </td>
+                </tr>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>

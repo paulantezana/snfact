@@ -5,14 +5,20 @@ $routePublicPaths = [
     '/404' => ['controller' => 'PageController', 'method' => 'error404'],
     '/500' => ['controller' => 'PageController', 'method' => 'error500'],
     '/403' => ['controller' => 'PageController', 'method' => 'error403'],
-
-    '/forgot' => ['controller' => 'PageController', 'method' => 'forgot'],
-    '/forgot/validate' => ['controller' => 'PageController', 'method' => 'forgotValidate'],
-    '/register' => ['controller' => 'PageController', 'method' => 'register'],
-    '/login' => ['controller' => 'PageController', 'method' => 'login'],
-    '/login/fa2' => ['controller' => 'PageController', 'method' => 'postLogin'],
-    '/managerLogin' => ['controller' => 'PageController', 'method' => 'managerLogin'],
     '/term' => ['controller' => 'PageController', 'method' => 'term'],
+
+    '/forgot' => ['controller' => 'PublicCompanyController', 'method' => 'forgot'],
+    '/forgot/validate' => ['controller' => 'PublicCompanyController', 'method' => 'forgotValidate'],
+    '/register' => ['controller' => 'PublicCompanyController', 'method' => 'register'],
+    '/login' => ['controller' => 'PublicCompanyController', 'method' => 'login'],
+    '/login/fa2' => ['controller' => 'PublicCompanyController', 'method' => 'postLogin'],
+
+    '/manager/forgot' => ['controller' => 'PublicManagerController', 'method' => 'forgot'],
+    '/manager/forgot/validate' => ['controller' => 'PublicManagerController', 'method' => 'forgotValidate'],
+    '/manager/register' => ['controller' => 'PublicManagerController', 'method' => 'register'],
+    '/manager/login' => ['controller' => 'PublicManagerController', 'method' => 'login'],
+    '/manager/login/fa2' => ['controller' => 'PublicManagerController', 'method' => 'postLogin'],
+    '/manager/term' => ['controller' => 'PublicManagerController', 'method' => 'term'],
 ];
 
 class Router

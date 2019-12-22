@@ -8,6 +8,33 @@ class BusinessLocal extends Model
         parent::__construct("business_local","business_local_id",$db);
     }
 
+    public function PaginateByBusinessId($page, $limit = 10, $search = "", $businessId = 0)
+    {
+        try {
+            $offset = ($page - 1) * $limit;
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM  business_local WHERE business_id = {$businessId} AND short_name LIKE '%{$search}%' ")->fetchColumn();
+            $totalPages = ceil($totalRows / $limit);
+
+            $sql = "SELECT * FROM business_local WHERE business_id = :business_id AND short_name LIKE '%{$search}%' LIMIT $offset, $limit";
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->execute([
+                ':business_id' => $businessId
+            ]);
+            $data = $stmt->fetchAll();
+
+            $paginate = [
+                'current' => $page,
+                'pages' => $totalPages,
+                'limit' => $limit,
+                'data' => $data,
+            ];
+            return $paginate;
+        } catch (Exception $e) {
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+        }
+    }
+
     public function GetByIdDetail($id)
     {
         try {
@@ -83,7 +110,7 @@ class BusinessLocal extends Model
                     ':serie' => $row['serie'],
                     ':document_code' => $row['documentCode'],
                     ':max_correlative' => 0,
-                    ':contingency' => false,
+                    ':contingency' => $row['contingency'],
                 ])){
                     throw new Exception("Error al insertar el registro");
                 }

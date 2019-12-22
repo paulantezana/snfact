@@ -90,7 +90,7 @@
                                         <option value="<?= $row['category_id'] ?>"><?= $row['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <div class="SnBtn primary"><i class="icon-plus2"></i></div>
+                                <div class="SnBtn primary" onclick="CategoryShowModalCreate()"><i class="icon-plus2"></i></div>
                             </div>
                         </div>
                         <div class="SnForm-item required">
@@ -129,5 +129,7 @@
             </div>
         </div>
     </div>
+
+    <?php require_once __DIR__ . '/partials/categoryModalForm.php' ?>
 
 <?php require_once __DIR__ . '/layout/footer.php' ?>

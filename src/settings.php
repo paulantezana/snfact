@@ -25,3 +25,7 @@ define('SESS_CURRENT_LOCAL','SnCurrentLocal');
 define('APP_NAME','SnFact');
 define('APP_AUTHOR','SnFact');
 define('APP_DESCRIPTION','SnFact');
+
+// Temp
+define('SUNAT_SERVICE_URL', 'https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService?wsdl');
+define('SUNAT_GUIDE_SERVICE_URL', 'https://e-beta.sunat.gob.pe/ol-ti-itemision-guia-gem-beta/billService?wsdl');

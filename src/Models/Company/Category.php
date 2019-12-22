@@ -51,26 +51,32 @@ class Category extends Model
 
     public function insert($category)
     {
-        $currentDate = date('Y-m-d H:i:s');
-        $sql = 'INSERT INTO category (updated_at, created_at, created_user_id, updated_user_id, business_id,
+        try{
+            $currentDate = date('Y-m-d H:i:s');
+            $sql = 'INSERT INTO category (updated_at, created_at, created_user_id, updated_user_id, business_id,
                                         parent_id, name, description) 
                                 VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :business_id,
                                         :parent_id, :name, :description)';
-        $stmt = $this->db->prepare($sql);
+            $stmt = $this->db->prepare($sql);
 
-        if ($stmt->execute([
-            ':updated_at' => $currentDate,
-            ':created_at' => $currentDate,
-            ':created_user_id' => $_SESSION[SESS_KEY],
-            ':updated_user_id' => $_SESSION[SESS_KEY],
+            if (!$stmt->execute([
+                ':updated_at' => $currentDate,
+                ':created_at' => $currentDate,
+                ':created_user_id' => $_SESSION[SESS_KEY],
+                ':updated_user_id' => $_SESSION[SESS_KEY],
 
-            ':business_id' => $category['businessId'],
-            ':parent_id' => $category['parentId'],
-            ':name' => $category['name'],
-            ':description' => $category['description'],
-        ])) {
-            return $this->db->lastInsertId();
+                ':business_id' => $category['businessId'],
+                ':parent_id' => $category['parentId'],
+                ':name' => $category['name'],
+                ':description' => $category['description'],
+            ])) {
+                throw new Exception('No se pudo insertar el nuevo registro');
+            }
+
+            $lastId = $this->db->lastInsertId();
+            return $this->GetById($lastId);
+        } catch (Exception $e) {
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
-        return false;
     }
 }

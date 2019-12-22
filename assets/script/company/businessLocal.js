@@ -119,8 +119,10 @@ function BusinessLocalShowModalCreate(){
     SnModal.open(BusinessLocalState.modalName);
 
     BusinessLocalSerieAddItem(0,'01','F001');
-    BusinessLocalSerieAddItem(0,'03','B001');
     BusinessLocalSerieAddItem(0,'07','FF01');
+    BusinessLocalSerieAddItem(0,'08','FB01');
+    BusinessLocalSerieAddItem(0,'03','B001');
+    BusinessLocalSerieAddItem(0,'07','BF01');
     BusinessLocalSerieAddItem(0,'08','BB01');
     BusinessLocalSerieAddItem(0,'09','T001');
 }

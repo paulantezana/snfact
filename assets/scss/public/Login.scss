@@ -4,16 +4,13 @@
   @include from(l){
     width: 320px;
   }
-
   a{
     text-decoration: none;
     color: var(--snColor1);
   }
-
   .SnForm-input{
       background: var(--snColorBgAlt);
   }
-
   &-flex{
     display: flex;
     justify-content: space-between;

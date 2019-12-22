@@ -49,7 +49,8 @@ class BusinessLocalController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $businessLocal = $this->businessLocalModel->Paginate($page, $limit, $search);
+            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $businessLocal = $this->businessLocalModel->PaginateByBusinessId($page, $limit, $search, $business['business_id']);
 
             $this->render('company/partials/businessLocalTable.php', [
                 'businessLocal' => $businessLocal,
@@ -155,7 +156,7 @@ class BusinessLocalController extends Controller
                 <input type="text" class="SnForm-control" name="businessLocal[item][${uniqueId}][serie]" id="serie${uniqueId}" required>
             </td>
             <td>
-                <div class="SnBtn" title="Quitar item" onclick="BusinessLocalSerieRemoveItem(${uniqueId})">
+                <div class="SnBtn error" title="Quitar item" onclick="BusinessLocalSerieRemoveItem(${uniqueId})">
                     <i class="icon-trash-alt"></i>
                 </div>
             </td>

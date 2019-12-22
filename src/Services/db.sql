@@ -151,6 +151,7 @@ CREATE TABLE business(
     social_reason VARCHAR(255),
     commercial_reason VARCHAR(255),
     document_code VARCHAR(4),
+    detraction_bank_account VARCHAR(20),
     email VARCHAR(64),
     phone VARCHAR(32),
     web_site VARCHAR(64),
@@ -382,10 +383,11 @@ CREATE TABLE invoice(
     guide TEXT,                     # JSON Array de guia de referencia
     legend TEXT,                    # JSON Array de leyendas // SAVE ONLY LEYEND CODES.
 
-    pdf_format VARCHAR(16),         # Se se puede quitar
-    pdf_url varchar(255),
-    xml_url VARCHAR(255),
-    cdr_url varchar(255),
+    pdf_format VARCHAR(16),
+    itinerant_enable BOOLEAN,
+    itinerant_location VARCHAR(6),
+    itinerant_address varchar(255),
+    itinerant_urbanization varchar(255),
 
     CONSTRAINT pk_invoice PRIMARY KEY (invoice_id),
     CONSTRAINT uk_invoice UNIQUE (invoice_key),
@@ -401,10 +403,15 @@ CREATE TABLE invoice_sunat(
     invoice_sunat_id INT AUTO_INCREMENT NOT NULL,
     invoice_id INT NOT NULL,
     invoice_state_id SMALLINT,
+
     send BOOLEAN,
-    code BOOLEAN,
-    response VARCHAR(15),
-    other TEXT,
+    response_code VARCHAR(6),
+    response_message VARCHAR(255),
+    other_message VARCHAR(255),
+    pdf_url varchar(255),
+    xml_url VARCHAR(255),
+    cdr_url varchar(255),
+
     CONSTRAINT pk_invoice_sunat PRIMARY KEY (invoice_sunat_id),
     CONSTRAINT uk_invoice_sunat UNIQUE KEY (invoice_state_id,invoice_id),
     CONSTRAINT fk_invoice_sunat_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
@@ -577,6 +584,74 @@ CREATE TABLE invoice_voided(
     ON UPDATE RESTRICT ON DELETE RESTRICT
 ) ENGINE = InnoDB;
 
+CREATE TABLE sunat_communication (
+    sunat_communication_id int(10) NOT NULL AUTO_INCREMENT,
+    sunat_communication_type_id char(2) NOT NULL,
+    reference_id int(11) NOT NULL,
+    enabled tinyint(1) NOT NULL DEFAULT '1',
+    creation_date datetime NOT NULL,
+    creation_user_id int(11) NOT NULL,
+    modification_user_id int(11) NOT NULL,
+    modification_date datetime NOT NULL,
+    observation varchar(500) NOT NULL DEFAULT '',
+    PRIMARY KEY (sunat_communication_id)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `sunat_communication_type` (
+    sunat_communication_type_id int(11) NOT NULL AUTO_INCREMENT,
+    name varchar(25) NOT NULL,
+    PRIMARY KEY (sunat_communication_type_id)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `sunat_response` (
+    sunat_response_id int(11) NOT NULL AUTO_INCREMENT,
+    sunat_communication_id int(11) NOT NULL,
+    sunat_communication_success tinyint(1) NOT NULL,
+    reader_success tinyint(1) NOT NULL DEFAULT '0',
+    sunat_response_code varchar(4) NOT NULL DEFAULT '',
+    sunat_response_description varchar(500) NOT NULL DEFAULT '',
+    enabled tinyint(1) NOT NULL,
+    creation_date datetime NOT NULL,
+    creation_user_id int(11) NOT NULL,
+    modification_user_id int(11) NOT NULL,
+    modification_date datetime NOT NULL,
+    observation varchar(500) NOT NULL DEFAULT '',
+    PRIMARY KEY (sunat_response_id)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `sunat_xml` (
+    sunat_xml_id int(11) NOT NULL AUTO_INCREMENT,
+    sunat_xml_type_id int(11) NOT NULL,
+    reference_id int(11) NOT NULL,
+    enabled tinyint(1) NOT NULL DEFAULT '1',
+    creation_date datetime NOT NULL,
+    creation_user_id int(11) NOT NULL,
+    modification_user_id int(11) NOT NULL,
+    modification_date datetime NOT NULL,
+    observation varchar(500) NOT NULL DEFAULT '',
+    PRIMARY KEY (sunat_xml_id)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `sunat_xml_type` (
+    sunat_xml_type_id int(11) NOT NULL AUTO_INCREMENT,
+    name varchar(50) NOT NULL,
+    PRIMARY KEY (sunat_xml_type_id)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE sunat_summary_response (
+    sunat_summary_response_id int(11) NOT NULL AUTO_INCREMENT,
+    sunat_communication_id int(11) NOT NULL,
+    sunat_communication_success tinyint(1) NOT NULL,
+    ticket varchar(500) NOT NULL,
+    response_code varchar(3) NOT NULL DEFAULT '-',
+    enabled tinyint(1) NOT NULL,
+    creation_date datetime NOT NULL,
+    creation_user_id int(11) NOT NULL,
+    modification_user_id int(11) NOT NULL,
+    modification_date datetime NOT NULL,
+    observation varchar(500) NOT NULL DEFAULT '',
+    PRIMARY KEY (sunat_summary_response_id)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 
 -- -----------------------------------------------------------------------------------------------------------------

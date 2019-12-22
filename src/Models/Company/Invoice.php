@@ -8,6 +8,103 @@ class Invoice extends Model
         parent::__construct("invoice","invoice_id",$db);
     }
 
+    public function SummaryById(int $invoiceID) {
+        try{
+            $sql = 'SELECT invoice.*, 
+                            (invoice.total_igv + invoice.total_isc + invoice.total_other_taxed) as total_tax,
+                            cat_document_type_code.description as document_type_code_description, 
+                            cat_operation_type_code.description as operation_type_code_description, 
+                            ic.social_reason as customer_social_reason, ic.document_number as customer_document_number, 
+                            ic.identity_document_code as customer_identity_document_code,
+                            ic.fiscal_address as customer_fiscal_address,
+                            cat_currency_type_code.symbol as currency_type_code_symbol,
+                            cat_currency_type_code.description as currency_type_code_description,
+       
+                            isn.invoice_state_id,
+       
+                            srg.whit_guide, srg.transfer_code, srg.total_gross_weight, srg.transport_code, srg.carrier_document_code, srg.carrier_document_number,
+                            srg.carrier_denomination, srg.carrier_plate_number, srg.driver_document_code, srg.driver_document_number, srg.driver_full_name, srg.location_arrival_code,
+                            srg.address_arrival_point, srg.location_starting_code, srg.address_starting_point
+                    FROM invoice
+                    INNER JOIN invoice_customer ic on invoice.invoice_id = ic.invoice_id
+                    INNER JOIN invoice_sunat isn on invoice.invoice_id = isn.invoice_id  
+                    INNER JOIN cat_document_type_code ON invoice.document_code = cat_document_type_code.code
+                    INNER JOIN cat_currency_type_code ON invoice.currency_code = cat_currency_type_code.code
+                    INNER JOIN cat_operation_type_code ON invoice.operation_code = cat_operation_type_code.code
+                    LEFT JOIN invoice_referral_guide srg ON invoice.invoice_id = srg.invoice_id
+                    WHERE invoice.invoice_id = :invoice_id LIMIT 1';
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':invoice_id'=>$invoiceID]);
+            return $stmt->fetch();
+        } catch (Exception $e) {
+            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+        }
+    }
+
+    public function Paginate($page = 1, $limit = 10, $businessLocalId = 0,  $filter = []) {
+        try{
+            $filterNumber = 0;
+            $sqlFilter = '';
+            if (isset($filter['documentCode']) && $filter['documentCode']){
+                $sqlFilter .= " WHERE invoice.document_code = {$filter['documentCode']}";
+                $filterNumber++;
+            }
+            if (isset($filter['customerDocumentNumber']) && $filter['customerDocumentNumber']){
+                $sqlFilter .= $filterNumber >= 1 ? ' AND ' : ' WHERE ';
+                $sqlFilter .= "ic.document_number = {$filter['customerDocumentNumber']}";
+                $filterNumber++;
+            }
+            if (isset($filter['startDate']) && $filter['startDate']){
+                $sqlFilter .= $filterNumber >= 1 ? ' AND ' : ' WHERE ';
+                $sqlFilter .= "invoice.date_of_issue >= '{$filter['startDate']}'";
+                $filterNumber++;
+            }
+            if (isset($filter['invoiceId']) && $filter['invoiceId']){
+                $sqlFilter .= $filterNumber >= 1 ? ' AND ' : ' WHERE ';
+                $sqlFilter .= "invoice.invoice_id = '{$filter['invoiceId']}'";
+                $filterNumber++;
+            }
+            if (isset($filter['endDate']) && $filter['endDate']){
+                $sqlFilter .= $filterNumber >= 1 ? ' AND ' : ' WHERE ';
+                $sqlFilter .= "invoice.date_of_issue <= '{$filter['endDate']}'";
+            }
+            $sqlFilter .= $filterNumber >= 1 ? ' AND ' : ' WHERE ';
+            $sqlFilter .= "invoice.local_id = {$businessLocalId}";
+
+            $limit = 10;
+            $offset = ($page - 1) * $limit;
+            $total_rows = $this->db->query("SELECT COUNT(invoice.invoice_id) FROM invoice INNER JOIN invoice_customer ic on invoice.invoice_id = ic.invoice_id {$sqlFilter}")->fetchColumn();
+            $total_pages = ceil($total_rows / $limit);
+
+            $sql = "SELECT invoice.*, cat_document_type_code.description as document_type_code_description, cat_operation_type_code.description as operation_type_code_description,
+                           ic.social_reason as customer_social_reason, ic.document_number as customer_document_number, ic.sent_to_client as customer_sent_to_client,
+                           cat_currency_type_code.symbol as currency_symbol,
+                           isn.invoice_state_id,  isn.send, isn.response_code, isn.response_message, isn.other_message, isn.pdf_url, isn.xml_url, isn.cdr_url
+                    FROM invoice
+                        INNER JOIN invoice_customer ic on invoice.invoice_id = ic.invoice_id
+                        INNER JOIN invoice_sunat isn on invoice.invoice_id = isn.invoice_id
+                        INNER JOIN cat_document_type_code ON invoice.document_code = cat_document_type_code.code
+                        INNER JOIN cat_currency_type_code ON invoice.currency_code = cat_currency_type_code.code
+                        INNER JOIN cat_operation_type_code ON invoice.operation_code = cat_operation_type_code.code ";
+
+            $sql .= $sqlFilter;
+            $sql .= " ORDER BY invoice.invoice_id DESC LIMIT $offset, $limit";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+
+            return [
+                'current' => $page,
+                'pages' => $total_pages,
+                'limit' => $limit,
+                'data' => $data,
+            ];
+        } catch (Exception $e) {
+            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+        }
+    }
+
     public function Insert($invoice, $userReferId){
         try{
             $currentDate = date('Y-m-d H:i:s');
@@ -103,54 +200,81 @@ class Invoice extends Model
                 throw new Exception('No se pudo insertar el registro');
             }
 
-//            // Insert items
-//            foreach ($invoice['item'] as $row){
-//                $sql = "INSERT INTO invoice_item (invoice_id, product_code, unit_measure, description, quantity, unit_value, unit_price, discount, affectation_code,
-//                                                    total_base_igv, igv, system_isc_code, total_base_isc, tax_isc,
-//                                                    isc, total_base_other_taxed, percentage_other_taxed, other_taxed, plastic_bag_tax, quantity_plastic_bag,
-//                                                    total_value, total, charge)
-//                                        VALUES (:invoice_id, :product_code, :unit_measure, :description, :quantity, :unit_value, :unit_price, :discount, :affectation_code,
-//                                                :total_base_igv, :igv, :system_isc_code, :total_base_isc, :tax_isc,
-//                                                :isc, :total_base_other_taxed, :percentage_other_taxed, :other_taxed, :plastic_bag_tax, :quantity_plastic_bag,
-//                                                 :total_value, :total, :charge)";
-//                $stmt = $this->db->prepare($sql);
-//                if (!$stmt->execute([
-//                    ':invoice_id' => $invoiceId,
-//                    ':product_code' => $row['productCode'],
-//                    ':unit_measure' => $row['unitMeasure'],
-//                    ':description' => $row['description'],
-//                    ':quantity' => (float)($row['quantity']),
-//                    ':unit_value' => (float)($row['unitValue']),
-//                    ':unit_price' => (float)($row['unitPrice']),
-//                    ':discount' => (float)($row['discount']),
-//
-//                    ':affectation_code' => $row['affectationCode'] ?? '',
-//                    ':total_base_igv' => (float)($row['totalBaseIgv'] ?? 0),
-//                    ':igv' => (float)($row['igv'] ?? 0),
-//
-//                    ':system_isc_code' => $row['iscSystem'] ?? '',
-//                    ':total_base_isc' => (float)($row['totalBaseIsc'] ?? 0),
-//                    ':tax_isc' => (float)($row['iscTax'] ?? 0),
-//                    ':isc' => (float)($row['isc'] ?? 0),
-//
-//                    ':total_base_other_taxed' => 0,
-//                    ':percentage_other_taxed' => 0,
-//                    ':other_taxed' => 0,
-//
-//                    ':quantity_plastic_bag' => 0,
-//                    ':plastic_bag_tax' => 0,
-//
-//                    ':total_value' => (float)($row['totalValue']),
-//                    ':total' => (float)($row['total']),
-//                    ':charge' => 0,
-//                ])){
-//                    throw new Exception('Error al insertar los items');
-//                }
-//            }
+            // Insert items
+            foreach ($invoice['item'] as $row){
+                $sql = "INSERT INTO invoice_item (invoice_id, product_code, unit_measure, description, quantity, unit_value, unit_price, discount, affectation_code,
+                                                    total_base_igv, igv, system_isc_code, total_base_isc, tax_isc,
+                                                    isc, total_base_other_taxed, percentage_other_taxed, other_taxed, plastic_bag_tax, quantity_plastic_bag,
+                                                    total_value, total, charge)
+                                        VALUES (:invoice_id, :product_code, :unit_measure, :description, :quantity, :unit_value, :unit_price, :discount, :affectation_code,
+                                                :total_base_igv, :igv, :system_isc_code, :total_base_isc, :tax_isc,
+                                                :isc, :total_base_other_taxed, :percentage_other_taxed, :other_taxed, :plastic_bag_tax, :quantity_plastic_bag,
+                                                 :total_value, :total, :charge)";
+                $stmt = $this->db->prepare($sql);
+                if (!$stmt->execute([
+                    ':invoice_id' => $invoiceId,
+                    ':product_code' => $row['productCode'],
+                    ':unit_measure' => $row['unitMeasure'],
+                    ':description' => $row['description'],
+                    ':quantity' => (float)($row['quantity']),
+                    ':unit_value' => (float)($row['unitValue']),
+                    ':unit_price' => (float)($row['unitPrice']),
+                    ':discount' => (float)($row['discount']),
+
+                    ':affectation_code' => $row['affectationCode'] ?? '',
+                    ':total_base_igv' => (float)($row['totalBaseIgv'] ?? 0),
+                    ':igv' => (float)($row['igv'] ?? 0),
+
+                    ':system_isc_code' => $row['iscSystem'] ?? '',
+                    ':total_base_isc' => (float)($row['totalBaseIsc'] ?? 0),
+                    ':tax_isc' => (float)($row['iscTax'] ?? 0),
+                    ':isc' => (float)($row['isc'] ?? 0),
+
+                    ':total_base_other_taxed' => 0,
+                    ':percentage_other_taxed' => 0,
+                    ':other_taxed' => 0,
+
+                    ':quantity_plastic_bag' => 0,
+                    ':plastic_bag_tax' => 0,
+
+                    ':total_value' => (float)($row['totalValue']),
+                    ':total' => (float)($row['total']),
+                    ':charge' => 0,
+                ])){
+                    throw new Exception('Error al insertar los items');
+                }
+            }
 
             $this->db->commit();
+            return $invoiceId;
         }catch (Exception $e){
             $this->db->rollBack();
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+        }
+    }
+
+    public function UpdateInvoiceSunatByInvoiceId($invoiceId, $data)
+    {
+        try {
+            $sql = "UPDATE invoice_sunat SET ";
+            foreach ($data as $key => $value) {
+                $sql .= "$key = :$key, ";
+            }
+            $sql = trim(trim($sql), ',');
+            $sql .= " WHERE invoice_id = :invoice_id";
+
+            $execute = [];
+            foreach ($data as $key => $value) {
+                $execute[":$key"] = $value;
+            }
+            $execute[":invoice_id"] = $invoiceId;
+
+            $stmt = $this->db->prepare($sql);
+            if (!$stmt->execute($execute)) {
+                throw new Exception("Error al actualizar el registro");
+            }
+            return $invoiceId;
+        } catch (Exception $e) {
             throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
         }
     }

@@ -17,7 +17,7 @@
                         <label class="SnForm-label" for="invoiceDocumentCode">Documento</label>
                         <select class="SnForm-control" name="invoice[documentCode]" id="invoiceDocumentCode">
                             <?php foreach ($catDocumentTypeCode as $row) : ?>
-                                <option value="<?= $row['code'] ?>" <?php echo $invoiceType['document_code'] == $row['code'] ? 'selected' : '' ?> ><?= $row['description'] ?></option>
+                                <option value="<?= $row['code'] ?>" <?php echo ($invoiceDocumentCode ?? '') === $row['code'] ? 'selected' : '' ?> ><?= $row['description'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -39,16 +39,17 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceSerie">Serie:</label>
-                        <div class="SnControl-wrapper">
-                            <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" name="invoice[serie]" id="invoiceSerie" value="<?= $invoiceType['serie'] ?>">
-                        </div>
+                        <select name="invoice[serie]" id="invoiceSerie" class="SnForm-control">
+                            <?php foreach ($invoiceSerieNumber as $row) : ?>
+                                <option value="<?= $row['serie'] ?>"><?= $row['serie'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceNumber">Número</label>
                         <div class="SnControl-wrapper">
                             <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" name="invoice[number]" id="invoiceNumber" placeholder="#" value="<?= $invoiceType['number'] ?>">
+                            <input class="SnForm-control SnControl" type="text" name="invoice[number]" id="invoiceNumber" placeholder="#">
                         </div>
                     </div>
                     <div class="SnForm-item required">

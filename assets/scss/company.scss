@@ -25,10 +25,11 @@
 @include SnTab();
 @include SnContainer();
 @include SnCollapse();
-@include SnDivider();
+//@include SnDivider();
 @include SnHide();
 @include SnFreeze();
 @include SnEmpty();
+@include SnPadding();
 
 @import "company/Layout";
 @import "company/Header";
@@ -57,43 +58,6 @@
   &.success{
     background: var(--snSuccess);
     color: var(--snSuccessInverse);
-  }
-}
-
-.SnDoc{
-  &-left{
-    @include from(l){
-      & > *{
-        position: fixed;
-        //z-index: 1;
-      }
-    }
-  }
-  &-right{
-    @include from(l){
-      width: calc(100vw - 412px);
-      max-width: 100%;
-    }
-  }
-  &-titles{
-    @extend %snList;
-    a{
-      text-decoration: none;
-      display: block;
-      color: var(--snColorText);
-      padding: .5rem 1rem;
-      &:hover{
-        background: var(--snColorHover);
-      }
-    }
-  }
-
-  grid-template-columns: 1fr;
-  display: grid;
-  height: calc(100vh - 60px);
-  grid-gap: 16px;
-  @include  from(l){
-    grid-template-columns: 1fr 280px;
   }
 }
 

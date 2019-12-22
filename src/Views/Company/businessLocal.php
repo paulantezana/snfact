@@ -29,11 +29,9 @@
     <div class="SnModal-wrapper" data-modal="businessLocalModalForm">
         <div class="SnModal" style="max-width: 90vw; top: 50px;">
             <div class="SnModal-close" data-modalclose="businessLocalModalForm">
-                <svg viewBox="64 64 896 896" class="" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false">
-                    <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path>
-                </svg>
+                <i class="icon-cross"></i>
             </div>
-            <div class="SnModal-header">Sucursal</div>
+            <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Sucursal</div>
             <div class="SnModal-body">
                 <form action="" class="SnForm" id="businessLocalForm" onsubmit="BusinessLocalSubmit(event)">
                     <input type="hidden" class="SnForm-control" id="businessLocalId" name="businessLocal[id]">
@@ -41,35 +39,35 @@
                         <div class="SnForm-item required">
                             <label for="businessLocalSunatCode" class="SnForm-label">Código SUNAT</label>
                             <div class="SnControl-wrapper">
-                                <i class="icon-package SnControl-prefix"></i>
+                                <i class="icon-barcode2 SnControl-prefix"></i>
                                 <input class="SnForm-control SnControl" type="text" id="businessLocalSunatCode" placeholder="Código SUNAT" name="businessLocal[sunatCode]">
                             </div>
                         </div>
                         <div class="SnForm-item required">
                             <label for="businessLocalShortName" class="SnForm-label">Nombre de Sucursal</label>
                             <div class="SnControl-wrapper">
-                                <i class="icon-package SnControl-prefix"></i>
+                                <i class="icon-vcard SnControl-prefix"></i>
                                 <input class="SnForm-control SnControl" type="text" id="businessLocalShortName" placeholder="Nombre de Sucursal" name="businessLocal[shortName]">
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalLocationCode" class="SnForm-label">Ubigeo</label>
                             <div class="SnControl-wrapper">
-                                <i class="icon-package SnControl-prefix"></i>
+                                <i class="icon-sphere SnControl-prefix"></i>
                                 <input class="SnForm-control SnControl" type="text" id="businessLocalLocationCode" placeholder="Ubigeo" name="businessLocal[locationCode]">
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalAddress" class="SnForm-label">Dirección</label>
                             <div class="SnControl-wrapper">
-                                <i class="icon-package SnControl-prefix"></i>
+                                <i class="icon-home2 SnControl-prefix"></i>
                                 <input class="SnForm-control SnControl" type="text" id="businessLocalAddress" placeholder="Dirección" name="businessLocal[address]">
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalDescription" class="SnForm-label">Información Adicional</label>
                             <div class="SnControl-wrapper">
-                                <i class="icon-package SnControl-prefix"></i>
+                                <i class="icon-file-text2 SnControl-prefix"></i>
                                 <input class="SnForm-control SnControl" type="text" id="businessLocalDescription" placeholder="Información Adicional" name="businessLocal[description]">
                             </div>
                         </div>
@@ -84,7 +82,7 @@
                         <div class="SnForm-item">
                             <label for="businessLocalPdfHeader" class="SnForm-label">PDF header</label>
                             <div class="SnControl-wrapper">
-                                <i class="icon-package SnControl-prefix"></i>
+                                <i class="icon-file-pdf SnControl-prefix"></i>
                                 <input class="SnForm-control SnControl" type="text" id="businessLocalPdfHeader" placeholder="PDF header" name="businessLocal[pdfHeader]">
                             </div>
                         </div>
@@ -95,14 +93,13 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="SnTable-wrapper">
+                    <div class="SnTable-wrapper SnMb-4">
                         <table class="SnTable">
                             <thead>
                                 <tr>
                                     <th>Documento</th>
                                     <th>Serie</th>
-                                    <th></th>
+                                    <th style="width: 70px"></th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -113,13 +110,9 @@
                                 </tr>
                             </tfoot>
                             <tbody id="businessLocalSeriesTableBody">
-
                             </tbody>
                         </table>
                     </div>
-
-
-
                     <button type="submit" class="SnBtn primary block" id="businessLocalFormSubmit">Guardar</button>
                 </form>
             </div>

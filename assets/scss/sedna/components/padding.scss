@@ -1,0 +1,17 @@
+@mixin SnPadding {
+  $spacer: .25rem;
+  @for $i from 2 through 5 {
+    .#{$classPrefix}Pt-#{$i}{
+      margin-top: $spacer * $i;
+    }
+    .#{$classPrefix}Pr-#{$i}{
+      margin-right: $spacer * $i;
+    }
+    .#{$classPrefix}Pb-#{$i}{
+      margin-bottom: $spacer * $i;
+    }
+    .#{$classPrefix}Pl-#{$i}{
+      margin-left: $spacer * $i;
+    }
+  }
+}

@@ -72,6 +72,9 @@ class MngUser extends Model
                 throw new Exception("Usted no esta autorizado para ingresar al sistema.");
             }
 
+            $data['fa2_secret_enabled'] = !(strlen($data['fa2_secret']) === 0);
+            $data['fa2_secret'] = '';
+
             return $data;
         } catch (Exception $e) {
             throw $e;

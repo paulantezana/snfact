@@ -27,7 +27,7 @@ class BusinessController extends Controller
                     $validate = $this->BusinessValidate($business);
                     if (!$validate->success) {
                         $error = $validate->error;
-                        throw new Exception($validate->errorMessage);
+                        throw new Exception($validate->message);
                     }
                     $this->businessModel->Save($business);
 
@@ -37,7 +37,7 @@ class BusinessController extends Controller
                         $validate = $this->BusinessValidateLogo($businessLogo);
                         if (!$validate->success) {
                             $error = $validate->error;
-                            throw new Exception($validate->errorMessage);
+                            throw new Exception($validate->message);
                         }
 
                         if (!($businessLogo['tmp_name'] ?? '') == '') {

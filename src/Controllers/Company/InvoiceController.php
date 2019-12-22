@@ -11,6 +11,8 @@ require_once MODEL_PATH . '/Catalogue/CatIdentityDocumentTypeCode.php';
 require_once MODEL_PATH . '/Company/Business.php';
 require_once MODEL_PATH . '/Company/BusinessSerie.php';
 
+require_once ROOT_DIR . '/src/Services/BuildInvoice.php';
+
 class InvoiceController extends Controller
 {
     private $catCurrencyTypeCodeModel;
@@ -60,20 +62,38 @@ class InvoiceController extends Controller
     public function table()
     {
         try {
-            $message = '';
-            $messageType = 'info';
-            $error = [];
+//            Authorization($this->connection, 'producto', 'listar');
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
+            $filter = $_POST['filter'] ?? [];
 
-            $this->render('company/invoice.php', [
-                'message' => $message,
-                'error' => $error,
-                'messageType' => $messageType,
+            $invoice = $this->invoiceModel->Paginate($page, $limit, $_SESSION[SESS_CURRENT_LOCAL], $filter);
+            $this->render('company/partials/invoiceTable.php', [
+                'invoice' => $invoice,
             ]);
         } catch (Exception $e) {
             $this->render('Public/500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
+    }
+
+    public function getNextDocumentNumber()
+    {
+        $res = new Result();
+        try {
+//            Authorization($this->connection, 'categoria', 'modificar');
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+            $body['businessLocalId'] = $_SESSION[SESS_CURRENT_LOCAL];
+
+            $businessSerieModel = new BusinessSerie($this->connection);
+            $res->result = $businessSerieModel->GetNextNumber($body);
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
     }
 
     public function formTemplate(){
@@ -87,7 +107,7 @@ class InvoiceController extends Controller
 
             $invoiceItemTemplate = $this->invoiceItemTemplate();
 
-            $invoiceType = $businessSerieModel->GetNextCorrelative([
+            $invoiceType = $businessSerieModel->GetDocumentSerieNumber([
                 'localId' => $_SESSION[SESS_CURRENT_LOCAL],
                 'documentCode' => '01',
             ]);
@@ -120,11 +140,12 @@ class InvoiceController extends Controller
             if (isset($_GET['invoiceId'])){
                 $invoice = $this->invoiceModel->GetById($_GET['invoiceId']);
             }
+            $invoiceDocumentCode = $_GET['documentCode'];
 
             $businessSerieModel = new BusinessSerie($this->connection);
-            $invoiceType = $businessSerieModel->GetNextCorrelative([
-                'localId' => $_SESSION[SESS_CURRENT_LOCAL],
-                'documentCode' => $_GET['documentCode'],
+            $invoiceSerieNumber = $businessSerieModel->GetDocumentSerieNumber([
+                'businessLocalId' => $_SESSION[SESS_CURRENT_LOCAL],
+                'documentCode' => $invoiceDocumentCode,
             ]);
 
             $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
@@ -143,7 +164,8 @@ class InvoiceController extends Controller
                 'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
 
                 'invoiceItemTemplate' => $invoiceItemTemplate,
-                'invoiceType' => $invoiceType,
+                'invoiceSerieNumber' => $invoiceSerieNumber,
+                'invoiceDocumentCode' => $invoiceDocumentCode,
                 'invoice' => $invoice,
             ]);
         } catch (Exception $e) {
@@ -158,16 +180,18 @@ class InvoiceController extends Controller
         try {
             $invoice = $_POST['invoice'];
 
-//            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
             $invoice['localId'] = $_SESSION[SESS_CURRENT_LOCAL];
             $invoice['timeOfIssue'] = date('H:i:s');
             $invoice['percentageIgv'] = 18.00;
 //            $invoice['itinerant_enable'] = ($invoice['itinerant_enable'] ?? false) == 'on' ? 1 : 0;
 //            $invoice['prepayment_regulation'] = ($invoice['prepayment_regulation'] ?? false) == 'on' ? 1 : 0;
             $invoice['totalValue'] = $invoice['totalUnaffected'] + $invoice['totalTaxed'] + $invoice['totalExonerated'];
-            $response = $this->invoiceModel->Insert($invoice, $_SESSION[SESS_KEY]);
+            $invoiceId = $this->invoiceModel->Insert($invoice, $_SESSION[SESS_KEY]);
 
-            $res->result = $response;
+            $buildInvoice = new BuildInvoice($this->connection);
+            $resRunDoc = $buildInvoice->BuildDocument($invoiceId,$_SESSION[SESS_KEY]);
+
+            $res->result = $resRunDoc;
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -352,7 +376,7 @@ class InvoiceController extends Controller
                                                 <label class="SnForm-label" for="invoiceItemIsc${uniqueId}">ISC</label>
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
-                                                    <input class="SnForm-control SnControl jsInvoiceItemIsc" type="number" step="any" disabled
+                                                    <input class="SnForm-control SnControl jsInvoiceItemIsc" type="number" step="any"
                                                         id="invoiceItemIsc${uniqueId}" name="invoice[item][${uniqueId}][isc]">
                                                 </div>
                                                 <input type="hidden" id="invoiceItemTotalBaseIsc${uniqueId}" name="invoice[item][${uniqueId}][totalBaseIsc]">
@@ -371,7 +395,7 @@ class InvoiceController extends Controller
                                                 <label class="SnForm-label" for="invoiceItemIgv${uniqueId}">IGV (18%)</label>
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
-                                                    <input class="SnForm-control SnControl jsInvoiceItemIgv" type="number" step="any" disabled
+                                                    <input class="SnForm-control SnControl jsInvoiceItemIgv" type="number" step="any"
                                                         id="invoiceItemIgv${uniqueId}" name="invoice[item][${uniqueId}][igv]">
                                                 </div>
                                                 <input type="hidden" id="invoiceItemTotalBaseIgv${uniqueId}" name="invoice[item][${uniqueId}][totalBaseIgv]">
@@ -380,7 +404,7 @@ class InvoiceController extends Controller
                                                 <label class="SnForm-label" for="invoiceItemTotal${uniqueId}">Total</label>
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
-                                                    <input class="SnForm-control SnControl jsInvoiceItemTotal" type="number" step="any" disabled
+                                                    <input type="number" step="any" class="SnForm-control SnControl jsInvoiceItemTotal"
                                                         id="invoiceItemTotal${uniqueId}" name="invoice[item][${uniqueId}][total]">
                                                 </div>
                                                 <input type="hidden" id="invoiceItemTotalDecimal${uniqueId}">

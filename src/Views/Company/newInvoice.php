@@ -3,10 +3,10 @@
     <div class="">
         <div class="SnCard">
             <div class="SnCard-body" id="invoiceFormTemplateContainer">
-                <?= require_once __DIR__ . '/partials/invoiceFormTemplate.php' ?>
+                <?php require_once __DIR__ . '/partials/invoiceFormTemplate.php' ?>
             </div>
         </div>
     </div>
 </div>
-<script src="<?= URL_PATH  ?>/assets/script/company/invoice.js"></script>
+<script src="<?= URL_PATH  ?>/assets/script/company/newInvoice.js"></script>
 <?php require_once __DIR__ . '/layout/footer.php' ?>

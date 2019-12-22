@@ -1,6 +1,7 @@
 let ProductState = {
     modalType : 'create',
     modalName : 'productModalForm',
+    categoryModalName: 'categoryModalForm',
     loading : false,
 };
 
@@ -157,6 +158,44 @@ function ProductShowModalUpdate(productId){
             SnModal.error({ title: 'Algo salió mal', content: res.message })
         }
     }).finally(e => {
+        ProductSetLoading(false);
+    })
+}
+
+function CategoryShowModalCreate(){
+    let currentForm = document.getElementById('categoryForm');
+    if (currentForm){
+        currentForm.reset();
+    }
+    SnModal.open(ProductState.categoryModalName);
+}
+
+function CategorySubmit(event){
+    event.preventDefault();
+    ProductSetLoading(true);
+
+    let categorySendData = {};
+    categorySendData.name =  document.getElementById('categoryName').value || '';
+    categorySendData.description =  document.getElementById('categoryDescription').value || '';
+    categorySendData.state =  document.getElementById('categoryState').checked || false;
+    categorySendData.parentId =  0;
+
+    RequestApi.fetch('/category/create',{
+        method: 'POST',
+        body: categorySendData
+    }).then(res => {
+        if (res.success){
+            SnModal.close(ProductState.categoryModalName);
+            SnMessage.success({ content: res.message });
+            let productCategoryId = document.getElementById('productCategoryId');
+            if (productCategoryId){
+                productCategoryId.insertAdjacentHTML('beforeend',`<option value="${res.result.category_id}">${res.result.name}</option>`);
+                productCategoryId.value = res.result.category_id;
+            }
+        } else {
+            SnModal.error({ title: 'Algo salió mal', content: res.message })
+        }
+    }).finally(e =>{
         ProductSetLoading(false);
     })
 }
