@@ -198,13 +198,6 @@ CREATE TABLE business_serie(
         ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
-CREATE TABLE business_user(
-    business_id INT NOT NULL,
-    user_id INT NOT NULL,
-    CONSTRAINT fk_business_user_business FOREIGN KEY (business_id) REFERENCES business (business_id)
-        ON UPDATE RESTRICT ON DELETE RESTRICT
-)ENGINE = InnoDB;
-
 CREATE TABLE app_authorization(
     app_authorization_id INT AUTO_INCREMENT NOT NULL,
     module varchar(64) NOT NULL,
@@ -241,7 +234,6 @@ CREATE TABLE user(
     created_user_id INT,
     updated_user_id INT,
 
-    business_id INT,
     password varchar(64) NOT NULL,
     email varchar(64),
     request_key varchar(32),
@@ -258,6 +250,15 @@ CREATE TABLE user(
     CONSTRAINT fk_user_user_role FOREIGN KEY (user_role_id) REFERENCES user_role (user_role_id)
     ON UPDATE RESTRICT ON DELETE RESTRICT
 );
+
+CREATE TABLE business_user(
+    business_id INT NOT NULL,
+    user_id INT NOT NULL,
+    CONSTRAINT fk_business_user_business FOREIGN KEY (business_id) REFERENCES business (business_id)
+      ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_business_user_user FOREIGN KEY (user_id) REFERENCES user (user_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT
+)ENGINE = InnoDB;
 
 CREATE TABLE category(
     category_id INT NOT NULL AUTO_INCREMENT,
@@ -1059,9 +1060,9 @@ INSERT INTO user_role_authorization(user_role_id, app_authorization_id) VALUES
 (1,22),
 (1,23);
 
-INSERT INTO business( continue_payment, ruc, social_reason, commercial_reason, email, phone, web_site, logo)
+INSERT INTO user(user_name,password,email,user_role_id) VALUES ('yoel', sha1('yoel'), 'data@gmail.com', 1);
+INSERT INTO business(continue_payment, ruc, social_reason, commercial_reason, email, phone, web_site, logo)
 VALUES (false,'99999999999','abc company','abc','abc@gmail.com','966254123','abc.com','');
-INSERT INTO user(user_name,password,email,user_role_id, business_id) VALUES ('yoel', sha1('yoel'), 'data@gmail.com', 1, 1);
 INSERT INTO business_user (business_id, user_id) VALUES (1,1);
 INSERT INTO business_local(updated_at, created_at, created_user_id, updated_user_id, short_name, sunat_code, location_code, address, pdf_invoice_size, pdf_header, description, business_id)
 VALUES (now(),now(),1,1,'Local principal','','080800','','A4','','',1);

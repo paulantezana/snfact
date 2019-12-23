@@ -151,7 +151,6 @@ class UserController extends Controller
             if (!$validate->success) {
                 throw new Exception($validate->message);
             }
-
             $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
 
             $res->result = $this->userModel->Insert($body, $_SESSION[SESS_KEY]);

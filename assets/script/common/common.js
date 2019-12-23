@@ -126,3 +126,62 @@ const groupBy = function(data, key) {
         return a;
     }, {});
 };
+
+let SnLiveList = option => {
+    let tElementNodes = document.querySelectorAll(option.target);
+    let loading = false;
+
+    tElementNodes.forEach(targetElement => {
+        let parentNode = targetElement.parentNode;
+        let nodeLocalName = targetElement.localName;
+
+        let listContainer = document.createElement('ul');
+        listContainer.classList.add('SnLiveList');
+        if (!parentNode.querySelector('.SnLiveList')) {
+            parentNode.appendChild(listContainer);
+        }
+
+        const paintElement = async (event, targetElement) => {
+            listContainer.innerHTML = '';
+            if (option.data && typeof option.data.src === 'function'){
+                let response = await option.data.src(event.target);
+                [...response].forEach(item => {
+                    let listItem = document.createElement('li');
+                    listItem.classList.add('SnLiveList-item');
+
+                    let dataKeys = option.data.keys;
+                    if (dataKeys){
+                        listItem.innerHTML = `<div>${item[dataKeys.text]}</div><div>${item[dataKeys.text]}</div>`;
+                    }
+
+                    listItem.addEventListener('click', e => {
+                        listContainer.innerHTML = '';
+                        if (option.onSelect && typeof option.onSelect === 'function'){
+                            option.onSelect(e, item);
+                            if (dataKeys){
+                                targetElement.value = item[dataKeys.text];
+                            }
+                        }
+                    });
+                    listContainer.appendChild(listItem);
+                });
+                loading = false;
+            }
+        };
+        // console.log(nodeLocalName);
+        targetElement.addEventListener('change',  async e => {
+            e.preventDefault();
+            console.log(nodeLocalName);
+            let targetElementInfo = targetElement.getBoundingClientRect();
+            listContainer.style.top = (targetElementInfo.height - 1) + 'px';
+            listContainer.style.width = targetElementInfo.width + 'px';
+
+            if (!loading){
+                targetElement.classList.add('loading');
+                await paintElement(e,targetElement);
+            } else {
+                targetElement.classList.remove('loading');
+            }
+        });
+    });
+};

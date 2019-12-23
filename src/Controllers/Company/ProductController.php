@@ -189,6 +189,24 @@ class ProductController extends Controller
         echo json_encode($res);
     }
 
+    public function searchProductCode(){
+        $res = new Result();
+        try{
+//            Authorization($this->connection, 'producto', 'modificar');
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+
+            $catProductCodeModel = new CatProductCode($this->connection);
+            $response = $catProductCodeModel->Search($body['search']);
+
+            $res->result = $response;
+            $res->success = true;
+        } catch (Exception $e){
+            $res->errorMessage = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
     public function validateInput($body)
     {
         $collector = new ErrorCollector();

@@ -8,7 +8,7 @@ class Invoice extends Model
         parent::__construct("invoice","invoice_id",$db);
     }
 
-    public function SummaryById(int $invoiceID) {
+    public function GetAllDataById(int $invoiceID) {
         try{
             $sql = 'SELECT invoice.*, 
                             (invoice.total_igv + invoice.total_isc + invoice.total_other_taxed) as total_tax,
@@ -16,11 +16,11 @@ class Invoice extends Model
                             cat_operation_type_code.description as operation_type_code_description, 
                             ic.social_reason as customer_social_reason, ic.document_number as customer_document_number, 
                             ic.identity_document_code as customer_identity_document_code,
-                            ic.fiscal_address as customer_fiscal_address,
+                            ic.fiscal_address as customer_fiscal_address, ic.email as customer_email,
                             cat_currency_type_code.symbol as currency_type_code_symbol,
                             cat_currency_type_code.description as currency_type_code_description,
        
-                            isn.invoice_state_id,
+                            isn.invoice_state_id, isn.pdf_url, isn.xml_url, isn.cdr_url,
        
                             srg.whit_guide, srg.transfer_code, srg.total_gross_weight, srg.transport_code, srg.carrier_document_code, srg.carrier_document_number,
                             srg.carrier_denomination, srg.carrier_plate_number, srg.driver_document_code, srg.driver_document_number, srg.driver_full_name, srg.location_arrival_code,
@@ -78,7 +78,8 @@ class Invoice extends Model
             $total_pages = ceil($total_rows / $limit);
 
             $sql = "SELECT invoice.*, cat_document_type_code.description as document_type_code_description, cat_operation_type_code.description as operation_type_code_description,
-                           ic.social_reason as customer_social_reason, ic.document_number as customer_document_number, ic.sent_to_client as customer_sent_to_client,
+                           ic.social_reason as customer_social_reason, ic.document_number as customer_document_number, 
+                           ic.sent_to_client as customer_sent_to_client, ic.email as customer_email,
                            cat_currency_type_code.symbol as currency_symbol,
                            isn.invoice_state_id,  isn.send, isn.response_code, isn.response_message, isn.other_message, isn.pdf_url, isn.xml_url, isn.cdr_url
                     FROM invoice

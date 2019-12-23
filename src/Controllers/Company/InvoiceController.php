@@ -12,6 +12,7 @@ require_once MODEL_PATH . '/Company/Business.php';
 require_once MODEL_PATH . '/Company/BusinessSerie.php';
 
 require_once ROOT_DIR . '/src/Services/BuildInvoice.php';
+require_once ROOT_DIR . '/src/Services/SendManager/EmailManager.php';
 
 class InvoiceController extends Controller
 {
@@ -232,7 +233,49 @@ class InvoiceController extends Controller
     public function sendEmail()
     {
         $res = new Result();
-        try { } catch (Exception $e) {
+        try {
+//            Authorization($this->connection, 'categoria', 'modificar');
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+
+            $invoiceId = $body['invoiceId'];
+            $invoiceCustomerEmail = $body['invoiceCustomerEmail'];
+            $invoice = $this->invoiceModel->GetAllDataById((int)$invoiceId);
+            if (empty($invoice)){
+                throw new Exception('No se encontró ningun documento');
+            }
+
+            if (trim($invoiceCustomerEmail) == ''){
+                $invoiceCustomerEmail = $invoice['customer_email'];
+            }
+
+            $responseEmail = EmailManager::Send(
+                $invoiceCustomerEmail,
+                "{$invoice['document_type_code_description']} {$invoice['serie']}-{$invoice['number']} | {$invoice['customer_social_reason']}",
+                'paul.antezana.2@gmail.com',
+                $invoice['customer_social_reason'],
+                [
+                    'documentDescription' => $invoice['document_type_code_description'],
+                    'serie' => $invoice['serie'],
+                    'number' => $invoice['number'],
+                    'socialReason' => $invoice['customer_social_reason'],
+                    'dateOfIssue' => $invoice['date_of_issue'],
+                    'dateOfDue' => $invoice['date_of_due'],
+                    'total' => "{$invoice['currency_type_code_symbol']} {$invoice['total']}",
+                    'documentUrl' => HOST . URL_PATH .  "/query?ruc=sss&serie={$invoice['serie']}&number={$invoice['number']}",
+                ],
+                [
+                    ROOT_DIR . $invoice['pdf_url'],
+                    ROOT_DIR . $invoice['xml_url'],
+                ]
+            );
+
+            if (!$responseEmail){
+                throw new Exception('No se pudo enviar el correo');
+            }
+            $res->message = 'El correo se envio exitosamente al cliente';
+            $res->success = true;
+        } catch (Exception $e) {
             $res->message = $e->getMessage();
         }
         echo json_encode($res);

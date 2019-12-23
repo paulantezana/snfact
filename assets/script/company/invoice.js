@@ -26,6 +26,41 @@ function InvoiceFilter(){
     }
 }
 
+function InvoiceSendEmailOpenModal(invoiceId, customerEmail){
+    SnModal.open('invoiceModalSendEmail');
+    let sendInvoiceId = document.getElementById('sendInvoiceId');
+    let sendInvoiceCustomerEmail = document.getElementById('sendInvoiceCustomerEmail');
+    if (sendInvoiceId && sendInvoiceCustomerEmail){
+        sendInvoiceId.value = invoiceId;
+        sendInvoiceCustomerEmail.value = customerEmail;
+    }
+}
+
+function InvoiceSendEmail(event){
+    event.preventDefault();
+    let sendInvoiceId = document.getElementById('sendInvoiceId');
+    let sendInvoiceCustomerEmail = document.getElementById('sendInvoiceCustomerEmail');
+    console.log(sendInvoiceCustomerEmail);
+    if (sendInvoiceId && sendInvoiceCustomerEmail){
+        RequestApi.fetch(`/invoice/sendEmail`,{
+            method: 'POST',
+            body: {
+                invoiceId: sendInvoiceId.value,
+                invoiceCustomerEmail: sendInvoiceCustomerEmail.value,
+            }
+        }).then(res => {
+            if (res.success){
+                SnModal.close('invoiceModalSendEmail');
+                SnMessage.success({ content: res.message });
+            } else {
+                SnModal.error({ title: 'Algo salió mal', content: res.message })
+            }
+        }).finally(e =>{
+            // SnFreeze.unFreeze('#invoiceTable');
+        })
+    }
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
     InvoiceList();
 

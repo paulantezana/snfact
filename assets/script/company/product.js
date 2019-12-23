@@ -204,5 +204,38 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('productSearch').addEventListener('input',e=>{
         ProductList(1,10,e.target.value);
     });
+
     ProductList();
+
+    SnLiveList({
+        target: '#productProductCode',
+        data: {
+            src: async target => {
+                const response = await RequestApi.fetch('/product/searchProductCode',{
+                    method: 'POST',
+                    body: { search: target.value }
+                });
+                return response.success ? response.result : [];
+            },
+            keys: {
+                id: 'product_id',
+                text: 'description',
+            }
+        },
+        onSelect: (target, data) => {
+            console.log(target,data);
+            // document.getElementById(`invoiceItemAffectationCode${uniqueId}`).value = data.affectation_code;
+            // document.getElementById(`invoiceItemUnitMeasure${uniqueId}`).value = data.unit_measure_code;
+            // document.getElementById(`invoiceProductCode${uniqueId}`).value = data.product_code;
+            // document.getElementById(`invoiceItemDescription${uniqueId}`).value = data.description;
+            // document.getElementById(`invoiceItemUnitPrice${uniqueId}`).value = data.unit_price;
+            // document.getElementById(`invoiceItemUnitValue${uniqueId}`).value = data.unit_value;
+            // document.getElementById(`invoiceItemQuantity${uniqueId}`).value = 1;
+            //
+            // document.getElementById(`invoiceItemDescriptionText${uniqueId}`).textContent =  data.description;
+            // this.calcItem(uniqueId);
+            // SnCollapse.open(`invoiceProductData${uniqueId}`);
+        }
+    });
+
 });

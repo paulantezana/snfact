@@ -454,7 +454,7 @@ class BuildInvoice
 
         try{
             $business = $this->businessModel->GetByUserId($userReferId);
-            $sale = $this->invoiceModel->summaryById($saleId);
+            $sale = $this->invoiceModel->GetAllDataById($saleId);
             $detailSale = $this->invoiceItemModel->ByInvoiceIdXML($saleId);
 
             $perceptionTypeCodeModel = new CatPerceptionTypeCode($this->connection);

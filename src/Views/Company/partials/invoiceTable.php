@@ -47,6 +47,9 @@
                         <?php endif; ?>
                     </td>
                     <td></td>
+                    <td>
+                        <div class="SnBtn primary" onclick="InvoiceSendEmailOpenModal('<?= $row['invoice_id']?>','<?= $row['customer_email'] ?>')">Open Modal</div>
+                    </td>
                 </tr>
             <?php endforeach; else: ?>
                 <tr>

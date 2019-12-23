@@ -3,6 +3,7 @@
 require_once MODEL_PATH . '/Company/Customer.php';
 require_once MODEL_PATH . '/Company/Business.php';
 require_once MODEL_PATH . '/Catalogue/CatIdentityDocumentTypeCode.php';
+require_once ROOT_DIR . '/src/Services/PeruManager/PeruManager.php';
 
 class CustomerController extends Controller
 {
@@ -142,6 +143,46 @@ class CustomerController extends Controller
             $this->customerModel->DeleteById($body['customerId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
+    public function queryPeru(){
+        $res = new Result();
+        try {
+//            Authorization($this->connection, 'cliente', 'modificar');
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+
+            $data = PeruManager::queryDocument($body['documentNumber']);
+            if (!$data->success){
+                throw new Exception($data->message);
+            }
+
+            $res->result = $data->result;
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
+    public function queryInnerDataAndPeru(){
+        $res = new Result();
+        try {
+//            Authorization($this->connection, 'cliente', 'modificar');
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+
+            $data = PeruManager::queryDocument($body['documentNumber']);
+            if (!$data->success){
+                throw new Exception($data->message);
+            }
+
+            $res->result = $data->result;
+            $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
         }
