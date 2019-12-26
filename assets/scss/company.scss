@@ -44,24 +44,24 @@
 @import "company/User";
 @import "company/Invoice";
 
-.SnTag{
-  font-size: .8rem;
+.SnTag {
+  font-size: 0.8rem;
   line-height: 1rem;
   height: 1rem;
-  padding: 0 .3rem;
+  padding: 0 0.3rem;
   display: block;
-  border-radius: .2em;
-  &.primary{
+  border-radius: 0.2em;
+  &.primary {
     background: var(--snColor1);
     color: var(--snColor1Inverse);
   }
-  &.success{
+  &.success {
     background: var(--snSuccess);
     color: var(--snSuccessInverse);
   }
 }
 
-.SnLiveList{
+.SnLiveList {
   position: absolute;
   top: 0;
   left: 0;
@@ -71,19 +71,103 @@
   z-index: 100000;
   max-height: 300px;
   overflow-y: auto;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   color: #333;
   list-style: none;
   margin: 0;
   padding: 0;
-  &-item{
+  &-item {
     border-bottom: 1px solid var(--snColorBorder);
     padding: 8px 15px;
     font-size: 14px;
     line-height: 20px;
     cursor: pointer;
-    &:last-child{
+    &:last-child {
       border-bottom: 0;
     }
   }
 }
+
+
+.SnSelect{
+  &-wrapper{
+    display: inline-block;
+    font: 400 14px sans-serif;
+    position: relative;
+    width: 100%;
+  }
+  &-drop{
+    @include FormControl();
+    text-align: left;
+    cursor: pointer;
+    &::after {
+      font-family: "icomoon";
+      position: absolute;
+      content: "\e9c5";
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--snColorText);
+      line-height: 1;
+      display: inline-block;
+      font-size: 16px;
+    }
+    &.is-open{
+      &::after{
+        content: "\e9c6";
+      }
+    }
+  }
+  &-content{
+    background: var(--snColorBgAlt);
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: none;
+    opacity: 0;
+    &.is-open{
+      display: block;
+      opacity: 1;
+    }
+  }
+  &-search{
+    margin: 12px;
+  }
+  &-list{
+    @extend %snList;
+    max-height: 200px;
+    overflow-y: auto;
+    li{
+      padding: 7px 12px;
+      cursor: pointer;
+      &:hover{
+        background: var(--snColorHover);
+      }
+      &.is-selected{
+        background: var(--snColor1);
+        color: var(--snColor1Inverse);
+      }
+    }
+  }
+}
+
+
+// .js-Dropdown-list li {
+//   border-bottom: 1px solid #a5a5a5;
+//   cursor: pointer;
+//   padding: 1em 0.5em;
+// }
+// .js-Dropdown-list li:hover {
+//   background-color: #fff5e9;
+// }
+// .js-Dropdown-list li.is-selected {
+//   background-color: #ffdfb6;
+// }
+// .js-Dropdown-optgroup {
+//   border-bottom: 1px solid #a5a5a5;
+//   color: #a5a5a5;
+//   cursor: default;
+//   padding: 1em 0.5em;
+//   text-align: center;
+// }

@@ -48,11 +48,8 @@
                         </div>
                         <div class="SnForm-item required">
                             <label for="productProductCode" class="SnForm-label">Codigo Producto</label>
-                            <select id="productProductCode" class="SnForm-control">
+                            <select id="productProductCode">
                                 <option value="">Seleccionar</option>
-                                <?php foreach ($catProductCodes ?? [] as $row): ?>
-                                    <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
-                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>

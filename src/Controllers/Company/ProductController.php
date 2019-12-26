@@ -29,14 +29,12 @@ class ProductController extends Controller
             $catAffectationIgvTypeCodeModel = new CatAffectationIgvTypeCode($this->connection);
             $catUnitMeasureTypeCodeModel = new CatUnitMeasureTypeCode($this->connection);
             $catSystemIscTypeCodeModel = new CatSystemIscTypeCode($this->connection);
-            $catProductCodeModel = new CatProductCode($this->connection);
             $categoryModel = new Category($this->connection);
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
 
             $catAffectationIgvTypeCodes = $catAffectationIgvTypeCodeModel->GetAll();
             $catUnitMeasureTypeCodes = $catUnitMeasureTypeCodeModel->GetAll();
             $catSystemIscTypeCodes = $catSystemIscTypeCodeModel->GetAll();
-            $catProductCodes = $catProductCodeModel->GetAll();
             $categories = $categoryModel->GetAllByBusinessId($business['business_id']);
 
             $this->render('company/product.php', [
@@ -44,7 +42,6 @@ class ProductController extends Controller
                 'catUnitMeasureTypeCodes' => $catUnitMeasureTypeCodes,
                 'catSystemIscTypeCodes' => $catSystemIscTypeCodes,
                 'categories' => $categories,
-                'catProductCodes' => $catProductCodes,
             ]);
         } catch (Exception $e) {
             $this->render('Public/500.php', [

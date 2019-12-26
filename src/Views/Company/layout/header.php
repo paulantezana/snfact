@@ -4,9 +4,11 @@
         <?php require_once __DIR__ . '/../../Helpes/head.php'; ?>
 
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/company.css">
+        <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/slimselect.css">
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/nprogress.css">
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/style.css">
 
+        <script src="<?= URL_PATH ?>/assets/script/common/slimselect.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/nprogress.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/common.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/sedna.js"></script>

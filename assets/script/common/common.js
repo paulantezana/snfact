@@ -10,7 +10,7 @@ class RequestApi {
                 if (options.contentType === 'formData') {
                     let formData = new FormData();
                     let bodyKeys = Object.keys(options.body);
-                    bodyKeys.forEach(item =>{
+                    bodyKeys.forEach(item => {
                         formData.append(`${item}`, options.body[item]);
                     });
                     options.body = formData;
@@ -34,7 +34,7 @@ class RequestApi {
 
     static fetch(path, options) {
         NProgress.start();
-        const newOptions = RequestApi.setHeaders({...options}); // format
+        const newOptions = RequestApi.setHeaders({ ...options }); // format
 
         return fetch(Service.apiPath + path, newOptions)
             .then(response => {
@@ -42,7 +42,7 @@ class RequestApi {
             }).catch(err => {
                 console.warn(err);
                 return err;
-            }).finally(e=>{
+            }).finally(e => {
                 NProgress.done();
             })
     }
@@ -67,15 +67,15 @@ const generateUniqueId = () => {
     let length = 6;
     let timestamp = + new Date;
 
-    let _getRandomInt = function( min, max ) {
-        return Math.floor( Math.random() * ( max - min + 1 ) ) + min;
+    let _getRandomInt = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     let ts = timestamp.toString();
-    let parts = ts.split( "" ).reverse();
+    let parts = ts.split("").reverse();
     let id = "";
-    for( let i = 0; i < length; ++i ) {
-        let index = _getRandomInt( 0, parts.length - 1 );
+    for (let i = 0; i < length; ++i) {
+        let index = _getRandomInt(0, parts.length - 1);
         id += parts[index];
     }
     return id;
@@ -84,7 +84,7 @@ const generateUniqueId = () => {
 const roundCurrency = (num, decimals = 2) => {
     let number = parseFloat(num);
     number = Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
-    return  number.toFixed(decimals);
+    return number.toFixed(decimals);
 };
 
 const validateInputIsNumber = (input) => {
@@ -94,7 +94,7 @@ const validateInputIsNumber = (input) => {
 };
 
 const validateRUC = ruc => {
-    if (isNaN(ruc)){
+    if (isNaN(ruc)) {
         return false;
     }
 
@@ -105,8 +105,8 @@ const validateRUC = ruc => {
 
     let sum;
     let i = 0;
-    for (sum = -(ruc%10<2); i<11; i++, ruc = ruc/10|0){
-        sum += (ruc % 10) * (i % 7 + (i/7|0) + 1);
+    for (sum = -(ruc % 10 < 2); i < 11; i++ , ruc = ruc / 10 | 0) {
+        sum += (ruc % 10) * (i % 7 + (i / 7 | 0) + 1);
     }
 
     return sum % 11 === 0
@@ -120,7 +120,7 @@ const validateEmail = email => {
     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 };
 
-const groupBy = function(data, key) {
+const groupBy = function (data, key) {
     return data.reduce((a, b) => {
         (a[b[key]] = a[b[key]] || []).push(b);
         return a;
@@ -133,7 +133,6 @@ let SnLiveList = option => {
 
     tElementNodes.forEach(targetElement => {
         let parentNode = targetElement.parentNode;
-        let nodeLocalName = targetElement.localName;
 
         let listContainer = document.createElement('ul');
         listContainer.classList.add('SnLiveList');
@@ -143,22 +142,22 @@ let SnLiveList = option => {
 
         const paintElement = async (event, targetElement) => {
             listContainer.innerHTML = '';
-            if (option.data && typeof option.data.src === 'function'){
+            if (option.data && typeof option.data.src === 'function') {
                 let response = await option.data.src(event.target);
                 [...response].forEach(item => {
                     let listItem = document.createElement('li');
                     listItem.classList.add('SnLiveList-item');
 
                     let dataKeys = option.data.keys;
-                    if (dataKeys){
+                    if (dataKeys) {
                         listItem.innerHTML = `<div>${item[dataKeys.text]}</div><div>${item[dataKeys.text]}</div>`;
                     }
 
                     listItem.addEventListener('click', e => {
                         listContainer.innerHTML = '';
-                        if (option.onSelect && typeof option.onSelect === 'function'){
+                        if (option.onSelect && typeof option.onSelect === 'function') {
                             option.onSelect(e, item);
-                            if (dataKeys){
+                            if (dataKeys) {
                                 targetElement.value = item[dataKeys.text];
                             }
                         }
@@ -169,19 +168,210 @@ let SnLiveList = option => {
             }
         };
         // console.log(nodeLocalName);
-        targetElement.addEventListener('change',  async e => {
+        targetElement.addEventListener('change', async e => {
             e.preventDefault();
-            console.log(nodeLocalName);
             let targetElementInfo = targetElement.getBoundingClientRect();
             listContainer.style.top = (targetElementInfo.height - 1) + 'px';
             listContainer.style.width = targetElementInfo.width + 'px';
 
-            if (!loading){
+            if (!loading) {
                 targetElement.classList.add('loading');
-                await paintElement(e,targetElement);
+                await paintElement(e, targetElement);
             } else {
                 targetElement.classList.remove('loading');
             }
         });
     });
+};
+
+
+let CustomSelect = function (options, action = 'set') {
+    if(typeof options === 'string'){
+        console.log('process...');
+    } else if (typeof options === 'object'){
+        let tElementNodes = document.querySelectorAll(options.elem);
+        tElementNodes.forEach((elem, ui) => {
+            elem.setAttribute('data-ui', ui);
+    
+            let selectDropClass = 'SnSelect-drop',
+                optgroupClass = 'SnSelect-optgroup',
+                selectedClass = 'is-selected',
+                openClass = 'is-open',
+                selectStore = [],
+                selectOpgroups = elem.getElementsByTagName('optgroup');
+    
+            // creating the pseudo-select container
+            let selectContainer = document.createElement('div');
+            selectContainer.className = 'SnSelect-wrapper';
+    
+            // creating the always visible main button
+            let button = document.createElement('button');
+            button.className = selectDropClass;
+    
+            // Creating Serach input
+            let seaWrapper = document.createElement('div');
+            let seaInput = document.createElement('input');
+            let seaIcon = document.createElement('span');
+            seaWrapper.className = 'SnSelect-search SnControl-wrapper';
+            seaInput.className = 'SnForm-control SnControl';
+            seaIcon.className = 'SnControl-prefix icon-search4';
+            seaWrapper.appendChild(seaIcon);
+            seaWrapper.appendChild(seaInput);
+    
+            // creating the UL
+            let listContent = document.createElement('div');
+            listContent.className = 'SnSelect-content';
+    
+            var ul = document.createElement('ul');
+            ul.className = 'SnSelect-list';
+    
+            // dealing with optgroups
+            // if (selectOpgroups.length) {
+                // for (var i = 0; i < selectOpgroups.length; i++) {
+                //     var div = document.createElement('div');
+                //     div.innerText = selectOpgroups[i].label;
+                //     div.classList.add(optgroupClass);
+    
+                //     ul.appendChild(div);
+                //     generateOptions(selectOpgroups[i].getElementsByTagName('option'));
+                // }
+            // } else {
+                buildOptions(elem.options);
+            // }
+    
+            // appending the button and the list
+            selectContainer.appendChild(button);
+            listContent.appendChild(seaWrapper);
+            listContent.appendChild(ul);
+            selectContainer.appendChild(listContent);
+    
+            // pseudo-select is ready - append it and hide the original
+            elem.parentNode.insertBefore(selectContainer, elem);
+            elem.style.display = 'none';
+    
+            function buildOptions(options) {
+                let data = [];
+                for (var i = 0; i < options.length; i++) {
+                    data.push({
+                        text: options[i].textContent,
+                        value: options[i].value,
+                    });
+                }
+                selectStore = data;
+                paintList(data);
+            }
+    
+            function paintList(data = []) {
+                ul.innerHTML = '';
+                if (typeof data == 'object') {
+                    data.forEach((item, index) => {
+                        let li = document.createElement('li');
+    
+                        li.innerText = item.text || '';
+                        li.setAttribute('data-value', item.value);
+                        li.setAttribute('data-index', index++);
+    
+                        if (elem.options[elem.selectedIndex].value === item.value) {
+                            li.classList.add(selectedClass);
+                            button.textContent = item.text;
+                        }
+    
+                        ul.appendChild(li);
+                    });
+                }
+            }
+    
+            function dataPaint(data) {
+                if (typeof data == 'object') {
+                    data.forEach(item => {
+                        let match = false;
+                        for (var i = 0; i < elem.options.length; i++) {
+                            if (item.value == elem.options[i].value) {
+                                match = true;
+                            }
+                        }
+    
+                        if (!match) {
+                            let option = document.createElement('option');
+                            option.textContent = item.text;
+                            option.value = item.value;
+                            elem.appendChild(option);
+                        }
+                    });
+    
+                    for (var i = 0; i < elem.options.length; i++) {
+                        let match = false;
+                        for (let y = 0; y < data.length; y++) {
+                            if (elem.options[i].value == data[y].value) {
+                                match = true;
+                            }
+                        }
+                        if (!match) {
+                            elem.options[i].remove();
+                        }
+                    }
+    
+                    paintList(data);
+                }
+            }
+    
+    
+            function onClick(e) {
+                e.preventDefault();
+    
+                var t = e.target; // || e.srcElement; - uncomment for IE8
+    
+                if (t.className === selectDropClass) {
+                    toggle();
+                }
+    
+                if (t.tagName === 'LI') {
+                    selectContainer.querySelector('.' + selectDropClass).innerText = t.innerText;
+                    elem.options.selectedIndex = t.getAttribute('data-index');
+    
+                    //trigger 'change' event
+                    var evt = new CustomEvent('change');
+                    elem.dispatchEvent(evt);
+    
+                    // highlight the selected
+                    for (var i = 0; i < elem.options.length; i++) {
+                        ul.querySelectorAll('li')[i].classList.remove(selectedClass);
+                    }
+                    t.classList.add(selectedClass);
+    
+                    close();
+                }
+            }
+    
+            function toggle() {
+                listContent.classList.toggle(openClass);
+            }
+    
+            function open() {
+                listContent.classList.add(openClass);
+            }
+    
+            function close() {
+                listContent.classList.remove(openClass);
+            }
+    
+            // Listeners
+            selectContainer.addEventListener('click', onClick);
+    
+            seaInput.addEventListener('input', function (e) {
+                e.preventDefault();
+                if (options.data) {
+                    if (typeof options.data == 'function') {
+                        options.data(seaInput.value, dataPaint);
+                    }
+                }
+            });
+    
+            document.addEventListener('click', function (e) {
+                if (!selectContainer.contains(e.target)) close();
+            });
+        });
+    } else {
+        console.warn('Not found');
+    }
 };

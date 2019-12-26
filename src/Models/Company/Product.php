@@ -7,6 +7,20 @@ class Product extends Model
         parent::__construct("product", "product_id", $connection);
     }
 
+    public function GetById($id)
+    {
+        try {
+            $sql = "SELECT product.*, cpc.description as product_code_description FROM product 
+                    INNER JOIN cat_product_code cpc ON product.product_code = cpc.code
+                    WHERE product_id = :product_id LIMIT 1";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([":product_id" => $id]);
+            return $stmt->fetch();
+        } catch (Exception $e) {
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+        }
+    }
+
     public function GetAllByBusinessId($businessId)
     {
         try {
