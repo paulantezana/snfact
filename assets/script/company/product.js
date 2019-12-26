@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     ProductList();
 
-    var selects = new CustomSelect({
+    CustomSelect({
         elem: '#productProductCode',
         data: (search,callback)=>{
             if (search.length < 2) {
@@ -239,9 +239,9 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
     });
 
-    var select = new CustomSelect({
-        elem: '#productUnitMeasureCode',
-    });
+    // CustomSelect({
+    //     elem: '#productUnitMeasureCode',
+    // });
       
     // open it for the user
     // select.open();
