@@ -63,8 +63,7 @@ class RequestApi {
     }
 }
 
-const generateUniqueId = () => {
-    let length = 6;
+const generateUniqueId = (length = 6) => {
     let timestamp = + new Date;
 
     let _getRandomInt = function (min, max) {
@@ -186,28 +185,28 @@ let SnLiveList = option => {
 
 
 let CustomSelect = function (options, action = 'set') {
-    if(typeof options === 'string'){
+    if (typeof options === 'string') {
         console.log('process...');
-    } else if (typeof options === 'object'){
+    } else if (typeof options === 'object') {
         let tElementNodes = document.querySelectorAll(options.elem);
         tElementNodes.forEach((elem, ui) => {
             elem.setAttribute('data-ui', ui);
-    
+
             let selectDropClass = 'SnSelect-drop',
                 optgroupClass = 'SnSelect-optgroup',
                 selectedClass = 'is-selected',
                 openClass = 'is-open',
                 selectStore = [],
                 selectOpgroups = elem.getElementsByTagName('optgroup');
-    
+
             // creating the pseudo-select container
             let selectContainer = document.createElement('div');
             selectContainer.className = 'SnSelect-wrapper';
-    
+
             // creating the always visible main button
             let button = document.createElement('button');
             button.className = selectDropClass;
-    
+
             // Creating Serach input
             let seaWrapper = document.createElement('div');
             let seaInput = document.createElement('input');
@@ -217,38 +216,38 @@ let CustomSelect = function (options, action = 'set') {
             seaIcon.className = 'SnControl-prefix icon-search4';
             seaWrapper.appendChild(seaIcon);
             seaWrapper.appendChild(seaInput);
-    
+
             // creating the UL
             let listContent = document.createElement('div');
             listContent.className = 'SnSelect-content';
-    
+
             var ul = document.createElement('ul');
             ul.className = 'SnSelect-list';
-    
+
             // dealing with optgroups
             // if (selectOpgroups.length) {
-                // for (var i = 0; i < selectOpgroups.length; i++) {
-                //     var div = document.createElement('div');
-                //     div.innerText = selectOpgroups[i].label;
-                //     div.classList.add(optgroupClass);
-    
-                //     ul.appendChild(div);
-                //     generateOptions(selectOpgroups[i].getElementsByTagName('option'));
-                // }
-            // } else {
-                buildOptions(elem.options);
+            // for (var i = 0; i < selectOpgroups.length; i++) {
+            //     var div = document.createElement('div');
+            //     div.innerText = selectOpgroups[i].label;
+            //     div.classList.add(optgroupClass);
+
+            //     ul.appendChild(div);
+            //     generateOptions(selectOpgroups[i].getElementsByTagName('option'));
             // }
-    
+            // } else {
+            buildOptions(elem.options);
+            // }
+
             // appending the button and the list
             selectContainer.appendChild(button);
             listContent.appendChild(seaWrapper);
             listContent.appendChild(ul);
             selectContainer.appendChild(listContent);
-    
+
             // pseudo-select is ready - append it and hide the original
             elem.parentNode.insertBefore(selectContainer, elem);
             elem.style.display = 'none';
-    
+
             function buildOptions(options) {
                 let data = [];
                 for (var i = 0; i < options.length; i++) {
@@ -260,27 +259,27 @@ let CustomSelect = function (options, action = 'set') {
                 selectStore = data;
                 paintList(data);
             }
-    
+
             function paintList(data = []) {
                 ul.innerHTML = '';
                 if (typeof data == 'object') {
                     data.forEach((item, index) => {
                         let li = document.createElement('li');
-    
+
                         li.innerText = item.text || '';
                         li.setAttribute('data-value', item.value);
                         li.setAttribute('data-index', index++);
-    
+
                         if (elem.options[elem.selectedIndex].value === item.value) {
                             li.classList.add(selectedClass);
                             button.textContent = item.text;
                         }
-    
+
                         ul.appendChild(li);
                     });
                 }
             }
-    
+
             function dataPaint(data) {
                 if (typeof data == 'object') {
                     data.forEach(item => {
@@ -290,7 +289,7 @@ let CustomSelect = function (options, action = 'set') {
                                 match = true;
                             }
                         }
-    
+
                         if (!match) {
                             let option = document.createElement('option');
                             option.textContent = item.text;
@@ -298,7 +297,7 @@ let CustomSelect = function (options, action = 'set') {
                             elem.appendChild(option);
                         }
                     });
-    
+
                     for (var i = 0; i < elem.options.length; i++) {
                         let match = false;
                         for (let y = 0; y < data.length; y++) {
@@ -310,54 +309,54 @@ let CustomSelect = function (options, action = 'set') {
                             elem.options[i].remove();
                         }
                     }
-    
+
                     paintList(data);
                 }
             }
-    
-    
+
+
             function onClick(e) {
                 e.preventDefault();
-    
+
                 var t = e.target; // || e.srcElement; - uncomment for IE8
-    
+
                 if (t.className === selectDropClass) {
                     toggle();
                 }
-    
+
                 if (t.tagName === 'LI') {
                     selectContainer.querySelector('.' + selectDropClass).innerText = t.innerText;
                     elem.options.selectedIndex = t.getAttribute('data-index');
-    
+
                     //trigger 'change' event
                     var evt = new CustomEvent('change');
                     elem.dispatchEvent(evt);
-    
+
                     // highlight the selected
                     for (var i = 0; i < elem.options.length; i++) {
                         ul.querySelectorAll('li')[i].classList.remove(selectedClass);
                     }
                     t.classList.add(selectedClass);
-    
+
                     close();
                 }
             }
-    
+
             function toggle() {
                 listContent.classList.toggle(openClass);
             }
-    
+
             function open() {
                 listContent.classList.add(openClass);
             }
-    
+
             function close() {
                 listContent.classList.remove(openClass);
             }
-    
+
             // Listeners
             selectContainer.addEventListener('click', onClick);
-    
+
             seaInput.addEventListener('input', function (e) {
                 e.preventDefault();
                 if (options.data) {
@@ -366,7 +365,7 @@ let CustomSelect = function (options, action = 'set') {
                     }
                 }
             });
-    
+
             document.addEventListener('click', function (e) {
                 if (!selectContainer.contains(e.target)) close();
             });
