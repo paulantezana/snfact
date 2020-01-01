@@ -1,9 +1,9 @@
 .Login{
+  // width: 320px;
   max-width: 100%;
-  width: 250px;
-  @include from(l){
-    width: 320px;
-  }
+  // @include from(l){
+  //   width: 320px;
+  // }
   a{
     text-decoration: none;
     color: var(--snColor1);

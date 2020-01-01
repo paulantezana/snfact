@@ -1,27 +1,40 @@
 .BasicLayout{
-  padding: 3rem 1rem 1rem;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: "bLayoutHeader"
+                        "bLayoutMain";
   @include from(l){
-    padding-top: 5rem;
+    grid-template-columns: 1fr 420px;
+    grid-template-areas: "bLayoutHeader bLayoutMain";
+  }
+  &-header{
+    grid-area: bLayoutHeader;
   }
   &-main{
-    margin-right: auto;
-    margin-left: auto;
-  }
-  &-footer{
-    text-align: center;
-    margin-top: auto;
-    color: var(--snColorTextAlt);
-    font-size: .8em;
-    padding: 1rem 0;
+    grid-area: bLayoutMain;
   }
 }
 
+
 .BasicLayout{
-  background-image: url(./../images/background.svg);
-  background-repeat: no-repeat;
-  background-position: center 110px;
-  background-size: 100%;
+  &-header{
+    background: linear-gradient(45deg, var(--snColor1Darker),var(--snColor1Light));
+  }
+  &-main{
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  &-mainContent{
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 }
+// .BasicLayout{
+//   background-image: url(./../images/background.svg);
+//   background-repeat: no-repeat;
+//   background-position: center 110px;
+//   background-size: 100%;
+// }

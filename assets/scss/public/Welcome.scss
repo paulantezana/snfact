@@ -1,0 +1,27 @@
+.WelcomeHome{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    height: 100%;
+    color: var(--snColor1Inverse);
+
+    text-align: center;
+    align-items: center;
+    @include from(l){
+        text-align: left;
+        align-items: flex-start;
+    }
+    &-title{
+        font-size: 2rem;
+        font-weight: 100;
+    }
+    &-subTitle{
+        font-size: 3rem;
+        // font-weight: 100;
+    }
+    &-description{
+        margin-top: 0;
+        margin-bottom: 3rem;
+    }
+}
