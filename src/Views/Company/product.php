@@ -2,7 +2,7 @@
     <div class="SnContent">
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class="icon-dots SnMr-2"></i> Producto
+                <i class="icon-arrow-right15 SnMr-2"></i> Producto
             </div>
             <div class="SnToolbar-right">
                 <div class="SnBtn jsCategoryAction SnMr-2" onclick="ProductList()">
@@ -55,7 +55,10 @@
                     </div>
                     <div class="SnForm-item required">
                         <label for="productDescription" class="SnForm-label">Nombre del Producto o Servicio</label>
-                        <input type="text" class="SnForm-control" id="productDescription">
+                        <div class="SnControl-wrapper">
+                            <i class="icon-file-text2 SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="productDescription" placeholder="Nombre del Producto o Servicio">
+                        </div>
                     </div>
 
                     <div class="SnForm-item required">
@@ -70,11 +73,17 @@
                     <div class="SnGrid s-grid-2">
                         <div class="SnForm-item required">
                             <label for="productUnitPrice" class="SnForm-label">PrecioVenta(Inc.IGV)</label>
-                            <input type="number" step="any" class="SnForm-control" id="productUnitPrice">
+                            <div class="SnControl-wrapper">
+                                <i class="icon-cash4 SnControl-prefix"></i>
+                                <input class="SnForm-control SnControl" type="number" step="any" id="productUnitPrice" placeholder="0.00">
+                            </div>
                         </div>
                         <div class="SnForm-item required">
                             <label for="productUnitValue" class="SnForm-label">PrecioVenta(Sin IGV)</label>
-                            <input type="number" step="any" class="SnForm-control" id="productUnitValue">
+                            <div class="SnControl-wrapper">
+                                <i class="icon-cash4 SnControl-prefix"></i>
+                                <input class="SnForm-control SnControl" type="number" step="any" id="productUnitValue" placeholder="0.00">
+                            </div>
                         </div>
                     </div>
                     <div class="SnGrid s-grid-2">

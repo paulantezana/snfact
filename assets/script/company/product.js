@@ -1,18 +1,18 @@
 let ProductState = {
-    modalType : 'create',
-    modalName : 'productModalForm',
+    modalType: 'create',
+    modalName: 'productModalForm',
     categoryModalName: 'categoryModalForm',
-    loading : false,
+    loading: false,
     slimProductCode: null,
 };
 
-function ProductSetLoading(state){
+function ProductSetLoading(state) {
     ProductState.loading = state;
     let jsCategoryAction = document.querySelectorAll('.jsCategoryAction');
     let submitButton = document.getElementById('productFormSubmit');
-    if (ProductState.loading){
-        if(submitButton){
-            submitButton.setAttribute('disabled','disabled');
+    if (ProductState.loading) {
+        if (submitButton) {
+            submitButton.setAttribute('disabled', 'disabled');
             submitButton.classList.add('loading');
         }
         if (jsCategoryAction) {
@@ -21,7 +21,7 @@ function ProductSetLoading(state){
             });
         }
     } else {
-        if(submitButton){
+        if (submitButton) {
             submitButton.removeAttribute('disabled');
             submitButton.classList.remove('loading');
         }
@@ -33,65 +33,65 @@ function ProductSetLoading(state){
     }
 }
 
-function ProductList(page = 1, limit = 10, search = ''){
+function ProductList(page = 1, limit = 10, search = '') {
     let productTable = document.getElementById('productTable');
-    if(productTable){
-        SnFreeze.freeze({selector: '#productTable'});
-        RequestApi.fetchText(`/product/table?limit=${limit}&page=${page}&search=${search}`,{
+    if (productTable) {
+        SnFreeze.freeze({ selector: '#productTable' });
+        RequestApi.fetchText(`/product/table?limit=${limit}&page=${page}&search=${search}`, {
             method: 'GET',
         }).then(res => {
             productTable.innerHTML = res;
-        }).finally(e =>{
+        }).finally(e => {
             SnFreeze.unFreeze('#productTable');
         })
     }
 }
 
-function ProductClearForm(){
+function ProductClearForm() {
     let currentForm = document.getElementById('productForm');
-    if (currentForm){
+    if (currentForm) {
         currentForm.reset();
     }
 }
 
-function ProductSubmit(event){
+function ProductSubmit(event) {
     event.preventDefault();
     ProductSetLoading(true);
 
     let url = '';
     let productSendData = {};
-    productSendData.categoryId =  document.getElementById('productCategoryId').value || '';
-    productSendData.description =  document.getElementById('productDescription').value || '';
-    productSendData.unitPrice =  document.getElementById('productUnitPrice').value || 0;
-    productSendData.unitValue =  document.getElementById('productUnitValue').value || 0;
-    productSendData.productKey=  document.getElementById('productProductKey').value || '';
-    productSendData.productCode=  document.getElementById('productProductCode').value || '';
-    productSendData.unitMeasureCode=  document.getElementById('productUnitMeasureCode').value || '';
-    productSendData.affectationCode=  document.getElementById('productAffectationCode').value || '';
-    productSendData.systemIscCode=  document.getElementById('productSystemIscCode').value || '';
-    productSendData.isc=  document.getElementById('productIsc').value || '';
-    productSendData.state=  document.getElementById('productState').checked || false;
+    productSendData.categoryId = document.getElementById('productCategoryId').value || '';
+    productSendData.description = document.getElementById('productDescription').value || '';
+    productSendData.unitPrice = document.getElementById('productUnitPrice').value || 0;
+    productSendData.unitValue = document.getElementById('productUnitValue').value || 0;
+    productSendData.productKey = document.getElementById('productProductKey').value || '';
+    productSendData.productCode = document.getElementById('productProductCode').value || '';
+    productSendData.unitMeasureCode = document.getElementById('productUnitMeasureCode').value || '';
+    productSendData.affectationCode = document.getElementById('productAffectationCode').value || '';
+    productSendData.systemIscCode = document.getElementById('productSystemIscCode').value || '';
+    productSendData.isc = document.getElementById('productIsc').value || '';
+    productSendData.state = document.getElementById('productState').checked || false;
 
-    if (ProductState.modalType === 'create'){
+    if (ProductState.modalType === 'create') {
         url = '/product/create';
     }
-    if (ProductState.modalType === 'update'){
+    if (ProductState.modalType === 'update') {
         url = '/product/update';
         productSendData.productId = document.getElementById('productId').value || 0;
     }
 
-    RequestApi.fetch(url,{
+    RequestApi.fetch(url, {
         method: 'POST',
         body: productSendData
     }).then(res => {
-        if (res.success){
+        if (res.success) {
             SnModal.close(ProductState.modalName);
             SnMessage.success({ content: res.message });
             ProductList();
         } else {
             SnModal.error({ title: 'Algo salió mal', content: res.message })
         }
-    }).finally(e =>{
+    }).finally(e => {
         ProductSetLoading(false);
     })
 }
@@ -124,24 +124,24 @@ function ProductDelete(productId, content = '') {
     });
 }
 
-function ProductShowModalCreate(){
+function ProductShowModalCreate() {
     ProductState.modalType = 'create';
     ProductClearForm();
     SnModal.open(ProductState.modalName);
 }
 
-function ProductShowModalUpdate(productId){
+function ProductShowModalUpdate(productId) {
     ProductState.modalType = 'update';
     ProductClearForm();
 
     ProductSetLoading(true);
-    RequestApi.fetch('/product/id',{
+    RequestApi.fetch('/product/id', {
         method: 'POST',
         body: {
             productId: productId || 0
         }
     }).then(res => {
-        if (res.success){
+        if (res.success) {
             document.getElementById('productCategoryId').value = res.result.category_id;
             document.getElementById('productDescription').value = res.result.description;
             document.getElementById('productUnitPrice').value = res.result.unit_price;
@@ -161,10 +161,14 @@ function ProductShowModalUpdate(productId){
             //         value: res.result.product_code,
             //     }]);
             // }
-            // document.getElementById('productProductCode').value = res.result.product_code;
+            SnSelect({
+                elem: '#productProductCode',
+                value: res.result.product_code,
+                text: res.result.product_code_description
+            }, 'set');
 
             SnModal.open(ProductState.modalName);
-        }else {
+        } else {
             SnModal.error({ title: 'Algo salió mal', content: res.message })
         }
     }).finally(e => {
@@ -172,65 +176,65 @@ function ProductShowModalUpdate(productId){
     })
 }
 
-function CategoryShowModalCreate(){
+function CategoryShowModalCreate() {
     let currentForm = document.getElementById('categoryForm');
-    if (currentForm){
+    if (currentForm) {
         currentForm.reset();
     }
     SnModal.open(ProductState.categoryModalName);
 }
 
-function CategorySubmit(event){
+function CategorySubmit(event) {
     event.preventDefault();
     ProductSetLoading(true);
 
     let categorySendData = {};
-    categorySendData.name =  document.getElementById('categoryName').value || '';
-    categorySendData.description =  document.getElementById('categoryDescription').value || '';
-    categorySendData.state =  document.getElementById('categoryState').checked || false;
-    categorySendData.parentId =  0;
+    categorySendData.name = document.getElementById('categoryName').value || '';
+    categorySendData.description = document.getElementById('categoryDescription').value || '';
+    categorySendData.state = document.getElementById('categoryState').checked || false;
+    categorySendData.parentId = 0;
 
-    RequestApi.fetch('/category/create',{
+    RequestApi.fetch('/category/create', {
         method: 'POST',
         body: categorySendData
     }).then(res => {
-        if (res.success){
+        if (res.success) {
             SnModal.close(ProductState.categoryModalName);
             SnMessage.success({ content: res.message });
             let productCategoryId = document.getElementById('productCategoryId');
-            if (productCategoryId){
-                productCategoryId.insertAdjacentHTML('beforeend',`<option value="${res.result.category_id}">${res.result.name}</option>`);
+            if (productCategoryId) {
+                productCategoryId.insertAdjacentHTML('beforeend', `<option value="${res.result.category_id}">${res.result.name}</option>`);
                 productCategoryId.value = res.result.category_id;
             }
         } else {
             SnModal.error({ title: 'Algo salió mal', content: res.message })
         }
-    }).finally(e =>{
+    }).finally(e => {
         ProductSetLoading(false);
     })
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
-    document.getElementById('productSearch').addEventListener('input',e=>{
-        ProductList(1,10,e.target.value);
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('productSearch').addEventListener('input', e => {
+        ProductList(1, 10, e.target.value);
     });
 
     ProductList();
 
-    CustomSelect({
+    SnSelect({
         elem: '#productProductCode',
-        data: (search,callback)=>{
+        data: (search, callback) => {
             if (search.length < 2) {
                 callback('Escriba almenos 2 caracteres');
                 return;
             }
 
-            RequestApi.fetch('/product/searchProductCode',{
+            RequestApi.fetch('/product/searchProductCode', {
                 method: 'POST',
                 body: { search: search }
-            }).then(res=>{
-                if (res.success){
-                    let data = res.result.map(item=>({ text: item.description, value: item.code }));
+            }).then(res => {
+                if (res.success) {
+                    let data = res.result.map(item => ({ text: item.description, value: item.code }));
                     callback(data);
                 } else {
                     callback(false);
@@ -242,7 +246,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     // CustomSelect({
     //     elem: '#productUnitMeasureCode',
     // });
-      
+
     // open it for the user
     // select.open();
 

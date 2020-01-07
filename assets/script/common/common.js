@@ -183,12 +183,54 @@ let SnLiveList = option => {
     });
 };
 
+let SnSelectStore = [];
 
-let CustomSelect = function (options, action = 'set') {
-    if (typeof options === 'string') {
-        console.log('process...');
-    } else if (typeof options === 'object') {
+let SnSelect = function (options, action = 'create') {
+
+    if (action === 'set') {
+        let tElementNode = document.querySelector(options.elem);
+        if (!tElementNode) {
+            console.warn(options.elem + ' Not found');
+            return;
+        }
+
+        if (tElementNode.dataset.ui == undefined) {
+            return;
+        }
+
+        let ui = tElementNode.dataset.ui;
+        let dataElement = SnSelectStore.find(item => item.ui == ui);
+        if (!dataElement) {
+            console.warn(dataElement + ' Not found');
+            return;
+        }
+
+        let current = dataElement.data.find(item => item.value == options.value);
+        if (!current) {
+            let option = document.createElement('option');
+            option.textContent = options.text;
+            option.value = options.value;
+            tElementNode.appendChild(option);
+            SnSelectStore = SnSelectStore.map(item => {
+                let newData = [
+                    ...item.data,
+                    {
+                        value: options.value,
+                        text: options.text,
+                        source: 'local'
+                    }
+                ];
+                return { ...item, data: newData }
+            });
+        }
+
+        tElementNode.value = options.value;
+        dataElement.button.textContent = options.text;
+    } else if (action === 'reset') {
+
+    } else if (action === 'create') {
         let tElementNodes = document.querySelectorAll(options.elem);
+        console.log(tElementNodes);
         tElementNodes.forEach((elem, ui) => {
             elem.setAttribute('data-ui', ui);
 
@@ -196,7 +238,6 @@ let CustomSelect = function (options, action = 'set') {
                 optgroupClass = 'SnSelect-optgroup',
                 selectedClass = 'is-selected',
                 openClass = 'is-open',
-                selectStore = [],
                 selectOpgroups = elem.getElementsByTagName('optgroup');
 
             // creating the pseudo-select container
@@ -240,7 +281,9 @@ let CustomSelect = function (options, action = 'set') {
 
             // appending the button and the list
             selectContainer.appendChild(button);
-            listContent.appendChild(seaWrapper);
+            if(options.data != undefined){
+                listContent.appendChild(seaWrapper);
+            }
             listContent.appendChild(ul);
             selectContainer.appendChild(listContent);
 
@@ -254,9 +297,10 @@ let CustomSelect = function (options, action = 'set') {
                     data.push({
                         text: options[i].textContent,
                         value: options[i].value,
+                        source: 'local'
                     });
                 }
-                selectStore = data;
+                SnSelectStore.push({ ui, data, button });
                 paintList(data);
             }
 

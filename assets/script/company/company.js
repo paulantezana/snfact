@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                 businessCurrentLocalInfo.innerHTML = businessLocalsOptions;
                 businessCurrentLocalInfo.addEventListener('change',()=>{
                     if (businessCurrentLocalInfo.value !== ''){
+                        SnFreeze.freeze();
                         RequestApi.fetch('/company/setCurrentLocal',{
                             method: 'POST',
                             body: {
@@ -57,7 +58,9 @@ document.addEventListener('DOMContentLoaded',()=>{
                             } else {
                                 SnModal.error({ title: 'Algo salió mal', content: res.message });
                             }
-                        });
+                        }).finally(e=>{
+                            SnFreeze.unFreeze();
+                        })
                     }
                 });
             }
@@ -75,5 +78,9 @@ document.addEventListener('DOMContentLoaded',()=>{
         }else {
             SnModal.error({ title: 'Algo salió mal', content: res.message });
         }
+    });
+
+    SnSelect({
+        elem: '.SnSelect',
     });
 });

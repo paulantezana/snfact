@@ -1,4 +1,4 @@
-$hoverMenuBg: var(--snColor1);
+$hoverMenuBg: var(--snColorDarkSmoother);
 $hoverMenuColor: white;
 $menuBorderColor: var(--snColorDark);
 $asideFooterHeight: 32px;
@@ -15,12 +15,12 @@ $asideFooterHeight: 32px;
   }
   li {
     position: relative;
-    //&.is-active{
+    // &.is-active{
     //  a{
     //    background: $hoverMenuBg;
     //    color: $hoverMenuColor;
     //  }
-    //}
+    // }
   }
   ul {
     @extend %snList;
@@ -33,7 +33,7 @@ $asideFooterHeight: 32px;
   a {
     color: var(--snColorDarkInverse);
     text-decoration: none;
-    line-height: 2.5rem;
+    line-height: 3rem;
     padding: 0 8px 0 20px;
     display: flex;
     align-items: center;
@@ -221,4 +221,12 @@ $asideFooterHeight: 32px;
 }
 .SnAdminL2:not(.AsideMenu-is-show){
   @include AsideHeaderInSmall();
+}
+
+.icon-down::before{
+  content: "\e9c5";
+}
+
+.icon-up::before{
+  content: "\e9c6";
 }

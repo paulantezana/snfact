@@ -11,7 +11,7 @@
                     <label for="categoryName" class="SnForm-label">Categoria</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-package SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" id="categoryName" placeholder="Nombre de la categoría">
+                        <input class="SnForm-control SnControl" type="text" id="categoryName" >
                     </div>
                 </div>
                 <div class="SnForm-item">
