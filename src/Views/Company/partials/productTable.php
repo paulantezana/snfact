@@ -1,5 +1,5 @@
 <div class="SnTable-wrapper">
-    <table class="SnTable">
+    <table class="SnTable" id="productCurrentTable">
         <thead>
             <tr>
                 <th>CÓDIGO</th>
@@ -29,10 +29,10 @@
                     </td>
                     <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn jsCategoryAction" data-tooltip="Editar" onclick="ProductShowModalUpdate(<?= $row['product_id'] ?>)">
+                            <div class="SnBtn icon jsCategoryAction" data-tooltip="Editar" onclick="ProductShowModalUpdate(<?= $row['product_id'] ?>)">
                                 <i class="icon-pencil"></i>
                             </div>
-                            <div class="SnBtn jsCategoryAction" data-tooltip="Eliminar" onclick="ProductDelete(<?= $row['product_id'] ?>,'<?= $row['description'] ?>')">
+                            <div class="SnBtn icon jsCategoryAction" data-tooltip="Eliminar" onclick="ProductDelete(<?= $row['product_id'] ?>,'<?= $row['description'] ?>')">
                                 <i class="icon-trash"></i>
                             </div>
                         </div>

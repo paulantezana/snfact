@@ -5,13 +5,13 @@
         </div>
         <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Categoria</div>
         <div class="SnModal-body">
-            <form action="" class="SnForm" id="categoryForm" onsubmit="CategorySubmit(event)">
+            <form action="" class="SnForm" id="categoryForm" novalidate onsubmit="CategorySubmit(event)">
                 <input type="hidden" class="SnForm-control" id="categoryId">
                 <div class="SnForm-item required">
                     <label for="categoryName" class="SnForm-label">Categoria</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-package SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" id="categoryName" >
+                        <input class="SnForm-control SnControl" type="text" id="categoryName" required>
                     </div>
                 </div>
                 <div class="SnForm-item">

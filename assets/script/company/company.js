@@ -22,6 +22,15 @@ let DocumentPrinter = {
     }
 };
 
+SnMenu({
+    menuId: 'HeaderMenu',
+    toggleButtonID: 'HeaderMenu-toggle',
+    toggleClass: 'HeaderMenu-is-show',
+    contextId: 'AdminLayout',
+    parentClose: true,
+    menuCloseID: 'HeaderMenu-wrapper',
+});
+
 document.addEventListener('DOMContentLoaded',()=>{
     RequestApi.fetch('/company/getGlobalInfo').then(res => {
         if (res.success){
@@ -82,5 +91,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     SnSelect({
         elem: '.SnSelect',
+    });
+
+    SnMenu({
+        menuId: 'AsideMenu',
+        toggleButtonID: 'AsideMenu-toggle',
+        toggleClass: 'AsideMenu-is-show',
+        contextId: 'AdminLayout',
+        parentClose: true,
+        menuCloseID: 'AsideMenu-wrapper',
     });
 });

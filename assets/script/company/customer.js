@@ -3,6 +3,7 @@ let  CustomerState = {
     modalName : 'customerModalForm',
     loading : false,
 };
+let pValidator;
 
 function CustomerSetLoading(state){
     CustomerState.loading = state;
@@ -75,15 +76,21 @@ function CustomerQueryPeruDocument() {
 
 function CustomerClearForm(){
     let currentForm = document.getElementById('customerForm');
-    if (currentForm){
+    let customerDocumentNumber = document.getElementById('customerDocumentNumber');
+    pValidator.reset();
+    if (currentForm && customerDocumentNumber){
         currentForm.reset();
+        customerDocumentNumber.focus();
     }
 }
 
-function CustomerSubmit(event){
-    event.preventDefault();
-    CustomerSetLoading(true);
+function CustomerSubmit(e){
+    e.preventDefault();
+    if(!pValidator.validate()){
+        return;
+    }
 
+    CustomerSetLoading(true);
     let url = '';
     let customerSendData = {};
     customerSendData.documentNumber =  document.getElementById('customerDocumentNumber').value || '';
@@ -183,9 +190,23 @@ function CustomerShowModalUpdate(customerId){
     })
 }
 
+function CustomerToExcel(){
+    let dataTable = document.getElementById('customerCurrentTable');
+    if(dataTable){
+        window.open('data:application/vnd.ms-excel,' + encodeURIComponent(dataTable.outerHTML));
+    }
+}
+
+function CustomerToPrint(){
+    printArea('customerCurrentTable');
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
+    pValidator = new Pristine(document.getElementById('customerForm'));
+
     document.getElementById('searchContent').addEventListener('input',e=>{
         CustomerList(1,10,e.target.value);
     });
+
     CustomerList();
 });

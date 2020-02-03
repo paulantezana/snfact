@@ -48,7 +48,7 @@
                                         <th>Modulo</th>
                                         <th>Accion</th>
                                         <th>Descripcion</th>
-                                        <th style="width: 100px"></th>
+                                        <th style="width: 50px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,10 +58,10 @@
                                             <td><?= $row['action'] ?></td>
                                             <td><?= $row['description'] ?></td>
                                             <td>
-                                                <div>
-                                                    <input class="SnSwitch SnSwitch-ios" id="autState<?= $row['app_authorization_id'] ?>" type="checkbox">
-                                                    <label class="SnSwitch-btn" for="autState<?= $row['app_authorization_id'] ?>"></label>
-                                                </div>
+                                                <div class="SnSwitch" style="height: 18px">
+                                                    <input class="SnSwitch-input" type="checkbox" id="autState<?= $row['app_authorization_id']?>" type="checkbox">
+                                                    <label class="SnSwitch-label" for="autState<?= $row['app_authorization_id']?>"></label>
+                                                </div>  
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

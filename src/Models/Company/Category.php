@@ -29,7 +29,7 @@ class Category extends Model
             $totalPages = ceil($totalRows / $limit);
 
             $sql = "SELECT * FROM category 
-                    WHERE business_id = :business_id AND name LIKE '%{$search}%' LIMIT $offset, $limit";
+                    WHERE business_id = :business_id AND name LIKE '%{$search}%' ORDER BY category_id DESC LIMIT $offset, $limit";
             $stmt = $this->db->prepare($sql);
 
             $stmt->execute([
@@ -54,9 +54,9 @@ class Category extends Model
         try{
             $currentDate = date('Y-m-d H:i:s');
             $sql = 'INSERT INTO category (updated_at, created_at, created_user_id, updated_user_id, business_id,
-                                        parent_id, name, description) 
+                                        parent_id, name, description, state) 
                                 VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :business_id,
-                                        :parent_id, :name, :description)';
+                                        :parent_id, :name, :description, :state)';
             $stmt = $this->db->prepare($sql);
 
             if (!$stmt->execute([
@@ -68,6 +68,7 @@ class Category extends Model
                 ':business_id' => $category['businessId'],
                 ':parent_id' => $category['parentId'],
                 ':name' => $category['name'],
+                ':state' => $category['state'],
                 ':description' => $category['description'],
             ])) {
                 throw new Exception('No se pudo insertar el nuevo registro');

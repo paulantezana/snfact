@@ -2,13 +2,19 @@
     <div class="SnContent">
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class="icon-dots SnMr-2"></i> Clientes
+                <i class=" icon-equalizer SnMr-2"></i> <strong>CLIENTES</strong>
             </div>
             <div class="SnToolbar-right">
-                <div class="SnBtn jsCustomerOption" onclick="CustomerList()">
-                    <i class="icon-reload-alt SnMr-2"></i> Actualizar
+                <div class="SnBtn jsCustomerAction" onclick="CustomerToPrint()">
+                    <i class="icon-printer"></i>
                 </div>
-                <div class="SnBtn primary jsCustomerOption" onclick="CustomerShowModalCreate()">
+                <div class="SnBtn jsCustomerAction" onclick="CustomerToExcel()">
+                    <i class="icon-file-excel"></i>
+                </div>
+                <div class="SnBtn jsCustomerAction" onclick="CustomerList()">
+                    <i class="icon-reload-alt"></i>
+                </div>
+                <div class="SnBtn primary jsCustomerAction" onclick="CustomerShowModalCreate()">
                     <i class="icon-plus2 SnMr-2"></i> Nuevo
                 </div>
             </div>
@@ -33,14 +39,14 @@
             </div>
             <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Cliente</div>
             <div class="SnModal-body">
-                <form action="" class="SnForm" id="customerForm" onsubmit="CustomerSubmit(event)">
+                <form action="" class="SnForm" novalidate id="customerForm" onsubmit="CustomerSubmit(event)">
                     <input type="hidden" class="SnForm-control" id="customerId">
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="customerDocumentNumber">Número de documento</label>
                         <div class="SnControl-group">
                             <div class="SnControl-wrapper">
                                 <i class="icon-user SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="customerDocumentNumber" placeholder="Número de documento Aquí!">
+                                <input class="SnForm-control SnControl" type="text" id="customerDocumentNumber" placeholder="Número de documento Aquí!" required>
                             </div>
                             <div class="SnBtn primary" onclick="CustomerQueryPeruDocument()"><i class="icon-search4"></i></div>
                         </div>
@@ -48,7 +54,7 @@
 
                     <div class="SnForm-item required">
                         <label for="customerIdentityDocumentCode" class="SnForm-label">Tipo de Documento de Identidad</label>
-                        <select id="customerIdentityDocumentCode" class="SnForm-control">
+                        <select id="customerIdentityDocumentCode" class="SnForm-control" required>
                             <option value="">Elegir</option>
                             <?php foreach ($catIdentityDocumentTypeCode ?? [] as $row): ?>
                                 <option value="<?= $row['code']?>"><?= $row['description']?></option>
@@ -57,23 +63,38 @@
                     </div>
                     <div class="SnForm-item required">
                         <label for="customerSocialReason" class="SnForm-label">Razón social/Nombre Completo</label>
-                        <input type="text" class="SnForm-control" id="customerSocialReason">
+                        <div class="SnControl-wrapper">
+                            <i class="icon-user SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="customerSocialReason" required>
+                        </div>
                     </div>
                     <div class="SnForm-item">
                         <label for="customerCommercialReason" class="SnForm-label">Razón comercial</label>
-                        <input type="text" class="SnForm-control" id="customerCommercialReason">
+                        <div class="SnControl-wrapper">
+                            <i class="icon-vcard SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="customerCommercialReason">
+                        </div>
                     </div>
                     <div class="SnForm-item">
                         <label for="customerFiscalAddress" class="SnForm-label">Dirección fiscal</label>
-                        <input type="text" class="SnForm-control" id="customerFiscalAddress">
+                        <div class="SnControl-wrapper">
+                            <i class="icon-home2 SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="customerFiscalAddress">
+                        </div>
                     </div>
                     <div class="SnForm-item">
                         <label for="customerEmail" class="SnForm-label">Email</label>
-                        <input type="email" class="SnForm-control" id="customerEmail">
+                        <div class="SnControl-wrapper">
+                            <i class="icon-envelop2 SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="email" id="customerEmail">
+                        </div>
                     </div>
                     <div class="SnForm-item">
                         <label for="customerTelephone" class="SnForm-label">Teléfono</label>
-                        <input type="text" class="SnForm-control" id="customerTelephone">
+                        <div class="SnControl-wrapper">
+                            <i class="icon-file-text2 SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="customerTelephone">
+                        </div>
                     </div>
                     <div class="SnForm-item">
                         <div class="SnSwitch">

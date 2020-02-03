@@ -1,5 +1,5 @@
 <div class="SnTable-wrapper">
-    <table class="SnTable">
+    <table class="SnTable" id="categoryCurrentTable">
         <thead>
             <tr>
                 <th>Categoria</th>
@@ -21,10 +21,10 @@
                     </td>
                     <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn jsCategoryAction" data-tooltip="Editar" onclick="CategoryShowModalUpdate(<?= $row['category_id'] ?>)">
+                            <div class="SnBtn icon jsCategoryAction" data-tooltip="Editar" onclick="CategoryShowModalUpdate(<?= $row['category_id'] ?>)">
                                 <i class="icon-pencil"></i>
                             </div>
-                            <div class="SnBtn jsCategoryAction" data-tooltip="Eliminar" onclick="CategoryDelete(<?= $row['category_id'] ?>,'<?= $row['name'] ?>')">
+                            <div class="SnBtn icon jsCategoryAction" data-tooltip="Eliminar" onclick="CategoryDelete(<?= $row['category_id'] ?>,'<?= $row['name'] ?>')">
                                 <i class="icon-trash"></i>
                             </div>
                         </div>

@@ -1,207 +1,237 @@
-let  UserForm = {
-    currentModeForm : 'create',
+let userState = {
+    modalType: 'create',
     modalName : 'userModalForm',
-
-    currentForm : null,
-    submitButton : null,
-
     loading : false,
-    init() {
-        this.currentForm = document.getElementById('userForm');
-        this.submitButton = document.getElementById('userFormSubmit');
-        this.list();
-    },
-    search(event){
-        event.preventDefault();
-        this.list(1,10,event.target.value);
-    },
-    list(page = 1, limit = 10, search = ''){
-        let customerTable = document.getElementById('userTable');
-        if(customerTable){
-            this.setLoading(true);
-            RequestApi.fetchText(`/user/table?limit=${limit}&page=${page}&search=${search}`,{
-                method: 'GET',
-            }).then(res => {
-                customerTable.innerHTML = res;
-            }).finally(e =>{
-                this.setLoading(false);
-            })
-        }
-    },
-    setLoading(state){
-        this.loading = state;
-        let jsUserOption = document.querySelectorAll('.jsUserOption');
+};
+let pValidator;
 
-        if (this.loading){
-            if(this.submitButton){
-                this.submitButton.setAttribute('disabled','disabled');
-                this.submitButton.classList.add('loading');
-                if (jsUserOption) {
-                    jsUserOption.forEach(item => {
-                        item.setAttribute('disabled', 'disabled');
-                    });
-                }
-            }
-        } else {
-            if(this.submitButton){
-                this.submitButton.removeAttribute('disabled');
-                this.submitButton.classList.remove('loading');
-                if (jsUserOption) {
-                    jsUserOption.forEach(item => {
-                        item.removeAttribute('disabled');
-                    });
-                }
-            }
+function userSetLoading(state){
+    userState.loading = state;
+    let jsUserAction = document.querySelectorAll('.jsUserAction');
+    let submitButton = document.getElementById('userFormSubmit');
+    if (userState.loading){
+        if(submitButton){
+            submitButton.setAttribute('disabled','disabled');
+            submitButton.classList.add('loading');
         }
-    },
-
-    clearForm(){
-        if (this.currentForm){
-            this.currentForm.reset();
+        if (jsUserAction) {
+            jsUserAction.forEach(item => {
+                item.setAttribute('disabled', 'disabled');
+            });
         }
-    },
-
-    submit(event){
-        event.preventDefault();
-        this.setLoading(true);
-
-        let url = '';
-        let userSendData = {};
-        userSendData.password =  document.getElementById('userPassword').value || '';
-        userSendData.passwordConfirm =  document.getElementById('userPasswordConfirm').value || '';
-        userSendData.email =  document.getElementById('userEmail').value || '';
-        userSendData.userName =  document.getElementById('userUserName').value || '';
-        userSendData.state =  document.getElementById('userState').checked || false;
-        userSendData.userRoleId =  document.getElementById('userUserRoleId').value || '';
-
-        if (this.currentModeForm === 'create'){
-            url = '/user/create';
+    } else {
+        if(submitButton){
+            submitButton.removeAttribute('disabled');
+            submitButton.classList.remove('loading');
         }
-        if (this.currentModeForm === 'update'){
-            url = '/user/update';
-            userSendData.userId = document.getElementById('userId').value || 0;
+        if (jsUserAction) {
+            jsUserAction.forEach(item => {
+                item.removeAttribute('disabled');
+            });
         }
-        if (this.currentModeForm === 'updatePassword'){
-            url = '/user/updatePassword';
-            userSendData = {
-                password :  document.getElementById('userPassword').value || '',
-                passwordConfirm :  document.getElementById('userPasswordConfirm').value || '',
-                userId : document.getElementById('userId').value || 0,
-            }
-        }
+    }
+}
 
-        RequestApi.fetch(url,{
-            method: 'POST',
-            body: userSendData
+function userList(page = 1, limit = 10, search = ''){
+    let userTable = document.getElementById('userTable');
+    if(userTable){
+        SnFreeze.freeze({selector: '#userTable'});
+        RequestApi.fetchText(`/user/table?limit=${limit}&page=${page}&search=${search}`,{
+            method: 'GET',
         }).then(res => {
-            if (res.success){
-                SnModal.close(this.modalName);
-                SnMessage.success({ content: res.message });
-                this.list();
-            } else {
-                SnModal.error({ title: 'Algo salió mal', content: res.message })
-            }
+            userTable.innerHTML = res;
         }).finally(e =>{
-            this.setLoading(false);
-        })
-    },
-    delete(userId, content = '') {
-        let _setLoading = this.setLoading;
-        let _list = this.list;
-
-        SnModal.confirm({
-            title: '¿Estás seguro de eliminar este registro?',
-            content: content,
-            okText: 'Si',
-            okType: 'error',
-            cancelText: 'No',
-            onOk() {
-                _setLoading(true);
-                RequestApi.fetch('/user/delete', {
-                    method: 'POST',
-                    body: {
-                        userId: userId || 0
-                    }
-                }).then(res => {
-                    if (res.success) {
-                        SnMessage.success({ content: res.message });
-                        _list();
-                    } else {
-                        SnModal.error({ title: 'Algo salió mal', content: res.message })
-                    }
-                }).finally(e => {
-                    _setLoading(false);
-                })
-            }
-        });
-    },
-
-    showModalCreate(){
-        this.currentModeForm = 'create';
-        this.clearForm();
-        this.showModalMode('create');
-        SnModal.open(this.modalName);
-    },
-
-    showModalMode(mode = ''){
-        document.getElementById('userEmail').parentElement.classList.remove('hidden');
-        document.getElementById('userUserName').parentElement.classList.remove('hidden');
-        document.getElementById('userState').parentElement.classList.remove('hidden');
-        document.getElementById('userUserRoleId').parentElement.classList.remove('hidden');
-        document.getElementById('userPassword').parentElement.parentElement.classList.remove('hidden');
-        document.getElementById('userPasswordConfirm').parentElement.parentElement.classList.remove('hidden');
-
-        if (mode === 'normal'){
-            document.getElementById('userPassword').parentElement.parentElement.classList.add('hidden');
-            document.getElementById('userPasswordConfirm').parentElement.parentElement.classList.add('hidden');
-        } else if(mode === 'password') {
-            document.getElementById('userEmail').parentElement.classList.add('hidden');
-            document.getElementById('userUserName').parentElement.classList.add('hidden');
-            document.getElementById('userState').parentElement.classList.add('hidden');
-            document.getElementById('userUserRoleId').parentElement.classList.add('hidden');
-        } else if(mode === 'create') {
-            document.getElementById('userState').checked = true;
-        }
-    },
-
-    executeUpdateNormal(userId){
-        this.showModalMode('normal');
-        this.currentModeForm = 'update';
-        this.showModalUpdate(userId);
-    },
-
-    executeUpdatePassword(userId){
-        this.showModalMode('password');
-        this.currentModeForm = 'updatePassword';
-        this.showModalUpdate(userId);
-    },
-
-    showModalUpdate(userId){
-        this.clearForm();
-
-        this.setLoading(true);
-        RequestApi.fetch('/user/id',{
-            method: 'POST',
-            body: {
-                userId: userId || 0
-            }
-        }).then(res => {
-            if (res.success){
-                document.getElementById('userEmail').value  = res.result.email;
-                document.getElementById('userUserName').value  = res.result.user_name;
-                document.getElementById('userState').checked  = res.result.state == '0' ? false : true;
-                document.getElementById('userUserRoleId').value  = res.result.user_role_id;
-                document.getElementById('userId').value = res.result.user_id;
-                SnModal.open(this.modalName);
-            }else {
-                SnModal.error({ title: 'Algo salió mal', content: res.message })
-            }
-        }).finally(e => {
-            this.setLoading(false);
+            SnFreeze.unFreeze('#userTable');
         })
     }
-};
+}
+
+function userClearForm(){
+    let currentForm = document.getElementById('userForm');
+    let userEmail = document.getElementById('userEmail');
+    if (currentForm && userEmail){
+        currentForm.reset();
+        userEmail.focus();
+    }
+    pValidator.reset();
+}
+
+function userSubmit(e){
+    e.preventDefault();
+    if(!pValidator.validate()){
+        return;
+    }
+    userSetLoading(true);
+
+    let url = '';
+    let userSendData = {};
+    userSendData.password =  document.getElementById('userPassword').value || '';
+    userSendData.passwordConfirm =  document.getElementById('userPasswordConfirm').value || '';
+    userSendData.email =  document.getElementById('userEmail').value || '';
+    userSendData.userName =  document.getElementById('userUserName').value || '';
+    userSendData.state =  document.getElementById('userState').checked || false;
+    userSendData.userRoleId =  document.getElementById('userUserRoleId').value || '';
+
+    if (userState.modalType === 'create'){
+        url = '/user/create';
+    }
+    if (userState.modalType === 'update'){
+        url = '/user/update';
+        userSendData.userId = document.getElementById('userId').value || 0;
+    }
+    if (userState.modalType === 'updatePassword'){
+        url = '/user/updatePassword';
+        userSendData = {
+            password :  document.getElementById('userPassword').value || '',
+            passwordConfirm :  document.getElementById('userPasswordConfirm').value || '',
+            userId : document.getElementById('userId').value || 0,
+        }
+    }
+
+    RequestApi.fetch(url,{
+        method: 'POST',
+        body: userSendData
+    }).then(res => {
+        if (res.success){
+            SnModal.close(userState.modalName);
+            SnMessage.success({ content: res.message });
+            userList();
+        } else {
+            SnModal.error({ title: 'Algo salió mal', content: res.message })
+        }
+    }).finally(e =>{
+        userSetLoading(false);
+    })
+}
+
+function userDelete(userId, content = ''){
+    SnModal.confirm({
+        title: '¿Estás seguro de eliminar este registro?',
+        content: content,
+        okText: 'Si',
+        okType: 'error',
+        cancelText: 'No',
+        onOk() {
+            userSetLoading(true);
+            RequestApi.fetch('/user/delete', {
+                method: 'POST',
+                body: {
+                    userId: userId || 0
+                }
+            }).then(res => {
+                if (res.success) {
+                    SnMessage.success({ content: res.message });
+                    userList();
+                } else {
+                    SnModal.error({ title: 'Algo salió mal', content: res.message })
+                }
+            }).finally(e => {
+                userSetLoading(false);
+            })
+        }
+    });
+}
+
+function userShowModalCreate(){
+    userState.modalType = 'create';
+    prepareModalUser(userState.modalType);
+    SnModal.open(userState.modalName);
+    userClearForm();
+}
+
+function userShowModalUpdatePassword(userId){
+    userState.modalType = 'updatePassword';
+    prepareModalUser(userState.modalType);
+    userGetById(userId);
+}
+
+function userShowModalUpdate(userId){
+    userState.modalType = 'update';
+    prepareModalUser(userState.modalType);
+    userGetById(userId);
+}
+
+function prepareModalUser(mode = ''){
+    pValidator.destroy();
+
+    document.getElementById('userEmail').parentElement.parentElement.classList.remove('hidden');
+    document.getElementById('userUserName').parentElement.parentElement.classList.remove('hidden');
+    document.getElementById('userState').parentElement.parentElement.classList.remove('hidden');
+    document.getElementById('userUserRoleId').parentElement.classList.remove('hidden');
+    document.getElementById('userPassword').parentElement.parentElement.classList.remove('hidden');
+    document.getElementById('userPasswordConfirm').parentElement.parentElement.classList.remove('hidden');
+
+    document.getElementById('userEmail').removeAttribute('required');
+    document.getElementById('userUserName').removeAttribute('required');
+    document.getElementById('userState').removeAttribute('required');
+    document.getElementById('userUserRoleId').removeAttribute('required');
+    document.getElementById('userPassword').removeAttribute('required');
+    document.getElementById('userPasswordConfirm').removeAttribute('required');
+
+    if (mode === 'update'){
+        document.getElementById('userPassword').parentElement.parentElement.classList.add('hidden');
+        document.getElementById('userPasswordConfirm').parentElement.parentElement.classList.add('hidden');
+
+        document.getElementById('userEmail').setAttribute('required',true);
+        document.getElementById('userUserName').setAttribute('required',true);
+        document.getElementById('userUserRoleId').setAttribute('required',true);
+    } else if(mode === 'updatePassword') {
+        document.getElementById('userEmail').parentElement.parentElement.classList.add('hidden');
+        document.getElementById('userUserName').parentElement.parentElement.classList.add('hidden');
+        document.getElementById('userState').parentElement.parentElement.classList.add('hidden');
+        document.getElementById('userUserRoleId').parentElement.classList.add('hidden');
+        
+        document.getElementById('userPassword').setAttribute('required',true);
+        document.getElementById('userPasswordConfirm').setAttribute('required',true);
+    } else if(mode === 'create') {
+        document.getElementById('userState').checked = true;
+    }
+
+    pValidator = new Pristine(document.getElementById('userForm'));
+}
+
+function userGetById(userId){
+    userClearForm();
+    userSetLoading(true);
+    
+    RequestApi.fetch('/user/id',{
+        method: 'POST',
+        body: {
+            userId: userId || 0
+        }
+    }).then(res => {
+        if (res.success){
+            document.getElementById('userEmail').value  = res.result.email;
+            document.getElementById('userUserName').value  = res.result.user_name;
+            document.getElementById('userState').checked  = res.result.state == '0' ? false : true;
+            document.getElementById('userUserRoleId').value  = res.result.user_role_id;
+            document.getElementById('userId').value = res.result.user_id;
+            SnModal.open(userState.modalName);
+        }else {
+            SnModal.error({ title: 'Algo salió mal', content: res.message })
+        }
+    }).finally(e => {
+        userSetLoading(false);
+    })
+}
+
+function userToExcel(){
+    let dataTable = document.getElementById('userCurrentTable');
+    if(dataTable){
+        window.open('data:application/vnd.ms-excel,' + encodeURIComponent(dataTable.outerHTML));
+    }
+}
+
+function userToPrint(){
+    printArea('userCurrentTable');
+}
 
 document.addEventListener('DOMContentLoaded',()=>{
-    UserForm.init();
+    pValidator = new Pristine(document.getElementById('userForm'));
+
+    document.getElementById('searchContent').addEventListener('input',e=>{
+        userList(1,10,e.target.value);
+    });
+
+    userList();
 });

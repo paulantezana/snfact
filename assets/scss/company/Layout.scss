@@ -71,6 +71,8 @@ $headerHeight: 56px;
 }
 
 .SnContent{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   @include from(l){
     padding: 1rem;
   }

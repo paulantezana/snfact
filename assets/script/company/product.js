@@ -5,6 +5,8 @@ let ProductState = {
     loading: false,
     slimProductCode: null,
 };
+let pValidator;
+let cValidator;
 
 function ProductSetLoading(state) {
     ProductState.loading = state;
@@ -49,15 +51,21 @@ function ProductList(page = 1, limit = 10, search = '') {
 
 function ProductClearForm() {
     let currentForm = document.getElementById('productForm');
-    if (currentForm) {
+    let productProductKey = document.getElementById('productProductKey');
+    pValidator.reset();
+    if (currentForm && productProductKey) {
         currentForm.reset();
+        productProductKey.focus();
     }
 }
 
-function ProductSubmit(event) {
-    event.preventDefault();
-    ProductSetLoading(true);
+function ProductSubmit(e) {
+    e.preventDefault();
+    if(!pValidator.validate()){
+        return;
+    }
 
+    ProductSetLoading(true);
     let url = '';
     let productSendData = {};
     productSendData.categoryId = document.getElementById('productCategoryId').value || '';
@@ -178,14 +186,21 @@ function ProductShowModalUpdate(productId) {
 
 function CategoryShowModalCreate() {
     let currentForm = document.getElementById('categoryForm');
-    if (currentForm) {
+    let categoryName = document.getElementById('categoryName');
+    cValidator.reset();
+    if (currentForm && categoryName) {
         currentForm.reset();
+        categoryName.focus();
     }
     SnModal.open(ProductState.categoryModalName);
 }
 
-function CategorySubmit(event) {
-    event.preventDefault();
+function CategorySubmit(e) {
+    e.preventDefault();
+    if(!cValidator.validate()){
+        return;
+    }
+
     ProductSetLoading(true);
 
     let categorySendData = {};
@@ -214,7 +229,22 @@ function CategorySubmit(event) {
     })
 }
 
+
+function ProductToExcel(){
+    let dataTable = document.getElementById('productCurrentTable');
+    if(dataTable){
+        window.open('data:application/vnd.ms-excel,' + encodeURIComponent(dataTable.outerHTML));
+    }
+}
+
+function ProductToPrint(){
+    printArea('productCurrentTable');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    pValidator = new Pristine(document.getElementById('productForm'));
+    cValidator = new Pristine(document.getElementById('categoryForm'));
+
     document.getElementById('productSearch').addEventListener('input', e => {
         ProductList(1, 10, e.target.value);
     });
@@ -224,10 +254,10 @@ document.addEventListener('DOMContentLoaded', () => {
     SnSelect({
         elem: '#productProductCode',
         data: (search, callback) => {
-            if (search.length < 2) {
-                callback('Escriba almenos 2 caracteres');
-                return;
-            }
+            // if (search.length < 2) {
+            //     callback('Escriba almenos 2 caracteres');
+            //     return;
+            // }
 
             RequestApi.fetch('/product/searchProductCode', {
                 method: 'POST',

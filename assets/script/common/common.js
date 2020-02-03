@@ -86,12 +86,6 @@ const roundCurrency = (num, decimals = 2) => {
     return number.toFixed(decimals);
 };
 
-const validateInputIsNumber = (input) => {
-    let regex = /[^0-9.,]/g;
-    input.value = input.value.replace(regex, '');
-    return regex.test(input.value);
-};
-
 const validateRUC = ruc => {
     if (isNaN(ruc)) {
         return false;
@@ -111,20 +105,29 @@ const validateRUC = ruc => {
     return sum % 11 === 0
 };
 
-const validateDNI = dni => {
-    return /^[0-9]{8}$/.test(dni);
-};
-
-const validateEmail = email => {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-};
-
 const groupBy = function (data, key) {
     return data.reduce((a, b) => {
         (a[b[key]] = a[b[key]] || []).push(b);
         return a;
     }, {});
 };
+
+const printArea = function(idElem){
+    let dataTable = document.getElementById(idElem);
+    if(dataTable){
+        var content = dataTable.outerHTML;
+        var mywindow = window.open('', 'Print', 'height=600,width=800');
+    
+        mywindow.document.write('<html><head><title>Print</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(content);
+        mywindow.document.write('</body></html>');
+    
+        mywindow.document.close();
+        mywindow.focus()
+        mywindow.print();
+    }
+}
 
 let SnLiveList = option => {
     let tElementNodes = document.querySelectorAll(option.target);
@@ -186,7 +189,6 @@ let SnLiveList = option => {
 let SnSelectStore = [];
 
 let SnSelect = function (options, action = 'create') {
-
     if (action === 'set') {
         let tElementNode = document.querySelector(options.elem);
         if (!tElementNode) {

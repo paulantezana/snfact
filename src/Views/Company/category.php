@@ -2,11 +2,17 @@
     <div class="SnContent">
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class="icon-dots SnMr-2"></i> Categorias
+                <i class=" icon-equalizer SnMr-2"></i> <strong>CATEGORIAS</strong>
             </div>
             <div class="SnToolbar-right">
-                <div class="SnBtn jsCategoryAction SnMr-2" onclick="CategoryList()">
-                    <i class="icon-reload-alt SnMr-2"></i> Actualizar
+                <div class="SnBtn jsCategoryAction" onclick="CategoryToPrint()">
+                    <i class="icon-printer"></i>
+                </div>
+                <div class="SnBtn jsCategoryAction" onclick="CategoryToExcel()">
+                    <i class="icon-file-excel"></i>
+                </div>
+                <div class="SnBtn jsCategoryAction" onclick="CategoryList()">
+                    <i class="icon-reload-alt"></i>
                 </div>
                 <div class="SnBtn primary jsCategoryAction" onclick="CategoryShowModalCreate()">
                     <i class="icon-plus2 SnMr-2"></i> Nuevo

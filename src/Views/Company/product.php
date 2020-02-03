@@ -2,13 +2,19 @@
     <div class="SnContent">
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class="icon-arrow-right15 SnMr-2"></i> Producto
+                <i class=" icon-equalizer SnMr-2"></i> <strong>PRODUCTOS</strong>
             </div>
             <div class="SnToolbar-right">
-                <div class="SnBtn jsCategoryAction SnMr-2" onclick="ProductList()">
-                    <i class="icon-reload-alt SnMr-2"></i> Actualizar
+                <div class="SnBtn jsProductAction" onclick="ProductToPrint()">
+                    <i class="icon-printer"></i>
                 </div>
-                <div class="SnBtn primary jsCategoryAction" onclick="ProductShowModalCreate()">
+                <div class="SnBtn jsProductAction" onclick="ProductToExcel()">
+                    <i class="icon-file-excel"></i>
+                </div>
+                <div class="SnBtn jsProductAction" onclick="ProductList()">
+                    <i class="icon-reload-alt"></i>
+                </div>
+                <div class="SnBtn primary jsProductAction" onclick="ProductShowModalCreate()">
                     <i class="icon-plus2 SnMr-2"></i> Nuevo
                 </div>
             </div>
@@ -33,7 +39,7 @@
             </div>
             <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Producto</div>
             <div class="SnModal-body">
-                <form action="" class="SnForm" id="productForm" onsubmit="ProductSubmit(event)">
+                <form action="" class="SnForm" novalidate id="productForm" onsubmit="ProductSubmit(event)">
                     <input type="hidden" class="SnForm-control" id="productId">
                     <div class="SnGrid s-grid-2">
                         <div class="SnForm-item required">
@@ -41,14 +47,14 @@
                             <div class="SnControl-group">
                                 <div class="SnControl-wrapper">
                                     <i class="icon-barcode2 SnControl-prefix"></i>
-                                    <input class="SnForm-control SnControl" type="text" id="productProductKey" placeholder="Código">
+                                    <input class="SnForm-control SnControl" type="text" id="productProductKey" required>
                                 </div>
                                 <div class="SnBtn primary"><i class="icon-rotate-ccw3"></i></div>
                             </div>
                         </div>
                         <div class="SnForm-item required">
                             <label for="productProductCode" class="SnForm-label">Codigo Producto</label>
-                            <select id="productProductCode">
+                            <select id="productProductCode" required>
                                 <option value="">Seleccionar</option>
                             </select>
                         </div>
@@ -57,13 +63,13 @@
                         <label for="productDescription" class="SnForm-label">Nombre del Producto o Servicio</label>
                         <div class="SnControl-wrapper">
                             <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" id="productDescription" placeholder="Nombre del Producto o Servicio">
+                            <input class="SnForm-control SnControl" type="text" id="productDescription" required>
                         </div>
                     </div>
 
                     <div class="SnForm-item required">
                         <label for="productAffectationCode" class="SnForm-label">Tipo de IGV</label>
-                        <select id="productAffectationCode" class="SnForm-control">
+                        <select id="productAffectationCode" class="SnForm-control" required>
                             <option value="">Seleccionar</option>
                             <?php foreach ($catAffectationIgvTypeCodes ?? [] as $row): ?>
                                 <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
@@ -75,14 +81,14 @@
                             <label for="productUnitPrice" class="SnForm-label">PrecioVenta(Inc.IGV)</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-cash4 SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="number" step="any" id="productUnitPrice" placeholder="0.00">
+                                <input class="SnForm-control SnControl" type="number" step="any" id="productUnitPrice" required>
                             </div>
                         </div>
                         <div class="SnForm-item required">
                             <label for="productUnitValue" class="SnForm-label">PrecioVenta(Sin IGV)</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-cash4 SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="number" step="any" id="productUnitValue" placeholder="0.00">
+                                <input class="SnForm-control SnControl" type="number" step="any" id="productUnitValue" required>
                             </div>
                         </div>
                     </div>
@@ -90,7 +96,7 @@
                         <div class="SnForm-item required">
                             <label for="productCategoryId" class="SnForm-label">Categoría</label>
                             <div class="SnControl-group">
-                                <select id="productCategoryId" class="SnForm-control">
+                                <select id="productCategoryId" class="SnForm-control" required>
                                     <option value="">Seleccionar</option>
                                     <?php foreach ($categories ?? [] as $row): ?>
                                         <option value="<?= $row['category_id'] ?>"><?= $row['name'] ?></option>
@@ -101,7 +107,7 @@
                         </div>
                         <div class="SnForm-item required">
                             <label for="productUnitMeasureCode" class="SnForm-label">Unidad de Medida</label>
-                            <select id="productUnitMeasureCode" class="SnForm-control">
+                            <select id="productUnitMeasureCode" class="SnForm-control" required>
                                 <option value="">Seleccionar</option>
                                 <?php foreach ($catUnitMeasureTypeCodes ?? [] as $row): ?>
                                     <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>

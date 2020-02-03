@@ -61,6 +61,9 @@
       color: var(--snColor1Dark);
       border-color: var(--snColor1Dark);
     }
+    &.icon{
+      padding: 0 9px;
+    }
     &.sm {
       line-height: 1.6em;
     }

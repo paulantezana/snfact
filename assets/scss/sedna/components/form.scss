@@ -71,6 +71,27 @@
                 line-height: 1;
                 content: "*";
             }
+            .SnForm-help{
+                color: var(--snColorTextAlt);
+                font-size: 13px;
+                margin-top: 4px;
+            }
+            &.has-error{
+                .SnForm-control{
+                    border-color: var(--snErrorLight);
+                }
+                .SnForm-help{
+                    color: var(--snError);
+                }
+            }
+            &.has-success{
+                .SnForm-control{
+                    border-color: var(--snSuccessLight);
+                }
+                .SnForm-help{
+                    color: var(--snSuccess);
+                }
+            }
         }
         &-label {
             display: block;

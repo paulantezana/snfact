@@ -7,11 +7,10 @@
     @extend %snList;
     &-link{
       @include SnBtnStnd();
-      margin-right: 8px;
-      min-width: 30px;
+      margin-right: 4px;
+      margin-bottom: 6px;
     }
     &-item{
-
       &.disabled{
         .SnPagination-link{
           opacity: 0.6;

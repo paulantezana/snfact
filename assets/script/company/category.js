@@ -3,6 +3,7 @@ let CategoryState = {
     modalName : 'categoryModalForm',
     loading : false,
 };
+let pValidator;
 
 function CategorySetLoading(state){
     CategoryState.loading = state;
@@ -47,15 +48,21 @@ function CategoryList(page = 1, limit = 10, search = ''){
 
 function CategoryClearForm(){
     let currentForm = document.getElementById('categoryForm');
-    if (currentForm){
+    let categoryName = document.getElementById('categoryName');
+    pValidator.reset();
+    if (currentForm && categoryName){
         currentForm.reset();
+        categoryName.focus();
     }
 }
 
-function CategorySubmit(event){
-    event.preventDefault();
-    CategorySetLoading(true);
+function CategorySubmit(e){
+    e.preventDefault();
+    if(!pValidator.validate()){
+        return;
+    }
 
+    CategorySetLoading(true);
     let url = '';
     let categorySendData = {};
     categorySendData.name =  document.getElementById('categoryName').value || '';
@@ -117,15 +124,15 @@ function CategoryDelete(categoryId, content = ''){
 
 function CategoryShowModalCreate(){
     CategoryState.modalType = 'create';
-    CategoryClearForm();
     SnModal.open(CategoryState.modalName);
+    CategoryClearForm();
 }
 
 function CategoryShowModalUpdate(categoryId){
     CategoryState.modalType = 'update';
+    CategorySetLoading(true);
     CategoryClearForm();
 
-    CategorySetLoading(true);
     RequestApi.fetch('/category/id',{
         method: 'POST',
         body: {
@@ -146,9 +153,23 @@ function CategoryShowModalUpdate(categoryId){
     })
 }
 
+function CategoryToExcel(){
+    let dataTable = document.getElementById('categoryCurrentTable');
+    if(dataTable){
+        window.open('data:application/vnd.ms-excel,' + encodeURIComponent(dataTable.outerHTML));
+    }
+}
+
+function CategoryToPrint(){
+    printArea('categoryCurrentTable');
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
+    pValidator = new Pristine(document.getElementById('categoryForm'));
+
     document.getElementById('searchContent').addEventListener('input',e=>{
         CategoryList(1,10,e.target.value);
     });
+
     CategoryList();
 });

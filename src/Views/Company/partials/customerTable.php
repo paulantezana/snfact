@@ -1,5 +1,5 @@
 <div class="SnTable-wrapper">
-    <table class="SnTable">
+    <table class="SnTable" id="customerCurrentTable">
         <thead>
             <tr>
                 <th>Fecha</th>
@@ -25,10 +25,10 @@
                     </td>
                     <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn jsCustomerOption" data-tooltip="Editar" onclick="CustomerShowModalUpdate(<?= $row['customer_id'] ?>)">
+                            <div class="SnBtn icon jsCustomerOption" data-tooltip="Editar" onclick="CustomerShowModalUpdate(<?= $row['customer_id'] ?>)">
                                 <i class="icon-pencil"></i>
                             </div>
-                            <div class="SnBtn jsCustomerOption" data-tooltip="Eliminar" onclick="CustomerDelete(<?= $row['customer_id'] ?>,'<?= $row['social_reason'] ?>')">
+                            <div class="SnBtn icon jsCustomerOption" data-tooltip="Eliminar" onclick="CustomerDelete(<?= $row['customer_id'] ?>,'<?= $row['social_reason'] ?>')">
                                 <i class="icon-trash"></i>
                             </div>
                         </div>
