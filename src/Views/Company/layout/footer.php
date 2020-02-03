@@ -18,6 +18,9 @@
                                 </li>
                             <?php endif; ?>
                             <li>
+                                <a href="<?= URL_PATH ?>/voided"> <i class="icon-file-text"></i> <span>Cotizaciones </span> </a>
+                            </li>
+                            <li>
                                 <a href="<?= URL_PATH ?>/invoice"> <i class="icon-rocket"></i> <span>Comprobantes </span> </a>
                                 <ul>
                                     <li><a href="<?= URL_PATH ?>/invoice">Lista comprobantes</a></li>
@@ -25,6 +28,19 @@
                                     <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta</a></li>
                                     <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07">Emitir nota crédito</a></li>
                                     <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08">Emitir nota débito</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="<?= URL_PATH ?>/voided"> <i class="icon-book"></i> <span>Guias de remisión </span> </a>
+                            </li>
+                            <li>
+                                <a href="<?= URL_PATH ?>/invoice"> <i class=" icon-stack"></i> <span>Contingencias </span> </a>
+                                <ul>
+                                    <li><a href="<?= URL_PATH ?>/invoice">Lista comprobantes[c]</a></li>
+                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura[c]</a></li>
+                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta[c]</a></li>
+                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07">Emitir nota crédito[c]</a></li>
+                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08">Emitir nota débito[c]</a></li>
                                 </ul>
                             </li>
                             <li>
