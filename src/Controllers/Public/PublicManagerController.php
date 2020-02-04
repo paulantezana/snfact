@@ -21,7 +21,7 @@ class PublicManagerController extends Controller
             if (isset($_POST['commit'])) {
 
                 if (!isset($_POST['user']) || !isset($_POST['password'])) {
-                    $this->render('public/manager/login.php', [
+                    $this->render('Public/manager/login.php', [
                         'messageType' => 'error',
                         'message' => 'Los campos usuario y contraseña son requeridos',
                     ]);
@@ -51,13 +51,13 @@ class PublicManagerController extends Controller
 
                     $this->redirect('/');
                 } catch (Exception $e) {
-                    $this->render('public/manager/login.php', [
+                    $this->render('Public/manager/login.php', [
                         'messageType' => 'error',
                         'message' => $e->getMessage(),
                     ]);
                 }
             } else {
-                $this->render('public/manager/login.php');
+                $this->render('Public/manager/login.php');
             }
         } catch (Exception $e) {
             $this->render('Public/500.php', [
@@ -166,7 +166,7 @@ class PublicManagerController extends Controller
                 }
             }
 
-            $this->render('public/company/forgot.php', [
+            $this->render('Public/company/forgot.php', [
                 'message' => $resView->message,
                 'messageType' => $resView->messageType,
             ]);
@@ -242,7 +242,7 @@ class PublicManagerController extends Controller
                 }
             }
 
-            $this->render('public/company/forgotValidate.php', [
+            $this->render('Public/company/forgotValidate.php', [
                 'message' => $resView->message,
                 'messageType' => $resView->messageType,
                 'contentType' => $resView->contentType,
