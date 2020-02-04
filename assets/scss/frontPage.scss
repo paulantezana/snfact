@@ -12,7 +12,6 @@
 @include SnMargin();
 @include SnSwitch();
 
-@import "public/Layout";
-@import "public/Result";
-@import "public/Branding";
-@import "public/Login";
+@import "frontPage/Layout";
+@import "frontPage/FrontPage";
+// @import "frontPage/Slide";

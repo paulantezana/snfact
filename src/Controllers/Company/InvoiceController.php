@@ -101,7 +101,7 @@ class InvoiceController extends Controller
         try {
             $businessSerieModel = new BusinessSerie($this->connection);
 
-            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
+            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->ByInCodes(['01','03','07','08']);
             $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->GetAll();
             $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
             $catOperationTypeCode = $this->catOperationTypeCodeModel->GetAll();
@@ -149,7 +149,7 @@ class InvoiceController extends Controller
                 'documentCode' => $invoiceDocumentCode,
             ]);
 
-            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
+            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->ByInCodes(['01','03','07','08']);
             $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->GetAll();
             $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
             $catOperationTypeCode = $this->catOperationTypeCodeModel->GetAll();

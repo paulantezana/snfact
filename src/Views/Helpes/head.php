@@ -23,5 +23,3 @@
 <meta name="msapplication-TileColor" content="#faad14">
 <meta name="msapplication-TileImage" content="<?php echo '/assets/images/icon/iOS/Icon-144.png'?>">
 <meta name="theme-color" content="#1890FF">
-
-<script src="<?= URL_PATH ?>/assets/script/common/theme.js"></script>

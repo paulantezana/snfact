@@ -1,0 +1,62 @@
+.Slide {
+  background: -webkit-linear-gradient(150deg, var(--snColor1Dark), var(--snColor1Light));
+  background: -o-linear-gradient(150deg, var(--snColor1Dark), var(--snColor1Light));
+  background: linear-gradient(-60deg, var(--snColor1Dark), var(--snColor1Light));
+  color: var(--snColorDarkInverse);
+  position: relative;
+  padding: 4rem 0 0;
+  text-align: center; }
+  .Slide-bg {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.25; }
+  .Slide-title {
+    color: white;
+    font-size: 3rem;
+    font-weight: lighter;
+    margin: auto; }
+  .Slide-data {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+    z-index: 5; }
+  .Slide-text {
+    color: white;
+    margin: auto; }
+  .Slide-app {
+    max-width: 850px; }
+  .Slide .CountdownRelase {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    background: var(--snColorDark);
+    border-radius: 20px;
+    padding: .5rem 1rem;
+    margin: 1rem 0 4rem; }
+    .Slide .CountdownRelase .ant-statistic-title {
+      color: var(--snColor2);
+      margin-right: 8px; }
+    .Slide .CountdownRelase .ant-statistic-content {
+      color: var(--snColorDarkInverse);
+      font-size: 14px; }

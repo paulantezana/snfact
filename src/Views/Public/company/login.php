@@ -13,7 +13,7 @@
         <div class="SnForm-item required">
             <label for="password" class="SnForm-label">Contraseña</label>
             <div class="SnControl-wrapper">
-                <i class="icon-lock SnControl-prefix"></i>
+                <i class="icon-key SnControl-prefix"></i>
                 <input type="password" class="SnForm-control SnControl" required id="password" name="password" placeholder="Contraseña">
                 <span class="SnControl-suffix icon-eye togglePassword"></span>
             </div>

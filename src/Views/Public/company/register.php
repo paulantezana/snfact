@@ -27,7 +27,7 @@
         <div class="SnForm-item required">
             <label for="registerPassword" class="SnForm-label">Contraseña</label>
             <div class="SnControl-wrapper">
-                <i class="icon-lock SnControl-prefix"></i>
+                <i class="icon-key SnControl-prefix"></i>
                 <input type="password" class="SnForm-control SnControl" id="registerPassword" name="register[password]" placeholder="Contraseña">
                 <span class="SnControl-suffix icon-eye togglePassword"></span>
             </div>
@@ -35,7 +35,7 @@
         <div class="SnForm-item required">
             <label for="registerPasswordConfirm" class="SnForm-label">Confirmar contraseña</label>
             <div class="SnControl-wrapper">
-                <i class="icon-lock SnControl-prefix"></i>
+                <i class="icon-key SnControl-prefix"></i>
                 <input type="password" class="SnForm-control SnControl" id="registerPasswordConfirm" name="register[passwordConfirm]" placeholder="Confirmar contraseña">
                 <span class="SnControl-suffix icon-eye togglePassword"></span>
             </div>

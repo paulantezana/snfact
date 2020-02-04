@@ -1,6 +1,6 @@
 .Branding{
   align-self: flex-end;
-  margin: 0 0 3rem;
+  margin: 0 0 4rem;
   &-header{
     display: flex;
     align-items: center;
@@ -15,5 +15,6 @@
   &-description{
     text-align: center;
     font-size: .75rem;
+    font-weight: normal;
   }
 }

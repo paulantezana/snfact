@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/nprogress.css">
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/style.css">
 
+        <script src="<?= URL_PATH ?>/assets/script/common/theme.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/pristine.min.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/nprogress.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/common.js"></script>

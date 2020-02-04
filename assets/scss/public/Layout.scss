@@ -1,40 +1,10 @@
 .BasicLayout{
   min-height: 100vh;
-
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas: "bLayoutHeader"
-                        "bLayoutMain";
-  @include from(l){
-    grid-template-columns: 1fr 420px;
-    grid-template-areas: "bLayoutHeader bLayoutMain";
-  }
-  &-header{
-    grid-area: bLayoutHeader;
-  }
-  &-main{
-    grid-area: bLayoutMain;
-  }
-}
-
-
-.BasicLayout{
-  &-header{
-    background: linear-gradient(45deg, var(--snColor1Darker),var(--snColor1Light));
-  }
-  &-main{
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-  }
+  padding: 4rem 0 5rem;
+  background: url('./../images/background.svg') no-repeat center center;
   &-mainContent{
-    margin-top: auto;
-    margin-bottom: auto;
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
   }
 }
-// .BasicLayout{
-//   background-image: url(./../images/background.svg);
-//   background-repeat: no-repeat;
-//   background-position: center 110px;
-//   background-size: 100%;
-// }
