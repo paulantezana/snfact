@@ -9,10 +9,10 @@ $hostName = stripos($_SERVER['REQUEST_SCHEME'], 'https') === 0 ? 'https://' : 'h
 
 define('HOST', $hostName);
 define('URI', $requestUri);
-define('URL_PATH', rtrim($scriptName));
+define('URL_PATH', rtrim($scriptName,'/'));
 define('URL',$virtualPath);
 
-define('ROOT_DIR', $_SERVER["DOCUMENT_ROOT"] . rtrim($scriptName));
+define('ROOT_DIR', $_SERVER["DOCUMENT_ROOT"] . rtrim($scriptName,'/'));
 var_dump($_SERVER["DOCUMENT_ROOT"]);
 var_dump(ROOT_DIR);
 var_dump($scriptName);
