@@ -13,9 +13,6 @@ define('URL_PATH', rtrim($scriptName,'/'));
 define('URL',$virtualPath);
 
 define('ROOT_DIR', $_SERVER["DOCUMENT_ROOT"] . rtrim($scriptName,'/'));
-var_dump($_SERVER["DOCUMENT_ROOT"]);
-var_dump(ROOT_DIR);
-var_dump($scriptName);
 define('CONTROLLER_PATH', ROOT_DIR. '/src/Controllers');
 define('MODEL_PATH', ROOT_DIR. '/src/Models');
 define('VIEW_PATH', ROOT_DIR. '/src/Views');
