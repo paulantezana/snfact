@@ -6,8 +6,9 @@
                 <th>Nombre de Sucursal</th>
                 <th>Ubigeo</th>
                 <th>Dirección</th>
-                <th>pdf_invoice_size</th>
-                <th style="width: 100px"></th>
+                <th>Formato PDF</th>
+                <th>Estado</th>
+                <th style="width: 50px"></th>
             </tr>
         </thead>
         <tbody>
@@ -19,12 +20,15 @@
                     <td><?= $row['address'] ?></td>
                     <td><?= $row['pdf_invoice_size'] ?></td>
                     <td>
+                        <div class="SnSwitch" style="height: 18px">
+                            <input class="SnSwitch-input" type="checkbox" id="businessLocal<?= $row['business_local_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
+                            <label class="SnSwitch-label" for="businessLocal<?= $row['business_local_id']?>"></label>
+                        </div>
+                    </td>
+                    <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn jsProductOption" data-tooltip="Editar" onclick="BusinessLocalShowModalUpdate(<?= $row['business_local_id'] ?>)">
+                            <div class="SnBtn icon jsProductOption" data-tooltip="Editar" onclick="BusinessLocalShowModalUpdate(<?= $row['business_local_id'] ?>)">
                                 <i class="icon-pencil"></i>
-                            </div>
-                            <div class="SnBtn error jsProductOption" data-tooltip="Eliminar" onclick="BusinessLocalDelete(<?= $row['business_local_id'] ?>,'<?= $row['short_name'] ?>')">
-                                <i class="icon-trash"></i>
                             </div>
                         </div>
                     </td>

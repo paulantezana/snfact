@@ -83,12 +83,13 @@ class BusinessLocalController extends Controller
         $res = new Result();
         try {
             //            Authorization($this->connection, 'usuario', 'modificar');
-            $body = $_POST['businessLocal'];
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
 
-//            $validate = $this->validateInput($body);
-//            if (!$validate->success) {
-//                throw new Exception($validate->message);
-//            }
+            $validate = $this->validateInput($body);
+            if (!$validate->success) {
+                throw new Exception($validate->message);
+            }
 
             $businessModel = new Business($this->connection);
             $body['businessId'] = $businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
@@ -107,13 +108,13 @@ class BusinessLocalController extends Controller
         $res = new Result();
         try {
             //            Authorization($this->connection, 'usuario', 'modificar');
-            $body = $_POST['businessLocal'];
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
 
-//            $validate = $this->validateInput($body);
-//            if (!$validate->success) {
-//                throw new Exception($validate->message);
-//            }
-
+            $validate = $this->validateInput($body);
+            if (!$validate->success) {
+                throw new Exception($validate->message);
+            }
             $this->businessLocalModel->Update($body, $_SESSION[SESS_KEY]);
 
             $res->success = true;
@@ -129,34 +130,116 @@ class BusinessLocalController extends Controller
         $res = new Result();
         $res->success = true;
 
-        if (($body['documentNumber']) == '') {
-            $res->message .= 'Falta ingresar el nombre | ';
+        if (($body['sunatCode']) == '') {
+            $res->message .= 'Falta ingresar el codigo | ';
             $res->success = false;
+        }
+        if (($body['shortName']) == '') {
+            $res->message .= 'Falta ingresar el nombre de sucursal | ';
+            $res->success = false;
+        }
+        if (($body['address']) == '') {
+            $res->message .= 'Falta ingresar el dirección | ';
+            $res->success = false;
+        }
+        if (empty($body['item'])) {
+            $res->message .= 'Falta ingresar el item | ';
+            $res->success = false;
+            return $res;
+        }
+
+        foreach ($body['item'] as $row) {
+            $mathcCount = 0;
+            foreach ($body['item'] as $item) {
+                if ($row['serie'] == $item['serie'] && $row['contingency'] == $item['contingency'] && $row['documentCode'] == $item['documentCode']) {
+                    $mathcCount++;
+                }
+            }
+            if ($mathcCount > 1) {
+                $res->message .= 'Numero de serie duplicado | ';
+                $res->success = false;
+                return $res;
+            }
+            if (strlen($row['serie']) != 4) {
+                $res->message .= 'Numero de serie incorecto | ';
+                $res->success = false;
+                return $res;
+            }
+
+            if ($row['documentCode'] == '01') {
+                if (!(substr($row['serie'], 0, 1) == 'F')) {
+                    $res->message .= 'Numero de serie incorecto | ';
+                    $res->success = false;
+                    return $res;
+                }
+            }
+            if ($row['documentCode'] == '03') {
+                if (!(substr($row['serie'], 0, 1) == 'B')) {
+                    $res->message .= 'Numero de serie incorecto | ';
+                    $res->success = false;
+                    return $res;
+                }
+            }
+            if ($row['documentCode'] == '07') {
+                if (!(substr($row['serie'], 0, 1) == 'F' || substr($row['serie'], 0, 1) == 'B')) {
+                    $res->message .= 'Numero de serie incorecto | ';
+                    $res->success = false;
+                    return $res;
+                }
+            }
+            if ($row['documentCode'] == '08') {
+                if (!(substr($row['serie'], 0, 1) == 'F' || substr($row['serie'], 0, 1) == 'B')) {
+                    $res->message .= 'Numero de serie incorecto | ';
+                    $res->success = false;
+                    return $res;
+                }
+            }
+            if ($row['documentCode'] == '09') {
+                if (!(substr($row['serie'], 0, 1) == 'T')) {
+                    $res->message .= 'Numero de serie incorecto | ';
+                    $res->success = false;
+                    return $res;
+                }
+            }
         }
 
         return $res;
     }
 
-    private function GetItemTemplate(){
+    private function GetItemTemplate()
+    {
         $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
 
         $documentTypeCodeTemplate = '';
-        foreach ($catDocumentTypeCode ?? [] as $row){
+        foreach ($catDocumentTypeCode ?? [] as $row) {
             $documentTypeCodeTemplate .= "<option value='{$row['code']}'>{$row['description']}</option>" . PHP_EOL;
         }
 
         return '<tr id="businessLocalItem${uniqueId}" data-uniqueId="${uniqueId}">
             <td>
-                <select class="SnForm-control" name="businessLocal[item][${uniqueId}][documentCode]" id="documentCode${uniqueId}" required>
-                    ' . $documentTypeCodeTemplate . '
-                </select>
-                <input type="hidden" name="businessLocal[item][${uniqueId}][businessSerieId]" id="businessSerieId${uniqueId}">
+                <div class="SnForm-item" style="margin: 0">
+                    <select class="SnForm-control" id="documentCode${uniqueId}" required>
+                        ' . $documentTypeCodeTemplate . '
+                    </select>
+                </div>
+                <input type="hidden" id="businessSerieId${uniqueId}">
             </td>
             <td>
-                <input type="text" class="SnForm-control" name="businessLocal[item][${uniqueId}][serie]" id="serie${uniqueId}" required>
+                <div class="SnForm-item" style="margin: 0">
+                    <div class="SnControl-wrapper">
+                        <i class="icon-barcode2 SnControl-prefix"></i>   
+                        <input type="text" pattern="/([0-9A-Z]){4}$/" data-pristine-pattern-message="La serie debe contener 4 digitos" class="SnForm-control SnControl" id="serie${uniqueId}" required>
+                    </div>
+                </div>
             </td>
             <td>
-                <div class="SnBtn error" title="Quitar item" onclick="BusinessLocalSerieRemoveItem(${uniqueId})">
+                <div class="SnSwitch" style="height: 18px">
+                    <input class="SnSwitch-input" type="checkbox" id="contingency${uniqueId}">
+                    <label class="SnSwitch-label" for="contingency${uniqueId}"></label>
+                </div>
+            </td>
+            <td>
+                <div class="SnBtn icon" title="Quitar item" onclick="BusinessLocalSerieRemoveItem(\'${uniqueId}\')">
                     <i class="icon-trash-alt"></i>
                 </div>
             </td>

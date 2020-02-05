@@ -3,6 +3,7 @@ let BusinessLocalState = {
     modalName : 'businessLocalModalForm',
     loading : false,
 };
+let pValidator;
 
 function BusinessLocalSetLoading(state){
     BusinessLocalState.loading = state;
@@ -47,6 +48,7 @@ function BusinessLocalList(page = 1, limit = 10, search = ''){
 
 function BusinessLocalClearForm(){
     let currentForm = document.getElementById('businessLocalForm');
+    pValidator.reset();
     if (currentForm){
         currentForm.reset();
     }
@@ -56,8 +58,12 @@ function BusinessLocalClearForm(){
     }
 }
 
-function BusinessLocalSubmit(event){
-    event.preventDefault();
+function BusinessLocalSubmit(e){
+    e.preventDefault();
+    if(!pValidator.validate()){
+        return;
+    }
+
     BusinessLocalSetLoading(true);
 
     let url = '';
@@ -68,10 +74,35 @@ function BusinessLocalSubmit(event){
         url = '/businessLocal/update';
     }
 
-    let businessLocalForm = document.getElementById('businessLocalForm');
+    let localSendData = {};
+    localSendData.id = document.getElementById('businessLocalId').value || 0;
+    localSendData.sunatCode = document.getElementById('businessLocalSunatCode').value || '';
+    localSendData.shortName = document.getElementById('businessLocalShortName').value || '';
+    localSendData.locationCode = document.getElementById('businessLocalLocationCode').value || '';
+    localSendData.address = document.getElementById('businessLocalAddress').value || '';
+    localSendData.description = document.getElementById('businessLocalDescription').value || '';
+    localSendData.pdfInvoiceSize = document.getElementById('businessLocalPdfInvoiceSize').value || '';
+    localSendData.pdfHeader = document.getElementById('businessLocalPdfHeader').value || '';
+    localSendData.state = document.getElementById('businessLocalState').checked || false;
+
+    let table = document.getElementById('businessLocalSeriesTableBody');
+    localSendData.item = [...table.children].map((row,index)=>{
+        let uniqueId = row.dataset.uniqueid;
+        let documentCode = document.getElementById(`documentCode${uniqueId}`);
+        let businessSerieId = document.getElementById(`businessSerieId${uniqueId}`);
+        let serie = document.getElementById(`serie${uniqueId}`);
+        let contingency = document.getElementById(`contingency${uniqueId}`);
+        return { 
+            documentCode: documentCode.value || 0,
+            businessSerieId: businessSerieId.value || 0,
+            serie: serie.value || '',
+            contingency: contingency.checked || 0
+        };
+    });
+
     RequestApi.fetch(url,{
         method: 'POST',
-        body: new FormData(businessLocalForm),
+        body: localSendData,
     }).then(res => {
         if (res.success){
             SnModal.close(BusinessLocalState.modalName);
@@ -118,13 +149,15 @@ function BusinessLocalShowModalCreate(){
     BusinessLocalClearForm();
     SnModal.open(BusinessLocalState.modalName);
 
-    BusinessLocalSerieAddItem(0,'01','F001');
-    BusinessLocalSerieAddItem(0,'07','FF01');
-    BusinessLocalSerieAddItem(0,'08','FB01');
-    BusinessLocalSerieAddItem(0,'03','B001');
-    BusinessLocalSerieAddItem(0,'07','BF01');
-    BusinessLocalSerieAddItem(0,'08','BB01');
-    BusinessLocalSerieAddItem(0,'09','T001');
+    BusinessLocalSerieAddItem(0,'01','FPP1',0);
+    BusinessLocalSerieAddItem(0,'07','FPP1',0);
+    BusinessLocalSerieAddItem(0,'08','FPP1',0);
+    BusinessLocalSerieAddItem(0,'03','BPP1',0);
+    BusinessLocalSerieAddItem(0,'07','BPP1',0);
+    BusinessLocalSerieAddItem(0,'08','BPP1',0);
+    BusinessLocalSerieAddItem(0,'09','T001',0);
+
+    BusinessLocalSetValidator();
 }
 
 function BusinessLocalShowModalUpdate(businessLocalId){
@@ -146,11 +179,13 @@ function BusinessLocalShowModalUpdate(businessLocalId){
             document.getElementById('businessLocalDescription').value = res.result.description;
             document.getElementById('businessLocalPdfInvoiceSize').value = res.result.pdf_invoice_size;
             document.getElementById('businessLocalPdfHeader').value = res.result.pdf_header;
+            document.getElementById('businessLocalState').checked = res.result.state == 1;
             document.getElementById('businessLocalId').value = res.result.business_local_id;
 
             [...res.result.item].forEach(item => {
-                BusinessLocalSerieAddItem(item.business_serie_id, item.document_code, item.serie);
+                BusinessLocalSerieAddItem(item.business_serie_id, item.document_code, item.serie, item.contingency);
             });
+            BusinessLocalSetValidator();
 
             SnModal.open(BusinessLocalState.modalName);
         }else {
@@ -161,7 +196,7 @@ function BusinessLocalShowModalUpdate(businessLocalId){
     })
 }
 
-function BusinessLocalSerieAddItem(businessSerieId, documentCode, serie){
+function BusinessLocalSerieAddItem(businessSerieId, documentCode, serie, contingency = 0){
     let uniqueId = generateUniqueId();
     let businessLocalAddItem = document.getElementById('businessLocalAddItem');
     let tableBody = document.getElementById('businessLocalSeriesTableBody');
@@ -173,9 +208,11 @@ function BusinessLocalSerieAddItem(businessSerieId, documentCode, serie){
         let businessSerieIdItem = document.getElementById(`businessSerieId${uniqueId}`);
         let documentCodeItem = document.getElementById(`documentCode${uniqueId}`);
         let serieItem = document.getElementById(`serie${uniqueId}`);
+        let contingencyItem = document.getElementById(`contingency${uniqueId}`);
         businessSerieIdItem.value = businessSerieId;
         documentCodeItem.value = documentCode;
         serieItem.value = serie;
+        contingencyItem.checked = contingency == 1;
     }
 }
 
@@ -186,7 +223,16 @@ function BusinessLocalSerieRemoveItem(uniqueId){
     }
 }
 
+function BusinessLocalSetValidator(){
+    if(pValidator){
+        pValidator.destroy();
+    }
+    pValidator = new Pristine(document.getElementById('businessLocalForm'));
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
+    BusinessLocalSetValidator();
+
     document.getElementById('searchContent').addEventListener('input',e=>{
         BusinessLocalList(1,10,e.target.value);
     });

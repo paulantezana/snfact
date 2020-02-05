@@ -2,7 +2,7 @@
     <div class="SnContent">
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class=" icon-equalizer SnMr-2"></i> <strong>CATEGORIAS</strong>
+                <i class="icon-equalizer SnMr-2"></i> <strong>CATEGORIAS</strong>
             </div>
             <div class="SnToolbar-right">
                 <div class="SnBtn jsCategoryAction" onclick="CategoryToPrint()">

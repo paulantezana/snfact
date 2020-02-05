@@ -2,21 +2,22 @@
     <div class="SnContent">
         <div class="SnToolbar">
             <div class="SnToolbar-left">
-                <i class="icon-dots SnMr-2"></i> Sucursales
+                <i class="icon-equalizer SnMr-2"></i> LOCALES
             </div>
             <div class="SnToolbar-right">
-                <div class="SnBtn jsBusinessLocalAction SnMr-2" onclick="BusinessLocalList()">
-                    <i class="icon-reload-alt SnMr-2"></i> Actualizar
+                <div class="SnBtn jsBusinessLocalAction" onclick="BusinessLocalList()">
+                    <i class="icon-reload-alt"></i>
                 </div>
                 <div class="SnBtn primary jsBusinessLocalAction" onclick="BusinessLocalShowModalCreate()">
                     <i class="icon-plus2 SnMr-2"></i> Nuevo
                 </div>
             </div>
         </div>
+        
         <div class="SnCard">
             <div class="SnCard-body">
                 <div class="SnControl-wrapper SnMb-5">
-                    <input type="text" class="SnForm-control" id="searchContent">
+                    <input type="text" class="SnForm-control" id="searchContent" placeholder="Buscar...">
                     <i class="SnControl-suffix icon-search4"></i>
                 </div>
                 <div id="businessLocalTable"></div>
@@ -33,47 +34,47 @@
             </div>
             <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Sucursal</div>
             <div class="SnModal-body">
-                <form action="" class="SnForm" id="businessLocalForm" onsubmit="BusinessLocalSubmit(event)">
-                    <input type="hidden" class="SnForm-control" id="businessLocalId" name="businessLocal[id]">
+                <form action="" class="SnForm" novalidate id="businessLocalForm" onsubmit="BusinessLocalSubmit(event)">
+                    <input type="hidden" class="SnForm-control" id="businessLocalId">
                     <div class="SnGrid m-grid-2 l-grid-3">
                         <div class="SnForm-item required">
                             <label for="businessLocalSunatCode" class="SnForm-label">Código SUNAT</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-barcode2 SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalSunatCode" placeholder="Código SUNAT" name="businessLocal[sunatCode]">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalSunatCode" placeholder="Código SUNAT" required>
                             </div>
                         </div>
                         <div class="SnForm-item required">
                             <label for="businessLocalShortName" class="SnForm-label">Nombre de Sucursal</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-vcard SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalShortName" placeholder="Nombre de Sucursal" name="businessLocal[shortName]">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalShortName" placeholder="Nombre de Sucursal" required>
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalLocationCode" class="SnForm-label">Ubigeo</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-sphere SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalLocationCode" placeholder="Ubigeo" name="businessLocal[locationCode]">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalLocationCode" placeholder="Ubigeo">
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalAddress" class="SnForm-label">Dirección</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-home2 SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalAddress" placeholder="Dirección" name="businessLocal[address]">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalAddress" placeholder="Dirección">
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalDescription" class="SnForm-label">Información Adicional</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-file-text2 SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalDescription" placeholder="Información Adicional" name="businessLocal[description]">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalDescription" placeholder="Información Adicional">
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalPdfInvoiceSize" class="SnForm-label">PDF formato</label>
-                            <select id="businessLocalPdfInvoiceSize" class="SnForm-control" name="businessLocal[pdfInvoiceSize]">
+                            <select id="businessLocalPdfInvoiceSize" class="SnForm-control">
                                 <option value="A4">A4</option>
                                 <option value="A5">A5</option>
                                 <option value="TICKET">TICKET</option>
@@ -83,12 +84,12 @@
                             <label for="businessLocalPdfHeader" class="SnForm-label">PDF header</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-file-pdf SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalPdfHeader" placeholder="PDF header" name="businessLocal[pdfHeader]">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalPdfHeader" placeholder="PDF header">
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <div class="SnSwitch">
-                                <input class="SnSwitch-input" type="checkbox" id="businessLocalState" name="businessLocal[state]">
+                                <input class="SnSwitch-input" type="checkbox" id="businessLocalState">
                                 <label class="SnSwitch-label" for="businessLocalState">Estado</label>
                             </div>
                         </div>
@@ -98,13 +99,14 @@
                             <thead>
                                 <tr>
                                     <th>Documento</th>
-                                    <th>Serie</th>
-                                    <th style="width: 70px"></th>
+                                    <th style="width: 150px">Serie</th>
+                                    <th style="width: 100px">Contingencia</th>
+                                    <th style="width: 50px"></th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3">
+                                    <td colspan="4">
                                         <div class="SnBtn block" data-itemtemplate="<?php echo htmlspecialchars(($itemTemplate ?? ''),ENT_QUOTES) ?>" onclick="BusinessLocalSerieAddItem(0,'','')" id="businessLocalAddItem">Agregar serie</div>
                                     </td>
                                 </tr>

@@ -30,11 +30,25 @@ class PeruManager
     }
 
     static public function queryRUC($ruc){
-//        $buscaRUC = new BuscaRUC();
-//        $result = $buscaRUC->Query($ruc);
-//        if ($result->success){
-//            return $result;
-//        }
+        $res = new Result();
+
+        $buscaRUC = new BuscaRUC();
+        $response = $buscaRUC->Query($ruc);
+        if ($response->success){
+            $res->success = true;
+            $res->result = [
+                'socialReason' => $response->result['socialReason'],
+                'documentNumber' => $response->result['ruc'],
+                'identityDocumentCode' => '6',
+                'commercialReason' => '',
+                'fiscalAddress' => $response->result['fiscalAddress'],
+                'email' => '',
+                'telephone' => '',
+                'state' => '',
+                'condition' => '',
+            ];
+            return $res;
+        }
 
         $sunatRUC = new SunatRUC();
         $response = $sunatRUC->Query($ruc);
@@ -42,18 +56,17 @@ class PeruManager
             return $response;
         }
 
-        $res = new Result();
         $res->success = true;
         $res->result = [
             'socialReason' => $response->result['socialReason'],
-            'documentNumber' => $response->result['documentNumber'],
+            'documentNumber' => $response->result['ruc'],
             'identityDocumentCode' => '6',
             'commercialReason' => '',
-            'fiscalAddress' => $response->result['address'],
+            'fiscalAddress' => $response->result['fiscalAddress'],
             'email' => '',
             'telephone' => '',
-            'state' => $response->result['state'],
-            'condition' => $response->result['condition'],
+            'state' => '',
+            'condition' => '',
         ];
         return $res;
     }

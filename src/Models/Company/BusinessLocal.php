@@ -74,10 +74,10 @@ class BusinessLocal extends Model
 
             $sql = "INSERT INTO business_local (updated_at, created_at, created_user_id, updated_user_id, short_name, 
                                                 sunat_code, location_code, address, 
-                                                pdf_invoice_size, pdf_header, description, business_id)
+                                                pdf_invoice_size, pdf_header, description, state, business_id)
                     VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :short_name,
                             :sunat_code, :location_code, :address, :pdf_invoice_size,
-                            :pdf_header, :description, :business_id)";
+                            :pdf_header, :description, :state, :business_id)";
             $stmt = $this->db->prepare($sql);
 
             if(!$stmt->execute([
@@ -93,6 +93,7 @@ class BusinessLocal extends Model
                 ':pdf_invoice_size' => $businessLocal['pdfInvoiceSize'],
                 ':pdf_header' => $businessLocal['pdfHeader'],
                 ':description' => $businessLocal['description'],
+                ':state' => $businessLocal['state'],
                 ':business_id' => $businessLocal['businessId'],
             ])){
                 throw new Exception("Error al insertar el registro");
@@ -137,6 +138,7 @@ class BusinessLocal extends Model
                 'pdf_invoice_size' => $businessLocal['pdfInvoiceSize'],
                 'pdf_header' => $businessLocal['pdfHeader'],
                 'description' => $businessLocal['description'],
+                'state' => $businessLocal['state'],
             ]);
 
             foreach ($businessLocal['item'] as $row){
@@ -149,7 +151,7 @@ class BusinessLocal extends Model
                         ':updated_at' => $currentDate,
                         ':serie' => $row['serie'],
                         ':document_code' => $row['documentCode'],
-                        ':contingency' => 0,
+                        ':contingency' => $row['contingency'],
                         ':business_serie_id' => $row['businessSerieId'],
                     ])){
                         throw new Exception("Error al actualizar el registro");
@@ -165,7 +167,7 @@ class BusinessLocal extends Model
                         ':serie' => $row['serie'],
                         ':document_code' => $row['documentCode'],
                         ':max_correlative' => 0,
-                        ':contingency' => 0,
+                        ':contingency' => $row['contingency'],
                     ])){
                         throw new Exception("Error al insertar el registro");
                     }

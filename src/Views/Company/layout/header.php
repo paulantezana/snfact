@@ -46,7 +46,7 @@
                                 </div>
                                 <ul>
                                     <li class="User-item">
-                                        <a href="<?= URL_PATH ?>/auth/profile" class="SnAvatar">
+                                        <a href="<?= URL_PATH ?>/user/profile" class="SnAvatar">
                                             <img src="<?= URL_PATH ?>/assets/images/icon/Icon-144.png" alt="avatar">
                                         </a>
                                         <div class="">

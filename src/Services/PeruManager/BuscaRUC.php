@@ -36,7 +36,7 @@ class BuscaRUC
                 $res->message = "No se encontraron datos suficientes";
                 return $res;
             }
-            $data = json_decode($response);
+            $data = json_decode($response,true);
 
             $res->success = true;
             $res->result = $data;

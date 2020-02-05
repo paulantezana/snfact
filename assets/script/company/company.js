@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         if (res.success){
             let businessEnvironmentInfo = document.getElementById('businessEnvironmentInfo');
             if (businessEnvironmentInfo && res.result.business !== undefined){
-                if (res.result.business.environment){
+                if (res.result.business.environment == 1){
                     businessEnvironmentInfo.innerHTML = '<i class="icon-check SnMr-2"></i> Produción';
                     businessEnvironmentInfo.classList.add('production');
                 }else {

@@ -51,6 +51,13 @@ class Router
             $this->controller = (!empty($url[1]) ? $url[1] : $_SESSION[CONTROLLER_GROUP]) . 'Controller';
             $this->method = !empty($url[2]) ? $url[2] : 'index';
         }
+
+        // if(!is_file(CONTROLLER_PATH . "/{$_SESSION[CONTROLLER_GROUP]}/{$this->controller}.php"))
+		// {
+        //     $_SESSION[CONTROLLER_GROUP] = 'Public';
+        //     $this->controller = 'PageController';
+        //     $this->method = 'error404';
+		// }
     }
 
     public function run()

@@ -5,6 +5,7 @@ require_once MODEL_PATH . '/Company/AppAuthorization.php';
 require_once MODEL_PATH . '/Company/Business.php';
 require_once MODEL_PATH . '/Company/BusinessLocal.php';
 require_once ROOT_DIR . '/src/Helpers/TimeAuthenticator.php';
+require_once ROOT_DIR . '/src/Services/PeruManager/PeruManager.php';
 
 class PublicCompanyController extends Controller
 {
@@ -164,6 +165,12 @@ class PublicCompanyController extends Controller
                         throw new Exception('Este ruc ya esta registrado en el sistema');
                     }
 
+                    $queryPeru = PeruManager::queryDocument($register['ruc']);
+                    if(!$queryPeru->success){
+                        throw new Exception($queryPeru->message);
+                    }
+                    $dataPeru = $queryPeru->result;
+
                     $userId = $this->userModel->Insert([
                         "password" => $register['password'],
                         "email" => $register['email'],
@@ -176,52 +183,83 @@ class PublicCompanyController extends Controller
                     $businessId = $this->businessModel->Insert([
                         'continue_payment' => false,
                         'ruc' => $register['ruc'],
-                        'social_reason' => '',
+                        'social_reason' => $dataPeru['socialReason'],
                         'commercial_reason' => '',
                         'email' => $register['email'],
-                        'phone' => '',
+                        'phone' => $dataPeru['telephone'],
                         'web_site' => '',
                     ], $userId);
 
-                    $businessLocalId = $this->businessLocalModel->Insert([
+                    $this->businessLocalModel->Insert([
                         'shortName' => 'Local principal',
                         'sunatCode' => '',
                         'locationCode' => '',
-                        'address' => '',
+                        'address' => $dataPeru['fiscalAddress'],
                         'pdfInvoiceSize' => 'A4',
                         'pdfHeader' => 'Email: ' . $register['email'],
                         'description' => '',
                         'businessId' => $businessId,
+                        'state' => 1,
                         'item' => [
                             [
-                                'serie' => 'F001',
+                                'serie' => 'FPP1',
                                 'documentCode' => '01',
                                 'contingency' => 0,
                             ],
                             [
-                                'serie' => 'FP01',
+                                'serie' => 'FPP1',
                                 'documentCode' => '07',
                                 'contingency' => 0,
                             ],
                             [
-                                'serie' => 'FB01',
+                                'serie' => 'FPP1',
                                 'documentCode' => '08',
                                 'contingency' => 0,
                             ],
                             [
-                                'serie' => 'B001',
+                                'serie' => 'BPP1',
                                 'documentCode' => '03',
                                 'contingency' => 0,
                             ],
                             [
-                                'serie' => 'BP01',
+                                'serie' => 'BPP1',
                                 'documentCode' => '07',
                                 'contingency' => 0,
                             ],
                             [
-                                'serie' => 'BP01',
+                                'serie' => 'BPP1',
                                 'documentCode' => '08',
                                 'contingency' => 0,
+                            ],
+                            [
+                                'serie' => 'FPP1',
+                                'documentCode' => '01',
+                                'contingency' => 1,
+                            ],
+                            [
+                                'serie' => 'FPP1',
+                                'documentCode' => '07',
+                                'contingency' => 1,
+                            ],
+                            [
+                                'serie' => 'FPP1',
+                                'documentCode' => '08',
+                                'contingency' => 1,
+                            ],
+                            [
+                                'serie' => 'BPP1',
+                                'documentCode' => '03',
+                                'contingency' => 1,
+                            ],
+                            [
+                                'serie' => 'BPP1',
+                                'documentCode' => '07',
+                                'contingency' => 1,
+                            ],
+                            [
+                                'serie' => 'BPP1',
+                                'documentCode' => '08',
+                                'contingency' => 1,
                             ],
                             [
                                 'serie' => 'T001',
