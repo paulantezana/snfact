@@ -2,14 +2,14 @@
 
 class Controller
 {
-    protected function render($path, $params = []){
+    public function render($path, $params = []){
         extract($params);
         require_once VIEW_PATH . '/' . $path;
     }
-    protected function redirect($url = ""){
+    public function redirect($url = ""){
         header('Location: ' . URL_PATH . $url);
     }
-    protected function getParsedBody($assoc = true){
+    public function getParsedBody($assoc = true){
         return json_decode(file_get_contents('php://input'), $assoc);
     }
 }

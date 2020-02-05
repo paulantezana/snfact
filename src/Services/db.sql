@@ -1035,7 +1035,17 @@ INSERT INTO app_authorization(module, action, description, state) VALUES
 ('rol','eliminar','Eliminar un rol',true),
 ('rol','modificar','Acualizar los roles',true),
 
-('escritorio','general','vista general',true);
+('escritorio','general','vista general',true),
+
+('empresa','modificar','Acualizar los empresa',true),
+('local','listar','listar locales',true),
+('local','crear','crear nuevos locales',true),
+('local','modificar','Acualizar los locales',true),
+
+('api','listar','Listar apis',true),
+('api','crear','Crear nuevo api',true),
+('api','eliminar','Eliminar un api',true),
+('api','modificar','Acualizar un api',true);
 
 INSERT INTO user_role_authorization(user_role_id, app_authorization_id) VALUES
 (1,1),

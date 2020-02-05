@@ -157,7 +157,7 @@ function BusinessLocalShowModalCreate(){
     BusinessLocalSerieAddItem(0,'08','BPP1',0);
     BusinessLocalSerieAddItem(0,'09','T001',0);
 
-    BusinessLocalSetValidator();
+    document.getElementById('businessLocalState').checked = true;
 }
 
 function BusinessLocalShowModalUpdate(businessLocalId){
@@ -185,7 +185,6 @@ function BusinessLocalShowModalUpdate(businessLocalId){
             [...res.result.item].forEach(item => {
                 BusinessLocalSerieAddItem(item.business_serie_id, item.document_code, item.serie, item.contingency);
             });
-            BusinessLocalSetValidator();
 
             SnModal.open(BusinessLocalState.modalName);
         }else {
@@ -214,12 +213,14 @@ function BusinessLocalSerieAddItem(businessSerieId, documentCode, serie, conting
         serieItem.value = serie;
         contingencyItem.checked = contingency == 1;
     }
+    BusinessLocalSetValidator();
 }
 
 function BusinessLocalSerieRemoveItem(uniqueId){
     let elem = document.getElementById(`businessLocalItem${uniqueId}`);
     if (elem){
         elem.parentNode.removeChild(elem);
+        BusinessLocalSetValidator();
     }
 }
 

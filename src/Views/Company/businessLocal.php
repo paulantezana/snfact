@@ -41,40 +41,40 @@
                             <label for="businessLocalSunatCode" class="SnForm-label">Código SUNAT</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-barcode2 SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalSunatCode" placeholder="Código SUNAT" required>
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalSunatCode" minlength="1" maxlength="5" required>
                             </div>
                         </div>
                         <div class="SnForm-item required">
                             <label for="businessLocalShortName" class="SnForm-label">Nombre de Sucursal</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-vcard SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalShortName" placeholder="Nombre de Sucursal" required>
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalShortName" minlength="3" required>
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalLocationCode" class="SnForm-label">Ubigeo</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-sphere SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalLocationCode" placeholder="Ubigeo">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalLocationCode" >
                             </div>
                         </div>
-                        <div class="SnForm-item">
+                        <div class="SnForm-item required">
                             <label for="businessLocalAddress" class="SnForm-label">Dirección</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-home2 SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalAddress" placeholder="Dirección">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalAddress" minlength="3" required>
                             </div>
                         </div>
                         <div class="SnForm-item">
                             <label for="businessLocalDescription" class="SnForm-label">Información Adicional</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-file-text2 SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalDescription" placeholder="Información Adicional">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalDescription">
                             </div>
                         </div>
-                        <div class="SnForm-item">
+                        <div class="SnForm-item required">
                             <label for="businessLocalPdfInvoiceSize" class="SnForm-label">PDF formato</label>
-                            <select id="businessLocalPdfInvoiceSize" class="SnForm-control">
+                            <select id="businessLocalPdfInvoiceSize" class="SnForm-control" required>
                                 <option value="A4">A4</option>
                                 <option value="A5">A5</option>
                                 <option value="TICKET">TICKET</option>
@@ -84,7 +84,7 @@
                             <label for="businessLocalPdfHeader" class="SnForm-label">PDF header</label>
                             <div class="SnControl-wrapper">
                                 <i class="icon-file-pdf SnControl-prefix"></i>
-                                <input class="SnForm-control SnControl" type="text" id="businessLocalPdfHeader" placeholder="PDF header">
+                                <input class="SnForm-control SnControl" type="text" id="businessLocalPdfHeader">
                             </div>
                         </div>
                         <div class="SnForm-item">
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="SnTable-wrapper SnMb-4">
-                        <table class="SnTable">
+                        <table class="SnTable" style="min-width: 500px">
                             <thead>
                                 <tr>
                                     <th>Documento</th>

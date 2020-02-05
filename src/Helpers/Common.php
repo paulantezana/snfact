@@ -58,7 +58,11 @@ function Authorization(PDO $connection, string $module, string $action, string $
             echo json_encode($res);
             die();
         } else {
-            header('Location: ' . URL_PATH . '/403?message' . $errorMessage);
+            $controller = new Controller();
+            $controller->render('Public/403.php',[
+                'message' => $errorMessage
+            ]);
+            die();
         }
     }
     $res->success = true;

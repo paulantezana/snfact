@@ -11,7 +11,6 @@ class BusinessLocalController extends Controller
     private $businessModel;
     private $businessLocalModel;
     private $catDocumentTypeCodeModel;
-    private $businessSerieModel;
 
     public function __construct($connection)
     {
@@ -19,14 +18,12 @@ class BusinessLocalController extends Controller
         $this->businessModel = new Business($this->connection);
         $this->businessLocalModel = new BusinessLocal($this->connection);
         $this->catDocumentTypeCodeModel = new CatDocumentTypeCode($this->connection);
-        $this->businessSerieModel = new BusinessSerie($this->connection);
     }
 
     public function index()
     {
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
-
+            Authorization($this->connection, 'local', 'listar');
             $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
             $itemTemplate = $this->GetItemTemplate();
 
@@ -44,7 +41,7 @@ class BusinessLocalController extends Controller
     public function table()
     {
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'local', 'listar');
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -66,7 +63,7 @@ class BusinessLocalController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'local', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -82,7 +79,7 @@ class BusinessLocalController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'local', 'crear');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -107,7 +104,7 @@ class BusinessLocalController extends Controller
     {
         $res = new Result();
         try {
-            //            Authorization($this->connection, 'usuario', 'modificar');
+            Authorization($this->connection, 'local', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
