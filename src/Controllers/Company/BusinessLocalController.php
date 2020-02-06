@@ -85,6 +85,7 @@ class BusinessLocalController extends Controller
 
             $validate = $this->validateInput($body);
             if (!$validate->success) {
+                $res->error = $validate->error;
                 throw new Exception($validate->message);
             }
 
@@ -110,6 +111,7 @@ class BusinessLocalController extends Controller
 
             $validate = $this->validateInput($body);
             if (!$validate->success) {
+                $res->error = $validate->error;
                 throw new Exception($validate->message);
             }
             $this->businessLocalModel->Update($body, $_SESSION[SESS_KEY]);
@@ -124,83 +126,60 @@ class BusinessLocalController extends Controller
 
     public function validateInput($body)
     {
-        $res = new Result();
-        $res->success = true;
+        $res = new ErrorCollector();
 
         if (($body['sunatCode']) == '') {
-            $res->message .= 'Falta ingresar el codigo | ';
-            $res->success = false;
+            $res->addError('sunatCode','Falta ingresar el codigo');
         }
         if (($body['shortName']) == '') {
-            $res->message .= 'Falta ingresar el nombre de sucursal | ';
-            $res->success = false;
+            $res->addError('shortName','Falta ingresar el nombre de sucursal');
         }
         if (($body['address']) == '') {
-            $res->message .= 'Falta ingresar el dirección | ';
-            $res->success = false;
+            $res->addError('shortName','Falta ingresar el dirección');
         }
         if (empty($body['item'])) {
-            $res->message .= 'Falta ingresar el item | ';
-            $res->success = false;
-            return $res;
+            $res->addError('item','Falta ingresar el item');
+            return $res->getResult();
         }
 
-        foreach ($body['item'] as $row) {
-            $mathcCount = 0;
-            foreach ($body['item'] as $item) {
-                if ($row['serie'] == $item['serie'] && $row['contingency'] == $item['contingency'] && $row['documentCode'] == $item['documentCode']) {
-                    $mathcCount++;
-                }
-            }
-            if ($mathcCount > 1) {
-                $res->message .= 'Numero de serie duplicado | ';
-                $res->success = false;
-                return $res;
-            }
+        foreach ($body['item'] as $key => $row) {
             if (strlen($row['serie']) != 4) {
-                $res->message .= 'Numero de serie incorecto | ';
-                $res->success = false;
-                return $res;
+                $res->addErrorRowChildren('item', $key, 'serie', 'La serie debe contener 4 digitos');
             }
-
-            if ($row['documentCode'] == '01') {
+            if ($row['documentCode'] == '01' && $row['contingency'] == false) {
                 if (!(substr($row['serie'], 0, 1) == 'F')) {
-                    $res->message .= 'Numero de serie incorecto | ';
-                    $res->success = false;
-                    return $res;
+                    $res->addErrorRowChildren('item', $key, 'serie', 'Numero de serie incorecto');
                 }
             }
-            if ($row['documentCode'] == '03') {
+            if ($row['documentCode'] == '03' && $row['contingency'] == false) {
                 if (!(substr($row['serie'], 0, 1) == 'B')) {
-                    $res->message .= 'Numero de serie incorecto | ';
-                    $res->success = false;
-                    return $res;
+                    $res->addErrorRowChildren('item', $key, 'serie', 'Numero de serie incorecto');
                 }
             }
-            if ($row['documentCode'] == '07') {
+            if ($row['documentCode'] == '07' && $row['contingency'] == false) {
                 if (!(substr($row['serie'], 0, 1) == 'F' || substr($row['serie'], 0, 1) == 'B')) {
-                    $res->message .= 'Numero de serie incorecto | ';
-                    $res->success = false;
-                    return $res;
+                    $res->addErrorRowChildren('item', $key, 'serie', 'Numero de serie incorecto');
                 }
             }
-            if ($row['documentCode'] == '08') {
+            if ($row['documentCode'] == '08' && $row['contingency'] == false) {
                 if (!(substr($row['serie'], 0, 1) == 'F' || substr($row['serie'], 0, 1) == 'B')) {
-                    $res->message .= 'Numero de serie incorecto | ';
-                    $res->success = false;
-                    return $res;
+                    $res->addErrorRowChildren('item', $key, 'serie', 'Numero de serie incorecto');
+                }
+            }
+            if($row['contingency']){
+                $match = preg_match('/[0-9]{4}/',$row['serie']);
+                if(!$match){
+                    $res->addErrorRowChildren('item', $key, 'serie', 'Numero de serie incorecto');
                 }
             }
             if ($row['documentCode'] == '09') {
                 if (!(substr($row['serie'], 0, 1) == 'T')) {
-                    $res->message .= 'Numero de serie incorecto | ';
-                    $res->success = false;
-                    return $res;
+                    $res->addErrorRowChildren('item', $key, 'serie', 'Numero de serie incorecto');
                 }
             }
         }
 
-        return $res;
+        return $res->getResult();
     }
 
     private function GetItemTemplate()

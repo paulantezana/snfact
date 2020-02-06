@@ -72,9 +72,13 @@ class PeruManager
     }
 
     static public function queryDocument($documentNumber){
-        $data = PeruManager::queryRUC($documentNumber);
-        if (!$data->success){
+        if(strlen($documentNumber) == 11){
+            $data = PeruManager::queryRUC($documentNumber);
+        } else if (strlen($documentNumber) == 8){
             $data = PeruManager::queryDNI($documentNumber);
+        } else {
+            $data = new Result();
+            $data->message = 'Documento no encontrado';
         }
         return $data;
     }

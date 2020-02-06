@@ -232,32 +232,32 @@ class PublicCompanyController extends Controller
                                 'contingency' => 0,
                             ],
                             [
-                                'serie' => 'FPP1',
+                                'serie' => '0001',
                                 'documentCode' => '01',
                                 'contingency' => 1,
                             ],
                             [
-                                'serie' => 'FPP1',
+                                'serie' => '0001',
                                 'documentCode' => '07',
                                 'contingency' => 1,
                             ],
                             [
-                                'serie' => 'FPP1',
+                                'serie' => '0001',
                                 'documentCode' => '08',
                                 'contingency' => 1,
                             ],
                             [
-                                'serie' => 'BPP1',
+                                'serie' => '0001',
                                 'documentCode' => '03',
                                 'contingency' => 1,
                             ],
                             [
-                                'serie' => 'BPP1',
+                                'serie' => '0001',
                                 'documentCode' => '07',
                                 'contingency' => 1,
                             ],
                             [
-                                'serie' => 'BPP1',
+                                'serie' => '0001',
                                 'documentCode' => '08',
                                 'contingency' => 1,
                             ],
