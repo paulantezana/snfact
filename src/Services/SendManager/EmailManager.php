@@ -4,9 +4,9 @@ require_once __DIR__ . '/HtmlTemplate.php';
 
 class EmailManager
 {
-    public static function Send($to, $subject, $senderEmail, $senderName, $document, $files = array())
+    public static function SendInvoice($to, $subject, $senderEmail, $senderName, $document, $files = array())
     {
-        $invoiceTemplate = HtmlTemplate::Template();
+        $invoiceTemplate = HtmlTemplate::Invoice();
         foreach($document as $key => $value)
         {
             $invoiceTemplate = str_replace('{{'.$key.'}}', $value, $invoiceTemplate);
@@ -52,6 +52,69 @@ class EmailManager
                 }
             }
         }
+
+        // $body .= "--{$separator}--";
+        // $returnpath = "-f" . $senderEmail;
+
+        $response = mail($to, $subject, $body, $headers);
+        return $response;
+    }
+    public static function SendRegister($to, $subject, $senderEmail, $senderName, $document)
+    {
+        $registerTmp = HtmlTemplate::Register();
+        foreach($document as $key => $value)
+        {
+            $registerTmp = str_replace('{{'.$key.'}}', $value, $registerTmp);
+        }
+
+        // a random hash will be necessary to send mixed content
+        $separator = md5(time());
+        $separator = "==Multipart_Boundary_x{$separator}x";
+
+        $eol = "\r\n"; // carriage return type (RFC)
+
+        // main header (multipart mandatory)
+        $headers = "From: {$senderName} <{$senderEmail}>" . $eol;
+        $headers .= "MIME-Version: 1.0" . $eol;
+        $headers .= "Content-Type: multipart/mixed; boundary=\"{$separator}\"" . $eol;
+        $headers .= "Content-Transfer-Encoding: 7bit" . $eol;
+
+        // message
+        $body = "--{$separator}" . $eol;
+        $body .= "Content-Type: text/html; charset=\"UTF-8\"" . $eol;
+        $body .= "Content-Transfer-Encoding: 7bit" . $eol;
+        $body .= $registerTmp . $eol;
+        // $body .= "--{$separator}--";
+        // $returnpath = "-f" . $senderEmail;
+
+        $response = mail($to, $subject, $body, $headers);
+        return $response;
+    }
+    public static function SendForgot($to, $subject, $senderEmail, $senderName, $document)
+    {
+        $invoiceTemplate = HtmlTemplate::Invoice();
+        foreach($document as $key => $value)
+        {
+            $invoiceTemplate = str_replace('{{'.$key.'}}', $value, $invoiceTemplate);
+        }
+
+        // a random hash will be necessary to send mixed content
+        $separator = md5(time());
+        $separator = "==Multipart_Boundary_x{$separator}x";
+
+        $eol = "\r\n"; // carriage return type (RFC)
+
+        // main header (multipart mandatory)
+        $headers = "From: {$senderName} <{$senderEmail}>" . $eol;
+        $headers .= "MIME-Version: 1.0" . $eol;
+        $headers .= "Content-Type: multipart/mixed; boundary=\"{$separator}\"" . $eol;
+        $headers .= "Content-Transfer-Encoding: 7bit" . $eol;
+
+        // message
+        $body = "--{$separator}" . $eol;
+        $body .= "Content-Type: text/html; charset=\"UTF-8\"" . $eol;
+        $body .= "Content-Transfer-Encoding: 7bit" . $eol;
+        $body .= $invoiceTemplate . $eol;
 
         // $body .= "--{$separator}--";
         // $returnpath = "-f" . $senderEmail;

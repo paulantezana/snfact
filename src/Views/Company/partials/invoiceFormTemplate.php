@@ -165,14 +165,14 @@
                                 <th>Cantidad</th>
                                 <th>Subtotal</th>
                                 <th>Total</th>
-                                <th style="width: 120px"></th>
+                                <th style="width: 95px"></th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <td colspan="7">
-                                    <div class="SnBtn primary block"
-                                         onclick="Invoice.addItem()"
+                                    <div class="SnBtn block"
+                                         onclick="addItem()"
                                          id="addInvoiceItem"
                                          data-itemtemplate="<?php echo htmlspecialchars(($invoiceItemTemplate ?? ''),ENT_QUOTES) ?>">
                                         <i class="icon-plus2"></i> Agregar item

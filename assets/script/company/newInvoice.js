@@ -467,10 +467,11 @@ function addItem(){
     if (addInvoiceItem){
         let itemTemplate = addInvoiceItem.dataset.itemtemplate;
         itemTemplate = eval('`' + itemTemplate + '`');
-        if (this.invoiceItemTableBody){
-            this.invoiceItemTableBody.insertAdjacentHTML('beforeend',itemTemplate);
-            this.openItemModal(`${uniqueId}`);
-            this.executeItem(uniqueId);
+        let invoiceItemTableBody = document.getElementById('invoiceItemTableBody');
+        if (invoiceItemTableBody){
+            invoiceItemTableBody.insertAdjacentHTML('beforeend',itemTemplate);
+            openItemModal(`${uniqueId}`);
+            executeItem(uniqueId);
         }
     }
 }

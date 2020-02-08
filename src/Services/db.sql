@@ -139,6 +139,11 @@ CREATE TABLE cat_subject_detraction_code(
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 
+-- ------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------
+-- APLICATION SYSTEM
+-- ------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------
 CREATE TABLE setting(
     setting_id INT AUTO_INCREMENT NOT NULL,
     CONSTRAINT pk_setting PRIMARY KEY (setting_id)
@@ -342,8 +347,8 @@ CREATE TABLE invoice(
     created_user_id INT,
     updated_user_id INT,
 
-    local_id INT,
-
+    local_id INT NOT NULL,
+    business_id INT NOT NULL,
     date_of_issue DATE NOT NULL,            -- fecha_de_emision
     time_of_issue TIME NOT NULL,            -- hora_de_emision
     date_of_due DATE,                       -- fecha_de_vencimiento
@@ -522,7 +527,8 @@ CREATE TABLE invoice_summary(
     created_user_id INT,
     updated_user_id INT,
 
-    local_id INT,
+    local_id INT NOT NULL,
+    business_id INT NOT NULL,
     correlative INT,
     date_of_issue DATE NOT NULL,
     date_of_reference DATE NOT NULL,
@@ -566,7 +572,8 @@ CREATE TABLE invoice_voided(
     created_user_id INT,
     updated_user_id INT,
 
-    local_id INT,
+    local_id INT NOT NULL,
+    business_id INT NOT NULL,
     invoice_id INT NOT NULL,
     ticket VARCHAR(64) DEFAULT '',
     reason VARCHAR(255) DEFAULT '',
@@ -735,7 +742,6 @@ INSERT INTO cat_document_type_code(code, description) VALUES
 INSERT INTO cat_currency_type_code(code, description, symbol) VALUES
 ('PEN','SOLES','S/'),
 ('EUR','EURO','€'),
-('JPY','YEN','¥'),
 ('USD','DÓLARES AMERICANOS','$');
 
 -- Catalogue 3

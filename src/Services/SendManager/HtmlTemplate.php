@@ -1,7 +1,7 @@
 <?php
 
 class HtmlTemplate{
-    public static function Template(){
+    public static function Invoice(){
         return
             '<!DOCTYPE html>
                     <html lang="es">
@@ -67,5 +67,12 @@ class HtmlTemplate{
                         </table> 
                     </body>
                 </html>';
+    }
+    public static function Register()
+    {
+        return '';
+    }
+    public static function Forgot(){
+        return '';
     }
 }

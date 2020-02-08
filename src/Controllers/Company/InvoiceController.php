@@ -319,13 +319,13 @@ class InvoiceController extends Controller
                 <td id="invoiceItemTotalValueText${uniqueId}"></td>
                 <td id="invoiceItemTotalText${uniqueId}"></td>
                 <td>
-                    <div class="SnBtn" onclick="Invoice.openItemModal(\'${uniqueId}\')"><i class="icon-pencil"></i></div>
-                    <div class="SnBtn error" onclick="Invoice.removeItem(\'${uniqueId}\')"><i class="icon-trash-alt"></i></div>
+                    <div class="SnBtn icon" onclick="openItemModal(\'${uniqueId}\')"><i class="icon-pencil"></i></div>
+                    <div class="SnBtn icon" onclick="removeItem(\'${uniqueId}\')"><i class="icon-trash-alt"></i></div>
                     <div>
                         <div class="SnModal-wrapper" data-modal="invoiceItemModal${uniqueId}">
                             <div class="SnModal">
                                 <div class="SnModal-close" data-modalclose="invoiceItemModal${uniqueId}"
-                                    onclick="Invoice.closeItemModal(\'${uniqueId}\')">
+                                    onclick="closeItemModal(\'${uniqueId}\')">
                                         <i class="icon-cross"></i>
                                 </div>
                                 <div class="SnModal-header"><i class="icon-list2 SnMr-2"></i> Seleccionar un Producto/Servicio</div>
@@ -453,7 +453,7 @@ class InvoiceController extends Controller
                                                 <input type="hidden" id="invoiceItemTotalDecimal${uniqueId}">
                                             </div>
                                         </div>
-                                        <div class="SnBtn primary block" onclick="Invoice.closeItemModal(\'${uniqueId}\')">Aceptar</div>
+                                        <div class="SnBtn primary block" onclick="closeItemModal(\'${uniqueId}\')">Aceptar</div>
                                     </div>
                                 </div>
                             </div>
