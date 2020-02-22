@@ -19,7 +19,7 @@
                     <td><?= $row['social_reason'] ?></td>
                     <td>
                         <div class="SnSwitch" style="height: 18px">
-                            <input class="SnSwitch-input" type="checkbox" id="customerState<?= $row['customer_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
+                            <input class="SnSwitch-control" type="checkbox" id="customerState<?= $row['customer_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
                             <label class="SnSwitch-label" for="customerState<?= $row['customer_id']?>"></label>
                         </div>
                     </td>

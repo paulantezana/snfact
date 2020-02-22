@@ -21,7 +21,7 @@
                     <td><?= $row['pdf_invoice_size'] ?></td>
                     <td>
                         <div class="SnSwitch" style="height: 18px">
-                            <input class="SnSwitch-input" type="checkbox" id="businessLocal<?= $row['business_local_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
+                            <input class="SnSwitch-control" type="checkbox" id="businessLocal<?= $row['business_local_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
                             <label class="SnSwitch-label" for="businessLocal<?= $row['business_local_id']?>"></label>
                         </div>
                     </td>

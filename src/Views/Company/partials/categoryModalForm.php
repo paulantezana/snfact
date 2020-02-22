@@ -23,7 +23,7 @@
                 </div>
                 <div class="SnForm-item">
                     <div class="SnSwitch">
-                        <input class="SnSwitch-input" type="checkbox" id="categoryState">
+                        <input class="SnSwitch-control" type="checkbox" id="categoryState">
                         <label class="SnSwitch-label" for="categoryState">Estado</label>
                     </div>
                 </div>

@@ -129,58 +129,67 @@ const printArea = function(idElem){
     }
 }
 
-let SnLiveList = option => {
-    let tElementNodes = document.querySelectorAll(option.target);
-    let loading = false;
+let SnLiveList = options => {
+    let tElementNodes = document.querySelectorAll(options.elem);
 
-    tElementNodes.forEach(targetElement => {
-        let parentNode = targetElement.parentNode;
+    tElementNodes.forEach(tElementNode => {
+        let ul = document.createElement('ul');
+        ul.classList.add('SnLiveList');
+        let currentData = [];
 
-        let listContainer = document.createElement('ul');
-        listContainer.classList.add('SnLiveList');
-        if (!parentNode.querySelector('.SnLiveList')) {
-            parentNode.appendChild(listContainer);
+        const itemOnClick = (e) => {
+            e.preventDefault();
+            let t = e.target;
+
+            if (t.tagName === 'LI') {
+                let index = t.getAttribute('data-index');
+                let type = t.getAttribute('data-type');
+                if(type == 'data'){
+                    options.onSelect(e, currentData[index]);
+                }
+            }
+
+            ul.remove();
+        }
+        
+        const renderContainer = () => {
+            let parentNode = tElementNode.parentNode;
+            if (!parentNode.querySelector('.SnLiveList')) {
+                parentNode.appendChild(ul);
+                parentNode.addEventListener('click',itemOnClick);
+            }
+
+            setPositionContainer();
         }
 
-        const paintElement = async (event, targetElement) => {
-            listContainer.innerHTML = '';
-            if (option.data && typeof option.data.src === 'function') {
-                let response = await option.data.src(event.target);
-                [...response].forEach(item => {
-                    let listItem = document.createElement('li');
-                    listItem.classList.add('SnLiveList-item');
+        const setPositionContainer = () => {
+            let tElementNodeInfo = tElementNode.getBoundingClientRect();
+            ul.style.top = tElementNodeInfo.height + 'px';
+            ul.style.width = tElementNodeInfo.width + 'px';
+        }
 
-                    let dataKeys = option.data.keys;
-                    if (dataKeys) {
-                        listItem.innerHTML = `<div>${item[dataKeys.text]}</div><div>${item[dataKeys.text]}</div>`;
-                    }
-
-                    listItem.addEventListener('click', e => {
-                        listContainer.innerHTML = '';
-                        if (option.onSelect && typeof option.onSelect === 'function') {
-                            option.onSelect(e, item);
-                            if (dataKeys) {
-                                targetElement.value = item[dataKeys.text];
-                            }
-                        }
-                    });
-                    listContainer.appendChild(listItem);
+        const dataPaint = data => {
+            if (typeof data === 'object') {
+                ul.innerHTML = '';
+                data.forEach((item, index) => {
+                    let li = `<li data-type="data" data-index="${index++}" class="SnLiveList-item">${item.text}</li>`;
+                    ul.insertAdjacentHTML('beforeend', li);
                 });
-                loading = false;
+                currentData = data;
+                renderContainer();
+            } else if (typeof data === 'string'){
+                ul.innerHTML = `<li data-type="alert" class="SnLiveList-item alert">${data}</li>`;
+                currentData = [];
+                renderContainer();
             }
-        };
-        // console.log(nodeLocalName);
-        targetElement.addEventListener('change', async e => {
-            e.preventDefault();
-            let targetElementInfo = targetElement.getBoundingClientRect();
-            listContainer.style.top = (targetElementInfo.height - 1) + 'px';
-            listContainer.style.width = targetElementInfo.width + 'px';
+        }
 
-            if (!loading) {
-                targetElement.classList.add('loading');
-                await paintElement(e, targetElement);
-            } else {
-                targetElement.classList.remove('loading');
+        tElementNode.addEventListener('input', function (e) {
+            e.preventDefault();
+            if (options.data) {
+                if (typeof options.data == 'function') {
+                    options.data(tElementNode.value, dataPaint);
+                }
             }
         });
     });
@@ -420,3 +429,14 @@ let SnSelect = function (options, action = 'create') {
         console.warn('Not found');
     }
 };
+
+const SnDropdown = () => {
+    let SnDropdowns = document.querySelectorAll('.SnDropdown');
+    SnDropdowns.forEach((item,index)=>{
+        let toogleElem = item.querySelector('.SnDropdown-toggle');
+        let listElem = toogleElem.nextElementSibling
+        toogleElem.addEventListener('click',()=>{
+            listElem.classList.toggle('show');
+        });
+    });
+}

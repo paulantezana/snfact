@@ -23,7 +23,7 @@
                     <td><?= $row['unit_price'] ?></td>
                     <td>
                         <div class="SnSwitch" style="height: 18px">
-                            <input class="SnSwitch-input" type="checkbox" id="productState<?= $row['product_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
+                            <input class="SnSwitch-control" type="checkbox" id="productState<?= $row['product_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
                             <label class="SnSwitch-label" for="productState<?= $row['product_id']?>"></label>
                         </div>
                     </td>

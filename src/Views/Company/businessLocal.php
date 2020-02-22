@@ -89,7 +89,7 @@
                         </div>
                         <div class="SnForm-item">
                             <div class="SnSwitch">
-                                <input class="SnSwitch-input" type="checkbox" id="businessLocalState">
+                                <input class="SnSwitch-control" type="checkbox" id="businessLocalState">
                                 <label class="SnSwitch-label" for="businessLocalState">Estado</label>
                             </div>
                         </div>

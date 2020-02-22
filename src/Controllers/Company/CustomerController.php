@@ -181,7 +181,7 @@ class CustomerController extends Controller
                 throw new Exception($data->message);
             }
 
-            $res->result = $data->result;
+            $res->result = [$data->result];
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();

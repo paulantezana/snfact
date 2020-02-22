@@ -95,7 +95,7 @@ class Router
         if (isset($_SERVER['REMOTE_ADDR'])) {
             $ipServer = $_SERVER['REMOTE_ADDR'];
         }
-        $error = 'PHP Fatal error | URL : ' . $_SERVER['REQUEST_URI'] . "\n" . 'IP : ' . $ipClient . ' | ' . $ipProxy . ' | ' . $ipServer . "\n" . ' ERROR index : ' . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n\n";
+        $error = 'PHP Fatal error | URL : ' . URL . "\n" . 'IP : ' . $ipClient . ' | ' . $ipProxy . ' | ' . $ipServer . "\n" . ' ERROR index : ' . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n\n";
         error_log($error);
     }
 }

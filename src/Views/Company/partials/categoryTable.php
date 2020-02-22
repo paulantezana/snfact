@@ -15,7 +15,7 @@
                     <td><?= $row['description'] ?></td>
                     <td>
                         <div class="SnSwitch" style="height: 18px">
-                            <input class="SnSwitch-input" type="checkbox" id="categoryState<?= $row['category_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
+                            <input class="SnSwitch-control" type="checkbox" id="categoryState<?= $row['category_id']?>" type="checkbox" <?php echo $row['state'] ? 'checked' : '' ?> disabled>
                             <label class="SnSwitch-label" for="categoryState<?= $row['category_id']?>"></label>
                         </div>
                     </td>

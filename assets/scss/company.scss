@@ -81,9 +81,17 @@
     padding: 8px 15px;
     font-size: 14px;
     line-height: 20px;
-    cursor: pointer;
     &:last-child {
       border-bottom: 0;
+    }
+    &:hover{
+      cursor: pointer;
+      background: var(--snColor1);
+      color: var(--snColor1Inverse);
+    }
+    &.alert{
+      font-style: italic;
+      color: var(--snColorTextAlt);
     }
   }
 }
@@ -149,6 +157,16 @@
         color: var(--snColor1Inverse);
       }
     }
+  }
+}
+
+
+.SnDropdown{
+  &-toggle{
+
+  }
+  &-list{
+    @extend %snList;
   }
 }
 

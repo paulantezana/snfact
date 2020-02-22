@@ -10,8 +10,9 @@
 
   .#{$classPrefix}Switch{
     padding-left: $SnSwitchSpace;
+    height: 1.2em;
   }
-  .#{$classPrefix}Switch-input {
+  .#{$classPrefix}Switch-control {
     display: none;
     + .#{$classPrefix}Switch-label {
       cursor: pointer;

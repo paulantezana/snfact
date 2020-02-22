@@ -1,12 +1,12 @@
-<form action="" id="invoiceForm" onsubmit="Invoice.submit(event)">
+<form action="" id="invoiceForm" onsubmit="invoiceSubmit()">
     <div class="Invoice">
         <div class="Invoice-top">
             <div class="SnSwitch">
-                <input class="SnSwitch-input " id="includeIgv" type="checkbox">
+                <input class="SnSwitch-control " id="includeIgv" type="checkbox">
                 <label class="SnSwitch-label" for="includeIgv">Incluye IGV</label>
             </div>
             <div class="SnSwitch">
-                <input class="SnSwitch-input " id="advancedOptions" type="checkbox" data-collapsetrigger="advancedOpt">
+                <input class="SnSwitch-control " id="advancedOptions" type="checkbox" data-collapsetrigger="advancedOpt">
                 <label class="SnSwitch-label" for="advancedOptions">Opciones avanzadas</label>
             </div>
         </div>
@@ -141,7 +141,7 @@
                     </div>
                 </div>
                 <div class="SnForm-item SnSwitch l-cols-2 required">
-                    <input class="SnSwitch-input" type="checkbox" name="invoice[customer][sendEmail]" id="invoiceCustomerSendEmail" data-collapsetrigger="sendEmail">
+                    <input class="SnSwitch-control" type="checkbox" name="invoice[customer][sendEmail]" id="invoiceCustomerSendEmail" data-collapsetrigger="sendEmail">
                     <label class="SnSwitch-label" for="invoiceCustomerSendEmail" >¿Deseas Enviar el Comprobante Electrónico al Email del Cliente?:</label>
                 </div>
                 <div class="SnForm-item required SnCollapse" data-collapse="sendEmail">
@@ -243,11 +243,11 @@
                     </div>
                     <div class="SnGrid s-grid-2">
                         <div class="SnSwitch">
-                            <input class="SnSwitch-input" name="invoice[jungleProduct]" id="service" type="checkbox">
+                            <input class="SnSwitch-control" name="invoice[jungleProduct]" id="service" type="checkbox">
                             <label class="SnSwitch-label" for="service">¿Bienes Región Selva?</label>
                         </div>
                         <div class="SnSwitch">
-                            <input class="SnSwitch-input" name="invoice[jungleService]" id="jungle" type="checkbox">
+                            <input class="SnSwitch-control" name="invoice[jungleService]" id="jungle" type="checkbox">
                             <label class="SnSwitch-label" for="jungle">¿Servicios Región Selva?</label>
                         </div>
                     </div>

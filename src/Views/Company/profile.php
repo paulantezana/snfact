@@ -107,7 +107,7 @@
                             </div>
                             <div class="SnForm-item">
                                 <div class="SnSwitch">
-                                    <input class="SnSwitch-input" type="checkbox" id="user2faKeyEnable">
+                                    <input class="SnSwitch-control" type="checkbox" id="user2faKeyEnable">
                                     <label class="SnSwitch-label" for="user2faKeyEnable">Activar</label>
                                 </div>
                             </div>

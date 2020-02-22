@@ -9,6 +9,7 @@
     background-color: var(--snColorBgAlt);
     opacity: 0.4;
     transition: opacity 0.25s;
+    cursor: wait;
     &.is-unfreezing {
       opacity: 0;
     }
@@ -20,11 +21,10 @@
       top: calc(50% + 12px);
       left: 50%;
       transform: translate(-50%, -50%);
-      //font-size: 20px;
       font-family: sans-serif;
       color: var(--snColorTextAlt);;
       text-align: center;
-      //text-transform: uppercase;
+      margin-top: 1rem;
     }
     &::before {
       content: "";

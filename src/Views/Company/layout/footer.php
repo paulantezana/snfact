@@ -96,7 +96,7 @@
                         </ul>
                         <div class="AsideFooter">
                             <div class="SnSwitch">
-                                <input class="SnSwitch-input" type="checkbox" id="themeMode" >
+                                <input class="SnSwitch-control" type="checkbox" id="themeMode" >
                                 <label class="SnSwitch-label" for="themeMode"></label>
                             </div>
                         </div>

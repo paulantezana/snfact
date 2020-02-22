@@ -179,7 +179,8 @@ class InvoiceController extends Controller
     public function createInvoice(){
         $res = new Result();
         try {
-            $invoice = $_POST['invoice'];
+            $postData = file_get_contents("php://input");
+            $invoice = json_decode($postData, true);
 
             $invoice['localId'] = $_SESSION[SESS_CURRENT_LOCAL];
             $invoice['timeOfIssue'] = date('H:i:s');

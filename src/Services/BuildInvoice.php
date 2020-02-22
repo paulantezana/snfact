@@ -503,14 +503,14 @@ class BuildInvoice
                 'detailSale' => $detailSale,
                 'business' => $business,
             ];
-//            $resXml = $this->GenerateXML($documentData,$userReferId);
-//            $res->errorMessage = $resXml->errorMessage;
-//            $res->success = $resXml->success;
-//            if (!$resXml->success){
-//                $this->saleModel->UpdateInvoiceSunatByInvoiceId($saleId,[
-//                    'other_message' =>  $resXml->errorMessage,
-//                ]);
-//            }
+            // $resXml = $this->GenerateXML($documentData,$userReferId);
+            // $res->errorMessage = $resXml->errorMessage;
+            // $res->success = $resXml->success;
+            // if (!$resXml->success){
+            //     $this->saleModel->UpdateInvoiceSunatByInvoiceId($saleId,[
+            //         'other_message' =>  $resXml->errorMessage,
+            //     ]);
+            // }
 
             // PDF
             $documentData['sale']['digestValue'] = '';

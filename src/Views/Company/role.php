@@ -59,7 +59,7 @@
                                             <td><?= $row['description'] ?></td>
                                             <td>
                                                 <div class="SnSwitch" style="height: 18px">
-                                                    <input class="SnSwitch-input" type="checkbox" id="autState<?= $row['app_authorization_id']?>" type="checkbox">
+                                                    <input class="SnSwitch-control" type="checkbox" id="autState<?= $row['app_authorization_id']?>" type="checkbox">
                                                     <label class="SnSwitch-label" for="autState<?= $row['app_authorization_id']?>"></label>
                                                 </div>  
                                             </td>

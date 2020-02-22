@@ -49,6 +49,19 @@
                     <td></td>
                     <td>
                         <div class="SnBtn primary" onclick="InvoiceSendEmailOpenModal('<?= $row['invoice_id']?>','<?= $row['customer_email'] ?>')">Open Modal</div>
+                        <div class="SnDropdown">
+                            <div class="SnDropdown-toggle"></div>
+                            <ul class="SnDropdown-list">
+                                <li class="SnDropdown-item"><a href="<?= URL_PATH . '/Invoice/ResendInvoice?InvoiceId=' . $row['invoice_id'] ?>"><i class="icon-spinner11 text-success  mr-2"></i> Consultar o recuperar constancia</a></li>
+                                <li class="SnDropdown-item"><a href="#" data-toggle="modal" data-target="#invoiceSendEmailModal"><i class="icon-envelop mr-2"></i>  Enviar a un email personalizado</a></li>
+                                <li class="SnDropdown-item"><a href="<?= URL_PATH . '/InvoiceNote/NewCreditNote?InvoiceId=' . $row['invoice_id'] ?>"> <i class="icon-file-text mr-2"></i> Generar NOTA DE CREDITO</a></li>
+                                <li class="SnDropdown-item"><a href="<?= URL_PATH . '/InvoiceNote/NewDebitNote?InvoiceId=' . $row['invoice_id'] ?>"> <i class="icon-file-text mr-2"></i> Generar NOTA DE DEBITO</a></li>
+                                <li class="SnDropdown-item"><a href="<?= URL_PATH . '/ReferralGuide/NewGuide?InvoiceId=' . $row['invoice_id']  ?>"> <i class="icon-file-text mr-2"></i> Generar GUIA DE REMISIÓN</a></li>
+                                <li class="SnDropdown-item"><a href="<?= URL_PATH . '/InvoiceVoided/NewInvoiceVoided?InvoiceId=' . $row['invoice_id'] ?>"><i class="icon-cancel-circle2 text-danger mr-2"></i> ANULAR o COMUNICAR DE BAJA</a></li>
+                                <li class="SnDropdown-item"><a href="#" target="_blank"> <img src="<?= URL_PATH . '/Asset/Images/sunatLogo.png'?>" height="16px" class="mr-2"> Verificar en la SUNAT la validéz del CPE</a></li>
+                                <li class="SnDropdown-item"><a href="#" target="_blank"> <img src="<?= URL_PATH . '/Asset/Images/sunatLogo.png'?>" height="16px" class="mr-2"> Verificar XML en la SUNAT</a></li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; else: ?>

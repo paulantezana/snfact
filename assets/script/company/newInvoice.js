@@ -396,19 +396,26 @@ function setListenersItemById(list, uniqueId){
 
 function executeItem(uniqueId){
     SnLiveList({
-        target: `#invoiceItemProductSearch${uniqueId}`,
-        data: {
-            src: async target => {
-                const response = await RequestApi.fetch('/product/search',{
-                    method: 'POST',
-                    body: { search: target.value }
-                });
-                return response.success ? response.result : [];
-            },
-            keys: {
-                id: 'product_id',
-                text: 'description',
+        elem: `#invoiceItemProductSearch${uniqueId}`,
+        data: (search, callback) => {
+            if (search.length < 2) {
+                callback('Escriba almenos 2 caracteres');
+                return;
             }
+
+            callback('Cargando...');
+
+            RequestApi.fetch('/product/search', {
+                method: 'POST',
+                body: { search: search }
+            }).then(res => {
+                if (res.success) {
+                    let data = res.result.map(item => ({ ...item, text: item.description, value: item.code }));
+                    callback(data);
+                } else {
+                    callback(false);
+                }
+            });
         },
         onSelect: (target, data) => {
             document.getElementById(`invoiceItemAffectationCode${uniqueId}`).value = data.affectation_code;
@@ -476,10 +483,78 @@ function addItem(){
     }
 }
 
-function submit(event){
+function invoiceSubmit(){
     event.preventDefault();
 
     // let _setLoading = this.setLoading();
+    let invoice = {};
+    invoice.customer = {};
+    invoice.item = [];
+
+    invoice.dateOfIssue = document.getElementById('invoiceDateOfIssue').value; 
+    // invoice.timeOfIssue
+    invoice.dateOfDue = document.getElementById('invoiceDateOfDue').value;
+    invoice.serie = document.getElementById('invoiceSerie').value;
+    invoice.number = document.getElementById('invoiceNumber').value;
+    invoice.observation = document.getElementById('invoiceObservation').value;
+    invoice.changeType = document.getElementById('invoiceChangeType').value;
+    invoice.documentCode = document.getElementById('invoiceDocumentCode').value;
+    invoice.currencyCode = document.getElementById('invoiceCurrencyCode').value;
+    invoice.operationCode = document.getElementById('invoiceOperationCode').value;
+    invoice.totalPrepayment = document.getElementById('invoiceTotalPrepayment').value;
+    invoice.totalFree = document.getElementById('invoiceTotalFree').value;
+    invoice.totalExport = document.getElementById('invoiceTotalExport').value;
+    invoice.totalOtherCharger = document.getElementById('invoiceTotalOtherCharger').value;
+    invoice.totalDiscount = document.getElementById('invoiceTotalDiscount').value;
+    invoice.totalExonerated = document.getElementById('invoiceTotalExonerated').value;
+    invoice.totalUnaffected = document.getElementById('invoiceTotalUnaffected').value;
+    invoice.totalTaxed = document.getElementById('invoiceTotalTaxed').value;
+    invoice.totalIgv = document.getElementById('invoiceTotalIgv').value;
+    invoice.totalBaseIsc = document.getElementById('invoiceTotalBaseIsc').value;
+    invoice.totalIsc = document.getElementById('invoiceTotalIsc').value;
+    // invoice.totalValue = document.getElementById('invosssiceTotalssssssssssss').value;
+    invoice.totalPlasticBagTax = document.getElementById('invoiceTotalPlasticBagTax').value;
+    invoice.total = document.getElementById('invoiceTotal').value;
+    invoice.globalDiscountPercentage = document.getElementById('invoiceGlobalDiscountPercentage').value;
+    invoice.purchaseOrder = document.getElementById('invoicePurchaseOrder').value;
+    invoice.vehiclePlate = document.getElementById('invoiceVehiclePlate').value;
+    invoice.term = document.getElementById('invoiceTerm').value;
+    // invoice.percentageIgv = document.getElementById('invoiceTotalIsc').value;
+    invoice.pdfFormat = document.getElementById('invoicePdfFormat').value;
+
+    invoice.customer.documentNumber = document.getElementById('invoiceCustomerDocumentNumber').value;
+    invoice.customer.documentCode = document.getElementById('invoiceCustomerDocumentCode').value;
+    invoice.customer.socialReason = document.getElementById('invoiceCustomerSocialReason').value;
+    invoice.customer.address = document.getElementById('invoiceCustomerAddress').value;
+    invoice.customer.email = document.getElementById('invoiceCustomerEmail').value;
+    invoice.customer.telephone = '';
+
+    let table = document.getElementById('invoiceItemTableBody');
+    invoice.item = [...table.children].map((row,index)=>{
+        let uniqueId = row.dataset.uniqueid;
+        let invoiceItem = {};
+
+        invoiceItem.productCode = document.getElementById(`invoiceProductCode${uniqueId}`).value;
+        invoiceItem.unitMeasure = document.getElementById(`invoiceItemUnitMeasure${uniqueId}`).value;
+        invoiceItem.description = document.getElementById(`invoiceItemDescription${uniqueId}`).value;
+        invoiceItem.quantity = document.getElementById(`invoiceItemQuantity${uniqueId}`).value;
+        invoiceItem.unitValue = document.getElementById(`invoiceItemUnitValue${uniqueId}`).value;
+        invoiceItem.unitPrice = document.getElementById(`invoiceItemUnitPrice${uniqueId}`).value;
+        invoiceItem.discount = document.getElementById(`invoiceItemDiscount${uniqueId}`).value;
+        invoiceItem.affectationCode = document.getElementById(`invoiceItemAffectationCode${uniqueId}`).value;
+        invoiceItem.totalBaseIgv = document.getElementById(`invoiceItemTotalBaseIgv${uniqueId}`).value;
+        invoiceItem.igv = document.getElementById(`invoiceItemIgv${uniqueId}`).value;
+        invoiceItem.iscSystem = document.getElementById(`invoiceItemIscSystem${uniqueId}`).value;
+        invoiceItem.totalBaseIsc = document.getElementById(`invoiceItemTotalBaseIsc${uniqueId}`).value;
+        invoiceItem.iscTax = document.getElementById(`invoiceItemIscTax${uniqueId}`).value;
+        invoiceItem.isc = document.getElementById(`invoiceItemIsc${uniqueId}`).value;
+        invoiceItem.totalValue = document.getElementById(`invoiceItemTotalValue${uniqueId}`).value;
+        invoiceItem.total = document.getElementById(`invoiceItemTotal${uniqueId}`).value;
+
+        return invoiceItem;
+    });
+
+    console.log(invoice);
 
     SnModal.confirm({
         title: 'Necesitamos de tu Confirmación\n',
@@ -488,10 +563,9 @@ function submit(event){
         cancelText: 'Cancelar',
         onOk() {
             SnFreeze.freeze({selector: '#invoiceFormTemplateContainer'});
-            let invoiceForm = document.getElementById('invoiceForm');
             RequestApi.fetch('/invoice/createInvoice',{
                 method: 'POST',
-                body: new FormData(invoiceForm),
+                body: invoice,
             }).then(res => {
                 if (res.success){
                     SnModal.confirm({
@@ -500,10 +574,10 @@ function submit(event){
                         okText: 'Ver Lista Documentos >',
                         cancelText: 'Realizar Otra Venta!',
                         onOk() {
-
+                            location.href = Service.path + '/invoice';
                         },
                         onCancel() {
-                            // InvoiceFormTemplate.load();
+                            newInvoice();
                         }
                     });
                 } else {
@@ -515,30 +589,28 @@ function submit(event){
         },
     });
 }
-// };
-//
-// let InvoiceFormTemplate = {
-//     load(){
-//
-//         let invoiceFormTemplateContainer = document.getElementById('invoiceFormTemplateContainer');
-//         if (invoiceFormTemplateContainer){
-//             SnFreeze.freeze({selector: '#invoiceFormTemplateContainer'});
-//             RequestApi.fetchText(`/invoice/formTemplate`,{
-//                 method: 'GET',
-//             }).then(res => {
-//                 invoiceFormTemplateContainer.innerHTML = res;
-//                 // Reload Sedna
-//                 SnCollapse.reload();
-//                 SnTab.reload();
-//
-//                 // Init Invoice
-//                 Invoice.init();
-//             }).finally(e =>{
-//                 SnFreeze.unFreeze('#invoiceFormTemplateContainer');
-//             })
-//         }
-//     },
-// };
+
+function newInvoice(){
+    let invoiceForm = document.getElementById('invoiceForm');
+    // pValidator.reset();
+    if (invoiceForm){
+        invoiceForm.reset();
+    }
+    let invoiceItemTableBody = document.getElementById('invoiceItemTableBody');
+    if (invoiceItemTableBody){
+        invoiceItemTableBody.innerHTML = '';
+    }
+
+    let invoiceDocumentInput = document.getElementById('invoiceDocumentCode');
+    let invoiceSerie = document.getElementById('invoiceSerie');
+    if (invoiceSerie && invoiceDocumentInput){
+        getDocumentNumber({
+            documentCode: invoiceDocumentInput.value,
+            serie: invoiceSerie.value,
+        });
+    }
+    calcTotal();
+}
 
 document.addEventListener('DOMContentLoaded',()=>{
     let invoiceCurrencyInput = document.getElementById('invoiceCurrencyCode');
@@ -567,11 +639,47 @@ document.addEventListener('DOMContentLoaded',()=>{
             documentCode: invoiceDocumentInput.value,
             serie: invoiceSerie.value,
         });
-        invoiceSerie.addEventListener('change',()=>{
+        invoiceSerie.addEventListener('select',()=>{
+            getDocumentNumber({
+                documentCode: invoiceDocumentInput.value,
+                serie: invoiceSerie.value,
+            });
+        })
+        invoiceDocumentInput.addEventListener('select',()=>{
             getDocumentNumber({
                 documentCode: invoiceDocumentInput.value,
                 serie: invoiceSerie.value,
             });
         })
     }
+
+    SnLiveList({
+        elem: '#invoiceCustomerDocumentNumber',
+        data: (search, callback) => {
+            if (search.length < 7) {
+                callback('Escriba almenos 7 caracteres');
+                return;
+            }
+
+            callback('Cargando...');
+            
+            RequestApi.fetch('/customer/queryInnerDataAndPeru', {
+                method: 'POST',
+                body: { documentNumber: search }
+            }).then(res => {
+                if (res.success) {
+                    let data = res.result.map(item => ({ ...item, text: item.socialReason, value: item.documentNumber }));
+                    callback(data);
+                } else {
+                    callback(res.message);
+                }
+            });
+        },
+        onSelect: (target, data) => {
+            document.getElementById(`invoiceCustomerDocumentCode`).value = data.identityDocumentCode;
+            document.getElementById(`invoiceCustomerSocialReason`).value = data.socialReason;
+            document.getElementById(`invoiceCustomerAddress`).value = data.fiscalAddress;
+            document.getElementById(`invoiceCustomerEmail`).value = data.email;
+        }
+    });
 });
