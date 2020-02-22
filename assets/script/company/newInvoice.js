@@ -166,9 +166,9 @@ function calcTotal(){
             default:
                 break;
         }
-        if (affectationItemInput[index].value === '10'){
-            sumFreeTotalItem += parseFloat(totalValueItemInput[index].value || 0)
-        }
+        // if (affectationItemInput[index].value === '10'){
+        //     sumFreeTotalItem += parseFloat(totalValueItemInput[index].value || 0)
+        // }
     });
     let invoiceTotalFree = roundCurrency(sumFreeTotalItem - sumFreePrepaymentTotalItem);
     document.getElementById('invoiceTotalFree').value = invoiceTotalFree;
@@ -433,7 +433,6 @@ function executeItem(uniqueId){
     });
 
     setListenersItemById([
-        `invoiceItemQuantity${uniqueId}`,
         `invoiceItemUnitPrice${uniqueId}`,
         `invoiceItemUnitValue${uniqueId}`,
         `invoiceItemIscTax1${uniqueId}`,
@@ -448,6 +447,37 @@ function executeItem(uniqueId){
     invoiceItemDescription.addEventListener('keyup',e => {
         document.getElementById(`invoiceItemDescriptionText${uniqueId}`).textContent =  invoiceItemDescription.value;
     });
+
+    // Quantity Control START
+    let itemQuantityText = document.getElementById(`invoiceItemQuantityText${uniqueId}`);
+    let itemQuantityRemove = document.getElementById(`invoiceItemQuantityRemove${uniqueId}`);
+    itemQuantityRemove.addEventListener('click',e => {
+        let cuantityVal = parseFloat(itemQuantityText.value);
+        if(cuantityVal > 1){
+            itemQuantityText.value = cuantityVal-1;
+            document.getElementById(`invoiceItemQuantity${uniqueId}`).value = itemQuantityText.value;
+            calcItem(uniqueId);
+        }
+    });
+    
+    let itemQuantityAdd = document.getElementById(`invoiceItemQuantityAdd${uniqueId}`);
+    itemQuantityAdd.addEventListener('click',e => {
+        let cuantityVal = parseFloat(itemQuantityText.value);
+        itemQuantityText.value = cuantityVal+1;
+        document.getElementById(`invoiceItemQuantity${uniqueId}`).value = itemQuantityText.value;
+        calcItem(uniqueId);
+    });
+    
+    let itemQuantity = document.getElementById(`invoiceItemQuantity${uniqueId}`);
+    itemQuantity.addEventListener('input',e=>{
+        itemQuantityText.value = itemQuantity.value;
+        calcItem(uniqueId);
+    });
+    itemQuantityText.addEventListener('input',e=>{
+        itemQuantity.value = itemQuantityText.value;
+        calcItem(uniqueId);
+    });
+    // Quantity Control END
 
     setCurrencySymbol();
 }

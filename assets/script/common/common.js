@@ -430,13 +430,20 @@ let SnSelect = function (options, action = 'create') {
     }
 };
 
-const SnDropdown = () => {
+function SnDropdown(){
     let SnDropdowns = document.querySelectorAll('.SnDropdown');
     SnDropdowns.forEach((item,index)=>{
-        let toogleElem = item.querySelector('.SnDropdown-toggle');
-        let listElem = toogleElem.nextElementSibling
-        toogleElem.addEventListener('click',()=>{
-            listElem.classList.toggle('show');
-        });
+        if(item.getAttribute('tabindex') === null){
+            item.setAttribute('tabindex',generateUniqueId());
+            let toogleElem = item.querySelector('.SnDropdown-toggle');
+            let listElem = toogleElem.nextElementSibling;
+            toogleElem.addEventListener('click',()=>{
+                listElem.classList.toggle('show');
+            });
+        }        
     });
 }
+
+document.addEventListener('DOMContentLoaded',()=>{
+    SnDropdown();
+});

@@ -398,7 +398,7 @@ class BuildInvoice
             $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
                 'other_message' => $resInvoice->errorMessage,
             ]);
-            $res->errorMessage .= $resInvoice->errorMessage;
+            $res->message .= $resInvoice->errorMessage;
             $res->success = false;
             return $res;
         }
@@ -414,7 +414,7 @@ class BuildInvoice
             $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
                 'response_message' => $resInvoice->sunatCommuniationError,
             ]);
-            $res->errorMessage .= $resInvoice->sunatCommuniationError;
+            $res->message .= $resInvoice->sunatCommuniationError;
             $res->success = false;
             return $res;
         }
@@ -426,7 +426,7 @@ class BuildInvoice
             ]);
             $res->success = true;
         } else {
-            $res->errorMessage .= $resInvoice->readerError;
+            $res->message .= $resInvoice->readerError;
             $res->success = false;
         }
 //        }elseif ($sale['document_code'] === '03'){
@@ -503,14 +503,14 @@ class BuildInvoice
                 'detailSale' => $detailSale,
                 'business' => $business,
             ];
-            // $resXml = $this->GenerateXML($documentData,$userReferId);
-            // $res->errorMessage = $resXml->errorMessage;
-            // $res->success = $resXml->success;
-            // if (!$resXml->success){
-            //     $this->saleModel->UpdateInvoiceSunatByInvoiceId($saleId,[
-            //         'other_message' =>  $resXml->errorMessage,
-            //     ]);
-            // }
+            $resXml = $this->GenerateXML($documentData,$userReferId);
+            $res->message = $resXml->message;
+            $res->success = $resXml->success;
+            if (!$resXml->success){
+                $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($saleId,[
+                    'other_message' =>  $resXml->message,
+                ]);
+            }
 
             // PDF
             $documentData['sale']['digestValue'] = '';

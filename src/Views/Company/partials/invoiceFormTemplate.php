@@ -15,7 +15,7 @@
                 <div class="SnGrid m-grid-2 l-grid-3 lg-grid-4 SnMb-32">
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceDocumentCode">Documento</label>
-                        <select class="SnForm-control" name="invoice[documentCode]" id="invoiceDocumentCode">
+                        <select class="SnForm-control" id="invoiceDocumentCode">
                             <?php foreach ($catDocumentTypeCode as $row) : ?>
                                 <option value="<?= $row['code'] ?>" <?php echo ($invoiceDocumentCode ?? '') === $row['code'] ? 'selected' : '' ?> ><?= $row['description'] ?></option>
                             <?php endforeach; ?>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceOperationCode">Tipo de operacion</label>
-                        <select class="SnForm-control" name="invoice[operationCode]" id="invoiceOperationCode">
+                        <select class="SnForm-control" id="invoiceOperationCode">
                             <?php foreach ($catOperationTypeCode as $row) : ?>
                                 <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                             <?php endforeach; ?>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceCurrencyCode">Moneda</label>
-                        <select class="SnForm-control" name="invoice[currencyCode]" id="invoiceCurrencyCode">
+                        <select class="SnForm-control" id="invoiceCurrencyCode">
                             <?php foreach ($catCurrencyTypeCode as $row) : ?>
                                 <option value="<?= $row['code'] ?>" data-symbol="<?= $row['symbol'] ?>" <?= $row['code'] == 'PEN' ? 'selected' : '' ?>><?= $row['description'] ?></option>
                             <?php endforeach; ?>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceSerie">Serie:</label>
-                        <select name="invoice[serie]" id="invoiceSerie" class="SnForm-control">
+                        <select id="invoiceSerie" class="SnForm-control">
                             <?php foreach ($invoiceSerieNumber as $row) : ?>
                                 <option value="<?= $row['serie'] ?>"><?= $row['serie'] ?></option>
                             <?php endforeach; ?>
@@ -49,7 +49,7 @@
                         <label class="SnForm-label" for="invoiceNumber">Número</label>
                         <div class="SnControl-wrapper">
                             <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" name="invoice[number]" id="invoiceNumber" placeholder="#">
+                            <input class="SnForm-control SnControl" type="text" id="invoiceNumber" placeholder="#">
                         </div>
                     </div>
                     <div class="SnForm-item required">
@@ -62,38 +62,38 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceDateOfIssue">Fecha.Doc:</label>
-                        <input class="SnForm-control" type="date" name="invoice[dateOfIssue]" id="invoiceDateOfIssue">
+                        <input class="SnForm-control" type="date" id="invoiceDateOfIssue" value="<?php echo date('Y-m-d'); ?>">
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceDateOfDue">Fecha.Venc.:</label>
-                        <input class="SnForm-control" type="date" name="invoice[dateOfDue]" id="invoiceDateOfDue">
+                        <input class="SnForm-control" type="date" id="invoiceDateOfDue" value="<?php echo date('Y-m-d'); ?>" >
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceChangeType">Tipo Cambio (SUNAT):</label>
                         <div class="SnControl-wrapper">
                             <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" name="invoice[changeType]" id="invoiceChangeType">
+                            <input class="SnForm-control SnControl" type="text" id="invoiceChangeType">
                         </div>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceVehiclePlate">N° Placa Vehículo:</label>
                         <div class="SnControl-wrapper">
                             <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" name="invoice[vehiclePlate]" id="invoiceVehiclePlate" placeholder="Número de placa">
+                            <input class="SnForm-control SnControl" type="text" id="invoiceVehiclePlate" placeholder="Número de placa">
                         </div>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoicePurchaseOrder">N° de Orden:</label>
                         <div class="SnControl-wrapper">
                             <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" name="invoice[purchaseOrder]" id="invoicePurchaseOrder" placeholder="Número de orden">
+                            <input class="SnForm-control SnControl" type="text" id="invoicePurchaseOrder" placeholder="Número de orden">
                         </div>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceTerm">Condiciiones de pago:</label>
                         <div class="SnControl-wrapper">
                             <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" name="invoice[term]" id="invoiceTerm" placeholder="Condiciiones de pago">
+                            <input class="SnForm-control SnControl" type="text" id="invoiceTerm" placeholder="Condiciiones de pago">
                         </div>
                     </div>
                 </div>
@@ -106,14 +106,14 @@
                     <div class="SnControl-group">
                         <div class="SnControl-wrapper">
                             <i class="icon-user SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" name="invoice[customer][documentNumber]" id="invoiceCustomerDocumentNumber" placeholder="Número de documento Aquí!">
+                            <input class="SnForm-control SnControl" type="text" id="invoiceCustomerDocumentNumber" placeholder="Número de documento Aquí!">
                         </div>
                         <div class="SnBtn primary"><i class="icon-search4"></i></div>
                     </div>
                 </div>
                 <div class="SnForm-item required">
                     <label class="SnForm-label" for="invoiceCustomerDocumentCode">Tipo Doc.Ident.</label>
-                    <select class="SnForm-control" name="invoice[customer][documentCode]" id="invoiceCustomerDocumentCode">
+                    <select class="SnForm-control" id="invoiceCustomerDocumentCode">
                         <?php foreach ($catIdentityDocumentTypeCode as $row) : ?>
                             <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                         <?php endforeach; ?>
@@ -123,32 +123,32 @@
                     <label class="SnForm-label" for="invoiceCustomerSocialReason">Razón Social:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-vcard SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" name="invoice[customer][socialReason]" id="invoiceCustomerSocialReason" placeholder="Nombre o Razón Social Aquí">
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerSocialReason" placeholder="Nombre o Razón Social Aquí">
                     </div>
                 </div>
                 <div class="SnForm-item l-cols-2 required">
                     <label class="SnForm-label" for="invoiceCustomerAddress">Dirección:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-home2 SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" name="invoice[customer][address]" id="invoiceCustomerAddress" placeholder="Escribe aquí la dirección completa">
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerAddress" placeholder="Escribe aquí la dirección completa">
                     </div>
                 </div>
                 <div class="SnForm-item">
                     <label class="SnForm-label" for="invoiceCustomerLocation">Ubigeo:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-sphere SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" name="invoice[customer][location]" id="invoiceCustomerLocation" placeholder="Selecciona Tu Código de Ubigeo">
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerLocation" placeholder="Selecciona Tu Código de Ubigeo">
                     </div>
                 </div>
                 <div class="SnForm-item SnSwitch l-cols-2 required">
-                    <input class="SnSwitch-control" type="checkbox" name="invoice[customer][sendEmail]" id="invoiceCustomerSendEmail" data-collapsetrigger="sendEmail">
+                    <input class="SnSwitch-control" type="checkbox" id="invoiceCustomerSendEmail" data-collapsetrigger="sendEmail">
                     <label class="SnSwitch-label" for="invoiceCustomerSendEmail" >¿Deseas Enviar el Comprobante Electrónico al Email del Cliente?:</label>
                 </div>
                 <div class="SnForm-item required SnCollapse" data-collapse="sendEmail">
                     <label class="SnForm-label" for="invoiceCustomerEmail">Email:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-envelop2 SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" name="invoice[customer][email]" id="invoiceCustomerEmail" placeholder="Escribe aquí el email del cliente">
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerEmail" placeholder="Escribe aquí el email del cliente">
                     </div>
                 </div>
             </div>
@@ -162,7 +162,7 @@
                             <tr>
                                 <th>Descripcion</th>
                                 <th>Precio</th>
-                                <th>Cantidad</th>
+                                <th style="width: 200px">Cantidad</th>
                                 <th>Subtotal</th>
                                 <th>Total</th>
                                 <th style="width: 95px"></th>

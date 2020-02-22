@@ -162,30 +162,43 @@
 
 
 .SnDropdown{
+  position: relative;
   &-toggle{
 
   }
   &-list{
     @extend %snList;
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 0;
+    z-index: 2;
+    background: var(--snColorBgAlt);
+    padding: 4px 0;
+    text-align: left;
+    background-clip: padding-box;
+    border-radius: 4px;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: none;
+    &.show{
+      display: block;
+    }
+  }
+  &-item{
+    margin: 0;
+    padding: 5px 12px;
+    font-weight: normal;
+    line-height: 22px;
+    white-space: nowrap;
+    cursor: pointer;
+    // transition: all 0.3s;
+    &:hover{
+        background: var(--snColorHover);
+    }
+  }
+  &-item,
+  &-item a{
+    text-decoration: none;
+    color: var(--snColorText);
   }
 }
-
-
-// .js-Dropdown-list li {
-//   border-bottom: 1px solid #a5a5a5;
-//   cursor: pointer;
-//   padding: 1em 0.5em;
-// }
-// .js-Dropdown-list li:hover {
-//   background-color: #fff5e9;
-// }
-// .js-Dropdown-list li.is-selected {
-//   background-color: #ffdfb6;
-// }
-// .js-Dropdown-optgroup {
-//   border-bottom: 1px solid #a5a5a5;
-//   color: #a5a5a5;
-//   cursor: default;
-//   padding: 1em 0.5em;
-//   text-align: center;
-// }

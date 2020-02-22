@@ -50,11 +50,11 @@ class BillingManager
 
                 $sunatResult = $this->SendDocument(1, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->errorMessage;
+                $res->sunatCommuniationError = $sunatResult->message;
                 if ($sunatResult->success == true) {
                     $readerResult = $this->ReadSunatAnswer($folderPath, $fileName);
                     $res->readerSuccess = $readerResult->success;
-                    $res->readerError = $readerResult->errorMessage;
+                    $res->readerError = $readerResult->message;
                     $res->sunatResponseCode = $readerResult->sunatResponseCode;
                     $res->sunatDescription = $readerResult->sunatDescription;
 
@@ -72,7 +72,7 @@ class BillingManager
                 return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -96,11 +96,11 @@ class BillingManager
 
                 $sunatResult = $this->SendDocument(1, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->errorMessage;
+                $res->sunatCommuniationError = $sunatResult->message;
                 if ($sunatResult->success == true) {
                     $readerResult = $this->ReadSunatAnswer($folderPath, $fileName);
                     $res->readerSuccess = $readerResult->success;
-                    $res->readerError = $readerResult->errorMessage;
+                    $res->readerError = $readerResult->message;
                     $res->sunatResponseCode = $readerResult->sunatResponseCode;
                     $res->sunatDescription = $readerResult->sunatDescription;
 
@@ -118,7 +118,7 @@ class BillingManager
                 return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -142,11 +142,11 @@ class BillingManager
 
                 $sunatResult = $this->SendDocument(1, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->errorMessage;
+                $res->sunatCommuniationError = $sunatResult->message;
                 if ($sunatResult->success == true) {
                     $readerResult = $this->ReadSunatAnswer($folderPath, $fileName);
                     $res->readerSuccess = $readerResult->success;
-                    $res->readerError = $readerResult->errorMessage;
+                    $res->readerError = $readerResult->message;
                     $res->sunatResponseCode = $readerResult->sunatResponseCode;
                     $res->sunatDescription = $readerResult->sunatDescription;
 
@@ -164,7 +164,7 @@ class BillingManager
                 return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -184,7 +184,7 @@ class BillingManager
 
                 $sunatResult = $this->SendDocument(2, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->errorMessage;
+                $res->sunatCommuniationError = $sunatResult->message;
                 $res->ticket = $sunatResult->ticket->ticket;
                 if ($sunatResult->success == true) {
                     $this->sunatSummaryResponseModel->Insert($sunatCommunicationId, $referenceId, $userId, $res);
@@ -196,7 +196,7 @@ class BillingManager
                 return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -218,7 +218,7 @@ class BillingManager
             $fileName = $invoice['supplierRuc'] . '-' . $invoice['invoiceTypeCode'] . '-' . $invoice['serie'] . '-' . $invoice['number'] .'.xml';
             $res = $this->SaveInvoice($folderPath, $fileName, $referenceId, $invoice, 2, $userId);
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -239,7 +239,7 @@ class BillingManager
 
                 $sunatResult = $this->SendDocument(2, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->errorMessage;
+                $res->sunatCommuniationError = $sunatResult->message;
                 if ($sunatResult->success == true) {
                     $res->ticket = $sunatResult->ticket->ticket;
                     $this->sunatSummaryResponseModel->Insert($sunatCommunicationId, $referenceId, $userId, $res);
@@ -251,7 +251,7 @@ class BillingManager
                 return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -279,11 +279,11 @@ class BillingManager
 
                 $sunatResult = $this->SendDocument(3, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->errorMessage;
+                $res->sunatCommuniationError = $sunatResult->message;
                 if ($sunatResult->success == true) {
                     $readerResult = $this->ReadSunatAnswer($folderPath, $fileName);
                     $res->readerSuccess = $readerResult->success;
-                    $res->readerError = $readerResult->errorMessage;
+                    $res->readerError = $readerResult->message;
                     $res->sunatResponseCode = $readerResult->sunatResponseCode;
                     $res->sunatDescription = $readerResult->sunatDescription;
 
@@ -301,7 +301,7 @@ class BillingManager
                 return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -351,7 +351,7 @@ class BillingManager
 
             $res->success = true;
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -580,7 +580,7 @@ class BillingManager
 
             $res->success = true;
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -1321,7 +1321,7 @@ class BillingManager
 
             $res->success = true;
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -1774,7 +1774,7 @@ class BillingManager
 
             $res->success = true;
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -2227,7 +2227,7 @@ class BillingManager
 
             $res->success = true;
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -2269,7 +2269,7 @@ class BillingManager
             $this->sunatXmlModel->Insert($xmlTypeId, $referenceId, $userId);
             $res->success = true;
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -2356,7 +2356,7 @@ class BillingManager
 
             $res->success = true;
         } catch (Exception $e) {
-            $res->errorMessage = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -2443,7 +2443,7 @@ class BillingManager
 
             $res->success = true;
         } catch (Exception $e) {
-            $res->errorMessage =  'Error in : ' .__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString();
+            $res->message =  'Error in : ' .__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString();
         }
 
         return $res;
@@ -2463,7 +2463,7 @@ class BillingManager
             $res->success = true;
         } catch (Exception $e) {
             $res->success = false;
-            $res->errorMessage =  'Error in : ' .__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString();
+            $res->message =  'Error in : ' .__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString();
         }
 
         return $res;
