@@ -402,7 +402,7 @@ class InvoiceController extends Controller
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
                                                     <input class="SnForm-control SnControl jsInvoiceItemTotalValue" type="number" step="any"
                                                         id="invoiceItemTotalValue${uniqueId}"
-                                                        name="invoice[item][${uniqueId}][totalValue]">
+                                                        name="invoice[item][${uniqueId}][totalValue]" readonly>
                                                 </div>
                                                 <input type="hidden" id="invoiceItemTotalValueDecimal${uniqueId}">
                                             </div>
@@ -427,7 +427,7 @@ class InvoiceController extends Controller
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
                                                     <input class="SnForm-control SnControl jsInvoiceItemIsc" type="number" step="any"
-                                                        id="invoiceItemIsc${uniqueId}" name="invoice[item][${uniqueId}][isc]">
+                                                        id="invoiceItemIsc${uniqueId}" name="invoice[item][${uniqueId}][isc]" readonly>
                                                 </div>
                                                 <input type="hidden" id="invoiceItemTotalBaseIsc${uniqueId}" name="invoice[item][${uniqueId}][totalBaseIsc]">
                                             </div>
@@ -446,7 +446,7 @@ class InvoiceController extends Controller
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
                                                     <input class="SnForm-control SnControl jsInvoiceItemIgv" type="number" step="any"
-                                                        id="invoiceItemIgv${uniqueId}" name="invoice[item][${uniqueId}][igv]">
+                                                        id="invoiceItemIgv${uniqueId}" name="invoice[item][${uniqueId}][igv]" readonly>
                                                 </div>
                                                 <input type="hidden" id="invoiceItemTotalBaseIgv${uniqueId}" name="invoice[item][${uniqueId}][totalBaseIgv]">
                                             </div>
@@ -455,7 +455,7 @@ class InvoiceController extends Controller
                                                 <div class="SnControl-wrapper">
                                                     <span class="jsCurrencySymbol SnControl-prefix"></span>
                                                     <input type="number" step="any" class="SnForm-control SnControl jsInvoiceItemTotal"
-                                                        id="invoiceItemTotal${uniqueId}" name="invoice[item][${uniqueId}][total]">
+                                                        id="invoiceItemTotal${uniqueId}" name="invoice[item][${uniqueId}][total]" readonly>
                                                 </div>
                                                 <input type="hidden" id="invoiceItemTotalDecimal${uniqueId}">
                                             </div>

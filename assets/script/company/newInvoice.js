@@ -511,10 +511,15 @@ function addItem(){
             executeItem(uniqueId);
         }
     }
+    invoiceValidator();
 }
 
 function invoiceSubmit(){
     event.preventDefault();
+    if(!pValidator.validate()){
+        SnModal.error({ title: 'Algo salió mal', content: 'Complete los campos requeridos' })
+        return;
+    }
 
     // let _setLoading = this.setLoading();
     let invoice = {};
@@ -622,7 +627,6 @@ function invoiceSubmit(){
 
 function newInvoice(){
     let invoiceForm = document.getElementById('invoiceForm');
-    // pValidator.reset();
     if (invoiceForm){
         invoiceForm.reset();
     }
@@ -640,9 +644,19 @@ function newInvoice(){
         });
     }
     calcTotal();
+    invoiceValidator();
+}
+
+
+function invoiceValidator(){
+    if(pValidator){
+        pValidator.destroy();
+    }
+    pValidator = new Pristine(document.getElementById('invoiceForm'));
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
+    invoiceValidator();
     let invoiceCurrencyInput = document.getElementById('invoiceCurrencyCode');
     let invoiceDocumentInput = document.getElementById('invoiceDocumentCode');
 

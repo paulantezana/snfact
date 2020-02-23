@@ -1,4 +1,4 @@
-<form action="" id="invoiceForm" onsubmit="invoiceSubmit()">
+<form action="" id="invoiceForm" novalidate onsubmit="invoiceSubmit()">
     <div class="Invoice">
         <div class="Invoice-top">
             <div class="SnSwitch">
@@ -15,7 +15,7 @@
                 <div class="SnGrid m-grid-2 l-grid-3 lg-grid-4 SnMb-32">
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceDocumentCode">Documento</label>
-                        <select class="SnForm-control" id="invoiceDocumentCode">
+                        <select class="SnForm-control" id="invoiceDocumentCode" required>
                             <?php foreach ($catDocumentTypeCode as $row) : ?>
                                 <option value="<?= $row['code'] ?>" <?php echo ($invoiceDocumentCode ?? '') === $row['code'] ? 'selected' : '' ?> ><?= $row['description'] ?></option>
                             <?php endforeach; ?>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceOperationCode">Tipo de operacion</label>
-                        <select class="SnForm-control" id="invoiceOperationCode">
+                        <select class="SnForm-control" id="invoiceOperationCode" required>
                             <?php foreach ($catOperationTypeCode as $row) : ?>
                                 <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                             <?php endforeach; ?>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceCurrencyCode">Moneda</label>
-                        <select class="SnForm-control" id="invoiceCurrencyCode">
+                        <select class="SnForm-control" id="invoiceCurrencyCode" required>
                             <?php foreach ($catCurrencyTypeCode as $row) : ?>
                                 <option value="<?= $row['code'] ?>" data-symbol="<?= $row['symbol'] ?>" <?= $row['code'] == 'PEN' ? 'selected' : '' ?>><?= $row['description'] ?></option>
                             <?php endforeach; ?>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceSerie">Serie:</label>
-                        <select id="invoiceSerie" class="SnForm-control">
+                        <select id="invoiceSerie" class="SnForm-control" required>
                             <?php foreach ($invoiceSerieNumber as $row) : ?>
                                 <option value="<?= $row['serie'] ?>"><?= $row['serie'] ?></option>
                             <?php endforeach; ?>
@@ -49,12 +49,12 @@
                         <label class="SnForm-label" for="invoiceNumber">Número</label>
                         <div class="SnControl-wrapper">
                             <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" id="invoiceNumber" placeholder="#">
+                            <input class="SnForm-control SnControl" type="text" id="invoiceNumber" placeholder="#" required>
                         </div>
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoicePdfFormat">PDF Formato</label>
-                        <select name="invoice[pdfFormat]" class="SnForm-control" id="invoicePdfFormat">
+                        <select name="invoice[pdfFormat]" class="SnForm-control" id="invoicePdfFormat" required>
                             <option value="A4">TAMAÑO A4</option>
                             <option value="A5">TAMAÑO A5 (MITAD DE A4)</option>
                             <option value="TICKET">TAMAÑO TICKET</option>
@@ -62,11 +62,11 @@
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceDateOfIssue">Fecha.Doc:</label>
-                        <input class="SnForm-control" type="date" id="invoiceDateOfIssue" value="<?php echo date('Y-m-d'); ?>">
+                        <input class="SnForm-control" type="date" id="invoiceDateOfIssue" value="<?php echo date('Y-m-d'); ?>" required>
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceDateOfDue">Fecha.Venc.:</label>
-                        <input class="SnForm-control" type="date" id="invoiceDateOfDue" value="<?php echo date('Y-m-d'); ?>" >
+                        <input class="SnForm-control" type="date" id="invoiceDateOfDue" value="<?php echo date('Y-m-d'); ?>" required>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceChangeType">Tipo Cambio (SUNAT):</label>
@@ -106,14 +106,14 @@
                     <div class="SnControl-group">
                         <div class="SnControl-wrapper">
                             <i class="icon-user SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" id="invoiceCustomerDocumentNumber" placeholder="Número de documento Aquí!">
+                            <input class="SnForm-control SnControl" type="text" id="invoiceCustomerDocumentNumber" placeholder="Número de documento Aquí!" required>
                         </div>
                         <div class="SnBtn primary"><i class="icon-search4"></i></div>
                     </div>
                 </div>
                 <div class="SnForm-item required">
                     <label class="SnForm-label" for="invoiceCustomerDocumentCode">Tipo Doc.Ident.</label>
-                    <select class="SnForm-control" id="invoiceCustomerDocumentCode">
+                    <select class="SnForm-control" id="invoiceCustomerDocumentCode" required>
                         <?php foreach ($catIdentityDocumentTypeCode as $row) : ?>
                             <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                         <?php endforeach; ?>
@@ -123,10 +123,10 @@
                     <label class="SnForm-label" for="invoiceCustomerSocialReason">Razón Social:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-vcard SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerSocialReason" placeholder="Nombre o Razón Social Aquí">
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerSocialReason" placeholder="Nombre o Razón Social Aquí" required>
                     </div>
                 </div>
-                <div class="SnForm-item l-cols-2 required">
+                <div class="SnForm-item l-cols-2">
                     <label class="SnForm-label" for="invoiceCustomerAddress">Dirección:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-home2 SnControl-prefix"></i>
