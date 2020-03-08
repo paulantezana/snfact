@@ -1,7 +1,7 @@
 <?php
 
-require_once MODEL_PATH . '/Manager/MngUser.php';
-require_once MODEL_PATH . '/Manager/MngAppAuthorization.php';
+require_once MODEL_PATH . '/User.php';
+require_once MODEL_PATH . '/AppAuthorization.php';
 require_once ROOT_DIR . '/src/Helpers/TimeAuthenticator.php';
 
 class PublicManagerController extends Controller
@@ -12,7 +12,7 @@ class PublicManagerController extends Controller
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
-        $this->userModel = new MngUser($connection);
+        $this->userModel = new User($connection);
     }
 
     public function login()
@@ -31,7 +31,7 @@ class PublicManagerController extends Controller
                 try {
                     $user = $_POST['user'];
                     $password = $_POST['password'];
-                    $loginUser = $this->userModel->login($user, $password);
+                    $loginUser = $this->userModel->login($user, $password, 1);
                     if ($loginUser['fa2_secret_enabled']) {
                         $this->render('manager/posLogin.php', [
                             'userId' => $loginUser['mng_user_id'],
@@ -103,16 +103,16 @@ class PublicManagerController extends Controller
         unset($user['request_key_date']);
         unset($user['fa2_secret']);
 
-        $_SESSION[SESS_KEY] = $user['mng_user_id'];
+        $_SESSION[SESS_KEY] = $user['user_id'];
         $res = new Result();
         try {
             // Menu
-            $appAuthorizationModel = new MngAppAuthorization($this->connection);
-            $appAuthorization = $appAuthorizationModel->GetMenu($user['mng_user_role_id']);
-            if (count($appAuthorization) < 1) {
-                throw new Exception('No tiene autorización para acceder al sistema comuníquese con el administrador.');
-            }
-            $_SESSION[SESS_MENU] = $appAuthorization;
+            // $appAuthorizationModel = new AppAuthorization($this->connection);
+            // $appAuthorization = $appAuthorizationModel->GetMenu($user['user_role_id']);
+            // if (count($appAuthorization) < 1) {
+            //     throw new Exception('No tiene autorización para acceder al sistema comuníquese con el administrador.');
+            // }
+            // $_SESSION[SESS_MENU] = $appAuthorization;
 
             // Group Controller
             $_SESSION[CONTROLLER_GROUP] = 'Manager';

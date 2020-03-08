@@ -1,7 +1,7 @@
 <?php
 
-require_once MODEL_PATH . '/Company/UserRole.php';
-require_once MODEL_PATH . '/Company/AppAuthorization.php';
+require_once MODEL_PATH . '/UserRole.php';
+require_once MODEL_PATH . '/AppAuthorization.php';
 
 class UserRoleController extends Controller
 {

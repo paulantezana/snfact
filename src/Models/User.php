@@ -40,25 +40,27 @@ class User extends Model
         }
     }
 
-    public function login($user, $password)
+    public function login($user, $password, $manager = 0)
     {
         try{
             $password = sha1(trim($password));
 
-            $sql = 'SELECT * FROM user WHERE email = :email AND password = :password LIMIT 1 ';
+            $sql = 'SELECT * FROM user WHERE email = :email AND password = :password AND manager = :manager LIMIT 1 ';
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 ':email' => $user,
                 ':password' => $password,
+                ':manager' => $manager,
             ]);
             $data = $stmt->fetch();
 
             if(!$data){
-                $sql = 'SELECT * FROM user WHERE user_name = :user_name AND password = :password LIMIT 1';
+                $sql = 'SELECT * FROM user WHERE user_name = :user_name AND password = :password AND manager = :manager LIMIT 1';
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([
                     ':user_name' => $user,
                     ':password' => $password,
+                    ':manager' => $manager,
                 ]);
                 if($stmt->rowCount() == 0){
                     throw new Exception("El usuario o contraseñas es icorrecta");

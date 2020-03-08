@@ -1,8 +1,8 @@
 <?php
 
-require_once MODEL_PATH . '/Company/User.php';
-require_once MODEL_PATH . '/Company/UserRole.php';
-require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/User.php';
+require_once MODEL_PATH . '/UserRole.php';
+require_once MODEL_PATH . '/Business.php';
 require_once ROOT_DIR . '/src/Helpers/TimeAuthenticator.php';
 require_once ROOT_DIR . '/src/Helpers/QRCode/qrcode.class.php';
 
@@ -115,11 +115,11 @@ class UserController extends Controller
                 'user' => $user,
                 'qrCodeTable' => $qrCodeTable,
                 'secret' => $secret,
-            ]);
+            ],'layout/companyLayout.php');
         }catch (Exception $e){
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/companyLayout.php');
         }
     }
 

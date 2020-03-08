@@ -1,7 +1,7 @@
 <?php
 
-require_once MODEL_PATH . '/Company/Customer.php';
-require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Customer.php';
+require_once MODEL_PATH . '/Business.php';
 require_once MODEL_PATH . '/Catalogue/CatIdentityDocumentTypeCode.php';
 require_once ROOT_DIR . '/src/Services/PeruManager/PeruManager.php';
 

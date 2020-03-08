@@ -1,6 +1,6 @@
 <?php
 
-require_once MODEL_PATH . '/Company/Invoice.php';
+require_once MODEL_PATH . '/Invoice.php';
 require_once MODEL_PATH . '/Catalogue/CatCurrencyTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatDocumentTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatOperationTypeCode.php';
@@ -8,8 +8,8 @@ require_once MODEL_PATH . '/Catalogue/CatAffectationIgvTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatSystemIscTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatUnitMeasureTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatIdentityDocumentTypeCode.php';
-require_once MODEL_PATH . '/Company/Business.php';
-require_once MODEL_PATH . '/Company/BusinessSerie.php';
+require_once MODEL_PATH . '/Business.php';
+require_once MODEL_PATH . '/BusinessSerie.php';
 
 require_once ROOT_DIR . '/src/Services/BuildInvoice.php';
 require_once ROOT_DIR . '/src/Services/SendManager/EmailManager.php';

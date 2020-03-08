@@ -1,8 +1,8 @@
 <?php
 
-require_once MODEL_PATH . '/Company/User.php';
-require_once MODEL_PATH . '/Company/Business.php';
-require_once MODEL_PATH . '/Company/BusinessLocal.php';
+require_once MODEL_PATH . '/User.php';
+require_once MODEL_PATH . '/Business.php';
+require_once MODEL_PATH . '/BusinessLocal.php';
 
 class CompanyController extends Controller
 {
@@ -87,6 +87,13 @@ class CompanyController extends Controller
     {
         $message = $_GET['message'] ?? '';
         $this->render('404.php', [
+            'message' => $message
+        ],'layout/companyLayout.php');
+    }
+    public function help()
+    {
+        $message = $_GET['message'] ?? '';
+        $this->render('help.php', [
             'message' => $message
         ],'layout/companyLayout.php');
     }

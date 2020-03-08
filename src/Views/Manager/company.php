@@ -1,19 +1,19 @@
 <div class="SnContent">
     <div class="SnToolbar">
         <div class="SnToolbar-left">
-            <i class=" icon-equalizer SnMr-2"></i> <strong>USUARIOS</strong>
+            <i class="icon-equalizer SnMr-2"></i> <strong>EMPRESAS</strong>
         </div>
         <div class="SnToolbar-right">
-            <div class="SnBtn jsUserAction" onclick="userToPrint()">
+            <div class="SnBtn jsCompanyAction" onclick="CompanyToPrint()">
                 <i class="icon-printer"></i>
             </div>
-            <div class="SnBtn jsUserAction" onclick="userToExcel()">
+            <div class="SnBtn jsCompanyAction" onclick="CompanyToExcel()">
                 <i class="icon-file-excel"></i>
             </div>
-            <div class="SnBtn jsUserAction" onclick="userList()">
+            <div class="SnBtn jsCompanyAction" onclick="CompanyList()">
                 <i class="icon-reload-alt"></i>
             </div>
-            <div class="SnBtn primary jsUserAction" onclick="userShowModalCreate()">
+            <div class="SnBtn primary jsCompanyAction" onclick="CompanyShowModalCreate()">
                 <i class="icon-plus2 SnMr-2"></i> Nuevo
             </div>
         </div>
@@ -24,32 +24,111 @@
                 <input type="text" class="SnForm-control SnControl" id="searchContent" placeholder="Buscar...">
                 <span class="SnControl-suffix icon-search4"></span>
             </div>
-            <div id="userTable"></div>
+            <div id="companyTable"></div>
         </div>
     </div>
 </div>
 
 <script src="<?= URL_PATH ?>/assets/script/manager/company.js"></script>
 
-<div class="SnModal-wrapper" data-modal="userModalForm">
+<div class="SnModal-wrapper" data-modal="companyModalForm">
     <div class="SnModal">
-        <div class="SnModal-close" data-modalclose="userModalForm">
-            <svg viewBox="64 64 896 896" class="" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false">
-                <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path>
-            </svg>
+        <div class="SnModal-close" data-modalclose="companyModalForm">
+            <i class="icon-cross"></i>
         </div>
-        <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Usuario</div>
+        <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Categoria</div>
         <div class="SnModal-body">
-            <form action="" class="SnForm" novalidate id="userForm" onsubmit="userSubmit(event)">
-                <input type="hidden" class="SnForm-control" id="userId">
+            <form action="" class="SnForm" id="companyForm" novalidate onsubmit="CompanySubmit(event)">
+                <input type="hidden" class="SnForm-control" id="companyId">
                 <div class="SnForm-item required">
-                    <label for="userEmail" class="SnForm-label">Email</label>
+                    <label for="companyRuc" class="SnForm-label">RUC</label>
                     <div class="SnControl-wrapper">
-                        <i class="icon-envelop2 SnControl-prefix"></i>
-                        <input type="email" class="SnForm-control SnControl" id="userEmail" required>
+                        <i class="icon-barcode2 SnControl-prefix"></i>
+                        <input type="text" class="SnForm-control SnControl" required id="companyRuc" placeholder="Nombre de usuario">
                     </div>
                 </div>
-                <button type="submit" class="SnBtn primary block" id="userFormSubmit">Guardar</button>
+                <div class="SnGrid s-grid-2">
+                    <div class="SnForm-item required">
+                        <label for="companyEmail" class="SnForm-label">Email</label>
+                        <div class="SnControl-wrapper">
+                            <i class="icon-envelop2 SnControl-prefix"></i>
+                            <input type="email" class="SnForm-control SnControl" required id="companyEmail" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="SnForm-item required">
+                        <label for="companyWebSite" class="SnForm-label">Sitio Web</label>
+                        <div class="SnControl-wrapper">
+                            <i class="icon-envelop2 SnControl-prefix"></i>
+                            <input type="url" class="SnForm-control SnControl" required id="companyWebSite" placeholder="Sitio Web">
+                        </div>
+                    </div>
+                </div>
+                <div class="SnForm-item required">
+                    <label for="companyCommercialReason" class="SnForm-label">Razon comercial</label>
+                    <div class="SnControl-wrapper">
+                        <i class="icon-envelop2 SnControl-prefix"></i>
+                        <input type="text" class="SnForm-control SnControl" required id="companyCommercialReason" placeholder="Razon comercial">
+                    </div>
+                </div>
+                <div class="SnForm-item required">
+                    <label for="companyPhone" class="SnForm-label">Telefono</label>
+                    <div class="SnControl-wrapper">
+                        <i class="icon-envelop2 SnControl-prefix"></i>
+                        <input type="text" class="SnForm-control SnControl" required id="companyPhone" placeholder="Telefono">
+                    </div>
+                </div>
+                <div class="SnForm-item required">
+                    <label for="companyUserName" class="SnForm-label">Nombre de usuario</label>
+                    <div class="SnControl-wrapper">
+                        <i class="icon-user SnControl-prefix"></i>
+                        <input type="text" class="SnForm-control SnControl" required id="companyUserName" placeholder="Nombre de usuario">
+                    </div>
+                </div>
+                <div class="SnForm-item required">
+                    <label for="companyPassword" class="SnForm-label">Contraseña</label>
+                    <div class="SnControl-wrapper">
+                        <i class="icon-key SnControl-prefix"></i>
+                        <input type="password" class="SnForm-control SnControl" required id="companyPassword" placeholder="Contraseña">
+                        <span class="SnControl-suffix icon-eye togglePassword"></span>
+                    </div>
+                </div>
+                <div class="SnForm-item required">
+                    <label for="companyPasswordConfirm" class="SnForm-label">Confirmar contraseña</label>
+                    <div class="SnControl-wrapper">
+                        <i class="icon-key SnControl-prefix"></i>
+                        <input type="password" class="SnForm-control SnControl" required id="companyPasswordConfirm" placeholder="Confirmar contraseña">
+                        <span class="SnControl-suffix icon-eye togglePassword"></span>
+                    </div>
+                </div>
+                <div class="SnForm-item">
+                    <div class="SnSwitch">
+                        <input class="SnSwitch-control" type="checkbox" id="companyEnvironment">
+                        <label class="SnSwitch-label" for="companyEnvironment">Producción</label>
+                    </div>
+                </div>
+                <div class="SnForm-item">
+                    <div class="SnSwitch">
+                        <input class="SnSwitch-control" type="checkbox" id="companyState">
+                        <label class="SnSwitch-label" for="companyState">Estado</label>
+                    </div>
+                </div>
+                <button type="submit" class="SnBtn primary block" id="companyFormSubmit">Guardar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="SnModal-wrapper" data-modal="companyModalLogoForm">
+    <div class="SnModal">
+        <div class="SnModal-close" data-modalclose="companyModalLogoForm">
+            <i class="icon-cross"></i>
+        </div>
+        <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Categoria</div>
+        <div class="SnModal-body">
+            <form action="" class="SnForm" id="companyLogoForm" novalidate onsubmit="CompanyLogoSubmit()">
+                <input type="hidden" class="SnForm-control" id="companyLogoId">
+                
+                <button type="submit" class="SnBtn primary block" id="companyLogoFormSubmit">Guardar</button>
             </form>
         </div>
     </div>

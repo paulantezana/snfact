@@ -1,48 +1,54 @@
 <?php
 
-require_once MODEL_PATH . '/Company/User.php';
-require_once MODEL_PATH . '/Company/Business.php';
-require_once MODEL_PATH . '/Company/BusinessLocal.php';
+require_once MODEL_PATH . '/User.php';
+require_once MODEL_PATH . '/UserRole.php';
+require_once MODEL_PATH . '/AppAuthorization.php';
+require_once MODEL_PATH . '/Business.php';
+require_once MODEL_PATH . '/BusinessLocal.php';
+
+require_once ROOT_DIR . '/src/Services/PeruManager/PeruManager.php';
 
 class CompanyController extends Controller
 {
     private $connection;
+    private $userModel;
+    private $userRoleModel;
     private $businessModel;
     private $businessLocalModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
+        $this->userModel = new User($connection);
+        $this->userRoleModel = new UserRole($connection);
         $this->businessModel = new Business($connection);
         $this->businessLocalModel = new BusinessLocal($connection);
-        $this->userModel = new User($connection);
     }
 
     public function index()
     {
         try {
-            // Authorization($this->connection, 'categoria', 'listar');
-            $this->render('Manager/company.php',[],'Manager/Layout/adminLayout.php');
+            // Authorization($this->connection, 'company', 'listar');
+            $this->render('manager/company.php',[],'layout/managerLayout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/managerLayout.php');
         }
     }
 
     public function table()
     {
         try {
-            Authorization($this->connection, 'categoria', 'listar');
+            // Authorization($this->connection, 'company', 'listar');
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $category = $this->categoryModel->Paginate($page, $limit, $search, $business['business_id']);
+            $company = $this->businessModel->Paginate($page, $limit, $search);
 
-            $this->render('company/partials/categoryTable.php', [
-                'category' => $category,
+            $this->render('manager/partials/companyTable.php', [
+                'company' => $company,
             ]);
         } catch (Exception $e) {
             $this->render('500.php', [
@@ -55,11 +61,11 @@ class CompanyController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'categoria', 'modificar');
+            // Authorization($this->connection, 'company', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->categoryModel->GetById($body['categoryId']);
+            $res->result = $this->businessModel->GetById($body['companyId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -70,22 +76,146 @@ class CompanyController extends Controller
     public function create()
     {
         $res = new Result();
+        $this->connection->beginTransaction();
         try {
-            Authorization($this->connection, 'categoria', 'crear');
+            // Authorization($this->connection, 'company', 'crear');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $validate = $this->validateInput($body);
-            if (!$validate->success) {
-                throw new Exception($validate->message);
+            // $validate = $this->validateInput($body);
+            // if (!$validate->success) {
+            //     throw new Exception($validate->message);
+            // }
+
+            $business = $this->businessModel->GetBy('ruc', $body['ruc']);
+            if ($business) {
+                throw new Exception('Este ruc ya esta registrado en el sistema');
             }
 
-            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $queryPeru = PeruManager::queryDocument($body['ruc']);
+            if(!$queryPeru->success){
+                throw new Exception($queryPeru->message);
+            }
+            $dataPeru = $queryPeru->result;
 
-            $res->result = $this->categoryModel->Insert($body, $_SESSION[SESS_KEY]);
+            $userId = $this->userModel->Insert([
+                "password" => $body['password'],
+                "email" => $body['email'],
+                "avatar" => '',
+                "userName" => $body['userName'],
+                "state" => true,
+                "userRoleId" => 0,
+            ], 0);
+
+            $businessId = $this->businessModel->Insert([
+                'continue_payment' => false,
+                'ruc' => $body['ruc'],
+                'social_reason' => $dataPeru['socialReason'],
+                'commercial_reason' => $body['commercialReason'],
+                'email' => $body['email'],
+                'phone' => $dataPeru['telephone'] != '' ? $dataPeru['telephone'] : $body['phone'],
+                'web_site' => $body['webSite'],
+                'environment' => $body['environment'],
+                'state' => $body['state'],
+            ], $userId);
+
+            $roleId = $this->userRoleModel->Insert([
+                'name'=>'Admin',
+                'businessId'=>$businessId,
+            ],$userId);
+
+            $this->userModel->UpdateById($userId,[
+                'user_role_id' => $roleId,
+            ]);
+
+            $appAuthorizationModel = new AppAuthorization($this->connection);
+            $authIds = $appAuthorizationModel->GetAllId();
+            $appAuthorizationModel->Register($authIds, $roleId);
+
+            $this->businessLocalModel->Insert([
+                'shortName' => 'Local principal',
+                'sunatCode' => '',
+                'locationCode' => '',
+                'address' => $dataPeru['fiscalAddress'],
+                'pdfInvoiceSize' => 'A4',
+                'pdfHeader' => 'Email: ' . $body['email'],
+                'description' => '',
+                'businessId' => $businessId,
+                'state' => 1,
+                'item' => [
+                    [
+                        'serie' => 'FPP1',
+                        'documentCode' => '01',
+                        'contingency' => 0,
+                    ],
+                    [
+                        'serie' => 'FPP1',
+                        'documentCode' => '07',
+                        'contingency' => 0,
+                    ],
+                    [
+                        'serie' => 'FPP1',
+                        'documentCode' => '08',
+                        'contingency' => 0,
+                    ],
+                    [
+                        'serie' => 'BPP1',
+                        'documentCode' => '03',
+                        'contingency' => 0,
+                    ],
+                    [
+                        'serie' => 'BPP1',
+                        'documentCode' => '07',
+                        'contingency' => 0,
+                    ],
+                    [
+                        'serie' => 'BPP1',
+                        'documentCode' => '08',
+                        'contingency' => 0,
+                    ],
+                    [
+                        'serie' => '0001',
+                        'documentCode' => '01',
+                        'contingency' => 1,
+                    ],
+                    [
+                        'serie' => '0001',
+                        'documentCode' => '07',
+                        'contingency' => 1,
+                    ],
+                    [
+                        'serie' => '0001',
+                        'documentCode' => '08',
+                        'contingency' => 1,
+                    ],
+                    [
+                        'serie' => '0001',
+                        'documentCode' => '03',
+                        'contingency' => 1,
+                    ],
+                    [
+                        'serie' => '0001',
+                        'documentCode' => '07',
+                        'contingency' => 1,
+                    ],
+                    [
+                        'serie' => '0001',
+                        'documentCode' => '08',
+                        'contingency' => 1,
+                    ],
+                    [
+                        'serie' => 'T001',
+                        'documentCode' => '09',
+                        'contingency' => 0,
+                    ],
+                ]
+            ], $userId);
+            $this->connection->commit();
+
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
         } catch (Exception $e) {
+            $this->connection->rollBack();
             $res->message = $e->getMessage();
         }
         echo json_encode($res);
@@ -95,24 +225,38 @@ class CompanyController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'categoria', 'modificar');
+            // Authorization($this->connection, 'company', 'modificar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $validate = $this->validateInput($body);
-            if (!$validate->success) {
-                throw new Exception($validate->message);
+            // $validate = $this->validateInput($body);
+            // if (!$validate->success) {
+            //     throw new Exception($validate->message);
+            // }
+
+            // $business = $this->businessModel->GetBy('ruc', $body['ruc']);
+            // if ($business) {
+            //     throw new Exception('Este ruc ya esta registrado en el sistema');
+            // }
+
+            $queryPeru = PeruManager::queryDocument($body['ruc']);
+            if(!$queryPeru->success){
+                throw new Exception($queryPeru->message);
             }
+            $dataPeru = $queryPeru->result;
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->categoryModel->UpdateById($body['categoryId'], [
-                'created_at' => $currentDate,
+            $this->businessModel->UpdateById($body['companyId'], [
+                'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
-                //                'parent_id' => $body['parentId'],
-                'name' => $body['name'],
-                'description' => $body['description'],
+                'social_reason' => $dataPeru['socialReason'],
+                'email' => $body['email'],
+                'web_site' => $body['webSite'],
                 'state' => $body['state'],
+                'environment' => $body['environment'],
+                'ruc' => $body['ruc'],
+                'phone' => $dataPeru['telephone'] != '' ? $dataPeru['telephone'] : $body['phone'],
             ]);
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
@@ -126,11 +270,11 @@ class CompanyController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'categoria', 'eliminar');
+            Authorization($this->connection, 'company', 'eliminar');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $this->categoryModel->DeleteById($body['categoryId']);
+            $this->businessModel->DeleteById($body['companyId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {
@@ -145,7 +289,7 @@ class CompanyController extends Controller
         $res->success = true;
 
         if (($body['name']) == '') {
-            $res->message .= 'Falta ingresar el nombre de la categoria';
+            $res->message .= 'Falta ingresar el nombre de la company';
             $res->success = false;
         }
 

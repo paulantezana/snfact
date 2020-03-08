@@ -27,4 +27,8 @@ class ManagerController extends Controller
             'message' => $message
         ],'layout/managerLayout.php');
     }
+    public function logout(){
+        session_destroy();
+        $this->redirect('/');
+    }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Business.php';
 
 class BusinessController extends Controller
 {
@@ -34,21 +34,21 @@ class BusinessController extends Controller
                     // Upload Logo
                     if (isset($_FILES['businessLogo'])) {
                         $businessLogo = $_FILES['businessLogo'];
-                        $validate = $this->BusinessValidateLogo($businessLogo);
-                        if (!$validate->success) {
-                            $error = $validate->error;
-                            throw new Exception($validate->message);
-                        }
 
-                        if (!($businessLogo['tmp_name'] ?? '') == '') {
-                            $rootPath = ROOT_DIR;
-                            $folderName = '/assets/files/images/';
-                            if (!file_exists($rootPath . $folderName)) {
-                                mkdir($rootPath . $folderName);
+                        if (isset($businessLogo['name']) && strlen($businessLogo['name']) > 0) {
+                            $validate = $this->BusinessValidateLogo($businessLogo);
+                            if (!$validate->success) {
+                                $error = $validate->error;
+                                throw new Exception($validate->message);
+                            }
+
+                            $folderName = FILE_PATH . '/images/';
+                            if (!file_exists(ROOT_DIR . $folderName)) {
+                                mkdir(ROOT_DIR . $folderName);
                             }
 
                             $filesName = 'L' . $business['ruc'] . '-' . $business['business_id'] . '.' . pathinfo($businessLogo['name'])['extension'];
-                            if (!copy($businessLogo['tmp_name'], $rootPath . $folderName . $filesName)) {
+                            if (!copy($businessLogo['tmp_name'], ROOT_DIR . $folderName . $filesName)) {
                                 throw new Exception("Error al subir el logo", 1);
                             }
 
@@ -72,11 +72,11 @@ class BusinessController extends Controller
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
-            ]);
+            ],'layout/companyLayout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/companyLayout.php');
         }
     }
 

@@ -87,9 +87,7 @@
                         <label class="SnSwitch-label" for="userState">Estado</label>
                     </div>
                 </div>
-                <div class="SnForm-item">
-                    <button type="submit" class="SnBtn primary block" id="userFormSubmit">Guardar</button>
-                </div>
+                <button type="submit" class="SnBtn primary block" id="userFormSubmit">Guardar</button>
             </form>
         </div>
     </div>

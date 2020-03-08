@@ -1,6 +1,6 @@
 <?php
 
-require_once MODEL_PATH . '/Company/AppAuthorization.php';
+require_once MODEL_PATH . '/AppAuthorization.php';
 
 class AppAuthorizationController extends  Controller
 {

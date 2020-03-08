@@ -26,6 +26,8 @@ define('APP_NAME','SnFact');
 define('APP_AUTHOR','SnFact');
 define('APP_DESCRIPTION','SnFact');
 
+define('FILE_PATH','/files');
+
 // Temp
 define('SUNAT_SERVICE_URL', 'https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService?wsdl');
 define('SUNAT_GUIDE_SERVICE_URL', 'https://e-beta.sunat.gob.pe/ol-ti-itemision-guia-gem-beta/billService?wsdl');

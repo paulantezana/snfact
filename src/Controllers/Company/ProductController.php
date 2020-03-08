@@ -1,10 +1,10 @@
 <?php
 
-require_once MODEL_PATH . '/Company/Product.php';
-require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Product.php';
+require_once MODEL_PATH . '/Business.php';
 require_once MODEL_PATH . '/Catalogue/CatAffectationIgvTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatUnitMeasureTypeCode.php';
-require_once MODEL_PATH . '/Company/Category.php';
+require_once MODEL_PATH . '/Category.php';
 require_once MODEL_PATH . '/Catalogue/CatSystemIscTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatProductCode.php';
 

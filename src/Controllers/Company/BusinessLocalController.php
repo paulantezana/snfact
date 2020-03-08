@@ -1,8 +1,8 @@
 <?php
 
-require_once MODEL_PATH . '/Company/Business.php';
-require_once MODEL_PATH . '/Company/BusinessLocal.php';
-require_once MODEL_PATH . '/Company/BusinessSerie.php';
+require_once MODEL_PATH . '/Business.php';
+require_once MODEL_PATH . '/BusinessLocal.php';
+require_once MODEL_PATH . '/BusinessSerie.php';
 require_once MODEL_PATH . '/Catalogue/CatDocumentTypeCode.php';
 
 class BusinessLocalController extends Controller

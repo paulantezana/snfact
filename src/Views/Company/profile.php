@@ -1,7 +1,7 @@
 <div class="SnContent">
     <div class="SnCard">
         <div class="SnCard-body">
-            <?php require_once __DIR__ . '/partials/alertMessage.php' ?>
+            <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
             <div class="SnTab">
                 <input type="hidden" id="userId" value="<?php echo $_SESSION[SESS_KEY] ?? 0 ?>">
                 <div class="SnTab-header">
@@ -19,14 +19,14 @@
                                 <label for="userEmail" class="SnForm-label">Email</label>
                                 <div class="SnControl-wrapper">
                                     <i class="icon-envelop2 SnControl-prefix"></i>
-                                    <input type="email" class="SnForm-control SnControl" required id="userEmail" placeholder="Email" value="<?= $user['email'] ?>">
+                                    <input type="email" class="SnForm-control SnControl" required id="userEmail" placeholder="Email" value="<?= $parameter['user']['email'] ?>">
                                 </div>
                             </div>
                             <div class="SnForm-item required">
                                 <label for="userUserName" class="SnForm-label">Nombre de usuario</label>
                                 <div class="SnControl-wrapper">
                                     <i class="icon-user SnControl-prefix"></i>
-                                    <input type="text" class="SnForm-control SnControl" required id="userUserName" placeholder="Nombre de usuario" value="<?= $user['user_name'] ?>">
+                                    <input type="text" class="SnForm-control SnControl" required id="userUserName" placeholder="Nombre de usuario" value="<?= $parameter['user']['user_name'] ?>">
                                 </div>
                             </div>
                             <div class="SnForm-item">

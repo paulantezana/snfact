@@ -35,7 +35,7 @@
 @import "adminLayout/Header";
 @import "adminLayout/HeaderMenu";
 @import "adminLayout/AsideMenu";
-@import "company/SnToolbar";
+@import "adminLayout/SnToolbar";
 
 @import "company/InfiniteScroll";
 @import "company/CustomerRow";
@@ -58,6 +58,10 @@
   &.success {
     background: var(--snSuccess);
     color: var(--snSuccessInverse);
+  }
+  &.error {
+    background: var(--snError);
+    color: var(--snErrorInverse);
   }
 }
 

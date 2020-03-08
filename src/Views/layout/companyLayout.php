@@ -56,7 +56,7 @@
                                         </div>
                                     </li>
                                     <li class="SnPt-2"><a href="<?= URL_PATH ?>/user/profile"> <i class="icon-user-plus SnMr-2"></i> Perfil</a></li>
-                                    <li><a href="<?= URL_PATH ?>/"> <i class="icon-help SnMr-2"></i> Soporte</a></li>
+                                    <li><a href="<?= URL_PATH ?>/company/help"> <i class="icon-help SnMr-2"></i> Soporte</a></li>
                                     <li class="SnPb-2"><a href="<?= URL_PATH ?>/business/update"> <i class="icon-cog SnMr-2"></i> Configurar empresa</a></li>
                                     <li class="divider"></li>
                                     <li class="SnPt-2 SnPb-2"><a href="<?= URL_PATH ?>/user/logout"> <i class="icon-switch2 SnMr-2"></i> Cerrar sesión</a></li>

@@ -1,7 +1,7 @@
 <?php
 
-require_once MODEL_PATH . '/Company/Category.php';
-require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Category.php';
+require_once MODEL_PATH . '/Business.php';
 
 class CategoryController extends Controller
 {

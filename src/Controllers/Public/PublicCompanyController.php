@@ -1,10 +1,10 @@
 <?php
 
-require_once MODEL_PATH . '/Company/User.php';
-require_once MODEL_PATH . '/Company/UserRole.php';
-require_once MODEL_PATH . '/Company/AppAuthorization.php';
-require_once MODEL_PATH . '/Company/Business.php';
-require_once MODEL_PATH . '/Company/BusinessLocal.php';
+require_once MODEL_PATH . '/User.php';
+require_once MODEL_PATH . '/UserRole.php';
+require_once MODEL_PATH . '/AppAuthorization.php';
+require_once MODEL_PATH . '/Business.php';
+require_once MODEL_PATH . '/BusinessLocal.php';
 require_once ROOT_DIR . '/src/Helpers/TimeAuthenticator.php';
 require_once ROOT_DIR . '/src/Services/PeruManager/PeruManager.php';
 
@@ -191,6 +191,8 @@ class PublicCompanyController extends Controller
                         'email' => $register['email'],
                         'phone' => $dataPeru['telephone'],
                         'web_site' => '',
+                        'environment' => false,
+                        'state' => true,
                     ], $userId);
 
                     $roleId = $this->userRoleModel->Insert([
