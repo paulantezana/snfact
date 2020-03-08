@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/layout/header.php'; ?>
-
 <div class="SnContent">
     <div class="SnCard">
         <div class="SnCard-body">
@@ -122,5 +120,3 @@
     </div>
 </div>
 <script src="<?= URL_PATH ?>/assets/script/company/profile.js"></script>
-
-<?php require_once __DIR__ . '/layout/footer.php'; ?>

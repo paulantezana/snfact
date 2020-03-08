@@ -1,27 +1,28 @@
 <?php
 
-require_once MODEL_PATH . '/Company/Category.php';
+require_once MODEL_PATH . '/Company/User.php';
 require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Company/BusinessLocal.php';
 
-class CategoryController extends Controller
+class CompanyController extends Controller
 {
-    protected $connection;
-    protected $categoryModel;
-    protected $businessModel;
-    protected $catIdentityDocumentTypeCodeModel;
+    private $connection;
+    private $businessModel;
+    private $businessLocalModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
-        $this->categoryModel = new Category($connection);
         $this->businessModel = new Business($connection);
+        $this->businessLocalModel = new BusinessLocal($connection);
+        $this->userModel = new User($connection);
     }
 
     public function index()
     {
         try {
-            Authorization($this->connection, 'categoria', 'listar');
-            $this->render('company/category.php',[],'layout/companyLayout.php');
+            // Authorization($this->connection, 'categoria', 'listar');
+            $this->render('Manager/company.php',[],'Manager/Layout/adminLayout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),

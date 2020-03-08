@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (count($product['data']) >= 1): foreach ($product['data'] as $row) : ?>
+            <?php if (count($parameter['product']['data']) >= 1): foreach ($parameter['product']['data'] as $row) : ?>
                 <tr>
                     <td><?= $row['product_key'] ?></td>
                     <td><?= $row['category_description'] ?></td>
@@ -52,9 +52,9 @@
     </table>
 </div>
 <?php
-$currentPage = $product['current'];
-$totalPage = $product['pages'];
-$limitPage = $product['limit'];
+$currentPage = $parameter['product']['current'];
+$totalPage = $parameter['product']['pages'];
+$limitPage = $parameter['product']['limit'];
 $additionalQuery = '';
 $linksQuantity = 3;
 

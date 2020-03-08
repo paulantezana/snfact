@@ -7,7 +7,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($routes as $row) : ?>
+            <?php foreach ($parameter['routes'] as $row) : ?>
                 <tr>
                     <td><?= $row['name'] ?></td>
                     <td>

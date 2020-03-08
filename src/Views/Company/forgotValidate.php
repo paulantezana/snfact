@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/../layout/header.php'; ?>
-
 <div class="Login">
     <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
     <?php if (($contentType === 'validateToken' && $messageType === 'success') || ($contentType === 'changePassword'  && $messageType === 'error')):  ?>
@@ -28,7 +26,5 @@
             </div>
         </form>
     <?php endif; ?>
-    <a href="<?= URL_PATH ?>/login" class="SnBtn block">Login</a>
+    <a href="<?= URL_PATH ?>/publicCompany/login" class="SnBtn block">Login</a>
 </div>
-
-<?php require_once __DIR__ . '/../layout/footer.php' ?>

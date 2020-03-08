@@ -28,11 +28,11 @@ class CustomerController extends Controller
 
             $this->render('company/customer.php', [
                 'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
-            ]);
+            ],'layout/companyLayout.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/companyLayout.php');
         }
     }
 
@@ -51,7 +51,7 @@ class CustomerController extends Controller
                 'customer' => $customer,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }

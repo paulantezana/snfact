@@ -32,7 +32,7 @@ class BusinessLocalController extends Controller
                 'itemTemplate' => $itemTemplate,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -53,7 +53,7 @@ class BusinessLocalController extends Controller
                 'businessLocal' => $businessLocal,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }

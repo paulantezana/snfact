@@ -15,7 +15,7 @@ class DocumentationController extends Controller
             Authorization($this->connection, 'categoria', 'listar');
             $this->render('company/documentation.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -26,7 +26,7 @@ class DocumentationController extends Controller
             Authorization($this->connection, 'categoria', 'listar');
             $this->render('company/documentation.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -37,7 +37,7 @@ class DocumentationController extends Controller
             Authorization($this->connection, 'categoria', 'listar');
             $this->render('company/documentation.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }

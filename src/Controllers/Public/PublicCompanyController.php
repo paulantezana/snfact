@@ -31,10 +31,10 @@ class PublicCompanyController extends Controller
             if (isset($_POST['commit'])) {
 
                 if (!isset($_POST['user']) || !isset($_POST['password'])) {
-                    $this->render('Public/company/login.php', [
+                    $this->render('Company/login.php', [
                         'messageType' => 'error',
                         'message' => 'Los campos usuario y contraseña son requeridos',
-                    ]);
+                    ],'layout/basicLayout.php');
                     return;
                 }
 
@@ -46,33 +46,33 @@ class PublicCompanyController extends Controller
                     if ($loginUser['fa2_secret_enabled']) {
                         $this->render('Public/company/posLogin.php', [
                             'userId' => $loginUser['user_id'],
-                        ]);
+                        ],'layout/basicLayout.php');
                         return;
                     }
 
                     $responseApp = $this->initAppCompany($loginUser);
                     if (!$responseApp->success) {
                         session_destroy();
-                        $this->render('Public/403.php', [
+                        $this->render('403.php', [
                             'message' => $responseApp->message,
-                        ]);
+                        ],'layout/basicLayout.php');
                         return;
                     }
 
                     $this->redirect('/');
                 } catch (Exception $e) {
-                    $this->render('Public/company/login.php', [
+                    $this->render('Company/login.php', [
                         'messageType' => 'error',
                         'message' => $e->getMessage(),
-                    ]);
+                    ],'layout/basicLayout.php');
                 }
             } else {
-                $this->render('Public/company/login.php');
+                $this->render('Company/login.php',[],'layout/basicLayout.php');
             }
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/basicLayout.php');
         }
     }
 
@@ -101,7 +101,7 @@ class PublicCompanyController extends Controller
                 ]);
             }
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -312,7 +312,7 @@ class PublicCompanyController extends Controller
                 'messageType' => $messageType,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -364,7 +364,7 @@ class PublicCompanyController extends Controller
                 'messageType' => $resView->messageType,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -442,7 +442,7 @@ class PublicCompanyController extends Controller
                 'user' => $user,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }

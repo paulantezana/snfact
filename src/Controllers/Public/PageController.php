@@ -11,30 +11,14 @@ class PageController extends Controller
 
     public function index()
     {
-        $this->render('Public/index.php');
+        $this->render('landingPage.php');
     }
 
     public function error404()
     {
         $message = $_GET['message'] ?? '';
-        $this->render('Public/404.php', [
+        $this->render('404.php', [
             'message' => $message
-        ]);
-    }
-
-    public function error403()
-    {
-        $message = $_GET['message'] ?? '';
-        $this->render('Public/403.php', [
-            'message' => $message
-        ]);
-    }
-
-    public function error500()
-    {
-        $message = $_GET['message'] ?? '';
-        $this->render('Public/500.php', [
-            'message' => $message
-        ]);
+        ],'layout/basicLayout.php');
     }
 }

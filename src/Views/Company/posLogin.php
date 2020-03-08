@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/../layout/header.php'; ?>
-
 <div class="Login">
     <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
     <form action="<?= URL_PATH ?>/login/fa2" method="post" class="SnForm">
@@ -12,5 +10,3 @@
         <a href="<?= URL_PATH ?>/auth/logout" class="SnBtn block">Cancelar</a>
     </form>
 </div>
-
-<?php require_once __DIR__ . '/../layout/footer.php' ?>

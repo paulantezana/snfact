@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/../layout/header.php'; ?>
-
 <div class="Login">
     <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
     <form action="" method="post" class="SnForm">
@@ -41,8 +39,6 @@
             </div>
         </div>
         <input type="submit" value="Registrarse" name="commit" class="SnBtn primary block SnMb-5">
-        <a href="<?= URL_PATH ?>/login" class="SnBtn block">Login</a>
+        <a href="<?= URL_PATH ?>/publicCompany/login" class="SnBtn block">Login</a>
     </form>
 </div>
-
-<?php require_once __DIR__ . '/../layout/footer.php' ?>

@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($user['data'] as $row) : ?>
+            <?php foreach ($parameter['user']['data'] as $row) : ?>
                 <tr>
                     <td>
                         <div class="SnAvatar">
@@ -48,9 +48,9 @@
     </table>
 </div>
 <?php
-$currentPage = $user['current'];
-$totalPage = $user['pages'];
-$limitPage = $user['limit'];
+$currentPage = $parameter['user']['current'];
+$totalPage = $parameter['user']['pages'];
+$limitPage = $parameter['user']['limit'];
 $additionalQuery = '';
 $linksQuantity = 3;
 

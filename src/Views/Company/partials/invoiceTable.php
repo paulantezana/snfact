@@ -16,7 +16,7 @@
         </thead>
         <tfoot></tfoot>
         <tbody>
-            <?php if (count($invoice['data']) >= 1): foreach ($invoice['data'] as $row) : ?>
+            <?php if (count($parameter['invoice']['data']) >= 1): foreach ($parameter['invoice']['data'] as $row) : ?>
                 <tr>
                     <td><?php echo $row['date_of_issue'] ?> / <?php echo $row['time_of_issue'] ?></td>
                     <td><?php echo $row['document_type_code_description'] . ': ' . $row['serie'] . ' - ' . $row['number'] ?></td>

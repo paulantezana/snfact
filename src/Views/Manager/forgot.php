@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/../layout/header.php'; ?>
-
 <div class="Login">
     <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
     <p>Ingresa tu correo electrónico para buscar tu cuenta</p>
@@ -15,5 +13,3 @@
         <a href="<?= URL_PATH ?>/manager/login" class="SnBtn block">Login</a>
     </form>
 </div>
-
-<?php require_once __DIR__ . '/../layout/footer.php' ?>

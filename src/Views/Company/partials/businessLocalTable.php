@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (count($businessLocal['data']) >= 1): foreach ($businessLocal['data'] as $row) : ?>
+            <?php if (count($parameter['businessLocal']['data']) >= 1): foreach ($parameter['businessLocal']['data'] as $row) : ?>
                 <tr>
                     <td><?= $row['sunat_code'] ?></td>
                     <td><?= $row['short_name'] ?></td>
@@ -47,9 +47,9 @@
     </table>
 </div>
 <?php
-$currentPage = $businessLocal['current'];
-$totalPage = $businessLocal['pages'];
-$limitPage = $businessLocal['limit'];
+$currentPage = $parameter['businessLocal']['current'];
+$totalPage = $parameter['businessLocal']['pages'];
+$limitPage = $parameter['businessLocal']['limit'];
 $additionalQuery = '';
 $linksQuantity = 3;
 

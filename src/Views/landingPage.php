@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <?php require_once __DIR__ . '/../Helpes/head.php'; ?>
+        <?php require_once __DIR__ . '/layout/head.php'; ?>
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/frontPage.css">
     </head>
     <body>
@@ -38,7 +38,7 @@
                             </div>
                         </div> -->
                         <div class="Slide-action">
-                            <a class="SnBtn warning lg" href="<?=  URL_PATH . '/login' ?>">INGRESAR AL SISTEMA</a>
+                            <a class="SnBtn warning lg" href="<?=  URL_PATH . '/publicCompany/login' ?>">INGRESAR AL SISTEMA</a>
                         </div>
                         <img
                             src="<?= URL_PATH ?>/assets/images/dashboard.jpg"

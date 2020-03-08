@@ -7,7 +7,7 @@
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($userRole ?? [] as $row): ?>
+        <?php foreach ($parameter['userRole'] ?? [] as $row): ?>
             <tr>
                 <td><?= $row['name'] ?></td>
                 <td>

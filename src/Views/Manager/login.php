@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/../layout/header.php'; ?>
-
 <div class="Login">
     <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
     <form action="" method="post" class="SnForm">
@@ -28,5 +26,3 @@
         <button type="submit" class="SnBtn block primary" name="commit">Login</button>
     </form>
 </div>
-
-<?php require_once __DIR__ . '/../layout/footer.php' ?>

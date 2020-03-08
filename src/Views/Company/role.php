@@ -1,4 +1,3 @@
-<?php require_once __DIR__ . '/layout/header.php'; ?>
 <div class="SnContentAside UserRole">
     <div class="SnContentAside-left">
         <div class="SnCard">
@@ -108,4 +107,3 @@
         </div>
     </div>
 </div>
-<?php require_once __DIR__ . '/layout/footer.php'; ?>

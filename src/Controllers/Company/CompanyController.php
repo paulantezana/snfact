@@ -22,16 +22,16 @@ class CompanyController extends Controller
     public function index()
     {
         try {
-            $this->render('Company/dashboard.php');
+            $this->render('company/dashboard.php',[],'layout/companyLayout.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/companyLayout.php');
         }
     }
 
     public function fa2(){
-        $this->render('/Company/fa2.php');
+        $this->render('/company/fa2.php',[],'layout/companyLayout.php');
     }
 
     public function getGlobalInfo(){
@@ -82,5 +82,12 @@ class CompanyController extends Controller
             $res->message = $e->getMessage();
         }
         echo json_encode($res);
+    }
+    public function error404()
+    {
+        $message = $_GET['message'] ?? '';
+        $this->render('404.php', [
+            'message' => $message
+        ],'layout/companyLayout.php');
     }
 }

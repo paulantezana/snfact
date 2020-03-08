@@ -1,71 +1,58 @@
 <?php
 
-$routePublicPaths = [
-    '/' => ['controller' => 'PageController', 'method' => 'index'],
-    '/404' => ['controller' => 'PageController', 'method' => 'error404'],
-    '/500' => ['controller' => 'PageController', 'method' => 'error500'],
-    '/403' => ['controller' => 'PageController', 'method' => 'error403'],
-    '/term' => ['controller' => 'PageController', 'method' => 'term'],
-
-    '/forgot' => ['controller' => 'PublicCompanyController', 'method' => 'forgot'],
-    '/forgot/validate' => ['controller' => 'PublicCompanyController', 'method' => 'forgotValidate'],
-    '/register' => ['controller' => 'PublicCompanyController', 'method' => 'register'],
-    '/login' => ['controller' => 'PublicCompanyController', 'method' => 'login'],
-    '/login/fa2' => ['controller' => 'PublicCompanyController', 'method' => 'postLogin'],
-
-    '/manager/forgot' => ['controller' => 'PublicManagerController', 'method' => 'forgot'],
-    '/manager/forgot/validate' => ['controller' => 'PublicManagerController', 'method' => 'forgotValidate'],
-    '/manager/register' => ['controller' => 'PublicManagerController', 'method' => 'register'],
-    '/manager/login' => ['controller' => 'PublicManagerController', 'method' => 'login'],
-    '/manager/login/fa2' => ['controller' => 'PublicManagerController', 'method' => 'postLogin'],
-    '/manager/term' => ['controller' => 'PublicManagerController', 'method' => 'term'],
-];
-
 class Router
 {
-    public $url;
     public $controller;
     public $method;
 
     public function __construct()
     {
-        $this->url = URL;
         $this->matchRoute();
     }
 
     private function matchRoute()
     {
-        global $routePublicPaths;
-        $url = explode('/', $this->url);
+        $url = explode('/', URL);
 
-        if (!isset($_SESSION[SESS_KEY])){
-            if (isset($routePublicPaths[$this->url])) {
-                $this->controller = $routePublicPaths[$this->url]['controller'];
-                $this->method = $routePublicPaths[$this->url]['method'];
-            } else {
-                $this->controller = $routePublicPaths['/404']['controller'];
-                $this->method = $routePublicPaths['/404']['method'];
-            }
+        if (!isset($_SESSION[SESS_KEY])) {
             $_SESSION[CONTROLLER_GROUP] = 'Public';
-        } else {
-            $this->controller = (!empty($url[1]) ? $url[1] : $_SESSION[CONTROLLER_GROUP]) . 'Controller';
+            $this->controller = (!empty($url[1]) ? $url[1] : 'Page') . 'Controller';
             $this->method = !empty($url[2]) ? $url[2] : 'index';
+            if (!is_file(CONTROLLER_PATH . "/{$_SESSION[CONTROLLER_GROUP]}/{$this->controller}.php")) {
+                $this->controller = 'PageController';
+                $this->method = 'error404';
+            }
+        } else {
+            if($_SESSION[CONTROLLER_GROUP] === 'Manager'){
+                $this->controller = (!empty($url[1]) ? $url[1] : 'Manager') . 'Controller';
+                $this->method = !empty($url[2]) ? $url[2] : 'index';
+                if (!is_file(CONTROLLER_PATH . "/{$_SESSION[CONTROLLER_GROUP]}/{$this->controller}.php")) {
+                    $this->controller = 'ManagerController';
+                    $this->method = 'error404';
+                }
+            }elseif($_SESSION[CONTROLLER_GROUP] === 'Company'){
+                $this->controller = (!empty($url[1]) ? $url[1] : 'Company') . 'Controller';
+                $this->method = !empty($url[2]) ? $url[2] : 'index';
+                if (!is_file(CONTROLLER_PATH . "/{$_SESSION[CONTROLLER_GROUP]}/{$this->controller}.php")) {
+                    $this->controller = 'CompanyController';
+                    $this->method = 'error404';
+                }
+            } else{
+                $this->controller = 'PageController';
+                $this->method = 'error404';
+            }
         }
-
-        // if(!is_file(CONTROLLER_PATH . "/{$_SESSION[CONTROLLER_GROUP]}/{$this->controller}.php"))
-		// {
-        //     $_SESSION[CONTROLLER_GROUP] = 'Public';
-        //     $this->controller = 'PageController';
-        //     $this->method = 'error404';
-		// }
     }
 
     public function run()
     {
         try {
-            $database = new Database();
-
             require_once CONTROLLER_PATH . "/{$_SESSION[CONTROLLER_GROUP]}/{$this->controller}.php";
+            if(!method_exists($this->controller,$this->method)){
+                $this->method = 'index';
+            }
+
+            $database = new Database();
             $controller = new $this->controller($database->getConnection());
             $method = $this->method;
             $controller->$method();

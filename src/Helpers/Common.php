@@ -14,6 +14,13 @@ class Result extends stdClass
     }
 }
 
+function RequireToVar($file, $parameter)
+{
+    ob_start();
+    require($file);
+    return ob_get_clean();
+}
+
 function ArrayFindIndexByColumn(array $data, string $column, $value)
 {
     $index = array_search($value, array_column($data, $column));

@@ -28,11 +28,11 @@ class UserController extends Controller
 
             $this->render('company/user.php', [
                 'userRole' => $userRole,
-            ]);
+            ],'layout/companyLayout.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/companyLayout.php');
         }
     }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
                 'user' => $user,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -117,7 +117,7 @@ class UserController extends Controller
                 'secret' => $secret,
             ]);
         }catch (Exception $e){
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }

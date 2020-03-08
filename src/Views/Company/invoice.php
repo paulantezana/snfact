@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/layout/header.php'; ?>
-
 <div class="SnContent">
     <div class="SnToolbar" id="InvoiceToolbar">
         <div class="SnToolbar-left">
@@ -45,4 +43,3 @@
 
 <?php require_once __DIR__ . '/partials/invoiceDocumentModal.php' ?>
 <?php require_once __DIR__ . '/partials/invoiceModalSendEmail.php' ?>
-<?php require_once __DIR__ . '/layout/footer.php' ?>

@@ -2,14 +2,19 @@
 
 class Controller
 {
-    public function render($path, $params = []){
-        extract($params);
-        require_once VIEW_PATH . '/' . $path;
+    protected function render($path, $parameter = [], $template = ''){
+
+        $content = RequireToVar(VIEW_PATH . '/' . $path, $parameter);
+
+        if($template === '' || $template === null){
+            echo $content;
+            return;
+        }
+        
+        require_once(VIEW_PATH . '/' . $template);
     }
-    public function redirect($url = ""){
+
+    protected function redirect($url = ""){
         header('Location: ' . URL_PATH . $url);
-    }
-    public function getParsedBody($assoc = true){
-        return json_decode(file_get_contents('php://input'), $assoc);
     }
 }

@@ -52,11 +52,11 @@ class InvoiceController extends Controller
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
-            ]);
+            ],'layout/companyLayout.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/companyLayout.php');
         }
     }
 
@@ -73,7 +73,7 @@ class InvoiceController extends Controller
                 'invoice' => $invoice,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -123,7 +123,7 @@ class InvoiceController extends Controller
                 'invoiceType' => $invoiceType,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -170,7 +170,7 @@ class InvoiceController extends Controller
                 'invoice' => $invoice,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }

@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($customer['data'] as $row) : ?>
+            <?php foreach ($parameter['customer']['data'] as $row) : ?>
                 <tr>
                     <td><?= $row['created_at'] ?></td>
                     <td><?= $row['identity_document_description'] ?></td>
@@ -39,9 +39,9 @@
     </table>
 </div>
 <?php
-$currentPage = $customer['current'];
-$totalPage = $customer['pages'];
-$limitPage = $customer['limit'];
+$currentPage = $parameter['customer']['current'];
+$totalPage = $parameter['customer']['pages'];
+$limitPage = $parameter['customer']['limit'];
 $additionalQuery = '';
 $linksQuantity = 3;
 

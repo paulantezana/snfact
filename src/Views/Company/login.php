@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/../layout/header.php'; ?>
-
 <div class="Login">
     <?php require_once __DIR__ . '/../partials/alertMessage.php' ?>
     <form action="" method="post" class="SnForm">
@@ -23,11 +21,9 @@
                 <input class="SnSwitch-input " id="remember" name="remember" type="checkbox">
                 <label class="SnSwitch-label" for="remember">Recuerdame</label>
             </div>
-            <a href="<?= URL_PATH ?>/forgot"> ¿Olvido su contraseña?</a>
+            <a href="<?= URL_PATH ?>/publicCompany/forgot"> ¿Olvido su contraseña?</a>
         </div>
         <button type="submit" class="SnBtn block primary" name="commit">Login</button>
-        <p>O <a href="<?= URL_PATH ?>/register"> Registrate ahora</a></p>
+        <p>O <a href="<?= URL_PATH ?>/publicCompany/register"> Registrate ahora</a></p>
     </form>
 </div>
-
-<?php require_once __DIR__ . '/../layout/footer.php' ?>

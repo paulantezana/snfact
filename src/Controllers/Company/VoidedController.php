@@ -15,9 +15,9 @@ class VoidedController extends Controller
             Authorization($this->connection, 'categoria', 'listar');
             $this->render('company/voided.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/companyLayout.php');
         }
     }
 }

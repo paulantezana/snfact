@@ -9,7 +9,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (count($category['data']) >= 1): foreach ($category['data'] as $row) : ?>
+            <?php if (count($parameter['category']['data']) >= 1): foreach ($parameter['category']['data'] as $row) : ?>
                 <tr>
                     <td><?= $row['name'] ?></td>
                     <td><?= $row['description'] ?></td>
@@ -44,9 +44,9 @@
     </table>
 </div>
 <?php
-$currentPage = $category['current'];
-$totalPage = $category['pages'];
-$limitPage = $category['limit'];
+$currentPage = $parameter['category']['current'];
+$totalPage = $parameter['category']['pages'];
+$limitPage = $parameter['category']['limit'];
 $additionalQuery = '';
 $linksQuantity = 3;
 

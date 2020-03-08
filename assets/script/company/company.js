@@ -80,10 +80,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
     });
 
-    SnSelect({
-        elem: '.SnSelect',
-    });
-
     SnMenu({
         menuId: 'HeaderMenu',
         toggleButtonID: 'HeaderMenu-toggle',

@@ -21,10 +21,10 @@ class PublicManagerController extends Controller
             if (isset($_POST['commit'])) {
 
                 if (!isset($_POST['user']) || !isset($_POST['password'])) {
-                    $this->render('Public/manager/login.php', [
+                    $this->render('manager/login.php', [
                         'messageType' => 'error',
                         'message' => 'Los campos usuario y contraseña son requeridos',
-                    ]);
+                    ],'layout/basicLayout.php');
                     return;
                 }
 
@@ -32,37 +32,36 @@ class PublicManagerController extends Controller
                     $user = $_POST['user'];
                     $password = $_POST['password'];
                     $loginUser = $this->userModel->login($user, $password);
-                    var_dump($loginUser);
                     if ($loginUser['fa2_secret_enabled']) {
-                        $this->render('Public/manager/posLogin.php', [
+                        $this->render('manager/posLogin.php', [
                             'userId' => $loginUser['mng_user_id'],
-                        ]);
+                        ],'layout/basicLayout.php');
                         return;
                     }
 
                     $responseApp = $this->initAppCompany($loginUser);
                     if (!$responseApp->success) {
                         session_destroy();
-                        $this->render('Public/403.php', [
+                        $this->render('403.php', [
                             'message' => $responseApp->message,
-                        ]);
+                        ],'layout/basicLayout.php');
                         return;
                     }
 
                     $this->redirect('/');
                 } catch (Exception $e) {
-                    $this->render('Public/manager/login.php', [
+                    $this->render('manager/login.php', [
                         'messageType' => 'error',
                         'message' => $e->getMessage(),
-                    ]);
+                    ],'layout/basicLayout.php');
                 }
             } else {
-                $this->render('Public/manager/login.php');
+                $this->render('manager/login.php',[],'layout/basicLayout.php');
             }
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/basicLayout.php');
         }
     }
 
@@ -86,12 +85,12 @@ class PublicManagerController extends Controller
                 }
                 $this->redirect('/');
             } else {
-                $this->render('Public/company/posLogin.php', [
+                $this->render('manager/posLogin.php', [
                     'userId' => $userId,
                 ]);
             }
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }
@@ -166,14 +165,14 @@ class PublicManagerController extends Controller
                 }
             }
 
-            $this->render('Public/company/forgot.php', [
+            $this->render('manager/forgot.php', [
                 'message' => $resView->message,
                 'messageType' => $resView->messageType,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ]); 
         }
     }
 
@@ -242,14 +241,14 @@ class PublicManagerController extends Controller
                 }
             }
 
-            $this->render('Public/company/forgotValidate.php', [
+            $this->render('manager/forgotValidate.php', [
                 'message' => $resView->message,
                 'messageType' => $resView->messageType,
                 'contentType' => $resView->contentType,
                 'user' => $user,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }

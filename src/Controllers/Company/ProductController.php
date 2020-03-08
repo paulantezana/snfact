@@ -42,11 +42,11 @@ class ProductController extends Controller
                 'catUnitMeasureTypeCodes' => $catUnitMeasureTypeCodes,
                 'catSystemIscTypeCodes' => $catSystemIscTypeCodes,
                 'categories' => $categories,
-            ]);
+            ],'layout/companyLayout.php');
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/companyLayout.php');
         }
     }
 
@@ -65,7 +65,7 @@ class ProductController extends Controller
                 'product' => $product,
             ]);
         } catch (Exception $e) {
-            $this->render('Public/500.php', [
+            $this->render('500.php', [
                 'message' => $e->getMessage(),
             ]);
         }

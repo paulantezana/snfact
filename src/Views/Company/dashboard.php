@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/layout/header.php' ?>
-
 <script src="<?= URL_PATH ?>/assets/script/common/chart.min.js"></script>
 
 <div class="SnContent">
@@ -46,5 +44,3 @@
 </div>
 
 <!--<script src="--><?//= URL_PATH ?><!--/assets/dist/script/dashboard-min.js"></script>-->
-
-<?php require_once __DIR__ . '/layout/footer.php' ?>
