@@ -37,9 +37,9 @@ class CompanyController extends Controller
     public function getGlobalInfo(){
         $res = new Result();
         try {
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $businessLocals = $this->businessLocalModel->GetAllByBusinessId($business['business_id']);
-            $user = $this->userModel->GetById($_SESSION[SESS_KEY]);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+            $businessLocals = $this->businessLocalModel->getAllByBusinessId($business['business_id']);
+            $user = $this->userModel->getById($_SESSION[SESS_KEY]);
 
             $res->result = [
                 'business' => $business,

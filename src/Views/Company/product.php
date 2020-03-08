@@ -67,7 +67,7 @@
                 <div class="SnForm-item required">
                     <label for="productAffectationCode" class="SnForm-label">Tipo de IGV</label>
                     <select id="productAffectationCode" class="SnForm-control" required>
-                        <?php foreach ($catAffectationIgvTypeCodes ?? [] as $row): ?>
+                        <?php foreach ($parameter['catAffectationIgvTypeCodes'] ?? [] as $row): ?>
                             <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -94,7 +94,7 @@
                         <div class="SnControl-group">
                             <select id="productCategoryId" class="SnForm-control" required>
                                 <option value="">Seleccionar</option>
-                                <?php foreach ($categories ?? [] as $row): ?>
+                                <?php foreach ($parameter['categories'] ?? [] as $row): ?>
                                     <option value="<?= $row['category_id'] ?>"><?= $row['name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -105,7 +105,7 @@
                         <label for="productUnitMeasureCode" class="SnForm-label">Unidad de Medida</label>
                         <select id="productUnitMeasureCode" class="SnForm-control" required>
                             <option value="">Seleccionar</option>
-                            <?php foreach ($catUnitMeasureTypeCodes ?? [] as $row): ?>
+                            <?php foreach ($parameter['catUnitMeasureTypeCodes'] ?? [] as $row): ?>
                                 <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -116,7 +116,7 @@
                         <label for="productSystemIscCode" class="SnForm-label">Sistema ISC</label>
                         <select id="productSystemIscCode" class="SnForm-control">
                             <option value="">Seleccionar</option>
-                            <?php foreach ($catSystemIscTypeCodes ?? [] as $row): ?>
+                            <?php foreach ($parameter['catSystemIscTypeCodes'] ?? [] as $row): ?>
                                 <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                             <?php endforeach; ?>
                         </select>

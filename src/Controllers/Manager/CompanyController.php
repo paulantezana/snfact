@@ -45,7 +45,7 @@ class CompanyController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $company = $this->businessModel->Paginate($page, $limit, $search);
+            $company = $this->businessModel->paginate($page, $limit, $search);
 
             $this->render('manager/partials/companyTable.php', [
                 'company' => $company,
@@ -65,7 +65,7 @@ class CompanyController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->businessModel->GetById($body['companyId']);
+            $res->result = $this->businessModel->getById($body['companyId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -87,7 +87,7 @@ class CompanyController extends Controller
             //     throw new Exception($validate->message);
             // }
 
-            $business = $this->businessModel->GetBy('ruc', $body['ruc']);
+            $business = $this->businessModel->getBy('ruc', $body['ruc']);
             if ($business) {
                 throw new Exception('Este ruc ya esta registrado en el sistema');
             }
@@ -98,7 +98,7 @@ class CompanyController extends Controller
             }
             $dataPeru = $queryPeru->result;
 
-            $userId = $this->userModel->Insert([
+            $userId = $this->userModel->insert([
                 "password" => $body['password'],
                 "email" => $body['email'],
                 "avatar" => '',
@@ -107,7 +107,7 @@ class CompanyController extends Controller
                 "userRoleId" => 0,
             ], 0);
 
-            $businessId = $this->businessModel->Insert([
+            $businessId = $this->businessModel->insert([
                 'continue_payment' => false,
                 'ruc' => $body['ruc'],
                 'social_reason' => $dataPeru['socialReason'],
@@ -119,20 +119,20 @@ class CompanyController extends Controller
                 'state' => $body['state'],
             ], $userId);
 
-            $roleId = $this->userRoleModel->Insert([
+            $roleId = $this->userRoleModel->insert([
                 'name'=>'Admin',
                 'businessId'=>$businessId,
             ],$userId);
 
-            $this->userModel->UpdateById($userId,[
+            $this->userModel->updateById($userId,[
                 'user_role_id' => $roleId,
             ]);
 
             $appAuthorizationModel = new AppAuthorization($this->connection);
-            $authIds = $appAuthorizationModel->GetAllId();
-            $appAuthorizationModel->Register($authIds, $roleId);
+            $authIds = $appAuthorizationModel->getAllId();
+            $appAuthorizationModel->register($authIds, $roleId);
 
-            $this->businessLocalModel->Insert([
+            $this->businessLocalModel->insert([
                 'shortName' => 'Local principal',
                 'sunatCode' => '',
                 'locationCode' => '',
@@ -246,7 +246,7 @@ class CompanyController extends Controller
             $dataPeru = $queryPeru->result;
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->businessModel->UpdateById($body['companyId'], [
+            $this->businessModel->updateById($body['companyId'], [
                 'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
@@ -274,7 +274,7 @@ class CompanyController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $this->businessModel->DeleteById($body['companyId']);
+            $this->businessModel->deleteById($body['companyId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {

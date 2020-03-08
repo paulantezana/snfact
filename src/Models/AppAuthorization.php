@@ -7,7 +7,7 @@ class AppAuthorization extends Model
         parent::__construct("app_authorization","app_authorization_id", $connection);
     }
 
-    public function GetAllId()
+    public function getAllId()
     {
         try {
             $sql = 'SELECT app_authorization_id FROM app_authorization';
@@ -19,7 +19,7 @@ class AppAuthorization extends Model
         }
     }
 
-    public function GetMenu($userRoleId){
+    public function getMenu($userRoleId){
         try{
             $sql = 'SELECT app.module, GROUP_CONCAT(app.description) as description FROM user_role_authorization as ur
                         INNER JOIN app_authorization app ON ur.app_authorization_id = app.app_authorization_id
@@ -36,7 +36,7 @@ class AppAuthorization extends Model
         }
     }
 
-    public function GetAllByUserRoleId($userRoleId){
+    public function getAllByUserRoleId($userRoleId){
         try{
             $sql = 'SELECT * FROM user_role_authorization WHERE user_role_id = :user_role_id';
             $stmt = $this->db->prepare($sql);
@@ -50,7 +50,7 @@ class AppAuthorization extends Model
         }
     }
 
-    public function Save($authIds, $userRoleId, $userId){
+    public function save($authIds, $userRoleId, $userId){
         try{
             $this->db->beginTransaction();
 
@@ -81,7 +81,7 @@ class AppAuthorization extends Model
         }
     }
 
-    public function Register($authIds, $userRoleId){
+    public function register($authIds, $userRoleId){
         try{
             foreach ($authIds as $row){
                 $sql = 'INSERT INTO user_role_authorization (user_role_id, app_authorization_id) 
@@ -99,7 +99,7 @@ class AppAuthorization extends Model
         }
     }
 
-    public function IsAuthorized($module,$action,$userRoleId){
+    public function isAuthorized($module, $action, $userRoleId){
         try{
             $sql = 'SELECT count(*) as count FROM user_role_authorization as ur
                         INNER JOIN app_authorization app ON ur.app_authorization_id = app.app_authorization_id

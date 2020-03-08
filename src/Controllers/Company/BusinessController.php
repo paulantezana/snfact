@@ -29,7 +29,7 @@ class BusinessController extends Controller
                         $error = $validate->error;
                         throw new Exception($validate->message);
                     }
-                    $this->businessModel->Save($business);
+                    $this->businessModel->save($business);
 
                     // Upload Logo
                     if (isset($_FILES['businessLogo'])) {
@@ -52,7 +52,7 @@ class BusinessController extends Controller
                                 throw new Exception("Error al subir el logo", 1);
                             }
 
-                            $this->businessModel->UpdateById($business['business_id'], [
+                            $this->businessModel->updateById($business['business_id'], [
                                 'logo' => $folderName . $filesName,
                             ]);
                         }
@@ -66,7 +66,7 @@ class BusinessController extends Controller
                 $messageType = 'error';
             }
 
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
             $this->render('company/businessUpdate.php', [
                 'business' => $business,
                 'message' => $message,

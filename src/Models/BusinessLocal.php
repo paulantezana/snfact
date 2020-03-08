@@ -8,7 +8,7 @@ class BusinessLocal extends Model
         parent::__construct("business_local","business_local_id",$db);
     }
 
-    public function PaginateByBusinessId($page, $limit = 10, $search = "", $businessId = 0)
+    public function paginateByBusinessId($page, $limit = 10, $search = "", $businessId = 0)
     {
         try {
             $offset = ($page - 1) * $limit;
@@ -35,7 +35,7 @@ class BusinessLocal extends Model
         }
     }
 
-    public function GetByIdDetail($id)
+    public function getByIdDetail($id)
     {
         try {
             $sql = "SELECT * FROM business_local WHERE business_local_id = :business_local_id LIMIT 1";
@@ -54,7 +54,7 @@ class BusinessLocal extends Model
         }
     }
 
-    public function GetAllByBusinessId($businessId)
+    public function getAllByBusinessId($businessId)
     {
         try {
             $sql = 'SELECT * FROM business_local WHERE business_id = :business_id';
@@ -68,7 +68,7 @@ class BusinessLocal extends Model
         }
     }
 
-    public function Insert($businessLocal,$userReferId){
+    public function insert($businessLocal, $userReferId){
         try{
             $currentDate = date('Y-m-d H:i:s');
 
@@ -123,11 +123,11 @@ class BusinessLocal extends Model
         }
     }
 
-    public function Update($businessLocal,$userReferId){
+    public function update($businessLocal, $userReferId){
         try{
             $currentDate = date('Y-m-d H:i:s');
 
-            $this->UpdateById($businessLocal['id'], [
+            $this->updateById($businessLocal['id'], [
                 'updated_at' => $currentDate,
                 'updated_user_id' => $userReferId,
 

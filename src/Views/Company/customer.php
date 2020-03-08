@@ -55,7 +55,7 @@
                     <label for="customerIdentityDocumentCode" class="SnForm-label">Tipo de Documento de Identidad</label>
                     <select id="customerIdentityDocumentCode" class="SnForm-control" required>
                         <option value="">Elegir</option>
-                        <?php foreach ($catIdentityDocumentTypeCode ?? [] as $row): ?>
+                        <?php foreach ($parameter['catIdentityDocumentTypeCode'] ?? [] as $row): ?>
                             <option value="<?= $row['code']?>"><?= $row['description']?></option>
                         <?php endforeach; ?>
                     </select>

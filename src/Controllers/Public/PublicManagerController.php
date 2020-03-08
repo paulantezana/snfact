@@ -72,7 +72,7 @@ class PublicManagerController extends Controller
             $faKey = $_POST['user2faKey'] ?? '';
             $userId = $_POST['userId'] ?? '';
 
-            $userModelRes = $this->userModel->GetById($userId);
+            $userModelRes = $this->userModel->getById($userId);
             $checkResult = $timeAuthenticator->verifyCode($userModelRes['fa2_secret'] ?? '', $faKey);
             if ($checkResult) {
                 $responseApp = $this->initAppCompany($checkResult);
@@ -140,14 +140,14 @@ class PublicManagerController extends Controller
                     if (($email) == '') {
                         throw new Exception('Falta ingresar el correo');
                     }
-                    $user = $this->userModel->GetBy('email', $email);
+                    $user = $this->userModel->getBy('email', $email);
                     if (!$user) {
                         throw new Exception('Este correo electrónico no está registrado.');
                     }
 
                     $currentDate = date('Y-m-d H:i:s');
                     $token = sha1($currentDate . $user['mng_user_id'] . $user['email']);
-                    $this->userModel->UpdateById($user['mng_user_id'], [
+                    $this->userModel->updateById($user['mng_user_id'], [
                         'request_key' => $token,
                         'request_key_date' => $currentDate,
                     ]);
@@ -195,7 +195,7 @@ class PublicManagerController extends Controller
                 $resView->contentType = 'validateToken';
                 $key = $_GET['key'];
                 try {
-                    $user = $this->userModel->GetBy('request_key', $key);
+                    $user = $this->userModel->getBy('request_key', $key);
                     if (!$user) {
                         throw new Exception('Token invalido o expirado');
                     }
@@ -225,7 +225,7 @@ class PublicManagerController extends Controller
                     }
 
                     $password = sha1($password);
-                    $this->userModel->UpdateById($user['mng_user_id'], [
+                    $this->userModel->updateById($user['mng_user_id'], [
                         "updated_at" => $currentDate,
                         "updated_mng_user_id" => $user['mng_user_id'],
 

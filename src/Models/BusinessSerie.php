@@ -8,7 +8,7 @@ class BusinessSerie extends Model
         parent::__construct("business_serie","business_serie_id",$db);
     }
 
-    public function GetAllByBusinessLocalId($businessLocalId){
+    public function getAllByBusinessLocalId($businessLocalId){
         try {
             $sql = 'SELECT * FROM business_serie WHERE business_local_id = :business_local_id AND hidden IS NOT true';
             $stmt = $this->db->prepare($sql);
@@ -21,7 +21,7 @@ class BusinessSerie extends Model
         }
     }
 
-    public function GetDocumentSerieNumber(array $document) {
+    public function getDocumentSerieNumber(array $document) {
         try{
             $sql = 'SELECT (max_correlative + 1) as number, serie, document_code, cdtc.description FROM business_serie
                     INNER JOIN cat_document_type_code cdtc on business_serie.document_code = cdtc.code
@@ -38,7 +38,7 @@ class BusinessSerie extends Model
         }
     }
 
-    public function GetNextNumber(array $document) {
+    public function getNextNumber(array $document) {
         try{
             $sql = 'SELECT (max_correlative + 1) as number FROM business_serie
                     WHERE business_local_id = :business_local_id AND document_code = :document_code AND serie = :serie';

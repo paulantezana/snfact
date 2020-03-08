@@ -131,7 +131,7 @@ class BuildInvoice
         $resPdf = $documentManager->Invoice($invoice,$sale['pdf_format'] !== '' ? $sale['pdf_format'] : 'A4',$business['environment']);
 
         if ($resPdf->success){
-            $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
                 'pdf_url'=> $resPdf->pdfPath
             ]);
         }
@@ -388,14 +388,14 @@ class BuildInvoice
 //        if ($sale['document_code'] === '01'){
         $resInvoice = $billingManager->SendInvoice($sale['invoice_id'], $invoice,$userReferId);
         if ($resInvoice->success){
-            $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
                 'xml_url' => $directoryXmlPath . $fileName,
                 'invoice_state_id' => 2,
             ]);
             $res->digestValue = $resInvoice->digestValue;
             $res->success = true;
         }else{
-            $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
                 'other_message' => $resInvoice->errorMessage,
             ]);
             $res->message .= $resInvoice->errorMessage;
@@ -404,14 +404,14 @@ class BuildInvoice
         }
 
         if ($resInvoice->sunatComunicationSuccess){
-            $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
                 'response_message' => $resInvoice->sunatDescription,
                 'response_code' => $resInvoice->sunatResponseCode,
                 'other_message' => '',
             ]);
             $res->success = true;
         } else {
-            $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
                 'response_message' => $resInvoice->sunatCommuniationError,
             ]);
             $res->message .= $resInvoice->sunatCommuniationError;
@@ -420,7 +420,7 @@ class BuildInvoice
         }
 
         if ($resInvoice->readerSuccess){
-            $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
                 'cdr_url' => $directoryXmlPath . 'R-' . $fileName,
                 'invoice_state_id' => 3,
             ]);
@@ -453,12 +453,12 @@ class BuildInvoice
         $res->saleId = 0;
 
         try{
-            $business = $this->businessModel->GetByUserId($userReferId);
-            $sale = $this->invoiceModel->GetAllDataById($saleId);
-            $detailSale = $this->invoiceItemModel->ByInvoiceIdXML($saleId);
+            $business = $this->businessModel->getByUserId($userReferId);
+            $sale = $this->invoiceModel->getAllDataById($saleId);
+            $detailSale = $this->invoiceItemModel->byInvoiceIdXML($saleId);
 
             $perceptionTypeCodeModel = new CatPerceptionTypeCode($this->connection);
-            $perceptionTypeCode = $perceptionTypeCodeModel->GetAll();
+            $perceptionTypeCode = $perceptionTypeCodeModel->getAll();
 
             if ($sale['invoice_state_id'] == '3'){
                 throw new Exception('Este documento ya fue informado ante la sunat');
@@ -488,7 +488,7 @@ class BuildInvoice
             // Itinerant
             if ($sale['itinerant_enable']){
                 $geographicalLocationCodeModel = new CatGeographicalLocationCode($this->connection);
-                $itinerantLocation = $geographicalLocationCodeModel->GetBy('code',$sale['itinerant_location']);
+                $itinerantLocation = $geographicalLocationCodeModel->getBy('code',$sale['itinerant_location']);
                 $itinerantProvince = $itinerantLocation['province'];
                 $itinerantDepartment = $itinerantLocation['department'];
                 $itinerantDistrict = $itinerantLocation['district'];
@@ -507,7 +507,7 @@ class BuildInvoice
             $res->message = $resXml->message;
             $res->success = $resXml->success;
             if (!$resXml->success){
-                $this->invoiceModel->UpdateInvoiceSunatByInvoiceId($saleId,[
+                $this->invoiceModel->updateInvoiceSunatByInvoiceId($saleId,[
                     'other_message' =>  $resXml->message,
                 ]);
             }

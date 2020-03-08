@@ -51,7 +51,7 @@ function userRoleLoadAuthorities(userRoleId, content) {
 }
 
 function userRoleSaveAuthorization(){
-    if (!(this.currentUserRoleId >= 1)){
+    if (!(userRoleState.currentUserRoleId >= 1)){
         SnModal.error({ title: 'Algo salió mal', content: 'No se indico el rol'});
         return;
     }
@@ -72,7 +72,7 @@ function userRoleSaveAuthorization(){
         method: 'POST',
         body: {
             authIds: enableAuth || [],
-            userRoleId: this.currentUserRoleId || 0,
+            userRoleId: userRoleState.currentUserRoleId || 0,
         }
     }).then(res => {
         if (res.success) {
@@ -131,7 +131,8 @@ function userRoleSubmit() {
 
     let userRole = {};
     userRole.name = document.getElementById('userRoleName').value,
-    userRole.userRoleId = document.getElementById('userRoleFormId').value || 0;
+    userRole.userRoleId = document.getElementById('userRoleFormId').value;
+    userRole.state = document.getElementById('userRoleState').checked || false;
 
     RequestApi.fetch('/userRole/' + userRoleState.modalType, {
         method: 'POST',
@@ -181,6 +182,7 @@ function userRoleShowModalCreate() {
     SnModal.open(userRoleState.modalName);
     userRoleClearForm();
     userRoleState.modalType = 'create';
+    document.getElementById('userRoleState').checked = true;
 }
 
 function userRoleShowModalUpdate(userRoleId, content) {
@@ -194,8 +196,9 @@ function userRoleShowModalUpdate(userRoleId, content) {
         }
     }).then(res => {
         if (res.success) {
-            document.getElementById('userRoleName').value = res.result.name || '';
-            document.getElementById('userRoleFormId').value = res.result.user_role_id || '';
+            document.getElementById('userRoleName').value = res.result.name;
+            document.getElementById('userRoleFormId').value = res.result.user_role_id;
+            document.getElementById('userRoleState').checked = res.result.state == '1';
             SnModal.open(userRoleState.modalName);
         } else {
             SnModal.error({ title: 'Algo salió mal', content: res.message })

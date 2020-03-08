@@ -8,7 +8,7 @@ class Invoice extends Model
         parent::__construct("invoice","invoice_id",$db);
     }
 
-    public function GetAllDataById(int $invoiceID) {
+    public function getAllDataById(int $invoiceID) {
         try{
             $sql = 'SELECT invoice.*, 
                             (invoice.total_igv + invoice.total_isc + invoice.total_other_taxed) as total_tax,
@@ -42,7 +42,7 @@ class Invoice extends Model
         }
     }
 
-    public function Paginate($page = 1, $limit = 10, $businessLocalId = 0,  $filter = []) {
+    public function paginate($page = 1, $limit = 10, $businessLocalId = 0, $filter = []) {
         try{
             $filterNumber = 0;
             $sqlFilter = '';
@@ -106,7 +106,7 @@ class Invoice extends Model
         }
     }
 
-    public function Insert($invoice, $userReferId){
+    public function insert($invoice, $userReferId){
         try{
             $currentDate = date('Y-m-d H:i:s');
             $this->db->beginTransaction();
@@ -254,7 +254,7 @@ class Invoice extends Model
         }
     }
 
-    public function UpdateInvoiceSunatByInvoiceId($invoiceId, $data)
+    public function updateInvoiceSunatByInvoiceId($invoiceId, $data)
     {
         try {
             $sql = "UPDATE invoice_sunat SET ";

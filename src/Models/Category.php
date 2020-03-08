@@ -7,7 +7,7 @@ class Category extends Model
         parent::__construct("category", "category_id", $connection);
     }
 
-    public function GetAllByBusinessId($businessId)
+    public function getAllByBusinessId($businessId)
     {
         try {
             $sql = "SELECT * FROM category WHERE business_id = :business_id";
@@ -20,7 +20,7 @@ class Category extends Model
             throw new Exception('PDO: ' . $e->getMessage());
         }
     }
-    public function Paginate($page, $limit = 10, $search = '', $businessId = 0)
+    public function paginate($page, $limit = 10, $search = '', $businessId = 0)
     {
         try {
             $offset = ($page - 1) * $limit;
@@ -75,13 +75,13 @@ class Category extends Model
             }
 
             $lastId = $this->db->lastInsertId();
-            return $this->GetById($lastId);
+            return $this->getById($lastId);
         } catch (Exception $e) {
             throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
-    public function DeleteById($id)
+    public function deleteById($id)
     {
         try {
             $sql = "DELETE FROM {$this->table} WHERE {$this->tableID} = :{$this->tableID}";

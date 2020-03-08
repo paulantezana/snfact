@@ -24,7 +24,7 @@ class BusinessLocalController extends Controller
     {
         try {
             Authorization($this->connection, 'local', 'listar');
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
             $itemTemplate = $this->GetItemTemplate();
 
             $this->render('company/businessLocal.php', [
@@ -46,8 +46,8 @@ class BusinessLocalController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $businessLocal = $this->businessLocalModel->PaginateByBusinessId($page, $limit, $search, $business['business_id']);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+            $businessLocal = $this->businessLocalModel->paginateByBusinessId($page, $limit, $search, $business['business_id']);
 
             $this->render('company/partials/businessLocalTable.php', [
                 'businessLocal' => $businessLocal,
@@ -67,7 +67,7 @@ class BusinessLocalController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->businessLocalModel->GetByIdDetail($body['businessLocalId']);
+            $res->result = $this->businessLocalModel->getByIdDetail($body['businessLocalId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -90,9 +90,9 @@ class BusinessLocalController extends Controller
             }
 
             $businessModel = new Business($this->connection);
-            $body['businessId'] = $businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $body['businessId'] = $businessModel->getByUserId($_SESSION[SESS_KEY])['business_id'];
 
-            $res->result = $this->businessLocalModel->Insert($body, $_SESSION[SESS_KEY]);
+            $res->result = $this->businessLocalModel->insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
         } catch (Exception $e) {
@@ -114,7 +114,7 @@ class BusinessLocalController extends Controller
                 $res->error = $validate->error;
                 throw new Exception($validate->message);
             }
-            $this->businessLocalModel->Update($body, $_SESSION[SESS_KEY]);
+            $this->businessLocalModel->update($body, $_SESSION[SESS_KEY]);
 
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
@@ -184,7 +184,7 @@ class BusinessLocalController extends Controller
 
     private function GetItemTemplate()
     {
-        $catDocumentTypeCode = $this->catDocumentTypeCodeModel->GetAll();
+        $catDocumentTypeCode = $this->catDocumentTypeCodeModel->getAll();
 
         $documentTypeCodeTemplate = '';
         foreach ($catDocumentTypeCode ?? [] as $row) {

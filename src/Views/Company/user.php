@@ -76,7 +76,7 @@
                     <label for="userUserRoleId" class="SnForm-label">Rol</label>
                     <select id="userUserRoleId" class="SnForm-control" required>
                         <option value="">Seleccionar</option>
-                        <?php foreach ($userRole ?? [] as $row): ?>
+                        <?php foreach ($parameter['userRole'] ?? [] as $row): ?>
                             <option value="<?= $row['user_role_id'] ?>"><?= $row['name'] ?></option>
                         <?php endforeach; ?>
                     </select>

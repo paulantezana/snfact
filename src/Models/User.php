@@ -8,7 +8,7 @@ class User extends Model
         parent::__construct("user","user_id",$db);
     }
 
-    public function Paginate($page, $limit = 10, $search = '', $businessId = 0)
+    public function paginate($page, $limit = 10, $search = '', $businessId = 0)
     {
         try {
             $offset = ($page - 1) * $limit;
@@ -81,7 +81,7 @@ class User extends Model
         }
     }
 
-    public function Insert($user, $userId){
+    public function insert($user, $userId){
         try{
             $currentDate = date('Y-m-d H:i:s');
 
@@ -126,7 +126,7 @@ class User extends Model
         }
     }
 
-    public function GetById($id) {
+    public function getById($id) {
         try{
             $sql = "SELECT user_id, email, avatar, user_name, state, login_count, updated_at, user_role_id, created_at FROM user WHERE user_id = :user_id LIMIT 1";
             $stmt = $this->db->prepare($sql);
@@ -138,7 +138,7 @@ class User extends Model
         }
     }
 
-    public function GetByIdFa2($id) {
+    public function getByIdFa2($id) {
         try{
             $sql = "SELECT user_id, email, avatar, user_name, state, login_count, updated_at, user_role_id, created_at, fa2_secret FROM user WHERE user_id = :user_id LIMIT 1";
             $stmt = $this->db->prepare($sql);

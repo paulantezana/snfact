@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($parameter['customer']['data'] as $row) : ?>
+            <?php if (count($parameter['customer']['data']) >= 1): foreach ($parameter['customer']['data'] as $row) : ?>
                 <tr>
                     <td><?= $row['created_at'] ?></td>
                     <td><?= $row['identity_document_description'] ?></td>
@@ -34,7 +34,16 @@
                         </div>
                     </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endforeach; else: ?>
+                <tr>
+                    <td colspan="6">
+                        <div class="SnEmpty">
+                            <img src="<?= URL_PATH . '/assets/images/empty.svg' ?>" alt="">
+                            <div>No hay datos</div>
+                        </div>
+                    </td>
+                </tr>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>

@@ -24,7 +24,7 @@ class CustomerController extends Controller
     {
         try {
             Authorization($this->connection, 'cliente', 'listar');
-            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
+            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->getAll();
 
             $this->render('company/customer.php', [
                 'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
@@ -44,8 +44,8 @@ class CustomerController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $customer = $this->customerModel->Paginate($page, $limit, $search, $business['business_id']);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+            $customer = $this->customerModel->paginate($page, $limit, $search, $business['business_id']);
 
             $this->render('company/partials/customerTable.php', [
                 'customer' => $customer,
@@ -65,7 +65,7 @@ class CustomerController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->customerModel->GetById($body['customerId']);
+            $res->result = $this->customerModel->getById($body['customerId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -86,9 +86,9 @@ class CustomerController extends Controller
                 throw new Exception($validate->message);
             }
 
-            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $body['businessId'] = $this->businessModel->getByUserId($_SESSION[SESS_KEY])['business_id'];
 
-            $res->result = $this->customerModel->Insert($body, $_SESSION[SESS_KEY]);
+            $res->result = $this->customerModel->insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
         } catch (Exception $e) {
@@ -111,7 +111,7 @@ class CustomerController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->customerModel->UpdateById($body['customerId'], [
+            $this->customerModel->updateById($body['customerId'], [
                 'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
@@ -140,7 +140,7 @@ class CustomerController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $this->customerModel->DeleteById($body['customerId']);
+            $this->customerModel->deleteById($body['customerId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {

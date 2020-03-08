@@ -68,7 +68,7 @@ class InvoiceController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $filter = $_POST['filter'] ?? [];
 
-            $invoice = $this->invoiceModel->Paginate($page, $limit, $_SESSION[SESS_CURRENT_LOCAL], $filter);
+            $invoice = $this->invoiceModel->paginate($page, $limit, $_SESSION[SESS_CURRENT_LOCAL], $filter);
             $this->render('company/partials/invoiceTable.php', [
                 'invoice' => $invoice,
             ]);
@@ -89,7 +89,7 @@ class InvoiceController extends Controller
             $body['businessLocalId'] = $_SESSION[SESS_CURRENT_LOCAL];
 
             $businessSerieModel = new BusinessSerie($this->connection);
-            $res->result = $businessSerieModel->GetNextNumber($body);
+            $res->result = $businessSerieModel->getNextNumber($body);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -102,13 +102,13 @@ class InvoiceController extends Controller
             $businessSerieModel = new BusinessSerie($this->connection);
 
             $catDocumentTypeCode = $this->catDocumentTypeCodeModel->ByInCodes(['01','03','07','08']);
-            $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->GetAll();
-            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
-            $catOperationTypeCode = $this->catOperationTypeCodeModel->GetAll();
+            $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->getAll();
+            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->getAll();
+            $catOperationTypeCode = $this->catOperationTypeCodeModel->getAll();
 
             $invoiceItemTemplate = $this->invoiceItemTemplate();
 
-            $invoiceType = $businessSerieModel->GetDocumentSerieNumber([
+            $invoiceType = $businessSerieModel->getDocumentSerieNumber([
                 'localId' => $_SESSION[SESS_CURRENT_LOCAL],
                 'documentCode' => '01',
             ]);
@@ -139,20 +139,20 @@ class InvoiceController extends Controller
                 throw new Exception('No se ningun documento');
             }
             if (isset($_GET['invoiceId'])){
-                $invoice = $this->invoiceModel->GetById($_GET['invoiceId']);
+                $invoice = $this->invoiceModel->getById($_GET['invoiceId']);
             }
             $invoiceDocumentCode = $_GET['documentCode'];
 
             $businessSerieModel = new BusinessSerie($this->connection);
-            $invoiceSerieNumber = $businessSerieModel->GetDocumentSerieNumber([
+            $invoiceSerieNumber = $businessSerieModel->getDocumentSerieNumber([
                 'businessLocalId' => $_SESSION[SESS_CURRENT_LOCAL],
                 'documentCode' => $invoiceDocumentCode,
             ]);
 
             $catDocumentTypeCode = $this->catDocumentTypeCodeModel->ByInCodes(['01','03','07','08']);
-            $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->GetAll();
-            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->GetAll();
-            $catOperationTypeCode = $this->catOperationTypeCodeModel->GetAll();
+            $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->getAll();
+            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->getAll();
+            $catOperationTypeCode = $this->catOperationTypeCodeModel->getAll();
             $invoiceItemTemplate = $this->invoiceItemTemplate();
 
             $this->render('Company/newInvoice.php', [
@@ -188,7 +188,7 @@ class InvoiceController extends Controller
 //            $invoice['itinerant_enable'] = ($invoice['itinerant_enable'] ?? false) == 'on' ? 1 : 0;
 //            $invoice['prepayment_regulation'] = ($invoice['prepayment_regulation'] ?? false) == 'on' ? 1 : 0;
             $invoice['totalValue'] = $invoice['totalUnaffected'] + $invoice['totalTaxed'] + $invoice['totalExonerated'];
-            $invoiceId = $this->invoiceModel->Insert($invoice, $_SESSION[SESS_KEY]);
+            $invoiceId = $this->invoiceModel->insert($invoice, $_SESSION[SESS_KEY]);
 
             $buildInvoice = new BuildInvoice($this->connection);
             $resRunDoc = $buildInvoice->BuildDocument($invoiceId,$_SESSION[SESS_KEY]);
@@ -247,7 +247,7 @@ class InvoiceController extends Controller
 
             $invoiceId = $body['invoiceId'];
             $invoiceCustomerEmail = $body['invoiceCustomerEmail'];
-            $invoice = $this->invoiceModel->GetAllDataById((int)$invoiceId);
+            $invoice = $this->invoiceModel->getAllDataById((int)$invoiceId);
             if (empty($invoice)){
                 throw new Exception('No se encontró ningun documento');
             }
@@ -293,9 +293,9 @@ class InvoiceController extends Controller
 
     private function invoiceItemTemplate()
     {
-        $affectationIgvTypeCode = $this->catAffectationIgvTypeCodeModel->GetAll();
-        $unitMeasureTypeCode = $this->catUnitMeasureTypeCodeModel->GetAll();
-        $catSystemIscTypeCode = $this->catSystemIscTypeCodeModel->GetAll();
+        $affectationIgvTypeCode = $this->catAffectationIgvTypeCodeModel->getAll();
+        $unitMeasureTypeCode = $this->catUnitMeasureTypeCodeModel->getAll();
+        $catSystemIscTypeCode = $this->catSystemIscTypeCodeModel->getAll();
 
         $affectationIgvTemplate = '';
         foreach ($affectationIgvTypeCode ?? [] as $row){

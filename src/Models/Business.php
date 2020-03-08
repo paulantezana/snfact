@@ -8,7 +8,7 @@ class Business extends Model
         parent::__construct("business","business_id",$db);
     }
 
-    public function Paginate($page, $limit = 10, $search = '', $businessId = 0)
+    public function paginate($page, $limit = 10, $search = '', $businessId = 0)
     {
         try {
             $offset = ($page - 1) * $limit;
@@ -36,7 +36,7 @@ class Business extends Model
         }
     }
 
-    public function GetByUserId($userReferID){
+    public function getByUserId($userReferID){
         try{
             $sql = "SELECT business.* FROM business 
                     INNER JOIN business_user ON business.business_id = business_user.business_id
@@ -49,10 +49,10 @@ class Business extends Model
         }
     }
 
-    public function Save($business){
+    public function save($business){
         try{
             if (((int)$business['business_id'] ?? 0) >= 1){
-                $this->UpdateById((int)$business['business_id'],[
+                $this->updateById((int)$business['business_id'],[
                     'continue_payment' => false,
                     'ruc' => $business['ruc'],
                     'social_reason' => $business['social_reason'],
@@ -96,7 +96,7 @@ class Business extends Model
         }
     }
 
-    public function Insert($business, $userReferId){
+    public function insert($business, $userReferId){
         try{
             $sql = "INSERT INTO business (continue_payment, ruc, social_reason, commercial_reason, email, phone, web_site, environment, state)
                     VALUES (:continue_payment, :ruc, :social_reason, :commercial_reason, :email, :phone, :web_site, :environment, :state)";

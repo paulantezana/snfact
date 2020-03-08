@@ -69,16 +69,16 @@ function ProductSubmit(e) {
     ProductSetLoading(true);
     let url = '';
     let productSendData = {};
-    productSendData.categoryId = document.getElementById('productCategoryId').value || '';
-    productSendData.description = document.getElementById('productDescription').value || '';
+    productSendData.categoryId = document.getElementById('productCategoryId').value;
+    productSendData.description = document.getElementById('productDescription').value;
     productSendData.unitPrice = document.getElementById('productUnitPrice').value || 0;
     productSendData.unitValue = document.getElementById('productUnitValue').value || 0;
-    productSendData.productKey = document.getElementById('productProductKey').value || '';
-    productSendData.productCode = document.getElementById('productProductCode').value || '';
-    productSendData.unitMeasureCode = document.getElementById('productUnitMeasureCode').value || '';
-    productSendData.affectationCode = document.getElementById('productAffectationCode').value || '';
-    productSendData.systemIscCode = document.getElementById('productSystemIscCode').value || '';
-    productSendData.isc = document.getElementById('productIsc').value || '';
+    productSendData.productKey = document.getElementById('productProductKey').value;
+    productSendData.productCode = document.getElementById('productProductCode').value;
+    productSendData.unitMeasureCode = document.getElementById('productUnitMeasureCode').value;
+    productSendData.affectationCode = document.getElementById('productAffectationCode').value;
+    productSendData.systemIscCode = document.getElementById('productSystemIscCode').value;
+    productSendData.isc = document.getElementById('productIsc').value;
     productSendData.state = document.getElementById('productState').checked || false;
 
     if (ProductState.modalType === 'create') {
@@ -202,8 +202,8 @@ function CategorySubmit(e) {
     ProductSetLoading(true);
 
     let categorySendData = {};
-    categorySendData.name = document.getElementById('categoryName').value || '';
-    categorySendData.description = document.getElementById('categoryDescription').value || '';
+    categorySendData.name = document.getElementById('categoryName').value;
+    categorySendData.description = document.getElementById('categoryDescription').value;
     categorySendData.state = document.getElementById('categoryState').checked || false;
     categorySendData.parentId = 0;
 

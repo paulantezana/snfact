@@ -37,8 +37,8 @@ class CategoryController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $category = $this->categoryModel->Paginate($page, $limit, $search, $business['business_id']);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+            $category = $this->categoryModel->paginate($page, $limit, $search, $business['business_id']);
 
             $this->render('company/partials/categoryTable.php', [
                 'category' => $category,
@@ -58,7 +58,7 @@ class CategoryController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->categoryModel->GetById($body['categoryId']);
+            $res->result = $this->categoryModel->getById($body['categoryId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -79,7 +79,7 @@ class CategoryController extends Controller
                 throw new Exception($validate->message);
             }
 
-            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $body['businessId'] = $this->businessModel->getByUserId($_SESSION[SESS_KEY])['business_id'];
 
             $res->result = $this->categoryModel->Insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
@@ -104,7 +104,7 @@ class CategoryController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->categoryModel->UpdateById($body['categoryId'], [
+            $this->categoryModel->updateById($body['categoryId'], [
                 'created_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
@@ -129,7 +129,7 @@ class CategoryController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $this->categoryModel->DeleteById($body['categoryId']);
+            $this->categoryModel->deleteById($body['categoryId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {

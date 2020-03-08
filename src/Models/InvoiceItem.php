@@ -9,7 +9,7 @@ class InvoiceItem
         $this->db = $db;
     }
 
-    public function ByInvoiceId($invoiceId) {
+    public function byInvoiceId($invoiceId) {
         try{
             $sql = 'SELECT * FROM invoice_item WHERE invoice_id = :invoice_id';
 
@@ -23,7 +23,7 @@ class InvoiceItem
         }
     }
 
-    public function ByInvoiceIdSummary($invoiceId) {
+    public function byInvoiceIdSummary($invoiceId) {
         try{
             $sql = 'SELECT * FROM invoice_item WHERE invoice_item.invoice_id = :invoice_id';
             $stmt = $this->db->prepare($sql);
@@ -36,7 +36,7 @@ class InvoiceItem
         }
     }
 
-    public function ByInvoiceIdXML($invoiceId) {
+    public function byInvoiceIdXML($invoiceId) {
         try{
             $sql = 'SELECT invoice_item.*, 
                                 (IFNULL(invoice_item.igv,0) + IFNULL(invoice_item.isc,0) + IFNULL(invoice_item.other_taxed,0))  as total_taxed,

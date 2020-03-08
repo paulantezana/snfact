@@ -65,10 +65,8 @@ function Authorization(PDO $connection, string $module, string $action, string $
             echo json_encode($res);
             die();
         } else {
-            $controller = new Controller();
-            $controller->render('Public/403.php',[
-                'message' => $errorMessage
-            ]);
+            $content = RequireToVar(VIEW_PATH . '/' . '403.php', $res);
+            require_once VIEW_PATH . '/' . 'layout/basicLayout.php';
             die();
         }
     }

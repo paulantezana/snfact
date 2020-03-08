@@ -83,7 +83,7 @@ class PublicCompanyController extends Controller
             $faKey = $_POST['user2faKey'] ?? '';
             $userId = $_POST['userId'] ?? '';
 
-            $userModelRes = $this->userModel->GetById($userId);
+            $userModelRes = $this->userModel->getById($userId);
             $checkResult = $timeAuthenticator->verifyCode($userModelRes['fa2_secret'] ?? '', $faKey);
             if ($checkResult) {
                 $responseApp = $this->initAppCompany($checkResult);
@@ -121,8 +121,8 @@ class PublicCompanyController extends Controller
             $businessModel = new Business($this->connection);
             $businessLocalModel = new BusinessLocal($this->connection);
 
-            $business = $businessModel->GetByUserId($user['user_id']);
-            $businessLocals = $businessLocalModel->GetAllByBusinessId($business['business_id']);
+            $business = $businessModel->getByUserId($user['user_id']);
+            $businessLocals = $businessLocalModel->getAllByBusinessId($business['business_id']);
             if (count($businessLocals) === 0) {
                 throw new Exception('Este usuario no está asignado a ningún local de una empresa comuníquese con el administrador.');
             }
@@ -130,7 +130,7 @@ class PublicCompanyController extends Controller
 
             // Menu
             $appAuthorizationModel = new AppAuthorization($this->connection);
-            $appAuthorization = $appAuthorizationModel->GetMenu($user['user_role_id']);
+            $appAuthorization = $appAuthorizationModel->getMenu($user['user_role_id']);
             if (count($appAuthorization) < 1) {
                 throw new Exception('No tiene autorización para acceder al sistema comuníquese con el administrador.');
             }
@@ -163,7 +163,7 @@ class PublicCompanyController extends Controller
                         throw new Exception($validate->message);
                     }
 
-                    $business = $this->businessModel->GetBy('ruc', $register['ruc']);
+                    $business = $this->businessModel->getBy('ruc', $register['ruc']);
                     if ($business) {
                         throw new Exception('Este ruc ya esta registrado en el sistema');
                     }
@@ -174,7 +174,7 @@ class PublicCompanyController extends Controller
                     }
                     $dataPeru = $queryPeru->result;
 
-                    $userId = $this->userModel->Insert([
+                    $userId = $this->userModel->insert([
                         "password" => $register['password'],
                         "email" => $register['email'],
                         "avatar" => '',
@@ -183,7 +183,7 @@ class PublicCompanyController extends Controller
                         "userRoleId" => 0,
                     ], 0);
 
-                    $businessId = $this->businessModel->Insert([
+                    $businessId = $this->businessModel->insert([
                         'continue_payment' => false,
                         'ruc' => $register['ruc'],
                         'social_reason' => $dataPeru['socialReason'],
@@ -195,20 +195,21 @@ class PublicCompanyController extends Controller
                         'state' => true,
                     ], $userId);
 
-                    $roleId = $this->userRoleModel->Insert([
-                        'name'=>'Admin',
-                        'businessId'=>$businessId,
+                    $roleId = $this->userRoleModel->insert([
+                        'name' => 'Admin',
+                        'businessId' => $businessId,
+                        'state' => true,
                     ],$userId);
 
-                    $this->userModel->UpdateById($userId,[
+                    $this->userModel->updateById($userId,[
                         'user_role_id' => $roleId,
                     ]);
 
                     $appAuthorizationModel = new AppAuthorization($this->connection);
-                    $authIds = $appAuthorizationModel->GetAllId();
-                    $appAuthorizationModel->Register($authIds, $roleId);
+                    $authIds = $appAuthorizationModel->getAllId();
+                    $appAuthorizationModel->register($authIds, $roleId);
 
-                    $this->businessLocalModel->Insert([
+                    $this->businessLocalModel->insert([
                         'shortName' => 'Local principal',
                         'sunatCode' => '',
                         'locationCode' => '',
@@ -289,7 +290,7 @@ class PublicCompanyController extends Controller
 
                     $this->connection->commit();
 
-                    $loginUser = $this->userModel->GetById($userId);
+                    $loginUser = $this->userModel->getById($userId);
                     $responseApp = $this->initAppCompany($loginUser);
                     if (!$responseApp->success) {
                         session_destroy();
@@ -308,15 +309,15 @@ class PublicCompanyController extends Controller
                 }
             }
 
-            $this->render('Public/company/register.php', [
+            $this->render('company/register.php', [
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
-            ]);
+            ],'layout/basicLayout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/basicLayout.php');
         }
     }
 
@@ -336,14 +337,14 @@ class PublicCompanyController extends Controller
                     if (($email) == '') {
                         throw new Exception('Falta ingresar el correo');
                     }
-                    $user = $this->userModel->GetBy('email', $email);
+                    $user = $this->userModel->getBy('email', $email);
                     if (!$user) {
                         throw new Exception('Este correo electrónico no está registrado.');
                     }
 
                     $currentDate = date('Y-m-d H:i:s');
                     $token = sha1($currentDate . $user['user_id'] . $user['email']);
-                    $this->userModel->UpdateById($user['user_id'], [
+                    $this->userModel->updateById($user['user_id'], [
                         'request_key' => $token,
                         'request_key_date' => $currentDate,
                     ]);
@@ -361,14 +362,14 @@ class PublicCompanyController extends Controller
                 }
             }
 
-            $this->render('Public/company/forgot.php', [
+            $this->render('company/forgot.php', [
                 'message' => $resView->message,
                 'messageType' => $resView->messageType,
-            ]);
+            ],'layout/basicLayout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/basicLayout.php');
         }
     }
 
@@ -391,7 +392,7 @@ class PublicCompanyController extends Controller
                 $resView->contentType = 'validateToken';
                 $key = $_GET['key'];
                 try {
-                    $user = $this->userModel->GetBy('request_key', $key);
+                    $user = $this->userModel->getBy('request_key', $key);
                     if (!$user) {
                         throw new Exception('Token invalido o expirado');
                     }
@@ -421,7 +422,7 @@ class PublicCompanyController extends Controller
                     }
 
                     $password = sha1($password);
-                    $this->userModel->UpdateById($user['user_id'], [
+                    $this->userModel->updateById($user['user_id'], [
                         "updated_at" => $currentDate,
                         "updated_user_id" => $user['user_id'],
 
@@ -437,16 +438,16 @@ class PublicCompanyController extends Controller
                 }
             }
 
-            $this->render('Public/company/forgotValidate.php', [
+            $this->render('company/forgotValidate.php', [
                 'message' => $resView->message,
                 'messageType' => $resView->messageType,
                 'contentType' => $resView->contentType,
                 'user' => $user,
-            ]);
+            ],'layout/basicLayout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/basicLayout.php');
         }
     }
 

@@ -1,17 +1,20 @@
 <?php
 
 require_once MODEL_PATH . '/UserRole.php';
+require_once MODEL_PATH . '/Business.php';
 require_once MODEL_PATH . '/AppAuthorization.php';
 
 class UserRoleController extends Controller
 {
-    protected $connection;
-    protected $userRoleModel;
+    private $connection;
+    private $userRoleModel;
+    private $businessModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
         $this->userRoleModel = new UserRole($connection);
+        $this->businessModel = new Business($connection);
     }
 
     public function index()
@@ -19,7 +22,7 @@ class UserRoleController extends Controller
         try {
             Authorization($this->connection, 'rol', 'listar');
             $appAuthorizationModel = new AppAuthorization($this->connection);
-            $appAuthorization = $appAuthorizationModel->GetAll();
+            $appAuthorization = $appAuthorizationModel->getAll();
 
             $this->render('company/role.php', [
                 'appAuthorization' => $appAuthorization
@@ -35,7 +38,9 @@ class UserRoleController extends Controller
     {
         try {
             Authorization($this->connection, 'rol', 'listar');
-            $userRole = $this->userRoleModel->GetAll();
+
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+            $userRole = $this->userRoleModel->getAllByBusinessId($business['business_id']);
             $this->render('company/partials/roleList.php', [
                 'userRole' => $userRole
             ]);
@@ -58,7 +63,7 @@ class UserRoleController extends Controller
                 return;
             }
 
-            $res->result = $this->userRoleModel->GetById((int) $body['userRoleId']);
+            $res->result = $this->userRoleModel->getById((int) $body['userRoleId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -79,8 +84,9 @@ class UserRoleController extends Controller
                 echo json_encode($validate);
                 return;
             }
+            $body['businessId'] = $this->businessModel->getByUserId($_SESSION[SESS_KEY])['business_id'];
 
-            $res->result = $this->userRoleModel->Insert($body, $_SESSION[SESS_KEY]);
+            $res->result = $this->userRoleModel->insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
         } catch (Exception $e) {
@@ -103,10 +109,11 @@ class UserRoleController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $res->result = $this->userRoleModel->UpdateById((int) $body['userRoleId'], [
+            $res->result = $this->userRoleModel->updateById((int) $body['userRoleId'], [
                 'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
                 'name' => $body['name'],
+                'state' => $body['state'],
             ]);
 
             $res->success = true;
@@ -125,7 +132,7 @@ class UserRoleController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->userRoleModel->DeleteById((int) ($body['userRoleId'] ?? 0));
+            $res->result = $this->userRoleModel->deleteById((int) ($body['userRoleId'] ?? 0));
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {

@@ -24,7 +24,8 @@ class UserController extends Controller
         try {
             Authorization($this->connection, 'usuario', 'listar');
             $userRoleModel = new UserRole($this->connection);
-            $userRole = $userRoleModel->GetAll();
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+            $userRole = $userRoleModel->getAllByBusinessIdOn($business['business_id']);
 
             $this->render('company/user.php', [
                 'userRole' => $userRole,
@@ -44,8 +45,8 @@ class UserController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $user = $this->userModel->Paginate($page, $limit, $search, $business['business_id']);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+            $user = $this->userModel->paginate($page, $limit, $search, $business['business_id']);
 
             $this->render('company/partials/userTable.php', [
                 'user' => $user,
@@ -82,7 +83,7 @@ class UserController extends Controller
                 throw new Exception('clave invalida');
             }
 
-            $res = $this->userModel->UpdateById($userId,[
+            $res = $this->userModel->updateById($userId,[
                 "updated_at" => $currentDate,
                 "updated_user_id" => $_SESSION[SESS_KEY],
                 'fa2_secret' => $user2faSecret,
@@ -110,7 +111,7 @@ class UserController extends Controller
             $qrCode->displayHTML();
             $qrCodeTable = ob_get_clean();
 
-            $user = $this->userModel->GetById((int) $_SESSION[SESS_KEY]);
+            $user = $this->userModel->getById((int) $_SESSION[SESS_KEY]);
             $this->render('company/profile.php', [
                 'user' => $user,
                 'qrCodeTable' => $qrCodeTable,
@@ -131,7 +132,7 @@ class UserController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->userModel->GetById($body['userId']);
+            $res->result = $this->userModel->getById($body['userId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -151,9 +152,9 @@ class UserController extends Controller
             if (!$validate->success) {
                 throw new Exception($validate->message);
             }
-            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $body['businessId'] = $this->businessModel->getByUserId($_SESSION[SESS_KEY])['business_id'];
 
-            $res->result = $this->userModel->Insert($body, $_SESSION[SESS_KEY]);
+            $res->result = $this->userModel->insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
         } catch (Exception $e) {
@@ -176,7 +177,7 @@ class UserController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->userModel->UpdateById($body['userId'], [
+            $this->userModel->updateById($body['userId'], [
                 "updated_at" => $currentDate,
                 "updated_user_id" => $_SESSION[SESS_KEY],
 
@@ -205,7 +206,7 @@ class UserController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->userModel->UpdateById($body['userId'], [
+            $this->userModel->updateById($body['userId'], [
                 "updated_at" => $currentDate,
                 "updated_user_id" => $_SESSION[SESS_KEY],
 
@@ -237,7 +238,7 @@ class UserController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->userModel->UpdateById($body['userId'], [
+            $this->userModel->updateById($body['userId'], [
                 "updated_at" => $currentDate,
                 "updated_user_id" => $_SESSION[SESS_KEY],
 
@@ -259,7 +260,7 @@ class UserController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $this->userModel->DeleteById($body['userId']);
+            $this->userModel->deleteById($body['userId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {

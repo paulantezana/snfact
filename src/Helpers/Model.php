@@ -14,7 +14,7 @@ class Model
         $this->db = $db;
     }
 
-    public function GetAll()
+    public function getAll()
     {
         try {
             $sql = 'SELECT * FROM ' . $this->table;
@@ -26,7 +26,7 @@ class Model
         }
     }
 
-    public function Paginate($page, $limit = 10)
+    public function paginate($page, $limit = 10)
     {
         try {
             $offset = ($page - 1) * $limit;
@@ -51,7 +51,7 @@ class Model
         }
     }
 
-    public function GetById($id)
+    public function getById($id)
     {
         try {
             $sql = "SELECT * FROM $this->table WHERE $this->tableID = :$this->tableID LIMIT 1";
@@ -63,7 +63,7 @@ class Model
         }
     }
 
-    public function GetBy($columnName, $value)
+    public function getBy($columnName, $value)
     {
         try {
             $sql = "SELECT * FROM $this->table WHERE $columnName = :$columnName LIMIT 1";
@@ -75,7 +75,7 @@ class Model
         }
     }
 
-    public function DeleteById($id)
+    public function deleteById($id)
     {
         try {
             $sql = "DELETE FROM {$this->table} WHERE {$this->tableID} = :{$this->tableID}";
@@ -97,7 +97,7 @@ class Model
         }
     }
 
-    public function DeleteBy($columnName, $value)
+    public function deleteBy($columnName, $value)
     {
         try {
             $sql = "DELETE FROM {$this->table} WHERE $columnName = :$columnName";
@@ -120,7 +120,7 @@ class Model
         }
     }
 
-    public function UpdateById($id, $data)
+    public function updateById($id, $data)
     {
         try {
             $sql = "UPDATE {$this->table} SET ";
@@ -146,7 +146,7 @@ class Model
         }
     }
 
-    public function UpdateBy($columnName, $value, $data)
+    public function updateBy($columnName, $value, $data)
     {
         try {
             $sql = "UPDATE {$this->table} SET ";
@@ -172,7 +172,7 @@ class Model
         }
     }
 
-    public function SearchBy($columnName, $search)
+    public function searchBy($columnName, $search)
     {
         try {
             $sql = "SELECT * FROM {$this->table} WHERE $columnName LIKE :$columnName  LIMIT 8";

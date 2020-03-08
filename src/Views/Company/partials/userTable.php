@@ -37,9 +37,6 @@
                             <div class="SnBtn icon jsUserOption" data-tooltip="Editar" onclick="userShowModalUpdate(<?= $row['user_id'] ?>)">
                                 <i class="icon-pencil"></i>
                             </div>
-                            <div class="SnBtn icon jsUserOption" data-tooltip="Eliminar" onclick="userDelete(<?= $row['user_id'] ?>,'<?= $row['user_name'] ?>')">
-                                <i class="icon-trash"></i>
-                            </div>
                         </div>
                     </td>
                 </tr>

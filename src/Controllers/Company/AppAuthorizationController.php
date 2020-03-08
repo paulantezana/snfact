@@ -26,7 +26,7 @@ class AppAuthorizationController extends  Controller
                 return;
             }
 
-            $res->result  = $this->appAuthorizationModel->GetAllByUserRoleId($body['userRoleId']);
+            $res->result  = $this->appAuthorizationModel->getAllByUserRoleId($body['userRoleId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -46,7 +46,7 @@ class AppAuthorizationController extends  Controller
             $authIds = $body['authIds'] ?? [];
             $userRoleId = $body['userRoleId'] ?? 0;
 
-            $res->result  = $this->appAuthorizationModel->Save($authIds, $userRoleId, $_SESSION[SESS_KEY]);
+            $res->result  = $this->appAuthorizationModel->save($authIds, $userRoleId, $_SESSION[SESS_KEY]);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();

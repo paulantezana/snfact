@@ -31,7 +31,7 @@
             <div class="SnCard-body">
                 <div class="SnToolbar">
                     <div class="SnToolbar-left">
-                        <i class="icon-braille"></i>
+                        <i class="icon-equalizer SnMr-2"></i>
                         <strong>Permisos del : </strong>
                         <span id="userRoleAuthTitle"></span>
                     </div>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div id="userRoleAuthList">
-                    <div class="SnTable-container SnMb-16">
+                    <div class="SnTable-container SnMb-5">
                         <div class="SnTable-wrapper">
                             <table class="SnTable">
                                 <thead>
@@ -51,7 +51,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($appAuthorization ?? [] as $row): ?>
+                                    <?php foreach ($parameter['appAuthorization'] ?? [] as $row): ?>
                                         <tr data-id="<?= $row['app_authorization_id'] ?>">
                                             <td><?= $row['module'] ?></td>
                                             <td><?= $row['action'] ?></td>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
 
-                    <button class="SnBtn primary hidden block jsUserRoleOption" id="userRoleAuthSave" onclick="UserRoleForm.saveAuthorization()" >Guardar cambios</button>
+                    <button class="SnBtn primary hidden block jsUserRoleOption" id="userRoleAuthSave" onclick="userRoleSaveAuthorization()" >Guardar cambios</button>
                 </div>
             </div>
         </div>

@@ -30,12 +30,12 @@ class ProductController extends Controller
             $catUnitMeasureTypeCodeModel = new CatUnitMeasureTypeCode($this->connection);
             $catSystemIscTypeCodeModel = new CatSystemIscTypeCode($this->connection);
             $categoryModel = new Category($this->connection);
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
 
-            $catAffectationIgvTypeCodes = $catAffectationIgvTypeCodeModel->GetAll();
-            $catUnitMeasureTypeCodes = $catUnitMeasureTypeCodeModel->GetAll();
-            $catSystemIscTypeCodes = $catSystemIscTypeCodeModel->GetAll();
-            $categories = $categoryModel->GetAllByBusinessId($business['business_id']);
+            $catAffectationIgvTypeCodes = $catAffectationIgvTypeCodeModel->getAll();
+            $catUnitMeasureTypeCodes = $catUnitMeasureTypeCodeModel->getAll();
+            $catSystemIscTypeCodes = $catSystemIscTypeCodeModel->getAll();
+            $categories = $categoryModel->getAllByBusinessId($business['business_id']);
 
             $this->render('company/product.php', [
                 'catAffectationIgvTypeCodes' => $catAffectationIgvTypeCodes,
@@ -58,8 +58,8 @@ class ProductController extends Controller
             $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-            $business = $this->businessModel->GetByUserId($_SESSION[SESS_KEY]);
-            $product = $this->productModel->Paginate($page, $limit, $search, $business['business_id']);
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+            $product = $this->productModel->paginate($page, $limit, $search, $business['business_id']);
 
             $this->render('company/partials/productTable.php', [
                 'product' => $product,
@@ -79,7 +79,7 @@ class ProductController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $res->result = $this->productModel->GetById($body['productId']);
+            $res->result = $this->productModel->getById($body['productId']);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -101,7 +101,7 @@ class ProductController extends Controller
                 throw new Exception($validate->message);
             }
 
-            $body['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
+            $body['businessId'] = $this->businessModel->getByUserId($_SESSION[SESS_KEY])['business_id'];
 
             $res->result = $this->productModel->Insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
@@ -127,7 +127,7 @@ class ProductController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $this->productModel->UpdateById($body['productId'], [
+            $this->productModel->updateById($body['productId'], [
                 'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
@@ -158,7 +158,7 @@ class ProductController extends Controller
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            $this->productModel->DeleteById($body['productId']);
+            $this->productModel->deleteById($body['productId']);
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {
@@ -175,8 +175,8 @@ class ProductController extends Controller
             $body = json_decode($postData, true);
 
             $search['search'] = $body['search'];
-            $search['businessId'] = $this->businessModel->GetByUserId($_SESSION[SESS_KEY])['business_id'];
-            $response = $this->productModel->Search($search);
+            $search['businessId'] = $this->businessModel->getByUserId($_SESSION[SESS_KEY])['business_id'];
+            $response = $this->productModel->search($search);
 
             $res->result = $response;
             $res->success = true;

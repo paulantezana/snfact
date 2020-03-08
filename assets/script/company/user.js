@@ -65,12 +65,12 @@ function userSubmit(e){
 
     let url = '';
     let userSendData = {};
-    userSendData.password =  document.getElementById('userPassword').value || '';
-    userSendData.passwordConfirm =  document.getElementById('userPasswordConfirm').value || '';
-    userSendData.email =  document.getElementById('userEmail').value || '';
-    userSendData.userName =  document.getElementById('userUserName').value || '';
+    userSendData.password =  document.getElementById('userPassword').value;
+    userSendData.passwordConfirm =  document.getElementById('userPasswordConfirm').value;
+    userSendData.email =  document.getElementById('userEmail').value;
+    userSendData.userName =  document.getElementById('userUserName').value;
     userSendData.state =  document.getElementById('userState').checked || false;
-    userSendData.userRoleId =  document.getElementById('userUserRoleId').value || '';
+    userSendData.userRoleId =  document.getElementById('userUserRoleId').value;
 
     if (userState.modalType === 'create'){
         url = '/user/create';
@@ -82,8 +82,8 @@ function userSubmit(e){
     if (userState.modalType === 'updatePassword'){
         url = '/user/updatePassword';
         userSendData = {
-            password :  document.getElementById('userPassword').value || '',
-            passwordConfirm :  document.getElementById('userPasswordConfirm').value || '',
+            password :  document.getElementById('userPassword').value,
+            passwordConfirm :  document.getElementById('userPasswordConfirm').value,
             userId : document.getElementById('userId').value || 0,
         }
     }

@@ -7,7 +7,7 @@ class Customer extends Model
         parent::__construct("customer", "customer_id", $connection);
     }
 
-    public function GetAllByBusinessId($businessId)
+    public function getAllByBusinessId($businessId)
     {
         try {
             $sql = 'SELECT * FROM customer WHERE business_id = :business_id';
@@ -21,7 +21,7 @@ class Customer extends Model
         }
     }
 
-    public function Paginate($page = 1, $limit = 10, $search = '', $businessId = 0)
+    public function paginate($page = 1, $limit = 10, $search = '', $businessId = 0)
     {
         try {
             $offset = ($page - 1) * $limit;
@@ -50,7 +50,7 @@ class Customer extends Model
         }
     }
 
-    public function Insert($customer, $userReferId)
+    public function insert($customer, $userReferId)
     {
         $currentDate = date('Y-m-d H:i:s');
         $sql = 'INSERT INTO customer (updated_at, created_at, created_user_id, updated_user_id, business_id, document_number, state,

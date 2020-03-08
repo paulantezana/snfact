@@ -7,7 +7,7 @@ class Product extends Model
         parent::__construct("product", "product_id", $connection);
     }
 
-    public function GetById($id)
+    public function getById($id)
     {
         try {
             $sql = "SELECT product.*, cpc.description as product_code_description FROM product 
@@ -21,7 +21,7 @@ class Product extends Model
         }
     }
 
-    public function GetAllByBusinessId($businessId)
+    public function getAllByBusinessId($businessId)
     {
         try {
             $sql = 'SELECT * FROM product WHERE business_id = :business_id';
@@ -35,7 +35,7 @@ class Product extends Model
         }
     }
 
-    public function Paginate($page, $limit = 10, $search = '', $businessId = 0)
+    public function paginate($page, $limit = 10, $search = '', $businessId = 0)
     {
         try {
             $offset = ($page - 1) * $limit;
@@ -97,7 +97,7 @@ class Product extends Model
         return false;
     }
 
-    public function Search($search){
+    public function search($search){
         try{
             $sql = 'SELECT * FROM product WHERE (description LIKE :description OR product_code LIKE :product_code) AND business_id = :business_id LIMIT 8';
             $stmt = $this->db->prepare($sql);
