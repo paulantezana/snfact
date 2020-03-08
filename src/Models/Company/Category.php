@@ -17,7 +17,7 @@ class Category extends Model
             ]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
     public function Paginate($page, $limit = 10, $search = '', $businessId = 0)
@@ -45,7 +45,7 @@ class Category extends Model
             ];
             return $paginate;
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -77,7 +77,29 @@ class Category extends Model
             $lastId = $this->db->lastInsertId();
             return $this->GetById($lastId);
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
+        }
+    }
+
+    public function DeleteById($id)
+    {
+        try {
+            $sql = "DELETE FROM {$this->table} WHERE {$this->tableID} = :{$this->tableID}";
+            $stmt = $this->db->prepare($sql);
+            if (!$stmt->execute([
+                ":{$this->tableID}" => $id,
+            ])) {
+                throw new Exception("No se pudo elimiar el registro");
+            }
+            return $id;
+        } catch (PDOException $e) {
+            if($e->getCode() == '23000'){
+                throw new Exception('No fue eliminado porque existen PRODUCTOS relacionados');
+            } else {
+                throw new Exception('PDO: ' . $e->getMessage());
+            }
+        } catch(Exception $e){
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

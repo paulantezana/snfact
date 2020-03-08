@@ -210,7 +210,7 @@ CREATE TABLE app_authorization(
     module varchar(64) NOT NULL,
     action varchar(64),
     description varchar(64),
-    state TINYINT,
+    state TINYINT DEFAULT true,
     CONSTRAINT pk_app_authorization PRIMARY KEY (app_authorization_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
@@ -222,7 +222,11 @@ CREATE TABLE user_role(
     updated_user_id INT,
 
     name varchar(64) NOT NULL,
-    CONSTRAINT pk_user_role PRIMARY KEY (user_role_id)
+    business_id INT NOT NULL,
+    state TINYINT DEFAULT 1,
+    CONSTRAINT pk_user_role PRIMARY KEY (user_role_id),
+    CONSTRAINT fk_user_role_business FOREIGN KEY (business_id) REFERENCES business (business_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 CREATE TABLE user_role_authorization(
@@ -253,10 +257,9 @@ CREATE TABLE user(
     user_role_id INT NOT NULL,
 
     CONSTRAINT pk_user PRIMARY KEY (user_id),
-    CONSTRAINT uk_user UNIQUE INDEX (email,user_name),
-    CONSTRAINT fk_user_user_role FOREIGN KEY (user_role_id) REFERENCES user_role (user_role_id)
-    ON UPDATE RESTRICT ON DELETE RESTRICT
+    CONSTRAINT uk_user UNIQUE INDEX (email,user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+ALTER TABLE user ADD INDEX in_user (user_role_id);
 
 CREATE TABLE business_user(
     business_id INT NOT NULL,
@@ -1011,7 +1014,6 @@ INSERT INTO cat_subject_detraction_code (code, description) VALUES
 
 -- DATOS ADICIONALES
 -- ADITIONAL DATA
-INSERT INTO user_role(name) VALUES ('Administrador'),('Personal'),('Invitado');
 INSERT INTO app_authorization(module, action, description, state) VALUES
 ('reporte','listar','listar reporte',true),
 
@@ -1042,8 +1044,15 @@ INSERT INTO app_authorization(module, action, description, state) VALUES
 ('rol','modificar','Acualizar los roles',true),
 
 ('escritorio','general','vista general',true),
-
 ('empresa','modificar','Acualizar los empresa',true),
+('anular','crear','Anular un comprobante',true),
+('resumen','crear','Crear resumen diario',true),
+
+('cotizacion','listar','listar roles',true),
+('cotizacion','crear','crear nuevos rol',true),
+('cotizacion','eliminar','Eliminar un rol',true),
+('cotizacion','modificar','Acualizar los roles',true),
+
 ('local','listar','listar locales',true),
 ('local','crear','crear nuevos locales',true),
 ('local','modificar','Acualizar los locales',true),
@@ -1053,34 +1062,10 @@ INSERT INTO app_authorization(module, action, description, state) VALUES
 ('api','eliminar','Eliminar un api',true),
 ('api','modificar','Acualizar un api',true);
 
-INSERT INTO user_role_authorization(user_role_id, app_authorization_id) VALUES
-(1,1),
-(1,2),
-(1,3),
-(1,4),
-(1,5),
-(1,6),
-(1,7),
-(1,8),
-(1,9),
-(1,10),
-(1,11),
-(1,12),
-(1,13),
-(1,14),
-(1,15),
-(1,16),
-(1,17),
-(1,18),
-(1,19),
-(1,20),
-(1,21),
-(1,22),
-(1,23);
-
 
 -- TEMP
 INSERT INTO cat_product_code(code, description) VALUES ('100000','TEST');
+-- INSERT INTO user_role()
 
 
 

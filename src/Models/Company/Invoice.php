@@ -250,7 +250,7 @@ class Invoice extends Model
             return $invoiceId;
         }catch (Exception $e){
             $this->db->rollBack();
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -276,7 +276,7 @@ class Invoice extends Model
             }
             return $invoiceId;
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

@@ -17,7 +17,7 @@ class Customer extends Model
             ]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -46,7 +46,7 @@ class Customer extends Model
             ];
             return $paginate;
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 

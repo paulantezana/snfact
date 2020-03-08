@@ -126,6 +126,7 @@ function CategoryShowModalCreate(){
     CategoryState.modalType = 'create';
     SnModal.open(CategoryState.modalName);
     CategoryClearForm();
+    document.getElementById('categoryState').checked = true;
 }
 
 function CategoryShowModalUpdate(categoryId){

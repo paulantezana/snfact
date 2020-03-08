@@ -13,9 +13,10 @@
         <script src="<?= URL_PATH ?>/assets/script/common/nprogress.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/common.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/sedna.js"></script>
+        <script src="<?= URL_PATH ?>/assets/script/common/slimselect.min.js"></script>
     </head>
     <body>
-        <div class="AdminLayout SnAdminL2" id="AdminLayout">
+        <div class="AdminLayout SnAdminL1" id="AdminLayout">
             <div class="AdminLayout-header">
                 <header class="Header">
                     <div class="Header-left">

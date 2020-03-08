@@ -6,6 +6,19 @@ class AppAuthorization extends Model
     {
         parent::__construct("app_authorization","app_authorization_id", $connection);
     }
+
+    public function GetAllId()
+    {
+        try {
+            $sql = 'SELECT app_authorization_id FROM app_authorization';
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            throw new Exception('PDO: ' . $e->getMessage());
+        }
+    }
+
     public function GetMenu($userRoleId){
         try{
             $sql = 'SELECT app.module, GROUP_CONCAT(app.description) as description FROM user_role_authorization as ur
@@ -19,7 +32,7 @@ class AppAuthorization extends Model
 
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -33,7 +46,7 @@ class AppAuthorization extends Model
 
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -64,7 +77,25 @@ class AppAuthorization extends Model
             $this->db->commit();
         } catch (Exception $e) {
             $this->db->rollBack();
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
+        }
+    }
+
+    public function Register($authIds, $userRoleId){
+        try{
+            foreach ($authIds as $row){
+                $sql = 'INSERT INTO user_role_authorization (user_role_id, app_authorization_id) 
+                        VALUES (:user_role_id, :app_authorization_id)';
+                $stmt = $this->db->prepare($sql);
+                if (!$stmt->execute([
+                    ':user_role_id' => $userRoleId,
+                    ':app_authorization_id' => $row['app_authorization_id'],
+                ])){
+                    throw new Exception("No se pudo insertar el registro");
+                }
+            }
+        } catch (Exception $e) {
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -85,7 +116,7 @@ class AppAuthorization extends Model
                 return $stmt->fetch();
             }
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

@@ -1,4 +1,4 @@
-function InvoiceList(page = 1, limit = 10, search = '', filter){
+function invoiceList(page = 1, limit = 10, search = '', filter){
     let productTable = document.getElementById('invoiceTable');
     if(productTable){
         SnFreeze.freeze({selector: '#invoiceTable'});
@@ -14,12 +14,12 @@ function InvoiceList(page = 1, limit = 10, search = '', filter){
     }
 }
 
-function InvoiceFilter(){
+function invoiceFilter(){
     let filterStartDate = document.getElementById('filterStartDate');
     let filterEndDate = document.getElementById('filterEndDate');
     let filterCustomerId = document.getElementById('filterCustomerId');
     if (filterStartDate && filterEndDate && filterCustomerId){
-        InvoiceList(1,10,'',{
+        invoiceList(1,10,'',{
             startDate: filterStartDate.value,
             endDate: filterEndDate.value,
             customerId: filterCustomerId.value,
@@ -27,7 +27,7 @@ function InvoiceFilter(){
     }
 }
 
-function InvoiceSendEmailOpenModal(invoiceId, customerEmail){
+function invoiceSendEmailOpenModal(invoiceId, customerEmail){
     SnModal.open('invoiceModalSendEmail');
     let sendInvoiceId = document.getElementById('sendInvoiceId');
     let sendInvoiceCustomerEmail = document.getElementById('sendInvoiceCustomerEmail');
@@ -53,7 +53,7 @@ function invoiceResend(invoiceId){
     })
 }
 
-function InvoiceSendEmail(event){
+function invoiceSendEmail(event){
     event.preventDefault();
     let sendInvoiceId = document.getElementById('sendInvoiceId');
     let sendInvoiceCustomerEmail = document.getElementById('sendInvoiceCustomerEmail');
@@ -79,26 +79,26 @@ function InvoiceSendEmail(event){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-    InvoiceList();
+    invoiceList();
 
     let filterStartDate = document.getElementById('filterStartDate');
     if (filterStartDate){
         filterStartDate.addEventListener('input',()=>{
-            InvoiceFilter();
+            invoiceFilter();
         });
     }
 
     let filterEndDate = document.getElementById('filterEndDate');
     if (filterEndDate){
         filterEndDate.addEventListener('input',()=>{
-            InvoiceFilter();
+            invoiceFilter();
         });
     }
 
     let filterCustomerId = document.getElementById('filterCustomerId');
     if (filterCustomerId){
         filterCustomerId.addEventListener('input',()=>{
-            InvoiceFilter();
+            invoiceFilter();
         });
     }
 });

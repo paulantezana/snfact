@@ -318,9 +318,9 @@ class InvoiceController extends Controller
                 <td  id="invoiceItemUnitPriceText${uniqueId}"></td>
                 <td>
                     <div class="SnControl-group">
-                        <div class="SnBtn" id="invoiceItemQuantityRemove${uniqueId}"><i class="icon-minus2"></i></div>
+                        <div class="SnBtn icon" id="invoiceItemQuantityRemove${uniqueId}"><i class="icon-minus2"></i></div>
                         <input class="SnForm-control" id="invoiceItemQuantityText${uniqueId}" type="number" step="any" style="width: 80px" value="1">
-                        <div class="SnBtn" id="invoiceItemQuantityAdd${uniqueId}"><i class="icon-plus2"></i></div>
+                        <div class="SnBtn icon" id="invoiceItemQuantityAdd${uniqueId}"><i class="icon-plus2"></i></div>
                     </div>
                 </td>
                 <td id="invoiceItemTotalValueText${uniqueId}"></td>

@@ -18,7 +18,7 @@ class MngUserRole extends Model
             }
             return  (int)$this->db->lastInsertId();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

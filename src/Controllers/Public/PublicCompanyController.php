@@ -1,6 +1,7 @@
 <?php
 
 require_once MODEL_PATH . '/Company/User.php';
+require_once MODEL_PATH . '/Company/UserRole.php';
 require_once MODEL_PATH . '/Company/AppAuthorization.php';
 require_once MODEL_PATH . '/Company/Business.php';
 require_once MODEL_PATH . '/Company/BusinessLocal.php';
@@ -11,6 +12,7 @@ class PublicCompanyController extends Controller
 {
     protected $connection;
     protected $userModel;
+    protected $userRoleModel;
     protected $businessModel;
     protected $businessLocalModel;
 
@@ -18,6 +20,7 @@ class PublicCompanyController extends Controller
     {
         $this->connection = $connection;
         $this->userModel = new User($connection);
+        $this->userRoleModel = new UserRole($connection);
         $this->businessModel = new Business($connection);
         $this->businessLocalModel = new BusinessLocal($connection);
     }
@@ -177,8 +180,8 @@ class PublicCompanyController extends Controller
                         "avatar" => '',
                         "userName" => $register['userName'],
                         "state" => true,
-                        "userRoleId" => 1,
-                    ], 1);
+                        "userRoleId" => 0,
+                    ], 0);
 
                     $businessId = $this->businessModel->Insert([
                         'continue_payment' => false,
@@ -189,6 +192,19 @@ class PublicCompanyController extends Controller
                         'phone' => $dataPeru['telephone'],
                         'web_site' => '',
                     ], $userId);
+
+                    $roleId = $this->userRoleModel->Insert([
+                        'name'=>'Admin',
+                        'businessId'=>$businessId,
+                    ],$userId);
+
+                    $this->userModel->UpdateById($userId,[
+                        'user_role_id' => $roleId,
+                    ]);
+
+                    $appAuthorizationModel = new AppAuthorization($this->connection);
+                    $authIds = $appAuthorizationModel->GetAllId();
+                    $appAuthorizationModel->Register($authIds, $roleId);
 
                     $this->businessLocalModel->Insert([
                         'shortName' => 'Local principal',

@@ -158,6 +158,7 @@ function CustomerShowModalCreate(){
     CustomerState.modalType = 'create';
     CustomerClearForm();
     SnModal.open(CustomerState.modalName);
+    document.getElementById('customerState').checked = true;
 }
 
 function CustomerShowModalUpdate(customerId){
@@ -179,7 +180,7 @@ function CustomerShowModalUpdate(customerId){
             document.getElementById('customerFiscalAddress').value = res.result.fiscal_address;
             document.getElementById('customerEmail').value = res.result.email;
             document.getElementById('customerTelephone').value = res.result.telephone;
-            document.getElementById('customerState').checked = res.result.state == '0' ? false : true;;
+            document.getElementById('customerState').checked = res.result.state == '0' ? false : true;
             document.getElementById('customerId').value = res.result.customer_id;
             SnModal.open(CustomerState.modalName);
         }else {

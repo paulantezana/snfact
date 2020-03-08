@@ -22,7 +22,7 @@ class Model
             $stmt->execute();
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ class Model
             ];
             return $paginate;
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ class Model
             $stmt->execute([":$this->tableID" => $id]);
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ class Model
             $stmt->execute([":$columnName" => $value]);
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -86,8 +86,14 @@ class Model
                 throw new Exception("No se pudo elimiar el registro");
             }
             return $id;
-        } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+        } catch (PDOException $e) {
+            if($e->getCode() == '23000'){
+                throw new Exception('No se pudo eliminado porque existen REGISTROS relacionados');
+            } else {
+                throw new Exception('PDO: ' . $e->getMessage());
+            }
+        } catch(Exception $e){
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -103,8 +109,14 @@ class Model
                 throw new Exception("No se pudo elimiar el registro");
             }
             return $value;
-        } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+        } catch (PDOException $e) {
+            if($e->getCode() == '23000'){
+                throw new Exception('No se pudo eliminado porque existen REGISTROS relacionados');
+            } else {
+                throw new Exception('PDO: ' . $e->getMessage());
+            }
+        } catch(Exception $e){
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -130,7 +142,7 @@ class Model
             }
             return $id;
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -156,7 +168,7 @@ class Model
             }
             return $value;
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -171,7 +183,7 @@ class Model
 
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

@@ -17,7 +17,7 @@ class BusinessSerie extends Model
             ]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -34,7 +34,7 @@ class BusinessSerie extends Model
             }
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ class BusinessSerie extends Model
             }
             return $data;
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

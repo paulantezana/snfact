@@ -17,7 +17,7 @@ class Business extends Model
             $stmt->execute([":user_id" => $userReferID]);
             return $stmt->fetch();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ class Business extends Model
                 return $businessId;
             }
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -97,7 +97,7 @@ class Business extends Model
 
             return $businessId;
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

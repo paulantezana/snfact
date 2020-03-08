@@ -31,10 +31,10 @@
 @include SnEmpty();
 @include SnPadding();
 
-@import "company/Layout";
-@import "company/Header";
-@import "company/HeaderMenu";
-@import "company/AsideMenu";
+@import "adminLayout/Layout";
+@import "adminLayout/Header";
+@import "adminLayout/HeaderMenu";
+@import "adminLayout/AsideMenu";
 @import "company/SnToolbar";
 
 @import "company/InfiniteScroll";

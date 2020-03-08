@@ -25,7 +25,7 @@ class SunatCommunication
             
             return $this->connection->lastInsertId();
         } catch (Exception $e) {
-            throw new Exception("Error in function : ".__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -36,7 +36,7 @@ class SunatCommunication
                                                 JOIN sunat_summary_response res on com.sunat_communication_id = res.sunat_communication_id
                                                 JOIN 
                                                 WHERE sunat_summary_response_id = :sunatSummaryResponseId;");
-            $query->bindParam(':communicationId', $communicationId);
+            $query->bindParam(':communicationId', $sunatCommunicationId);
             $query->execute();
             $data = $query->fetchAll();
 
@@ -47,7 +47,7 @@ class SunatCommunication
                 return false;
             }
         } catch (Exception $e) {
-            throw new Exception("Error in function : ".__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

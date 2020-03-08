@@ -25,7 +25,7 @@ class SunatXml
             
             return $this->connection->lastInsertId();
         } catch (Exception $e) {
-            throw new Exception("Error in function : ".__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

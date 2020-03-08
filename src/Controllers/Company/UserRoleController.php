@@ -18,7 +18,6 @@ class UserRoleController extends Controller
     {
         try {
             Authorization($this->connection, 'rol', 'listar');
-
             $appAuthorizationModel = new AppAuthorization($this->connection);
             $appAuthorization = $appAuthorizationModel->GetAll();
 
@@ -36,7 +35,6 @@ class UserRoleController extends Controller
     {
         try {
             Authorization($this->connection, 'rol', 'listar');
-
             $userRole = $this->userRoleModel->GetAll();
             $this->render('company/partials/roleList.php', [
                 'userRole' => $userRole
@@ -53,7 +51,6 @@ class UserRoleController extends Controller
         $res = new Result();
         try {
             Authorization($this->connection, 'rol', 'listar');
-
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
             if (!$body) {
@@ -74,7 +71,6 @@ class UserRoleController extends Controller
         $res = new Result();
         try {
             Authorization($this->connection, 'rol', 'crear');
-
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -97,7 +93,6 @@ class UserRoleController extends Controller
         $res = new Result();
         try {
             Authorization($this->connection, 'rol', 'modificar');
-
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -107,9 +102,13 @@ class UserRoleController extends Controller
                 return;
             }
 
+            $currentDate = date('Y-m-d H:i:s');
             $res->result = $this->userRoleModel->UpdateById((int) $body['userRoleId'], [
-                'name' => $body['name'] ?? '',
+                'updated_at' => $currentDate,
+                'updated_user_id' => $_SESSION[SESS_KEY],
+                'name' => $body['name'],
             ]);
+
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
         } catch (Exception $e) {

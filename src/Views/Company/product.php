@@ -54,9 +54,7 @@
                         </div>
                         <div class="SnForm-item required">
                             <label for="productProductCode" class="SnForm-label">Codigo Producto</label>
-                            <select id="productProductCode" required>
-                                <option value="">Seleccionar</option>
-                            </select>
+                            <select id="productProductCode" required></select>
                         </div>
                     </div>
                     <div class="SnForm-item required">
@@ -70,7 +68,6 @@
                     <div class="SnForm-item required">
                         <label for="productAffectationCode" class="SnForm-label">Tipo de IGV</label>
                         <select id="productAffectationCode" class="SnForm-control" required>
-                            <option value="">Seleccionar</option>
                             <?php foreach ($catAffectationIgvTypeCodes ?? [] as $row): ?>
                                 <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                             <?php endforeach; ?>

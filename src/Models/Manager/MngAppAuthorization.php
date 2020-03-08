@@ -19,7 +19,7 @@ class MngAppAuthorization extends Model
 
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -33,7 +33,7 @@ class MngAppAuthorization extends Model
 
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ class MngAppAuthorization extends Model
             $this->db->commit();
         } catch (Exception $e) {
             $this->db->rollBack();
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ class MngAppAuthorization extends Model
                 return $stmt->fetch();
             }
         } catch (Exception $e) {
-            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

@@ -57,6 +57,7 @@ function ProductClearForm() {
         currentForm.reset();
         productProductKey.focus();
     }
+    ProductState.slimProductCode.set('');
 }
 
 function ProductSubmit(e) {
@@ -136,6 +137,7 @@ function ProductShowModalCreate() {
     ProductState.modalType = 'create';
     ProductClearForm();
     SnModal.open(ProductState.modalName);
+    document.getElementById('productState').checked = true;
 }
 
 function ProductShowModalUpdate(productId) {
@@ -161,19 +163,14 @@ function ProductShowModalUpdate(productId) {
             document.getElementById('productIsc').value = res.result.isc;
             document.getElementById('productState').checked = res.result.state == '0' ? false : true;
             document.getElementById('productId').value = res.result.product_id;
-
-            // if(ProductState.slimProductCode){
-            //     console.log(ProductState.slimProductCode);
-            //     console.log(ProductState.slimProductCode.setData[{
-            //         text: res.result.product_code_description,
-            //         value: res.result.product_code,
-            //     }]);
-            // }
-            SnSelect({
-                elem: '#productProductCode',
-                value: res.result.product_code,
-                text: res.result.product_code_description
-            }, 'set');
+        
+            ProductState.slimProductCode.setData([
+                {
+                    text: res.result.product_code_description,
+                    value: res.result.product_code,
+                },
+            ]);
+            ProductState.slimProductCode.set(res.result.product_code);
 
             SnModal.open(ProductState.modalName);
         } else {
@@ -193,6 +190,7 @@ function CategoryShowModalCreate() {
         categoryName.focus();
     }
     SnModal.open(ProductState.categoryModalName);
+    document.getElementById('categoryState').checked = true;
 }
 
 function CategorySubmit(e) {
@@ -251,50 +249,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ProductList();
 
-    SnSelect({
-        elem: '#productProductCode',
-        data: (search, callback) => {
-            // if (search.length < 2) {
-            //     callback('Escriba almenos 2 caracteres');
-            //     return;
-            // }
-
-            RequestApi.fetch('/product/searchProductCode', {
-                method: 'POST',
-                body: { search: search }
-            }).then(res => {
-                if (res.success) {
-                    let data = res.result.map(item => ({ text: item.description, value: item.code }));
-                    callback(data);
-                } else {
-                    callback(false);
-                }
-            });
-        }
-    });
-
-    // CustomSelect({
-    //     elem: '#productUnitMeasureCode',
-    // });
-
-    // open it for the user
-    // select.open();
-
-    // ProductState.slimProductCode = new SlimSelect({
-    //     select: '#productProductCode',
-    //     searchingText: 'Buscando...',
-    //     ajax: function (search, callback) {
+    // SnSelect({
+    //     elem: '#productProductCode',
+    //     data: (search, callback) => {
     //         // if (search.length < 2) {
     //         //     callback('Escriba almenos 2 caracteres');
-    //         //     return
+    //         //     return;
     //         // }
 
-    //         RequestApi.fetch('/product/searchProductCode',{
+    //         RequestApi.fetch('/product/searchProductCode', {
     //             method: 'POST',
     //             body: { search: search }
-    //         }).then(res=>{
-    //             if (res.success){
-    //                 let data = res.result.map(item=>({ text: item.description, value: item.code }));
+    //         }).then(res => {
+    //             if (res.success) {
+    //                 let data = res.result.map(item => ({ text: item.description, value: item.code }));
     //                 callback(data);
     //             } else {
     //                 callback(false);
@@ -302,4 +270,29 @@ document.addEventListener('DOMContentLoaded', () => {
     //         });
     //     }
     // });
+
+    ProductState.slimProductCode = new SlimSelect({
+        select: '#productProductCode',
+        searchingText: 'Buscando...',
+        // addToBody: true,
+        ajax: function (search, callback) {
+            if (search.length < 2) {
+                callback('Escriba almenos 2 caracteres');
+                return
+            }
+            RequestApi.fetch('/product/searchProductCode',{
+                method: 'POST',
+                body: { search: search }
+            }).then(res=>{
+                if (res.success){
+                    let data = res.result.map(item=>({ text: item.description, value: item.code }));
+                    callback(data);
+                } else {
+                    callback(false);
+                }
+            }).catch(err=>{
+                callback(false);
+            })
+        }
+    });
 });

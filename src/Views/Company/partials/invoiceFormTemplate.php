@@ -162,7 +162,7 @@
                             <tr>
                                 <th>Descripcion</th>
                                 <th>Precio</th>
-                                <th style="width: 200px">Cantidad</th>
+                                <th style="width: 175px">Cantidad</th>
                                 <th>Subtotal</th>
                                 <th>Total</th>
                                 <th style="width: 95px"></th>

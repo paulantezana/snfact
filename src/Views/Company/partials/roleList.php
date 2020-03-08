@@ -1,10 +1,10 @@
 <div class="SnTable-wrapper">
-    <table class="SnTable">
+    <table class="SnTable" id="userRoleCurrentTable">
         <thead>
-        <tr>
-            <th>Nombre</th>
-            <th style="width: 100px"></th>
-        </tr>
+            <tr>
+                <th>Nombre</th>
+                <th style="width: 100px"></th>
+            </tr>
         </thead>
         <tbody>
         <?php foreach ($userRole ?? [] as $row): ?>
@@ -15,20 +15,14 @@
                         <div
                             class="SnBtn icon primary jsUserRoleOption"
                             data-tooltip="Configurar permisos"
-                            onclick="UserRoleForm.loadAuthorities(<?= $row['user_role_id'] ?>,'<?= $row['name'] ?>')">
+                            onclick="userRoleLoadAuthorities(<?= $row['user_role_id'] ?>,'<?= $row['name'] ?>')">
                             <i class="icon-cog"></i>
                         </div>
                         <div
                             class="SnBtn icon jsUserRoleOption"
                             data-tooltip="Editar"
-                            onclick="UserRoleForm.showModalUpdate(<?= $row['user_role_id'] ?>,'<?= $row['name'] ?>')">
+                            onclick="userRoleShowModalUpdate(<?= $row['user_role_id'] ?>,'<?= $row['name'] ?>')">
                             <i class="icon-pencil"></i>
-                        </div>
-                        <div
-                            data-tooltip="Eliminar"
-                            class="SnBtn icon jsUserRoleOption"
-                            onclick="UserRoleForm.delete(<?= $row['user_role_id'] ?>,'<?= $row['name'] ?>')" >
-                            <i class="icon-trash"></i>
                         </div>
                     </div>
                 </td>

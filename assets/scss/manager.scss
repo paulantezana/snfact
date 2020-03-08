@@ -1,0 +1,45 @@
+@import "sedna/sedna";
+@import "_postConfig";
+
+// Base
+@include SnBase();
+@import "_base";
+
+// Components
+@include SnMenu();
+@include SnBtn();
+@include SnAlert();
+@include SnCard();
+@include SnForm();
+@include SnControl();
+@include SnAvatar();
+@include SnGrid();
+@include SnLoading();
+@include SnMargin();
+@include SnModal();
+@include SnMessage();
+@include SnPagination();
+@include SnTable();
+@include SnSwitch();
+@include SnTooltip();
+@include SnTab();
+@include SnContainer();
+@include SnCollapse();
+//@include SnDivider();
+@include SnHide();
+@include SnFreeze();
+@include SnEmpty();
+@include SnPadding();
+
+@import "adminLayout/Layout";
+@import "adminLayout/Header";
+@import "adminLayout/HeaderMenu";
+@import "adminLayout/AsideMenu";
+// @import "company/SnToolbar";
+
+// @import "company/InfiniteScroll";
+// @import "company/CustomerRow";
+
+// @import "company/dashboard";
+// @import "company/User";
+// @import "company/Invoice";

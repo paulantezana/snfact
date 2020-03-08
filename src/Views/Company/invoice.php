@@ -1,6 +1,25 @@
 <?php require_once __DIR__ . '/layout/header.php'; ?>
 
 <div class="SnContent">
+    <div class="SnToolbar" id="InvoiceToolbar">
+        <div class="SnToolbar-left">
+            <i class="icon-equalizer SnMr-2"></i> COMPROBANTES
+        </div>
+        <div class="SnToolbar-right">
+            <div class="SnBtn jsCategoryAction" onclick="invoiceList()">
+                <i class="icon-reload-alt"></i>
+            </div>
+            <div class="SnDropdown SnBtn primary">
+                <div class="SnDropdown-toggle"><i class="icon-plus2 SnMr-2"></i>Nuevo</div>
+                <ul class="SnDropdown-list">
+                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura</a></li>
+                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta</a></li>
+                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07">Emitir nota crédito</a></li>
+                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08">Emitir nota débito</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="SnCard">
         <div class="SnCard-body">
             <div class="SnGrid m-grid-3">

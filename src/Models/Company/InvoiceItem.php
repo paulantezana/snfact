@@ -19,7 +19,7 @@ class InvoiceItem
             ]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -32,7 +32,7 @@ class InvoiceItem
             ]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ class InvoiceItem
             ]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
-            throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            throw new Exception('PDO: ' . $e->getMessage());
         }
     }
 }

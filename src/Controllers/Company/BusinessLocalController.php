@@ -210,7 +210,7 @@ class BusinessLocalController extends Controller
             </td>
             <td>
                 <div class="SnSwitch" style="height: 18px">
-                    <input class="SnSwitch-input" type="checkbox" id="contingency${uniqueId}">
+                    <input class="SnSwitch-control" type="checkbox" id="contingency${uniqueId}">
                     <label class="SnSwitch-label" for="contingency${uniqueId}"></label>
                 </div>
             </td>

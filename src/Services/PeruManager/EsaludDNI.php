@@ -39,7 +39,7 @@ class EsaludDNI
 
             $res->success = true;
             $res->result = [
-                'socialReason' => $data['ApellidoPaterno'] . ' ' . $data['Nombres'],
+                'socialReason' => $data['ApellidoPaterno'] . ' ' . $data['ApellidoMaterno'] . ' ' .  $data['Nombres'],
                 'documentNumber' => $dni,
                 'sex' => $data['ApellidoPaterno'],
                 'birthDate' => $data['FechaNacimiento'],

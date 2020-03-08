@@ -65,7 +65,7 @@
             &.required .#{$classPrefix}Form-label::before{
                 display: inline-block;
                 margin-right: 4px;
-                color: #f5222d;
+                color: var(--snError);
                 font-size: 14px;
                 // font-family: SimSun, sans-serif;
                 line-height: 1;
@@ -116,7 +116,4 @@
         font-size: inherit;
         height: auto;
     }
-    //.#{$classPrefix}Form-control[multiple],
-    //&[multiple],
-    //&[size]
 }

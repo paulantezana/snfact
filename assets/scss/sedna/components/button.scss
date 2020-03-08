@@ -5,7 +5,7 @@
   font-weight: 400;
   white-space: nowrap;
   text-align: center;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   user-select: none;
@@ -74,8 +74,7 @@
       color: var(--snColor1Inverse);
       background-color: var(--snColor1);
       border-color: var(--snColor1);
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+      
       &:hover {
         background-color: var(--snColor1Light);
         border-color: var(--snColor1Light);
@@ -93,8 +92,6 @@
       color: var(--snSuccessInverse);
       background-color: var(--snSuccessLight);
       border-color: var(--snSuccessLight);
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
       &:hover {
         background-color: var(--snSuccess);
         border-color: var(--snSuccess);
@@ -112,8 +109,6 @@
       color: var(--snWarningInverse);
       background-color: var(--snWarningLight);
       border-color: var(--snWarningLight);
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
       &:hover {
         background-color: var(--snWarning);
         border-color: var(--snWarning);
@@ -131,8 +126,6 @@
       color: var(--snErrorInverse);
       background-color: var(--snErrorLight);
       border-color: var(--snErrorLight);
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
       &:hover {
         background-color: var(--snError);
         border-color: var(--snError);
@@ -168,7 +161,6 @@
     &[disabled]:hover,
     &[disabled] {
       opacity: 0.6;
-      box-shadow: none;
       touch-action: none;
       pointer-events: none;
     }
