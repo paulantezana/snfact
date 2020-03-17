@@ -121,7 +121,13 @@ class User extends Model
             }
 
             return $lastInsertId;
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
+            if($e->getCode() == '23000'){
+                throw new Exception('Duplicado en: ' . $e->getMessage());
+            } else {
+                throw new Exception('PDO: ' . $e->getMessage());
+            }
+        } catch(Exception $e){
             throw new Exception('PDO: ' . $e->getMessage());
         }
     }

@@ -1,4 +1,4 @@
-@import "sedna/sedna";
+@import "../node_modules/sedna/bin/sedna";
 @import "_postConfig";
 
 // Base
@@ -6,7 +6,7 @@
 @import "_base";
 
 // Components
-@include SnMenu();
+@include SnMenu(s,'.HeaderMenu');
 @include SnBtn();
 @include SnAlert();
 @include SnCard();
@@ -26,7 +26,6 @@
 @include SnContainer();
 @include SnCollapse();
 //@include SnDivider();
-@include SnHide();
 @include SnFreeze();
 @include SnEmpty();
 @include SnPadding();
@@ -197,7 +196,7 @@
     cursor: pointer;
     // transition: all 0.3s;
     &:hover{
-        background: var(--snColorHover);
+      background: var(--snColorHover);
     }
   }
   &-item,

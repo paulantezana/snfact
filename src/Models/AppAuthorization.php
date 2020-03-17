@@ -21,7 +21,7 @@ class AppAuthorization extends Model
 
     public function getMenu($userRoleId){
         try{
-            $sql = 'SELECT app.module, GROUP_CONCAT(app.description) as description FROM user_role_authorization as ur
+            $sql = 'SELECT app.module FROM user_role_authorization as ur
                         INNER JOIN app_authorization app ON ur.app_authorization_id = app.app_authorization_id
                         WHERE ur.user_role_id = :user_role_id
                         GROUP BY app.module';

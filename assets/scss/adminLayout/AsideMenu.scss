@@ -1,5 +1,3 @@
-$hoverMenuBg: var(--snColorDarkSmoother);
-$hoverMenuColor: white;
 $menuBorderColor: var(--snColorDark);
 $asideFooterHeight: 32px;
 
@@ -9,31 +7,20 @@ $asideFooterHeight: 32px;
   height: calc(100vh - #{$headerHeight + $asideFooterHeight});
   background: var(--snColorDarker);
   overflow-y: auto;
-  &-container{
+  &-container {
     background: var(--snColorDarker);
     color: var(--snColorDarkInverse);
   }
   li {
     position: relative;
-    // &.is-active{
-    //  a{
-    //    background: $hoverMenuBg;
-    //    color: $hoverMenuColor;
-    //  }
-    // }
   }
   ul {
     @extend %snList;
     background: var(--snColorDark);
-    a {
-      padding-left: 50px;
-    }
   }
-  &-item,
   a {
     color: var(--snColorDarkInverse);
     text-decoration: none;
-    line-height: 3rem;
     padding: 0 8px 0 20px;
     display: flex;
     align-items: center;
@@ -47,12 +34,24 @@ $asideFooterHeight: 32px;
       align-items: center;
       justify-content: space-between;
     }
-    &:hover {
-      background: $hoverMenuBg;
-      color: $hoverMenuColor;
-    }
     .toggle {
       margin: 0 0 0 8px;
+    }
+  }
+  & > li > a {
+    line-height: 3rem;
+    &:hover {
+      background: var(--snColor1);
+      color: white;
+    }
+  }
+  ul {
+    a {
+      padding: 8px 0  8px 50px;
+      line-height: 1.5rem;
+      &:hover{
+        color: var(--snColor1Lighter);
+      }
     }
   }
 }
@@ -73,36 +72,60 @@ $asideFooterHeight: 32px;
 
 // Divider
 .AsideMenu {
-    &-divider {
-        padding: 10px 20px;
-        text-transform: uppercase;
-        font-size: 11px;
-        font-weight: 700;
-    }
+  &-divider {
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+  }
 }
 
 //@mixin AsideMenuInLarge(){
-  .AsideMenu {
-      ul {
-          display: none;
-          &.is-show{
-              display: block;
-          }
-      }
+.AsideMenu {
+  ul {
+    display: none;
+    &.is-show{
+      display: block;
+    }
   }
-//}
-
-//@extend AsideMenuInLarge();
+}
 
 @mixin AsideMenuInSmall(){
   @include from(l) {
     .AsideMenu {
       overflow-y: initial;
       &-divider {
-        // border-bottom: 1px solid $menuBorderColor;
+        // border-bottom: 1px solid var(--snColorDark);
         padding: 0;
         font-size: 0;
       }
+
+      // All Levels
+      li {
+        ul {
+          position: absolute;
+          top: 0;
+          left: 100%;
+          width: 220px;
+          display: none;
+          a {
+            padding: 8px 20px;
+          }
+        }
+        &:hover {
+          > ul {
+            display: block;
+          }
+          > a span {
+            display: flex;
+          }
+          > a {
+            color: var(--snColor1Lighter);
+          }
+        }
+      }
+
+      // Fisrt level
       > li {
         > a {
           justify-content: center;
@@ -115,7 +138,7 @@ $asideFooterHeight: 32px;
             text-align: left;
             padding: 0 20px;
             width: 220px;
-            background: $hoverMenuBg;
+            background: var(--snColor1);
             display: none;
           }
           .toggle {
@@ -125,33 +148,15 @@ $asideFooterHeight: 32px;
             margin-right: 0;
           }
         }
-      }
-      li {
-        ul {
-          position: absolute;
-          top: 0;
-          left: 100%;
-          width: 220px;
-          display: none;
-          a {
-            padding: 0 20px;
-          }
-        }
-        &:hover {
-          > ul {
-            display: block;
-          }
-          > a span {
-            display: flex;
-          }
+        &:hover{
           > a {
-            background: $hoverMenuBg;
-            color: $hoverMenuColor;
+            background: var(--snColor1);
+            color: white;
           }
         }
-      }
-      > li > ul {
-        top: 100%;
+        > ul{
+          top: 100%;
+        }
       }
     }
   }
@@ -174,8 +179,8 @@ $asideFooterHeight: 32px;
 
 // ----------------------------------------------------------------------------
 .AsideFooter{
-   height: $asideFooterHeight;
-   padding: 0 14px 0 14px;
+  height: $asideFooterHeight;
+  padding: 0 14px 0 14px;
 }
 
 // Branding

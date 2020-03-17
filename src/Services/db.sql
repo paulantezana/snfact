@@ -157,7 +157,7 @@ CREATE TABLE business(
     created_user_id INT,
 
     continue_payment TINYINT,
-    ruc VARCHAR(32) DEFAULT '',
+    ruc VARCHAR(32) NOT NULL UNIQUE,
     social_reason VARCHAR(255) DEFAULT '',
     commercial_reason VARCHAR(255) DEFAULT '',
     document_code VARCHAR(4) DEFAULT '',
@@ -168,7 +168,6 @@ CREATE TABLE business(
     logo VARCHAR(255) DEFAULT '',
     environment TINYINT DEFAULT 0,
     state TINYINT DEFAULT 1,
-    UNIQUE KEY uk_company (web_site,email,ruc),
     CONSTRAINT pk_company PRIMARY KEY (business_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
@@ -251,19 +250,18 @@ CREATE TABLE user(
     updated_user_id INT,
 
     password varchar(64) NOT NULL,
-    email varchar(64)  DEFAULT '',
+    email varchar(64)  NOT NULL UNIQUE,
     request_key varchar(32)  DEFAULT '',
     request_key_date DATETIME,
     avatar varchar(64),
-    user_name varchar(32) NOT NULL,
+    user_name varchar(32) NOT NULL UNIQUE,
     state TINYINT DEFAULT true,
     login_count SMALLINT,
     fa2_secret VARCHAR(64),
     user_role_id INT NOT NULL,
     manager TINYINT DEFAULT 0,
 
-    CONSTRAINT pk_user PRIMARY KEY (user_id),
-    CONSTRAINT uk_user UNIQUE (email,user_name)
+    CONSTRAINT pk_user PRIMARY KEY (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 -- ALTER TABLE user ADD INDEX in_user (user_role_id,user_name,email);
 
@@ -407,7 +405,7 @@ CREATE TABLE invoice(
     itinerant_urbanization varchar(255) DEFAULT '',
 
     CONSTRAINT pk_invoice PRIMARY KEY (invoice_id),
-    CONSTRAINT uk_invoice UNIQUE (invoice_key),
+    CONSTRAINT uk_invoice UNIQUE (serie,number,document_code,local_id),
     CONSTRAINT fk_invoice_currency_type_code FOREIGN KEY (currency_code) REFERENCES cat_currency_type_code (code)
     ON UPDATE RESTRICT ON DELETE RESTRICT,
     CONSTRAINT fk_invoice_operation_type_code FOREIGN KEY (operation_code) REFERENCES cat_operation_type_code (code)
@@ -1066,7 +1064,12 @@ INSERT INTO app_authorization(module, action, description, state) VALUES
 ('api','listar','Listar apis',true),
 ('api','crear','Crear nuevo api',true),
 ('api','eliminar','Eliminar un api',true),
-('api','modificar','Acualizar un api',true);
+('api','modificar','Acualizar un api',true),
+
+('factura','crear','Crear nuevo api',true),
+('boleta','crear','Crear nuevo api',true),
+('notaCredito','crear','Crear nuevo api',true),
+('notaDebito','crear','Crear nuevo api',true);
 
 
 -- TEMP

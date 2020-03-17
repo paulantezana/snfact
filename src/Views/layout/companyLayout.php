@@ -23,7 +23,7 @@
                         <div id="AsideMenu-toggle"> <i class="icon-list2"></i> </div>
                     </div>
                     <div class="Header-right">
-                        <ul class="HeaderMenu SnMenu">
+                        <ul class="HeaderMenu">
                             <li>
                                 <div class="Header-action">
                                     <select class="SnForm-control" id="businessCurrentLocalInfo">
@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <ul>
-                                    <li class="User-item">
+                                    <li class="User-item SnPt-2 SnPb-2">
                                         <a href="<?= URL_PATH ?>/user/profile" class="SnAvatar">
                                             <img src="<?= URL_PATH ?>/assets/images/icon/Icon-144.png" alt="avatar">
                                         </a>
@@ -55,6 +55,7 @@
                                             <div class="User-description" id="userDescriptionInfo"></div>
                                         </div>
                                     </li>
+                                    <li class="divider"></li>
                                     <li class="SnPt-2"><a href="<?= URL_PATH ?>/user/profile"> <i class="icon-user-plus SnMr-2"></i> Perfil</a></li>
                                     <li><a href="<?= URL_PATH ?>/company/help"> <i class="icon-help SnMr-2"></i> Soporte</a></li>
                                     <li class="SnPb-2"><a href="<?= URL_PATH ?>/business/update"> <i class="icon-cog SnMr-2"></i> Configurar empresa</a></li>
@@ -82,87 +83,91 @@
                         </div>
                         <?php $asideMenu = $_SESSION[SESS_MENU] ?? []; ?>
                         <ul class="AsideMenu" id="AsideMenu">
-                            <?php if (ArrayFindIndexByColumn($asideMenu,'module','escritorio')): ?>
+                            <?php if (MenuIsValid($asideMenu,'escritorio')): ?>
                                 <li>
-                                    <a href="<?= URL_PATH ?>/"> <i class="icon-home"></i> <span>Inicio </span> </a>
+                                    <a href="<?= URL_PATH ?>/"><i class="icon-home"></i> <span>Inicio </span> </a>
                                 </li>
                             <?php endif; ?>
-                            <li>
-                                <a href="<?= URL_PATH ?>/voided"> <i class="icon-file-text"></i> <span>Cotizaciones </span> </a>
-                            </li>
-                            <li>
-                                <a href="<?= URL_PATH ?>/invoice"> <i class="icon-rocket"></i> <span>Comprobantes </span> </a>
-                                <ul>
-                                    <li><a href="<?= URL_PATH ?>/invoice">Lista comprobantes</a></li>
-                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura</a></li>
-                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta</a></li>
-                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07">Emitir nota crédito</a></li>
-                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08">Emitir nota débito</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="<?= URL_PATH ?>/voided"> <i class="icon-book"></i> <span>Guias de remisión </span> </a>
-                            </li>
-                            <li>
-                                <a href="<?= URL_PATH ?>/invoice"> <i class=" icon-stack"></i> <span>Contingencias </span> </a>
-                                <ul>
-                                    <li><a href="<?= URL_PATH ?>/invoice">Lista comprobantes[c]</a></li>
-                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura[c]</a></li>
-                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta[c]</a></li>
-                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07">Emitir nota crédito[c]</a></li>
-                                    <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08">Emitir nota débito[c]</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="<?= URL_PATH ?>/voided"> <i class="icon-warning"></i> <span>Anulaciones </span> </a>
-                            </li>
-                            <li>
-                                <a href="<?= URL_PATH ?>/summary"> <i class="icon-make-group"></i> <span>Resumenes </span> </a>
-                            </li>
-                            <li>
-                                <a href="#"> <i class="icon-cube"></i> <span>Mantenimiento </span> </a>
-                                <ul>
-                                    <?php if (ArrayFindIndexByColumn($asideMenu,'module','categoria')): ?>
-                                        <li><a href="<?= URL_PATH ?>/category">Categorias</a></li>
-                                    <?php endif; ?>
-                                    <?php if (ArrayFindIndexByColumn($asideMenu,'module','producto')): ?>
-                                        <li><a href="<?= URL_PATH ?>/product">Productos</a></li>
-                                    <?php endif; ?>
-                                    <?php if (ArrayFindIndexByColumn($asideMenu,'module','cliente')): ?>
-                                        <li><a href="<?= URL_PATH ?>/customer">Clientes</a></li>
-                                    <?php endif; ?>
-                                    <?php if (ArrayFindIndexByColumn($asideMenu,'module','usuario')): ?>
-                                        <li><a href="<?= URL_PATH ?>/user">Usuarios</a></li>
-                                    <?php endif; ?>
-                                    <?php if (ArrayFindIndexByColumn($asideMenu,'module','rol')): ?>
-                                        <li><a href="<?= URL_PATH ?>/userRole">Roles</a></li>
-                                    <?php endif; ?>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="<?= URL_PATH ?>/report"> <i class="icon-pie-chart"></i> <span>Reportes </span> </a>
-                                <ul>
-                                    <li><a href="<?= URL_PATH ?>/report/sale">Venta diaria</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="<?= URL_PATH ?>/invoice"> <i class="icon-cog"></i> <span>Configuración </span> </a>
-                                <ul>
-                                    <li><a href="<?= URL_PATH ?>/business/update">Empresa</a></li>
-                                    <li><a href="<?= URL_PATH ?>/businessLocal">Sucursales</a></li>
-                                    <li><a href="<?= URL_PATH ?>/business/api">API</a></li>
-            <!--                        <li><a href="--><?//= URL_PATH ?><!--/business/update">Cuentas bancarias</a></li>-->
-            <!--                        <li><a href="--><?//= URL_PATH ?><!--/business/update">BackUp</a></li>-->
-            <!--                        <li><a href="--><?//= URL_PATH ?><!--/business/update">General</a></li>-->
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="<?= URL_PATH ?>/documentation"> <i class="icon-book"></i> <span>Manual </span> </a>
-                                <ul>
-                                    <li><a href="<?= URL_PATH ?>/documentation/api">Manual API</a></li>
-                                    <li><a href="<?= URL_PATH ?>/documentation/core">Manual core</a></li>
-                                </ul>
-                            </li>
+                            <?php if (MenuIsValid($asideMenu,'cotizacion')): ?>
+                                <li>
+                                    <a href="<?= URL_PATH ?>/voided"><i class="icon-file-text"></i> <span>Cotizaciones </span> </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (MenuIsValid($asideMenu,['factura','boleta','notaCredito','notaDebito'])): ?>
+                                <li>
+                                    <a href="<?= URL_PATH ?>/invoice"><i class="icon-rocket"></i> <span>Comprobantes </span> </a>
+                                    <ul>
+                                        <?php if (MenuIsValid($asideMenu,'factura')): ?> 
+                                            <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'boleta')): ?>
+                                            <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'notaCredito')): ?>
+                                            <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07">Emitir nota crédito</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'notaDebito')): ?>
+                                            <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08">Emitir nota débito</a></li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (MenuIsValid($asideMenu,'guiaRemision')): ?>
+                                <li>
+                                    <a href="<?= URL_PATH ?>/voided"><i class="icon-book"></i> <span>Guias de remisión </span> </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (MenuIsValid($asideMenu,'anular')): ?>
+                                <li>
+                                    <a href="<?= URL_PATH ?>/voided"><i class="icon-warning"></i> <span>Anulaciones </span> </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (MenuIsValid($asideMenu,'resumen')): ?>
+                                <li>
+                                    <a href="<?= URL_PATH ?>/summary"><i class="icon-make-group"></i> <span>Resumenes </span> </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (MenuIsValid($asideMenu,['categoria','producto','cliente','usuario','rol'])): ?>
+                                <li>
+                                    <a href="#"><i class="icon-cube"></i> <span>Mantenimiento </span> </a>
+                                    <ul>
+                                        <?php  if (MenuIsValid($asideMenu,'categoria')): ?>
+                                            <li><a href="<?= URL_PATH ?>/category">Categorias</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'producto')): ?>
+                                            <li><a href="<?= URL_PATH ?>/product">Productos</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'cliente')): ?>
+                                            <li><a href="<?= URL_PATH ?>/customer">Clientes</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'usuario')): ?>
+                                            <li><a href="<?= URL_PATH ?>/user">Usuarios</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'rol')): ?>
+                                            <li><a href="<?= URL_PATH ?>/userRole">Roles</a></li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (MenuIsValid($asideMenu,['empresa','sucursal','api','seguridad'])): ?>
+                                <li>
+                                    <a href="#"><i class="icon-cog"></i> <span>Configuración </span> </a>
+                                    <ul>
+                                        <?php if (MenuIsValid($asideMenu,'empresa')): ?>
+                                            <li><a href="<?= URL_PATH ?>/business/update">Empresa</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'sucursal')): ?>
+                                            <li><a href="<?= URL_PATH ?>/businessLocal">Sucursales</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'api')): ?>
+                                            <li><a href="<?= URL_PATH ?>/business/api">API</a></li>
+                                        <?php endif; ?>
+                                        <?php if (MenuIsValid($asideMenu,'seguridad')): ?>
+                                            <li><a href="<?= URL_PATH ?>/business/update">Seguridad</a></li>-->
+                                        <?php endif; ?>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
                         </ul>
                         <div class="AsideFooter">
                             <div class="SnSwitch">

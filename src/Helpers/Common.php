@@ -30,6 +30,28 @@ function ArrayFindIndexByColumn(array $data, string $column, $value)
     return $index;
 }
 
+function MenuIsValid(array $data, $value)
+{
+    $valid = false;
+    if(gettype($value) === 'string'){
+        $index = array_search($value, array_column($data, 'module'));
+        if($index !== false){
+            $valid = true;
+        }
+    } else if(gettype($value) === 'array'){
+        foreach ($value as $row) {
+            $index = array_search($row, array_column($data, 'module'));
+            if($index !== false){
+                $valid = true;
+            }
+        }
+    } else{
+        $valid = false;
+    }
+    
+    return $valid;
+}
+
 function RoundCurrency(float $amount, int $precision = 2) {
     $amountRound = round($amount, $precision,PHP_ROUND_HALF_EVEN);
     $amountFormat = number_format((float)$amountRound, $precision,'.','');

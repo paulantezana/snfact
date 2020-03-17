@@ -1,7 +1,7 @@
 (()=>{
     document.addEventListener('DOMContentLoaded',() => {
-        let defaultThemes = {
-            'darck': {
+        const defaultThemes = {
+            darck: {
                 snColorBg: 'var(--snColorDark)',
                 snColorBgAlt: 'var(--snColorDarker)',
                 snColorHover: 'var(--snColorDarkest)',
@@ -10,13 +10,9 @@
                 snColorTextAlt: '#94aab9',
 
                 snColorBorder: 'var(--snColorDark)',
-
-                // snColorDark: '#2A3B47',
-                // snColorDarkAlt: 'hsl(208, 29%, 10%)',
-                // snColorDarkInverse: '#b6bcc0',
             },
-            'light': {
-                snColorBg: '#FBFBFB',
+            light: {
+                snColorBg: '#FAFAFA',
                 snColorBgAlt: '#FFFFFF',
                 snColorHover: '#0000000d',
 
@@ -24,10 +20,6 @@
                 snColorTextAlt: '#BABDBF',
 
                 snColorBorder: '#E0E1E1',
-
-                // snColorDark: '#2A3B47',
-                // snColorDarkAlt: 'hsl(208, 29%, 10%)',
-                // snColorDarkInverse: '#b6bcc0',
             },
         };
 
@@ -45,7 +37,7 @@
             }
         }
 
-        let snTheme = sessionStorage.getItem('snTheme');
+        const snTheme = sessionStorage.getItem('snTheme');
         if (snTheme) {
             buildTheme(snTheme, false);
         }

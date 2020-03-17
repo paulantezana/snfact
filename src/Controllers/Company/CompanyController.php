@@ -3,6 +3,7 @@
 require_once MODEL_PATH . '/User.php';
 require_once MODEL_PATH . '/Business.php';
 require_once MODEL_PATH . '/BusinessLocal.php';
+require_once MODEL_PATH . '/AppAuthorization.php';
 
 class CompanyController extends Controller
 {

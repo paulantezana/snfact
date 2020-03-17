@@ -1,4 +1,4 @@
-@import "sedna/sedna";
+@import "../node_modules/sedna/bin/sedna";
 @import "_postConfig";
 
 // Base
@@ -26,7 +26,7 @@
 @include SnContainer();
 @include SnCollapse();
 //@include SnDivider();
-@include SnHide();
+// @include SnHide();
 @include SnFreeze();
 @include SnEmpty();
 @include SnPadding();
