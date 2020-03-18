@@ -50,8 +50,8 @@
                                         <a href="<?= URL_PATH ?>/user/profile" class="SnAvatar">
                                             <img src="<?= URL_PATH ?>/assets/images/icon/Icon-144.png" alt="avatar">
                                         </a>
-                                        <div class="">
-                                            <div class="User-title" id="userTitleInfo"></div>
+                                        <div>
+                                            <div class="User-title"><strong id="userTitleInfo"></strong></div>
                                             <div class="User-description" id="userDescriptionInfo"></div>
                                         </div>
                                     </li>

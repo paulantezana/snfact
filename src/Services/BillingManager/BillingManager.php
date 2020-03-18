@@ -590,7 +590,7 @@ class BillingManager
     {
         try {
             $todayFolderName = date('Ym');
-            $rootPath = '/assets/files/xml/';
+            $rootPath = FILE_PATH . '/xml/';
             if (!file_exists(ROOT_DIR. $rootPath. $todayFolderName)) {
                 mkdir(ROOT_DIR.$rootPath.$todayFolderName);
             }

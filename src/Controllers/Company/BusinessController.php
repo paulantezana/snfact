@@ -67,23 +67,23 @@ class BusinessController extends Controller
             }
 
             $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
-            $this->render('company/businessUpdate.php', [
+            $this->render('company/businessUpdate.view.php', [
                 'business' => $business,
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 
     public function api(){
         try {
             Authorization($this->connection, 'categoria', 'listar');
-            $this->render('company/documentation.php');
+            $this->render('company/documentation.view.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),

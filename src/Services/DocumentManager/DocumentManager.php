@@ -1242,7 +1242,7 @@ class DocumentManager
     {
         try {
             $folderDateName = date('Ym');
-            $pdfFolderPath = '/assets/files/pdf/';
+            $pdfFolderPath = FILE_PATH . '/pdf/';
 
             if (!file_exists(ROOT_DIR . $pdfFolderPath . $folderDateName)) {
                 mkdir(ROOT_DIR . $pdfFolderPath . $folderDateName);

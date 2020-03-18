@@ -25,11 +25,11 @@
                         <div><?php echo $row['customer_social_reason'] ?></div>
                     </td>
                     <td><?php echo $row['total'] ?></td>
-                    <td>
+                    <td style="text-align: center">
                         <?php if ($row['customer_sent_to_client']): ?>
-                            <i class="icon-checkmark" title="Enviado al cliente"></i>
+                            <i class="icon-checkmark" title="Enviado al cliente" style="color: var(--snSuccess)"></i>
                         <?php else: ?>
-                            <i class="icon-blocked" title="No se envio al cliente"></i>
+                            <i class="icon-blocked" title="No se envio al cliente" style="color: var(--snColorTextAlt)"></i>
                         <?php endif; ?>
                     </td>
                     <td>
@@ -76,8 +76,11 @@
                                 <ul class="SnDropdown-list">
                                     <li class="SnDropdown-item" onclick="invoiceResend('<?= $row['invoice_id']?>')"><i class="icon-spinner11 text-success  SnMr-2"></i> Consultar o recuperar constancia</li>
                                     <li class="SnDropdown-item" onclick="InvoiceSendEmailOpenModal('<?= $row['invoice_id']?>','<?= $row['customer_email'] ?>')"><i class="icon-envelop SnMr-2"></i>  Enviar a un email personalizado</li>
-                                    <li class="SnDropdown-item"><a href="<?= URL_PATH . '/invoice/NewCreditNote?invoiceId=' . $row['invoice_id'] ?>"> <i class="icon-file-text SnMr-2"></i> Generar NOTA DE CREDITO</a></li>
-                                    <li class="SnDropdown-item"><a href="<?= URL_PATH . '/invoice/NewDebitNote?invoiceId=' . $row['invoice_id'] ?>"> <i class="icon-file-text SnMr-2"></i> Generar NOTA DE DEBITO</a></li>
+
+                                    <?php if($row['document_code'] == '01' || $row['document_code'] == '03'):?>
+                                        <li class="SnDropdown-item"><a href="<?= URL_PATH . '/invoice/newInvoice?documentCode=07&invoiceId=' . $row['invoice_id'] ?>"><i class="icon-file-text SnMr-2"></i>Generar NOTA DE CREDITO</a></li>
+                                        <li class="SnDropdown-item"><a href="<?= URL_PATH . '/invoice/newInvoice?documentCode=08&invoiceId=' . $row['invoice_id'] ?>"><i class="icon-file-text SnMr-2"></i>Generar NOTA DE DEBITO</a></li>
+                                    <?php endif; ?>
                                     <li class="SnDropdown-item"><a href="<?= URL_PATH . '/invoice/NewGuide?invoiceId=' . $row['invoice_id']  ?>"> <i class="icon-file-text SnMr-2"></i> Generar GUIA DE REMISIÓN</a></li>
                                     <li class="SnDropdown-item"><a href="<?= URL_PATH . '/invoice/NewInvoiceVoided?invoiceId=' . $row['invoice_id'] ?>"><i class="icon-cancel-circle2 text-danger SnMr-2"></i> ANULAR o COMUNICAR DE BAJA</a></li>
                                     <li class="SnDropdown-item"><a href="#" target="_blank"> <img src="<?= URL_PATH . '/assets/images/sunatLogo.png'?>" style="height: 18px" class="SnMr-2"> Verificar en la SUNAT la validéz del CPE</a></li>

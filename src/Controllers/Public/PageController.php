@@ -11,7 +11,7 @@ class PageController extends Controller
 
     public function index()
     {
-        $this->render('landingPage.php');
+        $this->render('landingPage.view.php');
     }
 
     public function error404()
@@ -19,6 +19,6 @@ class PageController extends Controller
         $message = $_GET['message'] ?? '';
         $this->render('404.php', [
             'message' => $message
-        ],'layout/basicLayout.php');
+        ],'layout/basic.layout.php');
     }
 }

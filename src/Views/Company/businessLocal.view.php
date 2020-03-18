@@ -33,7 +33,7 @@
         </div>
         <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Sucursal</div>
         <div class="SnModal-body">
-            <form action="" class="SnForm" novalidate id="businessLocalForm" onsubmit="BusinessLocalSubmit(event)">
+            <form action="" class="SnForm" novalidate id="businessLocalForm" onsubmit="BusinessLocalSubmit()">
                 <input type="hidden" class="SnForm-control" id="businessLocalId">
                 <div class="SnGrid m-grid-2 l-grid-3">
                     <div class="SnForm-item required">
@@ -106,7 +106,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="4">
-                                    <div class="SnBtn block" data-itemtemplate="<?php echo htmlspecialchars(($itemTemplate ?? ''),ENT_QUOTES) ?>" onclick="BusinessLocalSerieAddItem(0,'','')" id="businessLocalAddItem">Agregar serie</div>
+                                    <div class="SnBtn block" data-itemtemplate="<?php echo htmlspecialchars(($parameter['itemTemplate'] ?? ''),ENT_QUOTES) ?>" onclick="BusinessLocalSerieAddItem(0,'','')" id="businessLocalAddItem">Agregar serie</div>
                                 </td>
                             </tr>
                         </tfoot>

@@ -521,13 +521,12 @@ function invoiceSubmit(){
         return;
     }
 
-    // let _setLoading = this.setLoading();
     let invoice = {};
     invoice.customer = {};
+    invoice.invoiceUpdate = {};
     invoice.item = [];
 
     invoice.dateOfIssue = document.getElementById('invoiceDateOfIssue').value; 
-    // invoice.timeOfIssue
     invoice.dateOfDue = document.getElementById('invoiceDateOfDue').value;
     invoice.serie = document.getElementById('invoiceSerie').value;
     invoice.number = document.getElementById('invoiceNumber').value;
@@ -557,12 +556,19 @@ function invoiceSubmit(){
     // invoice.percentageIgv = document.getElementById('invoiceTotalIsc').value;
     invoice.pdfFormat = document.getElementById('invoicePdfFormat').value;
 
+    // Customer
     invoice.customer.documentNumber = document.getElementById('invoiceCustomerDocumentNumber').value;
     invoice.customer.documentCode = document.getElementById('invoiceCustomerDocumentCode').value;
     invoice.customer.socialReason = document.getElementById('invoiceCustomerSocialReason').value;
     invoice.customer.address = document.getElementById('invoiceCustomerAddress').value;
     invoice.customer.email = document.getElementById('invoiceCustomerEmail').value;
     invoice.customer.telephone = '';
+
+    // Invoice Credit and debit note
+    invoice.invoiceUpdate.invoiceId = document.getElementById('invoiceId').value || 0;
+    invoice.invoiceUpdate.serie = document.getElementById('invoiceSerieUpdate').value || '';
+    invoice.invoiceUpdate.number = document.getElementById('invoiceNumberUpdate').value || '';
+    invoice.invoiceUpdate.creditDebitId = document.getElementById('invoiceCreditDebitId').value || '';
 
     let table = document.getElementById('invoiceItemTableBody');
     invoice.item = [...table.children].map((row,index)=>{
@@ -603,18 +609,21 @@ function invoiceSubmit(){
                 body: invoice,
             }).then(res => {
                 if (res.success){
-                    SnModal.confirm({
-                        title: 'Proceso Completo',
-                        content: res.message,
-                        okText: 'Ver Lista Documentos >',
-                        cancelText: 'Realizar Otra Venta!',
-                        onOk() {
-                            location.href = Service.path + '/invoice';
-                        },
-                        onCancel() {
-                            newInvoice();
-                        }
-                    });
+                    let messagePrint = res.message;
+                    let messageType = 'info';
+                    if(res.result.success){
+                        messageType = 'success';
+                        messagePrint += '<br>' + res.result.message;
+                    } else {
+                        messageType = 'warning';
+                        messagePrint += '<br>' + res.result.message;
+                    }
+
+                    let invoiceConfirmAlert = document.getElementById('invoiceConfirmAlert');
+                    invoiceConfirmAlert.classList.add(messageType);
+                    invoiceConfirmAlert.innerHTML = messagePrint;
+
+                    SnModal.open('invoiceConfirmModal');
                 } else {
                     SnModal.error({ title: 'Algo salió mal', content: res.message })
                 }
@@ -683,18 +692,18 @@ document.addEventListener('DOMContentLoaded',()=>{
             documentCode: invoiceDocumentInput.value,
             serie: invoiceSerie.value,
         });
-        invoiceSerie.addEventListener('select',()=>{
+        invoiceSerie.addEventListener('change',()=>{
             getDocumentNumber({
                 documentCode: invoiceDocumentInput.value,
                 serie: invoiceSerie.value,
             });
-        })
-        invoiceDocumentInput.addEventListener('select',()=>{
+        });
+        invoiceDocumentInput.addEventListener('change',()=>{
             getDocumentNumber({
                 documentCode: invoiceDocumentInput.value,
                 serie: invoiceSerie.value,
             });
-        })
+        });
     }
 
     SnLiveList({
@@ -720,10 +729,10 @@ document.addEventListener('DOMContentLoaded',()=>{
             });
         },
         onSelect: (target, data) => {
-            document.getElementById(`invoiceCustomerDocumentCode`).value = data.identityDocumentCode;
-            document.getElementById(`invoiceCustomerSocialReason`).value = data.socialReason;
-            document.getElementById(`invoiceCustomerAddress`).value = data.fiscalAddress;
-            document.getElementById(`invoiceCustomerEmail`).value = data.email;
+            document.getElementById('invoiceCustomerDocumentCode').value = data.identityDocumentCode;
+            document.getElementById('invoiceCustomerSocialReason').value = data.socialReason;
+            document.getElementById('invoiceCustomerAddress').value = data.fiscalAddress;
+            document.getElementById('invoiceCustomerEmail').value = data.email;
         }
     });
 });

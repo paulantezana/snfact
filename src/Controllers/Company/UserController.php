@@ -27,13 +27,13 @@ class UserController extends Controller
             $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
             $userRole = $userRoleModel->getAllByBusinessIdOn($business['business_id']);
 
-            $this->render('company/user.php', [
+            $this->render('company/user.view.php', [
                 'userRole' => $userRole,
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 
@@ -112,15 +112,15 @@ class UserController extends Controller
             $qrCodeTable = ob_get_clean();
 
             $user = $this->userModel->getById((int) $_SESSION[SESS_KEY]);
-            $this->render('company/profile.php', [
+            $this->render('company/profile.view.php', [
                 'user' => $user,
                 'qrCodeTable' => $qrCodeTable,
                 'secret' => $secret,
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }catch (Exception $e){
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 

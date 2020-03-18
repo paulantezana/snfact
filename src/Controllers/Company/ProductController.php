@@ -37,16 +37,16 @@ class ProductController extends Controller
             $catSystemIscTypeCodes = $catSystemIscTypeCodeModel->getAll();
             $categories = $categoryModel->getAllByBusinessId($business['business_id']);
 
-            $this->render('company/product.php', [
+            $this->render('company/product.view.php', [
                 'catAffectationIgvTypeCodes' => $catAffectationIgvTypeCodes,
                 'catUnitMeasureTypeCodes' => $catUnitMeasureTypeCodes,
                 'catSystemIscTypeCodes' => $catSystemIscTypeCodes,
                 'categories' => $categories,
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 

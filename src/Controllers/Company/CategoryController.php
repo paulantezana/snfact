@@ -21,7 +21,7 @@ class CategoryController extends Controller
     {
         try {
             Authorization($this->connection, 'categoria', 'listar');
-            $this->render('company/category.php',[],'layout/companyLayout.php');
+            $this->render('company/category.view.php',[],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),

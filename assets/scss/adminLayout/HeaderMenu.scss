@@ -26,6 +26,7 @@
         line-height: 34px;
         height: 34px;
         display: block;
+        white-space: nowrap;
         &.is-toggle {
             display: flex;
             justify-content: space-between;

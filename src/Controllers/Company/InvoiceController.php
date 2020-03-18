@@ -8,6 +8,7 @@ require_once MODEL_PATH . '/Catalogue/CatAffectationIgvTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatSystemIscTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatUnitMeasureTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatIdentityDocumentTypeCode.php';
+require_once MODEL_PATH . '/Catalogue/CatCreditDebitTypeCode.php';
 require_once MODEL_PATH . '/Business.php';
 require_once MODEL_PATH . '/BusinessSerie.php';
 
@@ -23,6 +24,7 @@ class InvoiceController extends Controller
     private $catAffectationIgvTypeCodeModel;
     private $catSystemIscTypeCodeModel;
     private $catUnitMeasureTypeCodeModel;
+    private $catCreditDebitTypeCodeModel;
     private $invoiceModel;
     private $businessModel;
     private $connection;
@@ -38,6 +40,7 @@ class InvoiceController extends Controller
         $this->catSystemIscTypeCodeModel = new CatSystemIscTypeCode($connection);
         $this->catUnitMeasureTypeCodeModel = new CatUnitMeasureTypeCode($connection);
         $this->catIdentityDocumentTypeCodeModel = new CatIdentityDocumentTypeCode($connection);
+        $this->catCreditDebitTypeCodeModel = new CatCreditDebitTypeCode($connection);
         $this->businessModel = new Business($connection);
     }
 
@@ -48,15 +51,15 @@ class InvoiceController extends Controller
             $messageType = 'info';
             $error = [];
 
-            $this->render('company/invoice.php', [
+            $this->render('company/invoice.view.php', [
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 
@@ -144,31 +147,44 @@ class InvoiceController extends Controller
             $invoiceDocumentCode = $_GET['documentCode'];
 
             $businessSerieModel = new BusinessSerie($this->connection);
-            $invoiceSerieNumber = $businessSerieModel->getDocumentSerieNumber([
-                'businessLocalId' => $_SESSION[SESS_CURRENT_LOCAL],
-                'documentCode' => $invoiceDocumentCode,
-            ]);
 
+            if(($invoiceDocumentCode === '07' || $invoiceDocumentCode === '08') && isset($invoice['document_code'])){
+                $invoiceSerieNumber = $businessSerieModel->getDocumentSerieNumberStartWith([
+                    'businessLocalId' => $_SESSION[SESS_CURRENT_LOCAL],
+                    'documentCode' => $invoiceDocumentCode,
+                    'startWith' => $invoice['document_code'] == '01' ? 'F' : 'B',
+                ]);
+            } else {
+                $invoiceSerieNumber = $businessSerieModel->getDocumentSerieNumber([
+                    'businessLocalId' => $_SESSION[SESS_CURRENT_LOCAL],
+                    'documentCode' => $invoiceDocumentCode,
+                ]);
+            }
+                    
+            $catCreditDebitTypeCode = $this->catCreditDebitTypeCodeModel->getByDocumentCode($invoiceDocumentCode);
             $catDocumentTypeCode = $this->catDocumentTypeCodeModel->ByInCodes(['01','03','07','08']);
+            $catDocumentTypeCodeUpdate = $this->catDocumentTypeCodeModel->ByInCodes(['01','03']);
             $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->getAll();
             $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->getAll();
             $catOperationTypeCode = $this->catOperationTypeCodeModel->getAll();
             $invoiceItemTemplate = $this->invoiceItemTemplate();
 
-            $this->render('Company/newInvoice.php', [
+            $this->render('company/newInvoice.view.php', [
                 'message' => $message,
                 'messageType' => $messageType,
 
                 'catDocumentTypeCode' => $catDocumentTypeCode,
+                'catDocumentTypeCodeUpdate' => $catDocumentTypeCodeUpdate,
                 'catOperationTypeCode' => $catOperationTypeCode,
                 'catCurrencyTypeCode' => $catCurrencyTypeCode,
                 'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
+                'catCreditDebitTypeCode' => $catCreditDebitTypeCode,
 
                 'invoiceItemTemplate' => $invoiceItemTemplate,
                 'invoiceSerieNumber' => $invoiceSerieNumber,
                 'invoiceDocumentCode' => $invoiceDocumentCode,
                 'invoice' => $invoice,
-            ]);
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
@@ -185,8 +201,7 @@ class InvoiceController extends Controller
             $invoice['localId'] = $_SESSION[SESS_CURRENT_LOCAL];
             $invoice['timeOfIssue'] = date('H:i:s');
             $invoice['percentageIgv'] = 18.00;
-//            $invoice['itinerant_enable'] = ($invoice['itinerant_enable'] ?? false) == 'on' ? 1 : 0;
-//            $invoice['prepayment_regulation'] = ($invoice['prepayment_regulation'] ?? false) == 'on' ? 1 : 0;
+
             $invoice['totalValue'] = $invoice['totalUnaffected'] + $invoice['totalTaxed'] + $invoice['totalExonerated'];
             $invoiceId = $this->invoiceModel->insert($invoice, $_SESSION[SESS_KEY]);
 
@@ -194,6 +209,7 @@ class InvoiceController extends Controller
             $resRunDoc = $buildInvoice->BuildDocument($invoiceId,$_SESSION[SESS_KEY]);
 
             $res->result = $resRunDoc;
+            $res->message = 'El documento se guardado correctamente!';
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();

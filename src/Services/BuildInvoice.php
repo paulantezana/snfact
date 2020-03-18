@@ -1,8 +1,8 @@
 <?php
 
-require_once MODEL_PATH . '/Company/Invoice.php';
-require_once MODEL_PATH . '/Company/InvoiceItem.php';
-require_once MODEL_PATH . '/Company/Business.php';
+require_once MODEL_PATH . '/Invoice.php';
+require_once MODEL_PATH . '/InvoiceItem.php';
+require_once MODEL_PATH . '/Business.php';
 require_once MODEL_PATH . '/Catalogue/CatSystemIscTypeCode.php';
 require_once MODEL_PATH . '/Catalogue/CatPerceptionTypeCode.php';
 
@@ -448,58 +448,57 @@ class BuildInvoice
         return $res;
     }
 
-    public function BuildDocument($saleId, $userReferId){
+    public function BuildDocument($invoiceId, $userReferId){
         $res = new Result();
-        $res->saleId = 0;
-
+        $links =[];
         try{
             $business = $this->businessModel->getByUserId($userReferId);
-            $sale = $this->invoiceModel->getAllDataById($saleId);
-            $detailSale = $this->invoiceItemModel->byInvoiceIdXML($saleId);
+            $invoice = $this->invoiceModel->getAllDataById($invoiceId);
+            $detailSale = $this->invoiceItemModel->byInvoiceIdXML($invoiceId);
 
             $perceptionTypeCodeModel = new CatPerceptionTypeCode($this->connection);
             $perceptionTypeCode = $perceptionTypeCodeModel->getAll();
 
-            if ($sale['invoice_state_id'] == '3'){
+            if ($invoice['invoice_state_id'] == '3'){
                 throw new Exception('Este documento ya fue informado ante la sunat');
-            } elseif (($sale['invoice_state_id'] == '4' && $sale['document_code'] == '01')){
+            } elseif (($invoice['invoice_state_id'] == '4' && $invoice['document_code'] == '01')){
                 throw new Exception('Este documento esta anulado');
             }
 
             // PERCEPTION
-            $perceptionCode = $sale['perception_code'];
+            $perceptionCode = $invoice['perception_code'];
             $perceptionPercentage = 0;
             $perceptionAmount = 0;
             $perceptionBase = 0;
             $totalWithPerception = 0;
-            if ($sale['perception_code'] != ''){
+            if ($invoice['perception_code'] != ''){
                 $index = array_search($perceptionCode, array_column($perceptionTypeCode, 'code'));
                 $perceptionPercentage = $perceptionTypeCode[$index]['percentage'] / 100;
-                $perceptionAmount = RoundCurrency($perceptionPercentage  * $sale['total']);
-                $perceptionBase = $sale['total'];
-                $totalWithPerception = $sale['total'] + $perceptionAmount;
+                $perceptionAmount = RoundCurrency($perceptionPercentage  * $invoice['total']);
+                $perceptionBase = $invoice['total'];
+                $totalWithPerception = $invoice['total'] + $perceptionAmount;
             }
-            $sale['perception_code'] = '51';
-            $sale['perception_percentage'] = $perceptionPercentage;
-            $sale['perception_amount'] = $perceptionAmount;
-            $sale['perception_base'] = $perceptionBase;
-            $sale['total_with_perception'] = $totalWithPerception;
+            $invoice['perception_code'] = '51';
+            $invoice['perception_percentage'] = $perceptionPercentage;
+            $invoice['perception_amount'] = $perceptionAmount;
+            $invoice['perception_base'] = $perceptionBase;
+            $invoice['total_with_perception'] = $totalWithPerception;
 
             // Itinerant
-            if ($sale['itinerant_enable']){
+            if ($invoice['itinerant_enable']){
                 $geographicalLocationCodeModel = new CatGeographicalLocationCode($this->connection);
-                $itinerantLocation = $geographicalLocationCodeModel->getBy('code',$sale['itinerant_location']);
+                $itinerantLocation = $geographicalLocationCodeModel->getBy('code',$invoice['itinerant_location']);
                 $itinerantProvince = $itinerantLocation['province'];
                 $itinerantDepartment = $itinerantLocation['department'];
                 $itinerantDistrict = $itinerantLocation['district'];
             }
-            $sale['itinerant_province'] = $itinerantProvince ?? '';
-            $sale['itinerant_department'] = $itinerantDepartment ?? '';
-            $sale['itinerant_district'] = $itinerantDistrict ?? '';
+            $invoice['itinerant_province'] = $itinerantProvince ?? '';
+            $invoice['itinerant_department'] = $itinerantDepartment ?? '';
+            $invoice['itinerant_district'] = $itinerantDistrict ?? '';
 
-//             XML
+            // XML
             $documentData = [
-                'sale' => $sale,
+                'sale' => $invoice,
                 'detailSale' => $detailSale,
                 'business' => $business,
             ];
@@ -507,24 +506,30 @@ class BuildInvoice
             $res->message = $resXml->message;
             $res->success = $resXml->success;
             if (!$resXml->success){
-                $this->invoiceModel->updateInvoiceSunatByInvoiceId($saleId,[
+                $this->invoiceModel->updateInvoiceSunatByInvoiceId($invoiceId,[
                     'other_message' =>  $resXml->message,
                 ]);
             }
+            $links['xmlPath'] = '';
+            $links['cdrPath'] = '';
 
             // PDF
             $documentData['sale']['digestValue'] = '';
-//            if ($resXml->success){
-//                $documentData['sale']['digestValue'] = $resXml->digestValue;
-//            }
+            if ($resXml->success){
+                $documentData['sale']['digestValue'] = $resXml->digestValue;
+            }
             $resPdf = $this->GeneratePdf($documentData);
             if (!$resPdf->success){
                 throw new Exception($resPdf->errorMessage);
             }
+            $links['pdfPath'] = $resPdf->pdfPath;
 
             // Email
+
+
+            $res->result = $links;
         }catch (Exception $e){
-            $res->errorMessage = $e->getMessage() . $e->getTraceAsString();
+            $res->errorMessage = $e->getMessage();
             $res->success = false;
         }
 

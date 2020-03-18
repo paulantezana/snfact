@@ -23,16 +23,16 @@ class CompanyController extends Controller
     public function index()
     {
         try {
-            $this->render('company/dashboard.php',[],'layout/companyLayout.php');
+            $this->render('company/dashboard.view.php',[],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 
     public function fa2(){
-        $this->render('/company/fa2.php',[],'layout/companyLayout.php');
+        $this->render('/company/fa2.php',[],'layout/company.layout.php');
     }
 
     public function getGlobalInfo(){
@@ -89,13 +89,13 @@ class CompanyController extends Controller
         $message = $_GET['message'] ?? '';
         $this->render('404.php', [
             'message' => $message
-        ],'layout/companyLayout.php');
+        ],'layout/company.layout.php');
     }
     public function help()
     {
         $message = $_GET['message'] ?? '';
-        $this->render('help.php', [
+        $this->render('help.view.php', [
             'message' => $message
-        ],'layout/companyLayout.php');
+        ],'layout/company.layout.php');
     }
 }

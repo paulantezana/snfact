@@ -43,25 +43,3 @@
 // @import "company/dashboard";
 // @import "company/User";
 // @import "company/Invoice";
-
-
-.SnTag {
-    font-size: 0.8rem;
-    line-height: 1rem;
-    height: 1rem;
-    padding: 0 0.3rem;
-    display: block;
-    border-radius: 0.2em;
-    &.primary {
-      background: var(--snColor1);
-      color: var(--snColor1Inverse);
-    }
-    &.success {
-      background: var(--snSuccess);
-      color: var(--snSuccessInverse);
-    }
-    &.error {
-        background: var(--snError);
-        color: var(--snErrorInverse);
-    }
-}

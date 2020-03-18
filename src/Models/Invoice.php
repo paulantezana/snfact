@@ -111,19 +111,18 @@ class Invoice extends Model
             $currentDate = date('Y-m-d H:i:s');
             $this->db->beginTransaction();
 
-            $sql = "INSERT INTO invoice (invoice_key, updated_at, created_at, created_user_id, updated_user_id, local_id, date_of_issue, time_of_issue, date_of_due,
+            $sql = "INSERT INTO invoice (updated_at, created_at, created_user_id, updated_user_id, local_id, date_of_issue, time_of_issue, date_of_due,
                                         serie, number, observation, change_type, document_code, currency_code, operation_code, total_prepayment, total_free,
                                         total_exportation, total_other_charged, total_discount, total_exonerated, total_unaffected, total_taxed, total_igv, total_base_isc,
                                         total_isc, total_charge, total_base_other_taxed, total_other_taxed, total_value, total_plastic_bag_tax, total, global_discount_percentage,
                                         purchase_order, vehicle_plate, term, percentage_plastic_bag_tax, percentage_igv, perception_code, detraction, related, guide, legend, pdf_format)
-                                VALUES (:invoice_key, :updated_at, :created_at, :created_user_id, :updated_user_id, :local_id, :date_of_issue, :time_of_issue, :date_of_due,
+                                VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :local_id, :date_of_issue, :time_of_issue, :date_of_due,
                                         :serie, :number, :observation, :change_type, :document_code, :currency_code, :operation_code, :total_prepayment, :total_free,
                                         :total_exportation, :total_other_charged, :total_discount, :total_exonerated, :total_unaffected, :total_taxed, :total_igv, :total_base_isc,
                                         :total_isc, :total_charge, :total_base_other_taxed, :total_other_taxed, :total_value, :total_plastic_bag_tax, :total, :global_discount_percentage,
                                         :purchase_order, :vehicle_plate, :term, :percentage_plastic_bag_tax, :percentage_igv, :perception_code, :detraction, :related, :guide, :legend, :pdf_format)";
             $stmt = $this->db->prepare($sql);
             if (!$stmt->execute([
-                ':invoice_key' => $invoice['documentCode'] . $invoice['serie'] . $invoice['number'] . $invoice['localId'],
                 ':updated_at' => $currentDate,
                 ':created_at' => $currentDate,
                 ':created_user_id' => $userReferId,
@@ -188,6 +187,22 @@ class Invoice extends Model
                 ':sent_to_client' => 0,
             ])){
                 throw new Exception('No se pudo insertar el registro');
+            }
+
+            // Insert Credit And Debit Note
+            if(isset($invoice['invoiceUpdate']['invoiceId']) && $invoice['invoiceUpdate']['invoiceId'] > 0){
+                $sql = "INSERT INTO invoice_credit_debit(invoice_id, serie, number, invoice_parent_id, credit_debit_id)
+                                VALUES (:invoice_id, :serie, :number, :invoice_parent_id, :credit_debit_id)";
+                $stmt = $this->db->prepare($sql);
+                if(!$stmt->execute([
+                    ':invoice_id' => $invoiceId,
+                    ':serie' => $invoice['invoiceUpdate']['serie'],
+                    ':number' => $invoice['invoiceUpdate']['number'],
+                    ':invoice_parent_id' => $invoice['invoiceUpdate']['invoiceId'],
+                    ':credit_debit_id' => $invoice['invoiceUpdate']['creditDebitId'],
+                ])){
+                    throw new Exception('No se pudo insertar el registro nota credito debito');
+                }
             }
 
             // Insert sunat states

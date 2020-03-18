@@ -16,15 +16,15 @@
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceDocumentCode">Documento</label>
                         <select class="SnForm-control" id="invoiceDocumentCode" required>
-                            <?php foreach ($catDocumentTypeCode as $row) : ?>
-                                <option value="<?= $row['code'] ?>" <?php echo ($invoiceDocumentCode ?? '') === $row['code'] ? 'selected' : '' ?> ><?= $row['description'] ?></option>
+                            <?php foreach ($parameter['catDocumentTypeCode'] as $row) : ?>
+                                <option value="<?= $row['code'] ?>" <?php echo ($parameter['invoiceDocumentCode'] ?? '') === $row['code'] ? 'selected' : '' ?>><?= $row['description'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceOperationCode">Tipo de operacion</label>
                         <select class="SnForm-control" id="invoiceOperationCode" required>
-                            <?php foreach ($catOperationTypeCode as $row) : ?>
+                            <?php foreach ($parameter['catOperationTypeCode'] as $row) : ?>
                                 <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -32,7 +32,7 @@
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceCurrencyCode">Moneda</label>
                         <select class="SnForm-control" id="invoiceCurrencyCode" required>
-                            <?php foreach ($catCurrencyTypeCode as $row) : ?>
+                            <?php foreach ($parameter['catCurrencyTypeCode'] as $row) : ?>
                                 <option value="<?= $row['code'] ?>" data-symbol="<?= $row['symbol'] ?>" <?= $row['code'] == 'PEN' ? 'selected' : '' ?>><?= $row['description'] ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -40,7 +40,7 @@
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceSerie">Serie:</label>
                         <select id="invoiceSerie" class="SnForm-control" required>
-                            <?php foreach ($invoiceSerieNumber as $row) : ?>
+                            <?php foreach ($parameter['invoiceSerieNumber'] as $row) : ?>
                                 <option value="<?= $row['serie'] ?>"><?= $row['serie'] ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -100,6 +100,38 @@
             </div>
         </div>
         <div class="Invoice-header">
+            <input type="hidden" id="invoiceId" value="<?= $parameter['invoice']['invoice_id'] ?? '0' ?>">
+            <?php $invoiceIsCreditDebit = ($parameter['invoiceDocumentCode'] == '07' || $parameter['invoiceDocumentCode'] == '08') ?>
+            <div id="invoiceDebitCreditContainer" class="SnCard SnMb-5 <?php echo $invoiceIsCreditDebit ? '': 'SnHide' ?>">
+                <div class="SnCard-body">
+                    <div class="SnGrid m-grid-2 l-grid-3 lg-grid-4 SnMb-32">
+                        <div class="SnForm-item required">
+                            <label class="SnForm-label" for="invoiceDocumentCodeUpdate">Documento</label>
+                            <select class="SnForm-control" id="invoiceDocumentCodeUpdate" <?php echo $invoiceIsCreditDebit ? 'required': '' ?>>
+                                <?php foreach ($parameter['catDocumentTypeCodeUpdate'] as $row) : ?>
+                                    <option value="<?= $row['code'] ?>" <?php echo ($parameter['invoice']['document_code'] ?? '') === $row['code'] ? 'selected' : '' ?>><?= $row['description'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="SnForm-item required">
+                            <label class="SnForm-label" for="invoiceSerieUpdate">Serie</label>
+                            <input type="text" class="SnForm-control" id="invoiceSerieUpdate" value="<?= $parameter['invoice']['serie'] ?? ''?>" <?php echo $invoiceIsCreditDebit ? 'required': '' ?>>
+                        </div>
+                        <div class="SnForm-item required">
+                            <label class="SnForm-label" for="invoiceNumberUpdate">Numero</label>
+                            <input type="text" class="SnForm-control" id="invoiceNumberUpdate" value="<?= $parameter['invoice']['number'] ?? ''?>" <?php echo $invoiceIsCreditDebit ? 'required': '' ?>>
+                        </div>
+                        <div class="SnForm-item required">
+                            <label class="SnForm-label" for="invoiceCreditDebitId">Motivo</label>
+                            <select class="SnForm-control" id="invoiceCreditDebitId" <?php echo $invoiceIsCreditDebit ? 'required': '' ?>>
+                                <?php foreach ($parameter['catCreditDebitTypeCode'] as $row) : ?>
+                                    <option value="<?= $row['cat_credit_debit_type_code_id'] ?>"><?= $row['description'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="SnGrid m-grid-2 l-grid-3 SnMb-32">
                 <div class="SnForm-item required">
                     <label class="SnForm-label" for="invoiceCustomerDocumentNumber">N° de R.U.C.:</label>
@@ -114,7 +146,7 @@
                 <div class="SnForm-item required">
                     <label class="SnForm-label" for="invoiceCustomerDocumentCode">Tipo Doc.Ident.</label>
                     <select class="SnForm-control" id="invoiceCustomerDocumentCode" required>
-                        <?php foreach ($catIdentityDocumentTypeCode as $row) : ?>
+                        <?php foreach ($parameter['catIdentityDocumentTypeCode'] as $row) : ?>
                             <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -142,7 +174,7 @@
                 </div>
                 <div class="SnForm-item SnSwitch l-cols-2 required">
                     <input class="SnSwitch-control" type="checkbox" id="invoiceCustomerSendEmail" data-collapsetrigger="sendEmail">
-                    <label class="SnSwitch-label" for="invoiceCustomerSendEmail" >¿Deseas Enviar el Comprobante Electrónico al Email del Cliente?:</label>
+                    <label class="SnSwitch-label" for="invoiceCustomerSendEmail">¿Deseas Enviar el Comprobante Electrónico al Email del Cliente?:</label>
                 </div>
                 <div class="SnForm-item required SnCollapse" data-collapse="sendEmail">
                     <label class="SnForm-label" for="invoiceCustomerEmail">Email:</label>
@@ -159,26 +191,23 @@
                     <div class="SnTable-wrapper">
                         <table class="SnTable">
                             <thead>
-                            <tr>
-                                <th>Descripcion</th>
-                                <th>Precio</th>
-                                <th style="width: 175px">Cantidad</th>
-                                <th>Subtotal</th>
-                                <th>Total</th>
-                                <th style="width: 95px"></th>
-                            </tr>
+                                <tr>
+                                    <th>Descripcion</th>
+                                    <th>Precio</th>
+                                    <th style="width: 175px">Cantidad</th>
+                                    <th>Subtotal</th>
+                                    <th>Total</th>
+                                    <th style="width: 95px"></th>
+                                </tr>
                             </thead>
                             <tfoot>
-                            <tr>
-                                <td colspan="7">
-                                    <div class="SnBtn block"
-                                         onclick="addItem()"
-                                         id="addInvoiceItem"
-                                         data-itemtemplate="<?php echo htmlspecialchars(($invoiceItemTemplate ?? ''),ENT_QUOTES) ?>">
-                                        <i class="icon-plus2"></i> Agregar item
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="SnBtn block" onclick="addItem()" id="addInvoiceItem" data-itemtemplate="<?php echo htmlspecialchars(($parameter['invoiceItemTemplate'] ?? ''), ENT_QUOTES) ?>">
+                                            <i class="icon-plus2"></i> Agregar item
+                                        </div>
+                                    </td>
+                                </tr>
                             </tfoot>
                             <tbody id="invoiceItemTableBody"></tbody>
                         </table>
@@ -256,96 +285,96 @@
                     <strong>Resumen:</strong>
                     <table class="Invoice-totals">
                         <tbody>
-                        <tr id="invoiceTotalDiscountRow">
-                            <th>Descuento Total (-)</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalDiscountText">0.00</span>
-                                <input type="hidden" name="invoice[totalDiscount]" id="invoiceTotalDiscount">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalPrepaymentRow" class="SnHide">
-                            <th>Anticipo (-)</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalPrepaymentText">0.00</span>
-                                <input type="hidden" name="invoice[totalPrepayment]" id="invoiceTotalPrepayment">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalExoneratedRow" class="SnHide">
-                            <th>Exonerada</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalExoneratedText">0.00</span>
-                                <input type="hidden" name="invoice[totalExonerated]" id="invoiceTotalExonerated" class="jsInvoiceTotals">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalUnaffectedRow" class="SnHide">
-                            <th>Inafecta</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalUnaffectedText">0.00</span>
-                                <input type="hidden" name="invoice[totalUnaffected]" id="invoiceTotalUnaffected" class="jsInvoiceTotals">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalExportRow" class="SnHide">
-                            <th>Exportación</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalExportText">0.00</span>
-                                <input type="hidden" name="invoice[totalExport]" id="invoiceTotalExport" class="jsInvoiceTotals">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalTaxedRow">
-                            <th>Gravada</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalTaxedText">0.00</span>
-                                <input type="hidden" name="invoice[totalTaxed]" id="invoiceTotalTaxed" class="jsInvoiceTotals">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalIscRow" class="SnHide">
-                            <th>ISC</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalIscText">0.00</span>
-                                <input type="hidden" name="invoice[totalBaseIsc]" id="invoiceTotalBaseIsc">
-                                <input type="hidden" name="invoice[totalIsc]" id="invoiceTotalIsc">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalIgvRow">
-                            <th>IGV</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalIgvText">0.00</span>
-                                <input type="hidden" name="invoice[totalBaseIgv]" id="invoiceTotalBaseIgv">
-                                <input type="hidden" name="invoice[totalIgv]" id="invoiceTotalIgv" class="jsInvoiceTotals">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalFreeRow" class="SnHide">
-                            <th>Gratuita</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalFreeText">0.00</span>
-                                <input type="hidden" name="invoice[totalFree]" id="invoiceTotalFree">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalPlasticBagTaxRow" class="SnHide">
-                            <th>ICBPER</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalPlasticBagTaxText">0.00</span>
-                                <input type="hidden" name="invoice[totalPlasticBagTax]" id="invoiceTotalPlasticBagTax">
-                            </td>
-                        </tr>
-                        <tr id="invoiceTotalRow">
-                            <th>Total</th>
-                            <td class="InvoiceTotal">
-                                <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
-                                <span class="InvoiceTotal-amount" id="invoiceTotalText">0.00</span>
-                                <input type="hidden" name="invoice[total]" id="invoiceTotal">
-                            </td>
-                        </tr>
+                            <tr id="invoiceTotalDiscountRow">
+                                <th>Descuento Total (-)</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalDiscountText">0.00</span>
+                                    <input type="hidden" name="invoice[totalDiscount]" id="invoiceTotalDiscount">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalPrepaymentRow" class="SnHide">
+                                <th>Anticipo (-)</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalPrepaymentText">0.00</span>
+                                    <input type="hidden" name="invoice[totalPrepayment]" id="invoiceTotalPrepayment">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalExoneratedRow" class="SnHide">
+                                <th>Exonerada</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalExoneratedText">0.00</span>
+                                    <input type="hidden" name="invoice[totalExonerated]" id="invoiceTotalExonerated" class="jsInvoiceTotals">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalUnaffectedRow" class="SnHide">
+                                <th>Inafecta</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalUnaffectedText">0.00</span>
+                                    <input type="hidden" name="invoice[totalUnaffected]" id="invoiceTotalUnaffected" class="jsInvoiceTotals">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalExportRow" class="SnHide">
+                                <th>Exportación</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalExportText">0.00</span>
+                                    <input type="hidden" name="invoice[totalExport]" id="invoiceTotalExport" class="jsInvoiceTotals">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalTaxedRow">
+                                <th>Gravada</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalTaxedText">0.00</span>
+                                    <input type="hidden" name="invoice[totalTaxed]" id="invoiceTotalTaxed" class="jsInvoiceTotals">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalIscRow" class="SnHide">
+                                <th>ISC</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalIscText">0.00</span>
+                                    <input type="hidden" name="invoice[totalBaseIsc]" id="invoiceTotalBaseIsc">
+                                    <input type="hidden" name="invoice[totalIsc]" id="invoiceTotalIsc">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalIgvRow">
+                                <th>IGV</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalIgvText">0.00</span>
+                                    <input type="hidden" name="invoice[totalBaseIgv]" id="invoiceTotalBaseIgv">
+                                    <input type="hidden" name="invoice[totalIgv]" id="invoiceTotalIgv" class="jsInvoiceTotals">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalFreeRow" class="SnHide">
+                                <th>Gratuita</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalFreeText">0.00</span>
+                                    <input type="hidden" name="invoice[totalFree]" id="invoiceTotalFree">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalPlasticBagTaxRow" class="SnHide">
+                                <th>ICBPER</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalPlasticBagTaxText">0.00</span>
+                                    <input type="hidden" name="invoice[totalPlasticBagTax]" id="invoiceTotalPlasticBagTax">
+                                </td>
+                            </tr>
+                            <tr id="invoiceTotalRow">
+                                <th>Total</th>
+                                <td class="InvoiceTotal">
+                                    <span class="InvoiceTotal-symbol jsCurrencySymbol"></span>
+                                    <span class="InvoiceTotal-amount" id="invoiceTotalText">0.00</span>
+                                    <input type="hidden" name="invoice[total]" id="invoiceTotal">
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

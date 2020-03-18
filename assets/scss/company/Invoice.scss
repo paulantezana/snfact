@@ -68,3 +68,26 @@
     color: var(--snColorTextAlt);
   }
 }
+
+
+.InvoiceConfirm{
+  &-table{
+    margin-bottom: 16px;
+    td{
+      padding: 0;
+    }
+  }
+  &-action{
+    cursor: pointer;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    [class*="icon"]{
+      font-size: 2rem;
+      margin-bottom: .5rem;
+    }
+  }
+}

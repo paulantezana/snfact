@@ -26,13 +26,13 @@ class CustomerController extends Controller
             Authorization($this->connection, 'cliente', 'listar');
             $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->getAll();
 
-            $this->render('company/customer.php', [
+            $this->render('company/customer.view.php', [
                 'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 

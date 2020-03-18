@@ -27,14 +27,14 @@ class BusinessLocalController extends Controller
             $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
             $itemTemplate = $this->GetItemTemplate();
 
-            $this->render('company/businessLocal.php', [
+            $this->render('company/businessLocal.view.php', [
                 'business' => $business,
                 'itemTemplate' => $itemTemplate,
-            ]);
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/company.layout.php');
         }
     }
 

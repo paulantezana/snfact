@@ -54,17 +54,15 @@ CREATE TABLE cat_system_isc_type_code(
     description VARCHAR(255) NOT NULL,
     CONSTRAINT pk_cat_system_isc_type_code PRIMARY KEY (code)
 ) ;
--- Catalogue 09
-CREATE TABLE cat_credit_note_type_code(
+-- Catalogue 09 && 10
+CREATE TABLE cat_credit_debit_type_code(
+    cat_credit_debit_type_code_id INT AUTO_INCREMENT NOT NULL,
     code VARCHAR(2) NOT NULL,
     description VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_cat_credit_note_type_code PRIMARY KEY (code)
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
--- Catalogue 10
-CREATE TABLE cat_debit_note_type_code(
-    code VARCHAR(2) NOT NULL,
-    description VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_cat_debit_note_type_code PRIMARY KEY (code)
+    document_code VARCHAR(4) DEFAULT '',
+    CONSTRAINT pk_cat_credit_debit_type_code PRIMARY KEY (cat_credit_debit_type_code_id),
+    CONSTRAINT fk_cat_credit_debit_type_code_cat_document_type_code FOREIGN KEY (document_code) REFERENCES cat_document_type_code (code)
+        ON UPDATE RESTRICT ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 -- Catalogue 11
 -- Catalogue 12
@@ -196,13 +194,16 @@ CREATE TABLE business_serie(
     business_serie_id INT AUTO_INCREMENT NOT NULL,
     updated_at DATETIME,
     delete_at DATETIME,
+
     business_local_id INT NOT NULL,
     serie VARCHAR(4) NOT NULL,
     document_code VARCHAR(2) NOT NULL,
+    contingency TINYINT NOT NULL,
+
     max_correlative INT,
-    contingency TINYINT,
-    hidden TINYINT,
+    hidden TINYINT DEFAULT 0,
     CONSTRAINT pk_business_serie PRIMARY KEY (business_serie_id),
+    -- CONSTRAINT uk_business_serie UNIQUE (business_local_id,serie,document_code,contingency),
     CONSTRAINT fk_business_serie_document_code FOREIGN KEY (document_code) REFERENCES cat_document_type_code (code)
         ON UPDATE RESTRICT ON DELETE RESTRICT,
     CONSTRAINT fk_business_serie_business_local FOREIGN KEY (business_local_id) REFERENCES business_local (business_local_id)
@@ -348,7 +349,6 @@ CREATE TABLE invoice_state (
 
 CREATE TABLE invoice(
     invoice_id INT AUTO_INCREMENT NOT NULL,
-    invoice_key VARCHAR(32) NOT NULL,
     updated_at DATETIME,
     created_at DATETIME,
     created_user_id INT,
@@ -412,6 +412,22 @@ CREATE TABLE invoice(
     ON UPDATE RESTRICT ON DELETE RESTRICT,
     CONSTRAINT fk_invoice_document_type_code FOREIGN KEY (document_code) REFERENCES cat_document_type_code (code)
     ON UPDATE RESTRICT ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+CREATE TABLE invoice_credit_debit(
+    invoice_credit_debit_id INT AUTO_INCREMENT NOT NULL,
+    invoice_id INT NOT NULL,
+    serie VARCHAR(4) NOT NULL,
+    number INT NOT NULL,
+    invoice_parent_id INT NOT NULL,
+    credit_debit_id INT NOT NULL,
+    CONSTRAINT pk_invoice_credit_debit PRIMARY KEY (invoice_credit_debit_id),
+    CONSTRAINT fk_invoice_credit_debit_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_invoice_credit_debit_invoice_parent FOREIGN KEY (invoice_parent_id) REFERENCES invoice (invoice_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT fk_invoice_credit_debit_cat_credit_debit_type_code FOREIGN KEY (credit_debit_id) REFERENCES cat_credit_debit_type_code (cat_credit_debit_type_code_id)
+        ON UPDATE RESTRICT ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 CREATE TABLE invoice_sunat(
@@ -867,24 +883,22 @@ INSERT INTO cat_system_isc_type_code(code, description) VALUES
 ('02','Aplicación del Monto Fijo ( Sistema específico, bienes en el apéndice III, Apéndice IV, lit. B – T.U.O IGV e ISC)'),
 ('03','Sistema de Precios de Venta al Público (Apéndice IV, lit. C – T.U.O IGV e ISC)');
 
--- Catalogue 9
-INSERT INTO cat_credit_note_type_code(code, description) VALUES
-('01', 'Anulación de la operación'),
-('02', 'Anulación por error en el RUC'),
-('03', 'Corrección por error en la descripción'),
-('04', 'Descuento global'),
-('05', 'Descuento por ítem'),
-('06', 'Devolución total'),
-('07', 'Devolución por ítem'),
-('08', 'Bonificación'),
-('09', 'Disminución en el valor'),
-('10', 'Otros Conceptos ');
+-- Catalogue 9 || 10
+INSERT INTO cat_credit_debit_type_code(code, description, document_code) VALUES
+('01', 'Anulación de la operación','07'),
+('02', 'Anulación por error en el RUC','07'),
+('03', 'Corrección por error en la descripción','07'),
+('04', 'Descuento global','07'),
+('05', 'Descuento por ítem','07'),
+('06', 'Devolución total','07'),
+('07', 'Devolución por ítem','07'),
+('08', 'Bonificación','07'),
+('09', 'Disminución en el valor','07'),
+('10', 'Otros Conceptos','07'),
 
--- Catalogue 10
-INSERT INTO cat_debit_note_type_code(code, description) VALUES
-('01','Intereses por mora'),
-('02','Aumento en el valor'),
-('03','Penalidades/ otros conceptos');
+('01','Intereses por mora','08'),
+('02','Aumento en el valor','08'),
+('03','Penalidades/ otros conceptos','08');
 
 -- Catalogue 15
 INSERT INTO cat_additional_legend_code(code, description) VALUES
@@ -1069,7 +1083,12 @@ INSERT INTO app_authorization(module, action, description, state) VALUES
 ('factura','crear','Crear nuevo api',true),
 ('boleta','crear','Crear nuevo api',true),
 ('notaCredito','crear','Crear nuevo api',true),
-('notaDebito','crear','Crear nuevo api',true);
+('notaDebito','crear','Crear nuevo api',true),
+
+('sucursal','listar','Listar apis',true),
+('sucursal','crear','Crear nuevo api',true),
+('sucursal','eliminar','Eliminar un api',true),
+('sucursal','modificar','Acualizar un api',true);
 
 
 -- TEMP

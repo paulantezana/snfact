@@ -24,13 +24,13 @@ class UserRoleController extends Controller
             $appAuthorizationModel = new AppAuthorization($this->connection);
             $appAuthorization = $appAuthorizationModel->getAll();
 
-            $this->render('company/role.php', [
+            $this->render('company/role.view.php', [
                 'appAuthorization' => $appAuthorization
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 

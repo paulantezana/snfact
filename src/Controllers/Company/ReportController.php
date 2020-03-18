@@ -13,11 +13,11 @@ class ReportController extends Controller
     {
         try {
             Authorization($this->connection, 'categoria', 'listar');
-            $this->render('company/report.php',[],'layout/companyLayout.php');
+            $this->render('company/report.php',[],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/companyLayout.php');
+            ],'layout/company.layout.php');
         }
     }
 
