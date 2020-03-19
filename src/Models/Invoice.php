@@ -10,24 +10,24 @@ class Invoice extends Model
 
     public function getAllDataById(int $invoiceID) {
         try{
-            $sql = 'SELECT invoice.*, 
+            $sql = 'SELECT invoice.*,
                             (invoice.total_igv + invoice.total_isc + invoice.total_other_taxed) as total_tax,
-                            cat_document_type_code.description as document_type_code_description, 
-                            cat_operation_type_code.description as operation_type_code_description, 
-                            ic.social_reason as customer_social_reason, ic.document_number as customer_document_number, 
+                            cat_document_type_code.description as document_type_code_description,
+                            cat_operation_type_code.description as operation_type_code_description,
+                            ic.social_reason as customer_social_reason, ic.document_number as customer_document_number,
                             ic.identity_document_code as customer_identity_document_code,
                             ic.fiscal_address as customer_fiscal_address, ic.email as customer_email,
                             cat_currency_type_code.symbol as currency_type_code_symbol,
                             cat_currency_type_code.description as currency_type_code_description,
-       
+
                             isn.invoice_state_id, isn.pdf_url, isn.xml_url, isn.cdr_url,
-       
+
                             srg.whit_guide, srg.transfer_code, srg.total_gross_weight, srg.transport_code, srg.carrier_document_code, srg.carrier_document_number,
                             srg.carrier_denomination, srg.carrier_plate_number, srg.driver_document_code, srg.driver_document_number, srg.driver_full_name, srg.location_arrival_code,
                             srg.address_arrival_point, srg.location_starting_code, srg.address_starting_point
                     FROM invoice
                     INNER JOIN invoice_customer ic on invoice.invoice_id = ic.invoice_id
-                    INNER JOIN invoice_sunat isn on invoice.invoice_id = isn.invoice_id  
+                    INNER JOIN invoice_sunat isn on invoice.invoice_id = isn.invoice_id
                     INNER JOIN cat_document_type_code ON invoice.document_code = cat_document_type_code.code
                     INNER JOIN cat_currency_type_code ON invoice.currency_code = cat_currency_type_code.code
                     INNER JOIN cat_operation_type_code ON invoice.operation_code = cat_operation_type_code.code
@@ -78,16 +78,21 @@ class Invoice extends Model
             $total_pages = ceil($total_rows / $limit);
 
             $sql = "SELECT invoice.*, cat_document_type_code.description as document_type_code_description, cat_operation_type_code.description as operation_type_code_description,
-                           ic.social_reason as customer_social_reason, ic.document_number as customer_document_number, 
+                           ic.social_reason as customer_social_reason, ic.document_number as customer_document_number,
                            ic.sent_to_client as customer_sent_to_client, ic.email as customer_email,
                            cat_currency_type_code.symbol as currency_symbol,
-                           isn.invoice_state_id,  isn.send, isn.response_code, isn.response_message, isn.other_message, isn.pdf_url, isn.xml_url, isn.cdr_url
+                           isn.invoice_state_id,  isn.send, isn.response_code, isn.response_message, isn.other_message, isn.pdf_url, isn.xml_url, isn.cdr_url,
+                           IFNULL(incnd.serie, '') AS update_serie, IFNULL(incnd.number,0) AS update_number, IFNULL(incnd.document_code,'') AS update_document_code
                     FROM invoice
                         INNER JOIN invoice_customer ic on invoice.invoice_id = ic.invoice_id
                         INNER JOIN invoice_sunat isn on invoice.invoice_id = isn.invoice_id
                         INNER JOIN cat_document_type_code ON invoice.document_code = cat_document_type_code.code
                         INNER JOIN cat_currency_type_code ON invoice.currency_code = cat_currency_type_code.code
-                        INNER JOIN cat_operation_type_code ON invoice.operation_code = cat_operation_type_code.code ";
+                        INNER JOIN cat_operation_type_code ON invoice.operation_code = cat_operation_type_code.code
+                        LEFT JOIN (
+                            SELECT i.document_code, i.serie, i.number, invoice_credit_debit.invoice_id FROM invoice_credit_debit
+                            INNER JOIN invoice i on invoice_credit_debit.invoice_parent_id = i.invoice_id
+                        ) as incnd  ON invoice.invoice_id = incnd.invoice_id";
 
             $sql .= $sqlFilter;
             $sql .= " ORDER BY invoice.invoice_id DESC LIMIT $offset, $limit";

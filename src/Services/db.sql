@@ -416,7 +416,7 @@ CREATE TABLE invoice(
 
 CREATE TABLE invoice_credit_debit(
     invoice_credit_debit_id INT AUTO_INCREMENT NOT NULL,
-    invoice_id INT NOT NULL,
+    invoice_id INT NOT NULL UNIQUE,
     serie VARCHAR(4) NOT NULL,
     number INT NOT NULL,
     invoice_parent_id INT NOT NULL,
@@ -432,7 +432,7 @@ CREATE TABLE invoice_credit_debit(
 
 CREATE TABLE invoice_sunat(
     invoice_sunat_id INT AUTO_INCREMENT NOT NULL,
-    invoice_id INT NOT NULL,
+    invoice_id INT NOT NULL UNIQUE,
     invoice_state_id SMALLINT,
 
     send TINYINT,
@@ -444,7 +444,6 @@ CREATE TABLE invoice_sunat(
     cdr_url varchar(255) DEFAULT '',
 
     CONSTRAINT pk_invoice_sunat PRIMARY KEY (invoice_sunat_id),
-    CONSTRAINT uk_invoice_sunat UNIQUE KEY (invoice_state_id,invoice_id),
     CONSTRAINT fk_invoice_sunat_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
         ON UPDATE RESTRICT ON DELETE RESTRICT,
      CONSTRAINT fk_invoice_sunat_invoice_state FOREIGN KEY (invoice_state_id) REFERENCES invoice_state (invoice_state_id)
@@ -453,7 +452,7 @@ CREATE TABLE invoice_sunat(
 
 CREATE TABLE invoice_customer(
      invoice_customer_id INT AUTO_INCREMENT NOT NULL,
-     invoice_id INT NOT NULL,
+     invoice_id INT NOT NULL UNIQUE,
      document_number VARCHAR(16) NOT NULL,
      identity_document_code VARCHAR(64) NOT NULL,
      social_reason VARCHAR(255) DEFAULT '',
@@ -462,7 +461,6 @@ CREATE TABLE invoice_customer(
      telephone VARCHAR(255) DEFAULT '',
      sent_to_client TINYINT DEFAULT 0,
      CONSTRAINT pk_invoice_customer PRIMARY KEY (invoice_customer_id),
-     CONSTRAINT uk_invoice_customer UNIQUE KEY (invoice_id),
      CONSTRAINT fk_invoice_customer_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
          ON UPDATE RESTRICT ON DELETE RESTRICT,
      CONSTRAINT fk_invoice_customer_identity_document_type_code FOREIGN KEY (identity_document_code) REFERENCES cat_identity_document_type_code (code)
@@ -471,7 +469,7 @@ CREATE TABLE invoice_customer(
 
 CREATE TABLE invoice_referral_guide(
    invoice_referral_guide_id INT AUTO_INCREMENT NOT NULL,
-   invoice_id INT NOT NULL,
+   invoice_id INT NOT NULL UNIQUE,
     document_code VARCHAR(2) NOT NULL,
     whit_guide TINYINT,
 
@@ -495,7 +493,6 @@ CREATE TABLE invoice_referral_guide(
     location_arrival_code VARCHAR(6),
     address_arrival_point VARCHAR(128),
     CONSTRAINT pk_invoice_referral_guide PRIMARY KEY (invoice_referral_guide_id),
-    CONSTRAINT uk_invoice_referral_guide UNIQUE KEY (invoice_id),
     CONSTRAINT fk_invoice_referral_guide FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
         ON UPDATE RESTRICT ON DELETE RESTRICT,
     CONSTRAINT fk_invoice_referral_guide_location_starting_code FOREIGN KEY (location_starting_code) REFERENCES cat_geographical_location_code (code)
@@ -507,36 +504,36 @@ CREATE TABLE invoice_referral_guide(
 CREATE TABLE invoice_item(
     invoice_item_id INT AUTO_INCREMENT NOT NULL,
     invoice_id INT NOT NULL,
-    
+
     unit_measure VARCHAR(4) NOT NULL,
     product_code VARCHAR(255) NOT NULL,
     description VARCHAR(128) NOT NULL,
     quantity INT NOT NULL,
     unit_value FLOAT NOT NULL,
     unit_price FLOAT NOT NULL,
-    
+
     discount FLOAT,
     charge FLOAT,
-    
+
     affectation_code VARCHAR(8) NOT NULL,
     total_base_igv FLOAT,
     igv FLOAT, -- Igv
-    
+
     system_isc_code VARCHAR(2) DEFAULT '',
     total_base_isc FLOAT,
     tax_isc FLOAT,
     isc FLOAT,
-    
+
     total_base_other_taxed FLOAT,
     percentage_other_taxed FLOAT,
     other_taxed FLOAT,
-    
+
     quantity_plastic_bag FLOAT,
     plastic_bag_tax FLOAT,
-    
+
     total_value FLOAT,
     total FLOAT,
-    
+
     CONSTRAINT pk_invoice_item PRIMARY KEY (invoice_item_id),
     CONSTRAINT fk_invoice_item_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
     ON UPDATE RESTRICT ON DELETE RESTRICT

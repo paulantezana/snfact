@@ -36,7 +36,7 @@ class RequestApi {
         NProgress.start();
         const newOptions = RequestApi.setHeaders({ ...options }); // format
 
-        return fetch(Service.apiPath + path, newOptions)
+        return fetch(Service.path + path, newOptions)
             .then(response => {
                 return response.json(); // Return response
             }).catch(err => {
@@ -48,7 +48,7 @@ class RequestApi {
     }
 
     static fetchText(path, options) {
-        const url = Service.apiPath + path; // uri request
+        const url = Service.path + path; // uri request
 
         NProgress.start();
         return fetch(url, options)
@@ -117,12 +117,12 @@ const printArea = function(idElem){
     if(dataTable){
         var content = dataTable.outerHTML;
         var mywindow = window.open('', 'Print', 'height=600,width=800');
-    
+
         mywindow.document.write('<html><head><title>Print</title>');
         mywindow.document.write('</head><body >');
         mywindow.document.write(content);
         mywindow.document.write('</body></html>');
-    
+
         mywindow.document.close();
         mywindow.focus()
         mywindow.print();
@@ -151,7 +151,7 @@ let SnLiveList = options => {
 
             ul.remove();
         }
-        
+
         const renderContainer = () => {
             let parentNode = tElementNode.parentNode;
             if (!parentNode.querySelector('.SnLiveList')) {
@@ -205,7 +205,7 @@ function SnDropdown(){
             toogleElem.addEventListener('click',()=>{
                 listElem.classList.toggle('show');
             });
-        }        
+        }
     });
 }
 

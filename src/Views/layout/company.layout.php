@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/company.css">
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/slimselect.css">
         <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/nprogress.css">
-        <link rel="stylesheet" href="<?= URL_PATH ?>/assets/libraries/fonts/style.css">
 
         <script src="<?= URL_PATH ?>/assets/script/common/theme.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/common/pristine.min.js"></script>
@@ -20,7 +19,7 @@
             <div class="AdminLayout-header">
                 <header class="Header">
                     <div class="Header-left">
-                        <div id="AsideMenu-toggle"> <i class="icon-list2"></i> </div>
+                        <div id="AsideMenu-toggle"><i class="fas fa-bars"></i></div>
                     </div>
                     <div class="Header-right">
                         <ul class="HeaderMenu">
@@ -97,7 +96,7 @@
                                 <li>
                                     <a href="<?= URL_PATH ?>/invoice"><i class="icon-rocket"></i> <span>Comprobantes </span> </a>
                                     <ul>
-                                        <?php if (MenuIsValid($asideMenu,'factura')): ?> 
+                                        <?php if (MenuIsValid($asideMenu,'factura')): ?>
                                             <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura</a></li>
                                         <?php endif; ?>
                                         <?php if (MenuIsValid($asideMenu,'boleta')): ?>
@@ -181,5 +180,6 @@
         </div>
         <script src="<?= URL_PATH ?>/assets/script/common/admin.js"></script>
         <script src="<?= URL_PATH ?>/assets/script/company/company.js"></script>
+        <script src="<?= URL_PATH ?>/assets/script/common/fontawesome.min.js"></script>
     </body>
 </html>

@@ -1,14 +1,14 @@
 <div class="SnContent">
     <div class="SnToolbar" id="InvoiceToolbar">
         <div class="SnToolbar-left">
-            <i class="icon-equalizer SnMr-2"></i> COMPROBANTES
+            <i class="fas fa-chevron-right SnMr-2"></i>COMPROBANTES
         </div>
         <div class="SnToolbar-right">
             <div class="SnBtn jsCategoryAction" onclick="invoiceList()">
-                <i class="icon-reload-alt"></i>
+              <i class="fas fa-sync-alt"></i>
             </div>
-            <div class="SnDropdown SnBtn primary">
-                <div class="SnDropdown-toggle"><i class="icon-plus2 SnMr-2"></i>Nuevo</div>
+            <div class="SnDropdown">
+                <div class="SnDropdown-toggle SnBtn primary"><i class="fas fa-plus SnMr-2"></i>Nuevo</div>
                 <ul class="SnDropdown-list">
                     <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura</a></li>
                     <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta</a></li>

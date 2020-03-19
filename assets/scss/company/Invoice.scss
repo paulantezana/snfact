@@ -91,3 +91,12 @@
     }
   }
 }
+
+.InvoiceTable{
+  &-refer{
+    color: var(--snColorTextAlt);
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+  }
+}

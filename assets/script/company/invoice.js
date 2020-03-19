@@ -53,7 +53,7 @@ function invoiceResend(invoiceId){
     })
 }
 
-function invoiceSendEmail(event){
+function invoiceSendEmail(){
     event.preventDefault();
     let sendInvoiceId = document.getElementById('sendInvoiceId');
     let sendInvoiceCustomerEmail = document.getElementById('sendInvoiceCustomerEmail');
@@ -76,6 +76,10 @@ function invoiceSendEmail(event){
             // SnFreeze.unFreeze('#invoiceTable');
         })
     }
+}
+
+function invoiceValidateDocument(invoiceId){
+  console.log(invoiceId);
 }
 
 document.addEventListener('DOMContentLoaded',()=>{

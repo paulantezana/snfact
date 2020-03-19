@@ -80,9 +80,11 @@
 
 .SnDropdown{
   position: relative;
-  &-toggle{
-
-  }
+  outline: none;
+  display: inline-block;
+  // &-toggle{
+  //   width: 100%;
+  // }
   &-list{
     @extend %snList;
     position: absolute;
@@ -97,6 +99,7 @@
     outline: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     display: none;
+    min-width: 200px;
     &.show{
       display: block;
     }
@@ -106,7 +109,7 @@
     padding: 5px 12px;
     font-weight: normal;
     line-height: 22px;
-    white-space: nowrap;
+    // white-space: nowrap;
     cursor: pointer;
     // transition: all 0.3s;
     &:hover{
