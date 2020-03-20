@@ -10,7 +10,7 @@ class Invoice extends Model
 
     public function getAllDataById(int $invoiceID) {
         try{
-            $sql = 'SELECT invoice.*,
+            $sql = "SELECT invoice.*,
                             (invoice.total_igv + invoice.total_isc + invoice.total_other_taxed) as total_tax,
                             cat_document_type_code.description as document_type_code_description,
                             cat_operation_type_code.description as operation_type_code_description,
@@ -24,15 +24,24 @@ class Invoice extends Model
 
                             srg.whit_guide, srg.transfer_code, srg.total_gross_weight, srg.transport_code, srg.carrier_document_code, srg.carrier_document_number,
                             srg.carrier_denomination, srg.carrier_plate_number, srg.driver_document_code, srg.driver_document_number, srg.driver_full_name, srg.location_arrival_code,
-                            srg.address_arrival_point, srg.location_starting_code, srg.address_starting_point
+                            srg.address_arrival_point, srg.location_starting_code, srg.address_starting_point,
+
+                            IFNULL(incnd.serie, '') AS update_serie, IFNULL(incnd.number,0) AS update_number, IFNULL(incnd.document_code,'') AS update_document_code,
+                            IFNULL(incnd.credit_debit_reason_code,'') AS credit_debit_reason_code, IFNULL(incnd.credit_debit_reason_description,'') AS credit_debit_reason_description
                     FROM invoice
                     INNER JOIN invoice_customer ic on invoice.invoice_id = ic.invoice_id
                     INNER JOIN invoice_sunat isn on invoice.invoice_id = isn.invoice_id
                     INNER JOIN cat_document_type_code ON invoice.document_code = cat_document_type_code.code
                     INNER JOIN cat_currency_type_code ON invoice.currency_code = cat_currency_type_code.code
                     INNER JOIN cat_operation_type_code ON invoice.operation_code = cat_operation_type_code.code
+                    LEFT JOIN (
+                        SELECT i.document_code, i.serie, i.number, invoice_credit_debit.invoice_id, ccdtc.code AS credit_debit_reason_code, ccdtc.description AS credit_debit_reason_description
+                        FROM invoice_credit_debit
+                        INNER JOIN invoice AS i ON invoice_credit_debit.invoice_parent_id = i.invoice_id
+                        INNER JOIN cat_credit_debit_type_code AS ccdtc ON invoice_credit_debit.credit_debit_id = ccdtc.cat_credit_debit_type_code_id
+                    ) as incnd ON invoice.invoice_id = incnd.invoice_id
                     LEFT JOIN invoice_referral_guide srg ON invoice.invoice_id = srg.invoice_id
-                    WHERE invoice.invoice_id = :invoice_id LIMIT 1';
+                    WHERE invoice.invoice_id = :invoice_id LIMIT 1";
 
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':invoice_id'=>$invoiceID]);
@@ -40,6 +49,24 @@ class Invoice extends Model
         } catch (Exception $e) {
             throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
         }
+    }
+
+    public function searchBySerieNumber(array $search) {
+      try{
+        $sql = 'SELECT  invoice.invoice_id, invoice.serie, invoice.number, invoice.total, invoice.date_of_issue, cdtc.description as document_type_code_description
+                        FROM invoice
+                      INNER JOIN cat_document_type_code cdtc on invoice.document_code = cdtc.code
+                      WHERE  invoice.serie LIKE :serie OR invoice.number LIKE :number AND invoice.local_id = :local_id LIMIT 8';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+          ':serie' => '%' . $search['search'] . '%',
+          ':number' => '%' . $search['search'] . '%',
+          ':local_id' => $search['localId'],
+        ]);
+        return $stmt->fetchAll();
+      } catch (Exception $e) {
+        throw new Exception("Error in : " . __FUNCTION__ . ' | ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+      }
     }
 
     public function paginate($page = 1, $limit = 10, $businessLocalId = 0, $filter = []) {
@@ -79,7 +106,7 @@ class Invoice extends Model
 
             $sql = "SELECT invoice.*, cat_document_type_code.description as document_type_code_description, cat_operation_type_code.description as operation_type_code_description,
                            ic.social_reason as customer_social_reason, ic.document_number as customer_document_number,
-                           ic.sent_to_client as customer_sent_to_client, ic.email as customer_email,
+                           ic.email_sent as customer_email_sent, ic.email as customer_email,
                            cat_currency_type_code.symbol as currency_symbol,
                            isn.invoice_state_id,  isn.send, isn.response_code, isn.response_message, isn.other_message, isn.pdf_url, isn.xml_url, isn.cdr_url,
                            IFNULL(incnd.serie, '') AS update_serie, IFNULL(incnd.number,0) AS update_number, IFNULL(incnd.document_code,'') AS update_document_code
@@ -178,8 +205,8 @@ class Invoice extends Model
             $invoiceId = (int)$this->db->lastInsertId();
 
             // Insert customer
-            $sql = "INSERT INTO invoice_customer (invoice_id, document_number, identity_document_code, social_reason, fiscal_address, email, telephone, sent_to_client)
-                    VALUES (:invoice_id, :document_number, :identity_document_code, :social_reason, :fiscal_address, :email, :telephone, :sent_to_client)";
+            $sql = "INSERT INTO invoice_customer (invoice_id, document_number, identity_document_code, social_reason, fiscal_address, email, telephone, email_sent)
+                    VALUES (:invoice_id, :document_number, :identity_document_code, :social_reason, :fiscal_address, :email, :telephone, :email_sent)";
             $stmt = $this->db->prepare($sql);
             if(!$stmt->execute([
                 ':invoice_id' => $invoiceId,
@@ -189,7 +216,7 @@ class Invoice extends Model
                 ':fiscal_address' => $invoice['customer']['address'],
                 ':email' => $invoice['customer']['email'],
                 ':telephone' => $invoice['customer']['telephone'] ?? '',
-                ':sent_to_client' => 0,
+                ':email_sent' => 0,
             ])){
                 throw new Exception('No se pudo insertar el registro');
             }
@@ -299,4 +326,30 @@ class Invoice extends Model
             throw new Exception('PDO: ' . $e->getMessage());
         }
     }
+
+  public function updateInvoiceCustomerByInvoiceId($invoiceId, $data)
+  {
+    try {
+      $sql = "UPDATE invoice_customer SET ";
+      foreach ($data as $key => $value) {
+        $sql .= "$key = :$key, ";
+      }
+      $sql = trim(trim($sql), ',');
+      $sql .= " WHERE invoice_id = :invoice_id";
+
+      $execute = [];
+      foreach ($data as $key => $value) {
+        $execute[":$key"] = $value;
+      }
+      $execute[":invoice_id"] = $invoiceId;
+
+      $stmt = $this->db->prepare($sql);
+      if (!$stmt->execute($execute)) {
+        throw new Exception("Error al actualizar el registro");
+      }
+      return $invoiceId;
+    } catch (Exception $e) {
+      throw new Exception('PDO: ' . $e->getMessage());
+    }
+  }
 }

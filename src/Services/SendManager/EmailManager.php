@@ -4,9 +4,18 @@ require_once __DIR__ . '/HtmlTemplate.php';
 
 class EmailManager
 {
-    public static function SendInvoice($to, $subject, $senderEmail, $senderName, $document, $files = array())
+    public static function sendInvoice($to, $subject, $from, $senderName, $document, $files = array())
     {
-        $invoiceTemplate = HtmlTemplate::Invoice();
+      $res = new Result();
+      try {
+        if (!filter_var($to, FILTER_VALIDATE_EMAIL)){
+          throw new Exception('Email del destinataio es invalido');
+        }
+        if (!filter_var($from, FILTER_VALIDATE_EMAIL)){
+          throw new Exception('Email de origen es invalido');
+        }
+
+        $invoiceTemplate = HtmlTemplate::invoice();
         foreach($document as $key => $value)
         {
             $invoiceTemplate = str_replace('{{'.$key.'}}', $value, $invoiceTemplate);
@@ -19,7 +28,7 @@ class EmailManager
         $eol = "\r\n"; // carriage return type (RFC)
 
         // main header (multipart mandatory)
-        $headers = "From: {$senderName} <{$senderEmail}>" . $eol;
+        $headers = "From: {$senderName} <{$from}>" . $eol;
         $headers .= "MIME-Version: 1.0" . $eol;
         $headers .= "Content-Type: multipart/mixed; boundary=\"{$separator}\"" . $eol;
         $headers .= "Content-Transfer-Encoding: 7bit" . $eol;
@@ -56,70 +65,35 @@ class EmailManager
         // $body .= "--{$separator}--";
         // $returnpath = "-f" . $senderEmail;
 
-        $response = mail($to, $subject, $body, $headers);
-        return $response;
+        $res->success = mail($to, $subject, $body, $headers);
+      } catch (Exception $e){
+        $res->success = false;
+        $res->message = $e->getMessage();
+      }
+      return $res;
     }
-    public static function SendRegister($to, $subject, $senderEmail, $senderName, $document)
-    {
-        $registerTmp = HtmlTemplate::Register();
-        foreach($document as $key => $value)
-        {
-            $registerTmp = str_replace('{{'.$key.'}}', $value, $registerTmp);
+    public static function send($from, $to, $subject, $message){
+      $res = new Result();
+      try {
+        if (!filter_var($to, FILTER_VALIDATE_EMAIL)){
+          throw new Exception('Email del destinataio es invalido');
         }
-
-        // a random hash will be necessary to send mixed content
-        $separator = md5(time());
-        $separator = "==Multipart_Boundary_x{$separator}x";
-
-        $eol = "\r\n"; // carriage return type (RFC)
-
-        // main header (multipart mandatory)
-        $headers = "From: {$senderName} <{$senderEmail}>" . $eol;
-        $headers .= "MIME-Version: 1.0" . $eol;
-        $headers .= "Content-Type: multipart/mixed; boundary=\"{$separator}\"" . $eol;
-        $headers .= "Content-Transfer-Encoding: 7bit" . $eol;
-
-        // message
-        $body = "--{$separator}" . $eol;
-        $body .= "Content-Type: text/html; charset=\"UTF-8\"" . $eol;
-        $body .= "Content-Transfer-Encoding: 7bit" . $eol;
-        $body .= $registerTmp . $eol;
-        // $body .= "--{$separator}--";
-        // $returnpath = "-f" . $senderEmail;
-
-        $response = mail($to, $subject, $body, $headers);
-        return $response;
-    }
-    public static function SendForgot($to, $subject, $senderEmail, $senderName, $document)
-    {
-        $invoiceTemplate = HtmlTemplate::Invoice();
-        foreach($document as $key => $value)
-        {
-            $invoiceTemplate = str_replace('{{'.$key.'}}', $value, $invoiceTemplate);
+        if (!filter_var($from, FILTER_VALIDATE_EMAIL)){
+          throw new Exception('Email de origen es invalido');
         }
+        $headers = "From: " . $from . "\r\n";
+        // $headers .= "Reply-To: ". strip_tags($_POST['req-email']) . "\r\n";
+        // $headers .= "CC: susan@example.com\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
-        // a random hash will be necessary to send mixed content
-        $separator = md5(time());
-        $separator = "==Multipart_Boundary_x{$separator}x";
-
-        $eol = "\r\n"; // carriage return type (RFC)
-
-        // main header (multipart mandatory)
-        $headers = "From: {$senderName} <{$senderEmail}>" . $eol;
-        $headers .= "MIME-Version: 1.0" . $eol;
-        $headers .= "Content-Type: multipart/mixed; boundary=\"{$separator}\"" . $eol;
-        $headers .= "Content-Transfer-Encoding: 7bit" . $eol;
-
-        // message
-        $body = "--{$separator}" . $eol;
-        $body .= "Content-Type: text/html; charset=\"UTF-8\"" . $eol;
-        $body .= "Content-Transfer-Encoding: 7bit" . $eol;
-        $body .= $invoiceTemplate . $eol;
-
-        // $body .= "--{$separator}--";
-        // $returnpath = "-f" . $senderEmail;
-
-        $response = mail($to, $subject, $body, $headers);
-        return $response;
+        // HTML MESSAGE START
+        $message = HtmlTemplate::layout($message);
+        $res->success = mail($to, $subject, $message, $headers);
+      } catch (Exception $e){
+        $res->success = false;
+        $res->message = $e->getMessage();
+      }
+      return $res;
     }
 }

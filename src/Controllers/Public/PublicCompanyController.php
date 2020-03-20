@@ -7,6 +7,7 @@ require_once MODEL_PATH . '/Business.php';
 require_once MODEL_PATH . '/BusinessLocal.php';
 require_once ROOT_DIR . '/src/Helpers/TimeAuthenticator.php';
 require_once ROOT_DIR . '/src/Services/PeruManager/PeruManager.php';
+require_once ROOT_DIR . '/src/Services/SendManager/EmailManager.php';
 
 class PublicCompanyController extends Controller
 {
@@ -187,7 +188,7 @@ class PublicCompanyController extends Controller
                         'continue_payment' => false,
                         'ruc' => $register['ruc'],
                         'social_reason' => $dataPeru['socialReason'],
-                        'commercial_reason' => '',
+                        'commercial_reason' => $dataPeru['socialReason'],
                         'email' => $register['email'],
                         'phone' => $dataPeru['telephone'],
                         'web_site' => '',
@@ -300,6 +301,17 @@ class PublicCompanyController extends Controller
                         return;
                     }
 
+                    $urlApp = HOST . URL_PATH . '/publicCompany/login';
+                    if(!EmailManager::send(APP_EMAIL, $register['email'], '¡🚀 Bienvenido a '.APP_NAME.' !',
+                      '<div>
+                                    <h1>' . $dataPeru['socialReason'] . ', bienvenido(a) a ' . APP_NAME . '. Acelera tu negocio</h1>
+                                    <p>Facturación electrónica</p>
+                                    <a href="' . $urlApp . '">Ingresar al sistema</a>
+                                </div>'
+                    )){
+                      throw new Exception('No se pudo enviar el correo electrónico de bienvenida.');
+                    }
+
                     $this->redirect('/');
                     return;
                 } catch (Exception $e) {
@@ -349,10 +361,13 @@ class PublicCompanyController extends Controller
                         'request_key_date' => $currentDate,
                     ]);
 
-                    $this->SendEmail([
-                        'to' => $user['email'],
-                        'token' => $token,
-                    ]);
+                    $urlForgot = HOST . URL_PATH . '/publicCompany/forgotValidate?key=' .$token;
+                    if(!EmailManager::send(APP_EMAIL, $user['email'], 'Recupera tu Contraseña',
+                        '<p>Recientemente se solicitó un cambio de contraseña en tu cuenta. Si no fuiste tú, ignora este mensaje y sigue disfrutando de la experiencia de ' . APP_NAME . '.</p>
+                                 <a href="' . $urlForgot . '" target="_blanck">Cambiar contraseña</a>'
+                    )){
+                      throw new Exception('No se pudo enviar el correo electrónico.');
+                    }
 
                     $resView->message = 'El correo electrónico de confirmación de restablecimiento de contraseña se envió a su correo electrónico.';
                     $resView->messageType = 'success';
@@ -413,7 +428,7 @@ class PublicCompanyController extends Controller
                 try {
                     $password = $_POST['password'];
                     $confirmPassword = $_POST['confirmPassword'];
-                    $user['user_id'] = $_POST['userId'] ?? 0;
+                    $user['user_id'] = $_POST['userId'];
                     if (!($confirmPassword === $password)) {
                         throw new Exception('Las contraseñas no coinciden');
                     }
@@ -449,39 +464,6 @@ class PublicCompanyController extends Controller
                 'message' => $e->getMessage(),
             ],'layout/basic.layout.php');
         }
-    }
-
-    private function SendEmail($mailContent)
-    {
-        $currentUrl = HOST . URL_PATH . '/forgot/validate';
-        $tokenUrl = $currentUrl . '?token=' . $mailContent['token'];
-
-        $to = $mailContent['to'];
-        $from = 'paul.antezana.2@gmail.com';
-        $subject = 'Recupera tu Contraseña';
-        $message = "
-        <div style='background: #F9FAFC;padding: 5rem 0; text-align: center;'>
-            <div style='max-width:590px!important; width:590px; background: white;padding: 2rem;margin: auto;'>
-                <img src='https://www.skynetcusco.com/wp-content/uploads/2016/11/logosky2017.png' alt='logo' width='42px'>
-                <h2>¿Olvidaste tu contraseña?</h2>
-                <p>Recientemente se solicitó un cambio de contraseña en tu cuenta. Si no fuiste tú, Ignora este mensaje y sigue realizando sus ventas en Skynet</p>
-                <p>Si deseas hacer el cambio, haz click en el siguiente botón.</p>
-                <a href='{$tokenUrl}' target='_blank'>
-                    <div style=\"background: #007BFF; color: white; display: inline-block; padding: .7rem; text-decoration: none; border-radius: 4px;\">Cambiar contraseña</div>
-                </a>
-                <div>
-                    <a href='{$tokenUrl}' target='_blank'>{$tokenUrl}</a>            
-                </div>
-            </div>
-            <p style='margin-top: 3rem;'>© 2019 Skynet</p>
-        </div>";
-
-        $header = 'MIME-Version: 1.0' . PHP_EOL;
-        $header .= 'Content-type: text/html; charset=UTF-8' . PHP_EOL;
-
-        $header .= 'To: s <' . $to . '>' . PHP_EOL;
-        $header .= 'From: SnFact <' . $from . '>' . PHP_EOL;
-        mail($to, $subject, $message, $header);
     }
 
     private function validateRegister($body)

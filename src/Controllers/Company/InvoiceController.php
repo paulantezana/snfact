@@ -51,10 +51,12 @@ class InvoiceController extends Controller
             $messageType = 'info';
             $error = [];
 
+            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->ByInCodes(['01','03','07','08']);
             $this->render('company/invoice.view.php', [
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
+                'catDocumentTypeCode' => $catDocumentTypeCode,
             ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
@@ -67,11 +69,15 @@ class InvoiceController extends Controller
     {
         try {
 //            Authorization($this->connection, 'producto', 'listar');
-            $page = isset($_GET['page']) ? $_GET['page'] : 1;
-            $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
-            $filter = $_POST['filter'] ?? [];
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
 
-            $invoice = $this->invoiceModel->paginate($page, $limit, $_SESSION[SESS_CURRENT_LOCAL], $filter);
+            $invoice = $this->invoiceModel->paginate(
+              $body['page'],
+              $body['limit'],
+              $_SESSION[SESS_CURRENT_LOCAL],
+              $body['filter']
+            );
             $this->render('company/partials/invoiceTable.php', [
                 'invoice' => $invoice,
             ]);
@@ -80,6 +86,22 @@ class InvoiceController extends Controller
                 'message' => $e->getMessage(),
             ]);
         }
+    }
+
+    public function searchBySerieNumber(){
+      $res = new Result();
+      try {
+        // Authorization($this->connection, 'categoria', 'modificar');
+        $postData = file_get_contents("php://input");
+        $body = json_decode($postData, true);
+        $body['localId'] = $_SESSION[SESS_CURRENT_LOCAL];
+
+        $res->result = $this->invoiceModel->searchBySerieNumber($body);
+        $res->success = true;
+      } catch (Exception $e) {
+        $res->message = $e->getMessage();
+      }
+      echo json_encode($res);
     }
 
     public function getNextDocumentNumber()
@@ -98,38 +120,6 @@ class InvoiceController extends Controller
             $res->message = $e->getMessage();
         }
         echo json_encode($res);
-    }
-
-    public function formTemplate(){
-        try {
-            $businessSerieModel = new BusinessSerie($this->connection);
-
-            $catDocumentTypeCode = $this->catDocumentTypeCodeModel->ByInCodes(['01','03','07','08']);
-            $catCurrencyTypeCode = $this->catCurrencyTypeCodeModel->getAll();
-            $catIdentityDocumentTypeCode = $this->catIdentityDocumentTypeCodeModel->getAll();
-            $catOperationTypeCode = $this->catOperationTypeCodeModel->getAll();
-
-            $invoiceItemTemplate = $this->invoiceItemTemplate();
-
-            $invoiceType = $businessSerieModel->getDocumentSerieNumber([
-                'localId' => $_SESSION[SESS_CURRENT_LOCAL],
-                'documentCode' => '01',
-            ]);
-
-            $this->render('Company/partials/invoiceFormTemplate.php', [
-                'catDocumentTypeCode' => $catDocumentTypeCode,
-                'catOperationTypeCode' => $catOperationTypeCode,
-                'catCurrencyTypeCode' => $catCurrencyTypeCode,
-                'catIdentityDocumentTypeCode' => $catIdentityDocumentTypeCode,
-
-                'invoiceItemTemplate' => $invoiceItemTemplate,
-                'invoiceType' => $invoiceType,
-            ]);
-        } catch (Exception $e) {
-            $this->render('500.php', [
-                'message' => $e->getMessage(),
-            ]);
-        }
     }
 
     public function newInvoice(){
@@ -160,7 +150,7 @@ class InvoiceController extends Controller
                     'documentCode' => $invoiceDocumentCode,
                 ]);
             }
-                    
+
             $catCreditDebitTypeCode = $this->catCreditDebitTypeCodeModel->getByDocumentCode($invoiceDocumentCode);
             $catDocumentTypeCode = $this->catDocumentTypeCodeModel->ByInCodes(['01','03','07','08']);
             $catDocumentTypeCodeUpdate = $this->catDocumentTypeCodeModel->ByInCodes(['01','03']);
@@ -206,9 +196,9 @@ class InvoiceController extends Controller
             $invoiceId = $this->invoiceModel->insert($invoice, $_SESSION[SESS_KEY]);
 
             $buildInvoice = new BuildInvoice($this->connection);
-            $resRunDoc = $buildInvoice->BuildDocument($invoiceId,$_SESSION[SESS_KEY]);
+            $resRunDoc = $buildInvoice->BuildDocument($invoiceId, $_SESSION[SESS_KEY], $invoice['customer']['sendEmail']);
 
-            $res->result = $resRunDoc;
+            $res->sunat = $resRunDoc;
             $res->message = 'El documento se guardado correctamente!';
             $res->success = true;
         } catch (Exception $e) {
@@ -229,19 +219,10 @@ class InvoiceController extends Controller
         echo 'updateInvoice';
     }
 
-    public function search()
-    {
-        $res = new Result();
-        try { } catch (Exception $e) {
-            $res->message = $e->getMessage();
-        }
-        echo json_encode($res);
-    }
-
     public function resend()
     {
         $res = new Result();
-        try { 
+        try {
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -271,31 +252,22 @@ class InvoiceController extends Controller
             if (trim($invoiceCustomerEmail) == ''){
                 $invoiceCustomerEmail = $invoice['customer_email'];
             }
-
-            $responseEmail = EmailManager::Send(
-                $invoiceCustomerEmail,
-                "{$invoice['document_type_code_description']} {$invoice['serie']}-{$invoice['number']} | {$invoice['customer_social_reason']}",
-                'paul.antezana.2@gmail.com',
-                $invoice['customer_social_reason'],
-                [
-                    'documentDescription' => $invoice['document_type_code_description'],
-                    'serie' => $invoice['serie'],
-                    'number' => $invoice['number'],
-                    'socialReason' => $invoice['customer_social_reason'],
-                    'dateOfIssue' => $invoice['date_of_issue'],
-                    'dateOfDue' => $invoice['date_of_due'],
-                    'total' => "{$invoice['currency_type_code_symbol']} {$invoice['total']}",
-                    'documentUrl' => HOST . URL_PATH .  "/query?ruc=sss&serie={$invoice['serie']}&number={$invoice['number']}",
-                ],
-                [
-                    ROOT_DIR . $invoice['pdf_url'],
-                    ROOT_DIR . $invoice['xml_url'],
-                ]
-            );
-
-            if (!$responseEmail){
-                throw new Exception('No se pudo enviar el correo');
+            if($invoiceCustomerEmail == ''){
+              throw new Exception('No se especificó ningún email.');
             }
+
+            $business = $this->businessModel->getByUserId($_SESSION[SESS_KEY]);
+
+            $buildInvoice = new BuildInvoice($this->connection);
+            $responseEmail = $buildInvoice->SendEmail($invoiceCustomerEmail,$invoice,$business);
+            if (!$responseEmail->success){
+                throw new Exception($responseEmail->message);
+            }
+
+            $this->invoiceModel->updateInvoiceCustomerByInvoiceId($invoiceId,[
+                'email_sent'=>$responseEmail,
+            ]);
+
             $res->message = 'El correo se envio exitosamente al cliente';
             $res->success = true;
         } catch (Exception $e) {

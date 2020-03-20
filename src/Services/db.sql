@@ -250,15 +250,15 @@ CREATE TABLE user(
     created_user_id INT,
     updated_user_id INT,
 
-    password varchar(64) NOT NULL,
+    password varchar(128) NOT NULL,
     email varchar(64)  NOT NULL UNIQUE,
-    request_key varchar(32)  DEFAULT '',
+    request_key varchar(128)  DEFAULT '',
     request_key_date DATETIME,
     avatar varchar(64),
     user_name varchar(32) NOT NULL UNIQUE,
     state TINYINT DEFAULT true,
     login_count SMALLINT,
-    fa2_secret VARCHAR(64),
+    fa2_secret VARCHAR(128),
     user_role_id INT NOT NULL,
     manager TINYINT DEFAULT 0,
 
@@ -417,8 +417,6 @@ CREATE TABLE invoice(
 CREATE TABLE invoice_credit_debit(
     invoice_credit_debit_id INT AUTO_INCREMENT NOT NULL,
     invoice_id INT NOT NULL UNIQUE,
-    serie VARCHAR(4) NOT NULL,
-    number INT NOT NULL,
     invoice_parent_id INT NOT NULL,
     credit_debit_id INT NOT NULL,
     CONSTRAINT pk_invoice_credit_debit PRIMARY KEY (invoice_credit_debit_id),
@@ -459,7 +457,7 @@ CREATE TABLE invoice_customer(
      fiscal_address VARCHAR(255) DEFAULT '',
      email VARCHAR(64) DEFAULT '',
      telephone VARCHAR(255) DEFAULT '',
-     sent_to_client TINYINT DEFAULT 0,
+     email_sent TINYINT DEFAULT 0,
      CONSTRAINT pk_invoice_customer PRIMARY KEY (invoice_customer_id),
      CONSTRAINT fk_invoice_customer_invoice FOREIGN KEY (invoice_id) REFERENCES invoice (invoice_id)
          ON UPDATE RESTRICT ON DELETE RESTRICT,
@@ -627,13 +625,13 @@ CREATE TABLE sunat_communication (
     PRIMARY KEY (sunat_communication_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-CREATE TABLE `sunat_communication_type` (
+CREATE TABLE sunat_communication_type (
     sunat_communication_type_id int(11) NOT NULL AUTO_INCREMENT,
     name varchar(25) NOT NULL,
     PRIMARY KEY (sunat_communication_type_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-CREATE TABLE `sunat_response` (
+CREATE TABLE sunat_response (
     sunat_response_id int(11) NOT NULL AUTO_INCREMENT,
     sunat_communication_id int(11) NOT NULL,
     sunat_communication_success tinyint(1) NOT NULL,
@@ -649,7 +647,7 @@ CREATE TABLE `sunat_response` (
     PRIMARY KEY (sunat_response_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-CREATE TABLE `sunat_xml` (
+CREATE TABLE sunat_xml (
     sunat_xml_id int(11) NOT NULL AUTO_INCREMENT,
     sunat_xml_type_id int(11) NOT NULL,
     reference_id int(11) NOT NULL,
@@ -662,7 +660,7 @@ CREATE TABLE `sunat_xml` (
     PRIMARY KEY (sunat_xml_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-CREATE TABLE `sunat_xml_type` (
+CREATE TABLE sunat_xml_type (
     sunat_xml_type_id int(11) NOT NULL AUTO_INCREMENT,
     name varchar(50) NOT NULL,
     PRIMARY KEY (sunat_xml_type_id)

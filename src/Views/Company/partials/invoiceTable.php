@@ -34,7 +34,7 @@
                     </td>
                     <td><?php echo $row['total'] ?></td>
                     <td style="text-align: center">
-                        <?php if ($row['customer_sent_to_client']): ?>
+                        <?php if ($row['customer_email_sent']): ?>
                             <i class="fas fa-check" title="Enviado al cliente" style="color: var(--snSuccess)"></i>
                         <?php else: ?>
                             <i class="fas fa-ban" title="No se envio al cliente" style="color: var(--snColorTextAlt)"></i>

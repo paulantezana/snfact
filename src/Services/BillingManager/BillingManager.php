@@ -18,58 +18,62 @@ class BillingManager
     private $sunatCommunicationModel;
     private $sunatResponseModel;
     private $sunatSummaryResponseModel;
+    private $environment;
 
-    public function __construct($connection)
+    public function __construct($connection,$environment)
     {
         $this->connection = $connection;
+        $this->environment = $environment;
         $this->sunatXmlModel = new SunatXml($this->connection);
         $this->sunatCommunicationModel = new SunatCommunication($this->connection);
         $this->sunatResponseModel = new SunatResponse($this->connection);
         $this->sunatSummaryResponseModel = new SunatSummaryResponse($this->connection);
     }
 
-    public function SendInvoice($referenceId, $invoice, $userId)
+    public function SendInvoice($referenceId, $invoice, $userId, $send = true)
     {
         $res = new Result();
+        $res->send = false;
         try {
-            /*if ($invoice['invoiceTypeCode'] != '01') {
+            if (!($invoice['invoiceTypeCode'] == '01' || $invoice['invoiceTypeCode'] == '03')) {
                 throw new Exception('Wrong invoice Type!');
             }
 
             if (!(count($invoice['itemList']) > 0)) {
                 throw new Exception('There is no items.');
-            }*/
+            }
 
             $folderPath = $this->FolderPathValidation($invoice['supplierRuc']);
             $fileName = $invoice['supplierRuc'] . '-' . $invoice['invoiceTypeCode'] . '-' . $invoice['serie'] . '-' . $invoice['number'] .'.xml';
 
             $xmlGeneratorResult = $this->SaveInvoice($folderPath, $fileName, $referenceId, $invoice, 1, $userId);
+            $res->message = $xmlGeneratorResult->message;
+            $res->success = $xmlGeneratorResult->success;
+            if($xmlGeneratorResult->success === true){
+              $res->xmlPath = str_replace(ROOT_DIR,'',$folderPath . $fileName);
+              $res->digestValue = $xmlGeneratorResult->digestValue;
+            }
 
-            if ($xmlGeneratorResult->success == true) {
+            if ($xmlGeneratorResult->success === true && $send === true) {
                 $sunatCommunicationId = $this->sunatCommunicationModel->Insert(1, $referenceId, $userId);
+                $res->send = true;
 
                 $sunatResult = $this->SendDocument(1, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->message;
+                $res->sunatCommuniationMessage = $sunatResult->message;
                 if ($sunatResult->success == true) {
                     $readerResult = $this->ReadSunatAnswer($folderPath, $fileName);
                     $res->readerSuccess = $readerResult->success;
-                    $res->readerError = $readerResult->message;
+                    $res->readerMessage = $readerResult->message;
                     $res->sunatResponseCode = $readerResult->sunatResponseCode;
                     $res->sunatDescription = $readerResult->sunatDescription;
+                    $res->cdrPath = $readerResult->cdrPath;
 
                     $this->sunatResponseModel->Insert($sunatCommunicationId, $referenceId, $userId, $res);
-                }
-                else{
+                } else {
                     $res->readerSuccess = false;
-                    $res->readerError = '';
+                    $res->readerMessage = '';
                 }
-
-                $res->success = true;
-                $res->digestValue = $xmlGeneratorResult->digestValue;
-            }
-            else{
-                return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
             $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
@@ -78,9 +82,10 @@ class BillingManager
         return $res;
     }
 
-    public function SendCreditNote($referenceId, $creditNote, $userId)
+    public function SendCreditNote($referenceId, $creditNote, $userId, $send = true)
     {
         $res = new Result();
+      $res->send = false;
         try {
             if (!(count($creditNote['itemList']) > 0)) {
                 throw new Exception('There is no items.');
@@ -90,32 +95,38 @@ class BillingManager
             $fileName = $creditNote['supplierRuc'] . '-07-' . $creditNote['serie'] . '-' . $creditNote['number'] .'.xml';
 
             $xmlGeneratorResult = $this->SaveCreditNote($folderPath, $fileName, $referenceId, $creditNote, 4, $userId);
+            $res->message = $xmlGeneratorResult->message;
+            $res->success = $xmlGeneratorResult->success;
+            if($xmlGeneratorResult->success === true){
+              $res->xmlPath = str_replace(ROOT_DIR,'',$folderPath . $fileName);
+              $res->digestValue = $xmlGeneratorResult->digestValue;
+            }
 
-            if ($xmlGeneratorResult->success == true) {
+
+          if ($xmlGeneratorResult->success === true && $send === true) {
                 $sunatCommunicationId = $this->sunatCommunicationModel->Insert(1, $referenceId, $userId);
+                $res->send = true;
 
                 $sunatResult = $this->SendDocument(1, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->message;
+                $res->sunatCommuniationMessage = $sunatResult->message;
                 if ($sunatResult->success == true) {
                     $readerResult = $this->ReadSunatAnswer($folderPath, $fileName);
                     $res->readerSuccess = $readerResult->success;
-                    $res->readerError = $readerResult->message;
+                    $res->readerMessage = $readerResult->message;
                     $res->sunatResponseCode = $readerResult->sunatResponseCode;
                     $res->sunatDescription = $readerResult->sunatDescription;
+                    $res->cdrPath = $readerResult->cdrPath;
 
                     $this->sunatResponseModel->Insert($sunatCommunicationId, $referenceId, $userId, $res);
                 }
                 else{
                     $res->readerSuccess = false;
-                    $res->readerError = '';
+                    $res->readerMessage = '';
                 }
 
                 $res->success = true;
                 $res->digestValue = $xmlGeneratorResult->digestValue;
-            }
-            else{
-                return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
             $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
@@ -124,9 +135,10 @@ class BillingManager
         return $res;
     }
 
-    public function SendDebitNote($referenceId, $debitNote, $userId)
+    public function SendDebitNote($referenceId, $debitNote, $userId, $send = true)
     {
         $res = new Result();
+      $res->send = false;
         try {
             if (!(count($debitNote['itemList']) > 0)) {
                 throw new Exception('There is no items.');
@@ -136,32 +148,37 @@ class BillingManager
             $fileName = $debitNote['supplierRuc'] . '-08-' . $debitNote['serie'] . '-' . $debitNote['number'] .'.xml';
 
             $xmlGeneratorResult = $this->SaveDebitNote($folderPath, $fileName, $referenceId, $debitNote, 5, $userId);
+            $res->message = $xmlGeneratorResult->message;
+            $res->success = $xmlGeneratorResult->success;
+            if($xmlGeneratorResult->success === true){
+              $res->xmlPath = str_replace(ROOT_DIR,'',$folderPath . $fileName);
+              $res->digestValue = $xmlGeneratorResult->digestValue;
+            }
 
-            if ($xmlGeneratorResult->success == true) {
+            if ($xmlGeneratorResult->success === true && $send === true) {
                 $sunatCommunicationId = $this->sunatCommunicationModel->Insert(1, $referenceId, $userId);
+                $res->send = true;
 
                 $sunatResult = $this->SendDocument(1, $folderPath, $fileName);
                 $res->sunatComunicationSuccess = $sunatResult->success;
-                $res->sunatCommuniationError = $sunatResult->message;
+                $res->sunatCommuniationMessage = $sunatResult->message;
                 if ($sunatResult->success == true) {
                     $readerResult = $this->ReadSunatAnswer($folderPath, $fileName);
                     $res->readerSuccess = $readerResult->success;
-                    $res->readerError = $readerResult->message;
+                    $res->readerMessage = $readerResult->message;
                     $res->sunatResponseCode = $readerResult->sunatResponseCode;
                     $res->sunatDescription = $readerResult->sunatDescription;
+                    $res->cdrPath = $readerResult->cdrPath;
 
                     $this->sunatResponseModel->Insert($sunatCommunicationId, $referenceId, $userId, $res);
                 }
                 else{
                     $res->readerSuccess = false;
-                    $res->readerError = '';
+                    $res->readerMessage = '';
                 }
 
                 $res->success = true;
                 $res->digestValue = $xmlGeneratorResult->digestValue;
-            }
-            else{
-                return $xmlGeneratorResult;
             }
         } catch (Exception $e) {
             $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
@@ -195,28 +212,6 @@ class BillingManager
             else{
                 return $xmlGeneratorResult;
             }
-        } catch (Exception $e) {
-            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
-        }
-
-        return $res;
-    }
-
-    public function SaveTicketInvoice($referenceId, $invoice, $userId)
-    {
-        $res = new Result();
-        try {
-            if ($invoice['invoiceTypeCode'] != '03') {
-                throw new Exception('Wrong invoice Type!');
-            }
-
-            if (!(count($invoice['itemList']) > 0)) {
-                throw new Exception('There is no items.');
-            }
-
-            $folderPath = $this->FolderPathValidation($invoice['supplierRuc']);
-            $fileName = $invoice['supplierRuc'] . '-' . $invoice['invoiceTypeCode'] . '-' . $invoice['serie'] . '-' . $invoice['number'] .'.xml';
-            $res = $this->SaveInvoice($folderPath, $fileName, $referenceId, $invoice, 2, $userId);
         } catch (Exception $e) {
             $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
         }
@@ -306,55 +301,6 @@ class BillingManager
 
         return $res;
         $fileName = $request->ruc . '-' . $request->type . '-' . $request->serie . '-' . $request->number;
-    }
-
-    public function GetStatus($supplierRuc, $sunatSummaryResponseId, $userId)
-    {
-        $res = new Result();
-        try {
-            $sunatSummaryResponse = $this->sunatSummaryResponseModel->Get($sunatSummaryResponseId);
-
-            if ($sunatSummaryResponse == false) {
-                throw new Exception('Wrong summary submmission id.');
-            }
-
-            if ($sunatSummaryResponse['response_code'] == '0' || $sunatSummaryResponse['response_code'] == '99') {
-                throw new Exception('Selected summary submission already got an answer.');
-            }
-
-            try {
-                $url = SUNAT_SERVICE_URL;
-
-                $options = array(
-                    'Username' => '20100066603MODDATOS',
-                    'Password' => 'moddatos',
-                );
-
-                $client = new SoapClient($url, $options);
-
-                $data = array(
-                    'ticket' => $sunatSummaryResponse['ticket'],
-                );
-
-                $result = $client->getStatus($data);
-
-                $this->sunatSummaryResponseModel->UpdateSunatResponse($sunatSummaryResponseId, $result->statusCode, $userId);
-
-                if ($result->statusCode == 0 || $result->statusCode == 99) {
-                    $folderPath = $this->FolderPathValidation($invoice['supplierRuc']);
-
-                    $this->UnzipResponse($folderPath, $sunatSummaryResponse['ticket'].'.zip', $result->content);
-                }
-            } catch ( SoapFault $e ) {
-                throw new Exception('Error executing SUNAT connection : '. $e->getMessage());
-            }
-
-            $res->success = true;
-        } catch (Exception $e) {
-            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
-        }
-
-        return $res;
     }
 
     private function SaveSummary($folderPath, $fileName, $referenceId, $summary, $xmlTypeId, $userId)
@@ -584,26 +530,6 @@ class BillingManager
         }
 
         return $res;
-    }
-
-    private function FolderPathValidation($supplierRuc)
-    {
-        try {
-            $todayFolderName = date('Ym');
-            $rootPath = FILE_PATH . '/xml/';
-            if (!file_exists(ROOT_DIR. $rootPath. $todayFolderName)) {
-                mkdir(ROOT_DIR.$rootPath.$todayFolderName);
-            }
-
-            if (!file_exists(ROOT_DIR.$rootPath.$todayFolderName.'/'.$supplierRuc)) {
-                mkdir(ROOT_DIR.$rootPath.$todayFolderName.'/'.$supplierRuc);
-            }
-
-            return ROOT_DIR.$rootPath.$todayFolderName.'/'.$supplierRuc.'/';
-
-        } catch (Exception $e) {
-            throw new Exception('Error in : ' .__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString());
-        }
     }
 
     private function SaveInvoice($folderPath, $fileName, $referenceId, $invoice, $xmlTypeId, $userId)
@@ -1313,15 +1239,15 @@ class BillingManager
 
             $xml->formatOutput = true;
 
-            file_put_contents($folderPath.$fileName, $xml->saveXML());
+            file_put_contents($folderPath . $fileName, $xml->saveXML());
 
-            $res->digestValue = $this->SignDocument($folderPath.$fileName);
+            $res->digestValue = $this->SignDocument($folderPath . $fileName);
 
             $this->sunatXmlModel->Insert($xmlTypeId, $referenceId, $userId);
 
             $res->success = true;
         } catch (Exception $e) {
-            $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
+            $res->message = $e->getMessage() . "\n\n".$e->getTraceAsString();
         }
 
         return $res;
@@ -2362,6 +2288,75 @@ class BillingManager
         return $res;
     }
 
+    public function GetStatus($supplierRuc, $sunatSummaryResponseId, $userId)
+  {
+    $res = new Result();
+    try {
+      $sunatSummaryResponse = $this->sunatSummaryResponseModel->Get($sunatSummaryResponseId);
+
+      if ($sunatSummaryResponse == false) {
+        throw new Exception('Wrong summary submmission id.');
+      }
+
+      if ($sunatSummaryResponse['response_code'] == '0' || $sunatSummaryResponse['response_code'] == '99') {
+        throw new Exception('Selected summary submission already got an answer.');
+      }
+
+      try {
+        $url = SUNAT_SERVICE_URL;
+
+        $options = array(
+          'Username' => '20100066603MODDATOS',
+          'Password' => 'moddatos',
+        );
+
+        $client = new SoapClient($url, $options);
+
+        $data = array(
+          'ticket' => $sunatSummaryResponse['ticket'],
+        );
+
+        $result = $client->getStatus($data);
+
+        $this->sunatSummaryResponseModel->UpdateSunatResponse($sunatSummaryResponseId, $result->statusCode, $userId);
+
+        if ($result->statusCode == 0 || $result->statusCode == 99) {
+          $folderPath = $this->FolderPathValidation($invoice['supplierRuc']);
+
+          $this->UnzipResponse($folderPath, $sunatSummaryResponse['ticket'].'.zip', $result->content);
+        }
+      } catch ( SoapFault $e ) {
+        throw new Exception('Error executing SUNAT connection : '. $e->getMessage());
+      }
+
+      $res->success = true;
+    } catch (Exception $e) {
+      $res->message = $e->getMessage()."\n\n".$e->getTraceAsString();
+    }
+
+    return $res;
+  }
+
+    private function FolderPathValidation($supplierRuc)
+  {
+    try {
+      $todayFolderName = date('Ym');
+      $rootPath = FILE_PATH . '/xml/';
+      if (!file_exists(ROOT_DIR. $rootPath. $todayFolderName)) {
+        mkdir(ROOT_DIR.$rootPath.$todayFolderName);
+      }
+
+      if (!file_exists(ROOT_DIR.$rootPath.$todayFolderName.'/'.$supplierRuc)) {
+        mkdir(ROOT_DIR.$rootPath.$todayFolderName.'/'.$supplierRuc);
+      }
+
+      return ROOT_DIR.$rootPath.$todayFolderName.'/'.$supplierRuc.'/';
+
+    } catch (Exception $e) {
+      throw new Exception('Error in : ' .__FUNCTION__.' | '. $e->getMessage()."\n". $e->getTraceAsString());
+    }
+  }
+
     private function SignDocument($filePath)
     {
         try {
@@ -2452,14 +2447,14 @@ class BillingManager
     private function ReadSunatAnswer($folderPath, $fileName)
     {
         $res = new Result();
-
         try {
             $sunatAnswer = simplexml_load_file($folderPath.'R-'.$fileName, null, null, 'ar', true);
             $x = $sunatAnswer->children('cac',true);
-            $y =$x->DocumentResponse->children('cac',true);
+            $y = $x->DocumentResponse->children('cac',true);
             $response = $y->Response->children('cbc',true);
             $res->sunatDescription = (string)$response->Description;
             $res->sunatResponseCode = (string)$response->ResponseCode;
+            $res->cdrPath = str_replace(ROOT_DIR , '',$folderPath.'R-'.$fileName);
             $res->success = true;
         } catch (Exception $e) {
             $res->success = false;

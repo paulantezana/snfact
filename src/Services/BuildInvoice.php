@@ -8,6 +8,7 @@ require_once MODEL_PATH . '/Catalogue/CatPerceptionTypeCode.php';
 
 require_once __DIR__ . '/DocumentManager/DocumentManager.php';
 require_once __DIR__ . '/BillingManager/BillingManager.php';
+require_once __DIR__ . '/SendManager/EmailManager.php';
 
 class BuildInvoice
 {
@@ -24,10 +25,10 @@ class BuildInvoice
         $this->businessModel = new Business($this->connection);
     }
 
-    private function GeneratePdf(array $documentData ) {
+    public function GeneratePdf(array $documentData ) {
         $business = $documentData['business'];
-        $sale =  $documentData['sale'];
-        $detailSale =  $documentData['detailSale'];
+        $invoiceData =  $documentData['invoice'];
+        $invoiceDetail =  $documentData['invoiceDetail'];
 
         $business = array_merge($business,[
             'address' => 'AV. HUASCAR NRO. 224 DPTO. 303',
@@ -37,14 +38,14 @@ class BuildInvoice
         ]);
 
         $invoice['headerContact'] = 'Teléfono: 084601425 | Celular: 979706609 | www.skynetcusco.com | info@skynetcusco.com';
-        $invoice['documentType'] = $sale['document_type_code_description'];
-        $invoice['documentCode'] = $sale['document_code'];
-        $invoice['serie'] = $sale['serie'];
-        $invoice['correlative'] = $sale['number'];
-        $invoice['vehiclePlate'] = $sale['vehicle_plate'];
-        $invoice['term'] = $sale['term'];
-        $invoice['purchaseOrder'] = $sale['purchase_order'];
-        $invoice['observation'] = $sale['observation'];
+        $invoice['documentType'] = $invoiceData['document_type_code_description'];
+        $invoice['documentCode'] = $invoiceData['document_code'];
+        $invoice['serie'] = $invoiceData['serie'];
+        $invoice['correlative'] = $invoiceData['number'];
+        $invoice['vehiclePlate'] = $invoiceData['vehicle_plate'];
+        $invoice['term'] = $invoiceData['term'];
+        $invoice['purchaseOrder'] = $invoiceData['purchase_order'];
+        $invoice['observation'] = $invoiceData['observation'];
         $invoice['logo'] = $business['logo'];
 
         $invoice['businessRuc'] = $business['ruc'];
@@ -53,36 +54,36 @@ class BuildInvoice
         $invoice['businessAddress'] = $business['address'];
         $invoice['businessLocation'] = $business['district'] . ' ' . $business['province'] . ' ' . $business['region'];
 
-        $invoice['customerDocumentNumber'] = $sale['customer_document_number'];
-        $invoice['customerDocumentCode'] = $sale['customer_document_number'];
-        $invoice['customerSocialReason'] = $sale['customer_social_reason'];
-        $invoice['customerFiscalAddress'] = $sale['customer_fiscal_address'];
-        $invoice['digestValue'] = $sale['digestValue'];
-        $invoice['dateOfIssue'] = $sale['date_of_issue'];
-        $invoice['dateOfDue'] = $sale['date_of_due'];
-        $invoice['currencySymbol'] = $sale['currency_type_code_symbol'];
-        $invoice['currencyDescription'] = $sale['currency_type_code_description'];
-        $invoice['totalDiscount'] = $sale['total_discount'];
-        $invoice['totalPrepayment'] = $sale['total_prepayment'];
-        $invoice['totalExonerated'] = $sale['total_exonerated'];
-        $invoice['totalUnaffected'] = $sale['total_unaffected'];
-        $invoice['totalTaxed'] = $sale['total_taxed'];
-        $invoice['totalIsc'] = $sale['total_isc'];
-        $invoice['totalIgv'] = $sale['total_igv'];
-        $invoice['totalFree'] = $sale['total_free'];
-        $invoice['totalCharge'] = $sale['total_charge'];
-        $invoice['totalPlasticBagTax'] = $sale['total_plastic_bag_tax'];
-        $invoice['total'] = $sale['total'];
-        $invoice['totalInWord'] = NumberToLetter::StringFormat((int)$sale['total']) . ' ' .$sale['currency_type_code_description'];
-        $invoice['percentageIgv'] = $sale['percentage_igv'];
+        $invoice['customerDocumentNumber'] = $invoiceData['customer_document_number'];
+        $invoice['customerDocumentCode'] = $invoiceData['customer_document_number'];
+        $invoice['customerSocialReason'] = $invoiceData['customer_social_reason'];
+        $invoice['customerFiscalAddress'] = $invoiceData['customer_fiscal_address'];
+        $invoice['digestValue'] = $invoiceData['digestValue'];
+        $invoice['dateOfIssue'] = $invoiceData['date_of_issue'];
+        $invoice['dateOfDue'] = $invoiceData['date_of_due'];
+        $invoice['currencySymbol'] = $invoiceData['currency_type_code_symbol'];
+        $invoice['currencyDescription'] = $invoiceData['currency_type_code_description'];
+        $invoice['totalDiscount'] = $invoiceData['total_discount'];
+        $invoice['totalPrepayment'] = $invoiceData['total_prepayment'];
+        $invoice['totalExonerated'] = $invoiceData['total_exonerated'];
+        $invoice['totalUnaffected'] = $invoiceData['total_unaffected'];
+        $invoice['totalTaxed'] = $invoiceData['total_taxed'];
+        $invoice['totalIsc'] = $invoiceData['total_isc'];
+        $invoice['totalIgv'] = $invoiceData['total_igv'];
+        $invoice['totalFree'] = $invoiceData['total_free'];
+        $invoice['totalCharge'] = $invoiceData['total_charge'];
+        $invoice['totalPlasticBagTax'] = $invoiceData['total_plastic_bag_tax'];
+        $invoice['total'] = $invoiceData['total'];
+        $invoice['totalInWord'] = NumberToLetter::StringFormat((int)$invoiceData['total']) . ' ' .$invoiceData['currency_type_code_description'];
+        $invoice['percentageIgv'] = $invoiceData['percentage_igv'];
 
-        $invoice['perceptionCode'] = $sale['perception_code'];
-        $invoice['perceptionPercentage'] = $sale['perception_percentage'];
-        $invoice['perceptionAmount'] = $sale['perception_amount'];
-        $invoice['perceptionBase'] = $sale['perception_base'];
-        $invoice['totalWithPerception'] = $sale['total_with_perception'];
+        $invoice['perceptionCode'] = $invoiceData['perception_code'];
+        $invoice['perceptionPercentage'] = $invoiceData['perception_percentage'];
+        $invoice['perceptionAmount'] = $invoiceData['perception_amount'];
+        $invoice['perceptionBase'] = $invoiceData['perception_base'];
+        $invoice['totalWithPerception'] = $invoiceData['total_with_perception'];
 
-        $invoice['guide'] = json_decode($sale['guide'],true);
+        $invoice['guide'] = json_decode($invoiceData['guide'],true);
         $invoice['itemList'] = [];
 
         // Detraction
@@ -105,17 +106,17 @@ class BuildInvoice
         $invoice['detractionDeliveryDate'] = '';
 
         // Referral guide
-        $invoice['whitGuide'] = $sale['whit_guide'];
-        $invoice['transferCode'] = $sale['transfer_code'];
-        $invoice['transportCode'] = $sale['transport_code'];
-        $invoice['totalGrossWeight'] = $sale['total_gross_weight'];
-        $invoice['carrierDenomination'] = "{$sale['carrier_document_code']} - {$sale['carrier_document_number']} - {$sale['carrier_denomination']}";
-        $invoice['carrierPlateNumber'] = $sale['carrier_plate_number'];
-        $invoice['driverDenomination'] = "{$sale['driver_document_code']} - {$sale['driver_document_number']} - {$sale['driver_full_name']}";
-        $invoice['locationEndPoint'] = "{$sale['location_arrival_code']} - {$sale['address_arrival_point']}";
-        $invoice['locationStartPoint'] = "{$sale['location_starting_code']} - {$sale['address_starting_point']}";
+        $invoice['whitGuide'] = $invoiceData['whit_guide'];
+        $invoice['transferCode'] = $invoiceData['transfer_code'];
+        $invoice['transportCode'] = $invoiceData['transport_code'];
+        $invoice['totalGrossWeight'] = $invoiceData['total_gross_weight'];
+        $invoice['carrierDenomination'] = "{$invoiceData['carrier_document_code']} - {$invoiceData['carrier_document_number']} - {$invoiceData['carrier_denomination']}";
+        $invoice['carrierPlateNumber'] = $invoiceData['carrier_plate_number'];
+        $invoice['driverDenomination'] = "{$invoiceData['driver_document_code']} - {$invoiceData['driver_document_number']} - {$invoiceData['driver_full_name']}";
+        $invoice['locationEndPoint'] = "{$invoiceData['location_arrival_code']} - {$invoiceData['address_arrival_point']}";
+        $invoice['locationStartPoint'] = "{$invoiceData['location_starting_code']} - {$invoiceData['address_starting_point']}";
 
-        foreach ($detailSale as $row){
+        foreach ($invoiceDetail as $row){
             $item['discount'] = $row['discount'];
             $item['quantity'] = $row['quantity'];
             $item['unitMeasureCode'] = $row['unit_measure'];
@@ -128,22 +129,27 @@ class BuildInvoice
         }
 
         $documentManager = new DocumentManager();
-        $resPdf = $documentManager->Invoice($invoice,$sale['pdf_format'] !== '' ? $sale['pdf_format'] : 'A4',$business['environment']);
+        $resPdf = $documentManager->Invoice($invoice,$invoiceData['pdf_format'] !== '' ? $invoiceData['pdf_format'] : 'A4',$business['environment']);
 
         if ($resPdf->success){
-            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($invoiceData['invoice_id'],[
                 'pdf_url'=> $resPdf->pdfPath
             ]);
         }
         return $resPdf;
     }
 
-    private function GenerateXML(array $documentData, $userReferId) {
-        $business = $documentData['business'];
-        $sale =  $documentData['sale'];
-        $detailSale =  $documentData['detailSale'];
+    public function GenerateXML(array $documentData, $userReferId) {
+        $res = new Result();
+        $res->digestValue = '';
+        $res->xmlPath = '';
+        $res->cdrPath = '';
 
-        $detailSale = array_map(function ($item) use ($sale, $business){
+        $business = $documentData['business'];
+        $invoiceData =  $documentData['invoice'];
+        $invoiceDetail =  $documentData['invoiceDetail'];
+
+        $invoiceDetail = array_map(function ($item) use ($invoiceData, $business){
             $discountBase = $item['total_value'] + $item['discount'];
             $discountPercentage = 0;
             if ($item['discount'] > 0){
@@ -156,12 +162,12 @@ class BuildInvoice
             if ($ac == '20' || $ac == '30' || $ac == '31' || $ac == '32' || $ac == '33' || $ac == '34' || $ac == '35' || $ac == '36'){
                 $percentageIgv = 0;
             } else {
-                $percentageIgv = $sale['percentage_igv'];
+                $percentageIgv = $invoiceData['percentage_igv'];
             }
 
             // Total base igv
             if ($ac == '11' || $ac == '12' || $ac == '13' || $ac == '14' || $ac == '15' || $ac == '16'){
-                $percentageIgvDecimal = $sale['percentage_igv'] / 100;
+                $percentageIgvDecimal = $invoiceData['percentage_igv'] / 100;
                 $item['total_base_igv'] = $item['total_value'] / (1 + $percentageIgvDecimal);
                 $item['igv'] = $item['total_base_igv'] * $percentageIgvDecimal;
                 $item['total'] = $item['igv'] + $item['total_value'];
@@ -183,68 +189,87 @@ class BuildInvoice
                     'total_taxed' => $item['total_taxed'],
                 ]
             );
-        },$detailSale);
+        }, $invoiceDetail);
 
         // recalculate total
-        $sale['total_discount_base'] = 0;
-        $sale['total_discount_percentage'] = 0;
-        if($sale['total_discount'] > 0){
-//            $sale['total_discount_base'] = $sale['total_value'] + $sale['total_discount'];
-            $sale['total_discount_base'] = $sale['total_value'];
-            $sale['total_discount_percentage'] = ($sale['total_discount'] * 100 ) / ($sale['total_value'] + $sale['total_discount']);
+        $invoiceData['total_discount_base'] = 0;
+        $invoiceData['total_discount_percentage'] = 0;
+        if($invoiceData['total_discount'] > 0){
+//            $invoiceData['total_discount_base'] = $invoiceData['total_value'] + $invoiceData['total_discount'];
+            $invoiceData['total_discount_base'] = $invoiceData['total_value'];
+            $invoiceData['total_discount_percentage'] = ($invoiceData['total_discount'] * 100 ) / ($invoiceData['total_value'] + $invoiceData['total_discount']);
         }
-        $sale['guide'] = json_decode($sale['guide'],true);
-        $sale['legend'] = json_decode($sale['legend'],true);
-        $sale['related'] = json_decode($sale['related'],true);
+        $invoiceData['guide'] = json_decode($invoiceData['guide'],true);
+        $invoiceData['legend'] = json_decode($invoiceData['legend'],true);
+        $invoiceData['related'] = json_decode($invoiceData['related'],true);
 
         // Prepare Invoice
-        $invoice['serie'] = $sale['serie'];
-        $invoice['number'] = $sale['number'];
-        $invoice['issueDate'] = $sale['date_of_issue'];
-        $invoice['issueTime'] = $sale['time_of_issue'];
-        $invoice['invoiceTypeCode'] = $sale['document_code'];
-        $invoice['amounInWord'] = NumberToLetter::StringFormat((int)$sale['total']) . ' ' .$sale['currency_type_code_description'];
+        $invoice['serie'] = $invoiceData['serie'];
+        $invoice['number'] = $invoiceData['number'];
+        $invoice['issueDate'] = $invoiceData['date_of_issue'];
+        $invoice['issueTime'] = $invoiceData['time_of_issue'];
+        $invoice['invoiceTypeCode'] = $invoiceData['document_code'];
+        $invoice['amounInWord'] = NumberToLetter::StringFormat((int)$invoiceData['total']) . ' ' .$invoiceData['currency_type_code_description'];
         $invoice['supplierRuc'] = $business['ruc'];
         $invoice['defaultUrl'] = 'WWW.SKYFACT.COM';
         $invoice['supplierName'] = htmlspecialchars($business['social_reason']);
         $invoice['supplierDocumentType'] = '6';					// TIPO DE DOCUMENTO EMISOR
-        $invoice['customerDocumentType'] = $sale['customer_identity_document_code'];					// TIPO DE DOCUMENTO CLIENTE
-        $invoice['customerDocument'] = $sale['customer_document_number'];			// DOCUMENTO DEL CLIENTE
-        $invoice['customerName'] = htmlspecialchars($sale['customer_social_reason']);
-        $invoice['totalTaxAmount'] = RoundCurrency($sale['total_tax']);					// TOTAL DE IMPUESTOS
-        $invoice['totalBaseAmount'] = RoundCurrency($sale['total_value']);					// VALOR TOTAL DE LA VENTA
-        $invoice['totalSaleAmount'] = RoundCurrency($sale['total']);					// VALOR TOTAL DE LA VENTA + IMPUESTOS
-        $invoice['totalDiscountAmount'] = RoundCurrency($sale['total_discount']);				// VALOR TOTAL DE LOS DESCUENTOS
-        $invoice['totalExtraChargeAmount'] = RoundCurrency($sale['total_charge']);			// VALOR TOTAL DE LOS CARGOS EXTRA
-        $invoice['totalPrepaidAmount'] = RoundCurrency($sale['total_prepayment']);				// VALOR TOTAL DE LOS MONTOS PAGADOS COMO ADELANTO
-        $invoice['totalPayableAmount'] = RoundCurrency($sale['total']);				// MONTO TOTAL QUE SE COBRA
+        $invoice['customerDocumentType'] = $invoiceData['customer_identity_document_code'];					// TIPO DE DOCUMENTO CLIENTE
+        $invoice['customerDocument'] = $invoiceData['customer_document_number'];			// DOCUMENTO DEL CLIENTE
+        $invoice['customerName'] = htmlspecialchars($invoiceData['customer_social_reason']);
+        $invoice['totalTaxAmount'] = RoundCurrency($invoiceData['total_tax']);					// TOTAL DE IMPUESTOS
+        $invoice['totalBaseAmount'] = RoundCurrency($invoiceData['total_value']);					// VALOR TOTAL DE LA VENTA
+        $invoice['totalSaleAmount'] = RoundCurrency($invoiceData['total']);					// VALOR TOTAL DE LA VENTA + IMPUESTOS
+        $invoice['totalDiscountAmount'] = RoundCurrency($invoiceData['total_discount']);				// VALOR TOTAL DE LOS DESCUENTOS
+        $invoice['totalExtraChargeAmount'] = RoundCurrency($invoiceData['total_charge']);			// VALOR TOTAL DE LOS CARGOS EXTRA
+        $invoice['totalPrepaidAmount'] = RoundCurrency($invoiceData['total_prepayment']);				// VALOR TOTAL DE LOS MONTOS PAGADOS COMO ADELANTO
+        $invoice['totalPayableAmount'] = RoundCurrency($invoiceData['total']);				// MONTO TOTAL QUE SE COBRA
 
-        $invoice['totalIgvAmount'] = RoundCurrency($sale['total_igv']);					// VALOR TOTAL DEL IGV
-        $invoice['totalIgvTaxableAmount'] = RoundCurrency($sale['total_taxed']);			// VALOR TOTAL DE LA VENTA GRABADA
-        $invoice['totalIscAmount'] = RoundCurrency($sale['total_isc']);				// VALOR TOTAL DEL ISC
+        $invoice['totalIgvAmount'] = RoundCurrency($invoiceData['total_igv']);					// VALOR TOTAL DEL IGV
+        $invoice['totalIgvTaxableAmount'] = RoundCurrency($invoiceData['total_taxed']);			// VALOR TOTAL DE LA VENTA GRABADA
+        $invoice['totalIscAmount'] = RoundCurrency($invoiceData['total_isc']);				// VALOR TOTAL DEL ISC
         $invoice['totalIscTaxableAmount'] = '0.00';				// VALOR TOTAL AL CUAL SE APLICA EL ISC.
-        $invoice['totalFreeAmount'] = RoundCurrency($sale['total_free']);				// VALOR TOTAL INAFECTO A INPUESTOS
-        $invoice['totalExoneratedAmount'] = RoundCurrency($sale['total_exonerated']);				// VALOR TOTAL INAFECTO A INPUESTOS
-        $invoice['totalInafectedAmount'] = RoundCurrency($sale['total_unaffected']);				// VALOR TOTAL INAFECTO A INPUESTOS
-        $invoice['totalOtherTaxAmount'] = RoundCurrency($sale['total_other_taxed']);				// VALOR TOTAL DE otros impuestos
-        $invoice['totalOtherTaxableAmount'] = RoundCurrency($sale['total_base_other_taxed']);				// VALOR TOTAL AL CUAL SE APLICA otros impuestos.
+        $invoice['totalFreeAmount'] = RoundCurrency($invoiceData['total_free']);				// VALOR TOTAL INAFECTO A INPUESTOS
+        $invoice['totalExoneratedAmount'] = RoundCurrency($invoiceData['total_exonerated']);				// VALOR TOTAL INAFECTO A INPUESTOS
+        $invoice['totalInafectedAmount'] = RoundCurrency($invoiceData['total_unaffected']);				// VALOR TOTAL INAFECTO A INPUESTOS
+        $invoice['totalOtherTaxAmount'] = RoundCurrency($invoiceData['total_other_taxed']);				// VALOR TOTAL DE otros impuestos
+        $invoice['totalOtherTaxableAmount'] = RoundCurrency($invoiceData['total_base_other_taxed']);				// VALOR TOTAL AL CUAL SE APLICA otros impuestos.
 
-        $invoice['totalBagTaxAmount'] = RoundCurrency($sale['total_plastic_bag_tax']);	// total			    // VALOR TOTAL del impuesto a las bolsas
-        $invoice['bagTaxAmountPerUnit'] = RoundCurrency($sale['percentage_plastic_bag_tax']); // percentage				// VALOR TOTAL del impuesto a las bolsas
-        $invoice['operationTypeCode'] = $sale['operation_code'];				// Codigo del tipo de operacion (Venta interna : 0101 - Exportacion : 0102  Catalogo 25)
+        $invoice['totalBagTaxAmount'] = RoundCurrency($invoiceData['total_plastic_bag_tax']);	// total			    // VALOR TOTAL del impuesto a las bolsas
+        $invoice['bagTaxAmountPerUnit'] = RoundCurrency($invoiceData['percentage_plastic_bag_tax']); // percentage				// VALOR TOTAL del impuesto a las bolsas
+        $invoice['operationTypeCode'] = $invoiceData['operation_code'];				// Codigo del tipo de operacion (Venta interna : 0101 - Exportacion : 0102  Catalogo 25)
 //        $invoice['operationTypeCode'] = '0401';				// Codigo del tipo de operacion (Venta interna : 0101 - Exportacion : 0102  Catalogo 25)
 
-        $invoice['globalDiscountPercent'] = RoundCurrency($sale['total_discount_percentage'] / 100,5);				// DESCUENTO EN PORCENTAJE
+        $invoice['globalDiscountPercent'] = RoundCurrency($invoiceData['total_discount_percentage'] / 100,5);				// DESCUENTO EN PORCENTAJE
         $invoice['bagTaxAmount'] = '1.00';							// CODIGO DE LA MONEDA
-        $invoice['globalDiscountAmount'] = RoundCurrency($sale['total_discount']);				// VALOR TOTAL DE LOS DESCUENTOS                            // ---------------- Cambiar la variable  -- total_discount_base
-        $invoice['codigoMoneda'] = $sale['currency_code'];							// CODIGO DE LA MONEDA
+        $invoice['globalDiscountAmount'] = RoundCurrency($invoiceData['total_discount']);				// VALOR TOTAL DE LOS DESCUENTOS                            // ---------------- Cambiar la variable  -- total_discount_base
+        $invoice['codigoMoneda'] = $invoiceData['currency_code'];							// CODIGO DE LA MONEDA
         $invoice['amazoniaGoods'] = 0;							// BIENES EN LA AMAZONIA
         $invoice['amazoniaService'] = 0;						// SERVICIOS EN LA AMAZONIA
-        $invoice['orderReference'] = $sale['purchase_order'];							// Referencia de la orden de compra o servicio
+        $invoice['orderReference'] = $invoiceData['purchase_order'];							// Referencia de la orden de compra o servicio
+
+        // CREDIT AND DEBIT
+        $invoice['invoiceReferenceList'] = array();
+        if($invoiceData['document_code'] == '07' || $invoiceData['document_code'] == '08'){
+          if ($invoiceData['document_code'] === '07'){
+            $invoice['creditNoteTypeCode'] = $invoiceData['credit_debit_reason_code'];
+            $invoice['creditNoteTypeDescription'] = $invoiceData['credit_debit_reason_description'];
+          }
+          if ($invoiceData['document_code'] === '08'){
+            $invoice['debitNoteTypeCode'] = $invoiceData['credit_debit_reason_code'];
+            $invoice['debitNoteTypeDescription'] = htmlspecialchars($invoiceData['credit_debit_reason_description']);
+          }
+
+          $referencedInvoice = array();
+          $referencedInvoice['billingReferenceSerie'] = $invoiceData['update_serie'];
+          $referencedInvoice['billingReferenceNumber'] = $invoiceData['update_number'];
+          $referencedInvoice['billingReferenceTypeCode'] = $invoiceData['update_document_code'];
+          array_push($invoice['invoiceReferenceList'], $referencedInvoice);
+        }
 
         //REFERENCIA A GUIAS DE REMISION
         $invoice['referenceDocumentList'] = array();
-//        foreach ($sale['guide'] as $row){
+//        foreach ($invoiceData['guide'] as $row){
 //            $referencedDocument = array();
 //            $referencedDocument['referencedDocument'] = $row['serie'];							// SERIE Y NUMERO DEL DOCUMENTO
 //            $referencedDocument['referencedDocumentTypeCode'] = $row['document_code'];						// TIPO DOCUMENTO CAT 01
@@ -253,14 +278,14 @@ class BuildInvoice
         $invoice['itemList'] = array();
 
         //PERCEPCION
-        $invoice['totalAmountWithPerception'] = $sale['total_with_perception'];						// MONTO TOTAL DE LA VENTA MAS LA PERCEPCION
-        $invoice['perceptionTypeCode'] = $sale['perception_code'];								// CODIGO DEL TIPO DE PERCEPCION CAT 53
-        $invoice['perceptionPercent'] = $sale['perception_percentage'];								// MONTO TOTAL DE LA VENTA MAS LA PERCEPCION
-        $invoice['perceptionAmount'] = $sale['perception_amount'];									// MONTO DE LA PERCEPCION
-        $invoice['perceptionTaxableAmount'] = $sale['perception_base'];						// MONTO SOBRE EL CUAL SE CALCULA LA PERCEPCION
+        $invoice['totalAmountWithPerception'] = $invoiceData['total_with_perception'];						// MONTO TOTAL DE LA VENTA MAS LA PERCEPCION
+        $invoice['perceptionTypeCode'] = $invoiceData['perception_code'];								// CODIGO DEL TIPO DE PERCEPCION CAT 53
+        $invoice['perceptionPercent'] = $invoiceData['perception_percentage'];								// MONTO TOTAL DE LA VENTA MAS LA PERCEPCION
+        $invoice['perceptionAmount'] = $invoiceData['perception_amount'];									// MONTO DE LA PERCEPCION
+        $invoice['perceptionTaxableAmount'] = $invoiceData['perception_base'];						// MONTO SOBRE EL CUAL SE CALCULA LA PERCEPCION
 
         //DETRACCION
-//        $invoice['detractionAccount'] = $sale['detraction_bill'];						        // CODIGO DEL TIPO DE PERCEPCION CAT 53
+//        $invoice['detractionAccount'] = $invoiceData['detraction_bill'];						        // CODIGO DEL TIPO DE PERCEPCION CAT 53
         $invoice['detractionAccount'] = $business['detraction_bank_account'];						        // CODIGO DEL TIPO DE PERCEPCION CAT 53
         $invoice['detractionTypeCode'] = '';								// CODIGO DEL TIPO DE PERCEPCION CAT 53
         $invoice['detractionPercent'] = '';								// MONTO TOTAL DE LA VENTA MAS LA PERCEPCION
@@ -279,7 +304,7 @@ class BuildInvoice
 
         //REGULACION PAGOS POR ADELANTADO				REGLA:		totalPrepaidAmount = sumatoria items prepaidPaymentList
         $invoice['prepaidPaymentList'] = array();
-        foreach ($detailSale as $row){
+        foreach ($invoiceDetail as $row){
 //            if ($row['prepayment_regulation']){
 //                $item = array();
 //                $item['documentSerieNumber'] = $row['prepayment_serie'] . '-' . $row['prepayment_correlative'];				// serie y numero del documento del anticipo
@@ -290,35 +315,35 @@ class BuildInvoice
         }
 
         //FACTURA - GUIA 								REGLA: referalGuideIncluded = 1
-        $invoice['referalGuideIncluded'] = $sale['transfer_code'] == '' ? 0 : 1;
-        $invoice['transferReasonCode'] = $sale['transfer_code'];						// CODIGO DEL Motivo de Traslado CAT 20
+        $invoice['referalGuideIncluded'] = $invoiceData['transfer_code'] == '' ? 0 : 1;
+        $invoice['transferReasonCode'] = $invoiceData['transfer_code'];						// CODIGO DEL Motivo de Traslado CAT 20
         $invoice['grossWeightMeasure'] = 'KGM';						// UNIDAD DE MEDIDA DEL PESO TOTAL DEL ENVIO CAT 03(KGM = Kilogramo)
-        $invoice['grossWeight'] = $sale['total_gross_weight'];							// PESO
-        $invoice['transferMethodCode'] = $sale['transport_code'];						// CODIGO DEL METODO DE TRANSPORTE CAT 18
-        $invoice['carrierDocumentType'] = $sale['carrier_document_code'];						// TIPO DE DOCUMENTO DEL TRANSPORTISTA
-        $invoice['carrierRuc'] = $sale['carrier_document_number'];						// NUMERO DE DOCUMENTO DEL TRANSPORTISTA
-        $invoice['carrierName'] = htmlspecialchars($sale['carrier_denomination']);					// NOMBRE DEL TRANSPORTISTA
-        $invoice['licensePlate'] = $sale['carrier_plate_number'];						// PLACA DEL VEHICULO
-        $invoice['driverDocumentType'] = $sale['driver_document_code'];						// TIPO DE DOCUMENTO DEL CONDUCTOR
-        $invoice['driverDocument'] = $sale['driver_document_number'];						// NUMERO DE DOCUMENTO DEL CONDUCTOR
+        $invoice['grossWeight'] = $invoiceData['total_gross_weight'];							// PESO
+        $invoice['transferMethodCode'] = $invoiceData['transport_code'];						// CODIGO DEL METODO DE TRANSPORTE CAT 18
+        $invoice['carrierDocumentType'] = $invoiceData['carrier_document_code'];						// TIPO DE DOCUMENTO DEL TRANSPORTISTA
+        $invoice['carrierRuc'] = $invoiceData['carrier_document_number'];						// NUMERO DE DOCUMENTO DEL TRANSPORTISTA
+        $invoice['carrierName'] = htmlspecialchars($invoiceData['carrier_denomination']);					// NOMBRE DEL TRANSPORTISTA
+        $invoice['licensePlate'] = $invoiceData['carrier_plate_number'];						// PLACA DEL VEHICULO
+        $invoice['driverDocumentType'] = $invoiceData['driver_document_code'];						// TIPO DE DOCUMENTO DEL CONDUCTOR
+        $invoice['driverDocument'] = $invoiceData['driver_document_number'];						// NUMERO DE DOCUMENTO DEL CONDUCTOR
 
         //FACTURA - EMISOR ITINERANTE
-        $invoice['itinerantSuplier'] = $sale['itinerant_enable'];							// 1/0 VENDEODR ITINERANTO = 1
-        $invoice['itinerantAddressCode'] = $sale['itinerant_location'];							// VENTA ITINERANTE - UBIGEO
-        $invoice['itinerantAddress'] = $sale['itinerant_address'];							// VENTA ITINERANTE - DIRECCION
-        $invoice['itinerantUrbanization'] = $sale['itinerant_urbanization'];							//VENTA ITINERANTE - URBANIZACION
-        $invoice['itinerantProvince'] = $sale['itinerant_province'];							// VENTA ITINERANTE - PROVINCIA
-        $invoice['itinerantRegion'] = $sale['itinerant_department'];							// VENTA ITINERANTE - REGION O DEPARTAMENTO
-        $invoice['itinerantDistrict'] = $sale['itinerant_district'];							// VENTA ITINERANTE - DISTRITO
+        $invoice['itinerantSuplier'] = $invoiceData['itinerant_enable'];							// 1/0 VENDEODR ITINERANTO = 1
+        $invoice['itinerantAddressCode'] = $invoiceData['itinerant_location'];							// VENTA ITINERANTE - UBIGEO
+        $invoice['itinerantAddress'] = $invoiceData['itinerant_address'];							// VENTA ITINERANTE - DIRECCION
+        $invoice['itinerantUrbanization'] = $invoiceData['itinerant_urbanization'];							//VENTA ITINERANTE - URBANIZACION
+        $invoice['itinerantProvince'] = $invoiceData['itinerant_province'];							// VENTA ITINERANTE - PROVINCIA
+        $invoice['itinerantRegion'] = $invoiceData['itinerant_department'];							// VENTA ITINERANTE - REGION O DEPARTAMENTO
+        $invoice['itinerantDistrict'] = $invoiceData['itinerant_district'];							// VENTA ITINERANTE - DISTRITO
 
-//        if (!$sale['whit_detraction']){
-//            $invoice['deliveryAdressCode'] = $sale['location_arrival_code'];					// UBIGEO DE DESTINO
-//            $invoice['deliveryAdress'] = $sale['address_arrival_point'];						// DIRECCION DESTINO
-//            $invoice['originAdressCode'] = $sale['location_starting_code'];						// UBIGEO DE ORIGEN
-//            $invoice['originAdress'] = $sale['address_starting_point'];							// DIRECCION ORIGEN
+//        if (!$invoiceData['whit_detraction']){
+//            $invoice['deliveryAdressCode'] = $invoiceData['location_arrival_code'];					// UBIGEO DE DESTINO
+//            $invoice['deliveryAdress'] = $invoiceData['address_arrival_point'];						// DIRECCION DESTINO
+//            $invoice['originAdressCode'] = $invoiceData['location_starting_code'];						// UBIGEO DE ORIGEN
+//            $invoice['originAdress'] = $invoiceData['address_starting_point'];							// DIRECCION ORIGEN
 //        }
 
-        foreach ($detailSale as $row){
+        foreach ($invoiceDetail as $row){
             if (true){
                 $item = array();
                 $item['itemUnitCode'] = $row['unit_measure'];			            // CODIGO UNIDAD
@@ -350,17 +375,17 @@ class BuildInvoice
                 $item['itemIscTaxPercent'] = RoundCurrency($row['tax_isc']);							        // CANTIDAD DE BOLSAS PARA EL ITEM
                 $item['itemIscSystemType'] = $row['system_isc_code'];							// CATALOGO 08 sistema de calculo del Isc
 
-//                if ($sale['whit_detraction']){
+//                if ($invoiceData['whit_detraction']){
 //                    //DETRACCION - HIDROBIOLOGICO
-//                    $item['transportReferencialAmount'] = $sale['detraction_referral_value'];						// Valor referencial del servicio de transporte
-//                    $item['effectiveLoadReferencialAmount'] = $sale['detraction_effective_load'];					// Valor referencial sobre la carga efectiva
-//                    $item['payLoadReferencialAmount'] = $sale['detraction_useful_load'];						// Valor referencial sobre la carga útil nominal
+//                    $item['transportReferencialAmount'] = $invoiceData['detraction_referral_value'];						// Valor referencial del servicio de transporte
+//                    $item['effectiveLoadReferencialAmount'] = $invoiceData['detraction_effective_load'];					// Valor referencial sobre la carga efectiva
+//                    $item['payLoadReferencialAmount'] = $invoiceData['detraction_useful_load'];						// Valor referencial sobre la carga útil nominal
 //
 //                    //DETRACCION - TRANSPORTE DE CARGA
-//                    $item['speciesKind'] = $sale['detraction_species_kind'];								// tipo de ESPECIE
-//                    $item['deliveryAddress'] = $sale['detraction_delivery_address'];			// DIRECCION ENTREGA
-//                    $item['deliveryDate'] = $sale['detraction_delivery_date'];						// FECHA ENTREGA
-//                    $item['quantity'] = $sale['detraction_quantity'];
+//                    $item['speciesKind'] = $invoiceData['detraction_species_kind'];								// tipo de ESPECIE
+//                    $item['deliveryAddress'] = $invoiceData['detraction_delivery_address'];			// DIRECCION ENTREGA
+//                    $item['deliveryDate'] = $invoiceData['detraction_delivery_date'];						// FECHA ENTREGA
+//                    $item['quantity'] = $invoiceData['detraction_quantity'];
 //                } else {
                     //DETRACCION - HIDROBIOLOGICO
                     $item['transportReferencialAmount'] = 0;						// Valor referencial del servicio de transporte
@@ -378,24 +403,36 @@ class BuildInvoice
             }
         }
 
-        $billingManager = new BillingManager($this->connection);
-        $directoryXmlPath = '/assets/files/xml/' . date('Ym') . '/' . $business['ruc'] . '/';
-        $fileName = $business['ruc'] . '-' . $sale['document_code'] . '-' . $sale['serie'] . '-' . $sale['number'] . '.xml';
+        $billingManager = new BillingManager($this->connection,$business['environment'] == '1');
+        switch ($invoiceData['document_code']) {
+            case '01':
+                $resInvoice = $billingManager->SendInvoice($invoiceData['invoice_id'], $invoice, $userReferId, true);
+                break;
+            case '03':
+                $resInvoice = $billingManager->SendInvoice($invoiceData['invoice_id'], $invoice, $userReferId, false);
+                break;
+            case '07':
+                $resInvoice = $billingManager->SendCreditNote($invoiceData['invoice_id'], $invoice, $userReferId, $invoiceData['update_document_code'] == '01');
+                break;
+            case '08':
+                $resInvoice = $billingManager->SendDebitNote($invoiceData['invoice_id'], $invoice, $userReferId, $invoiceData['update_document_code'] == '01');
+                break;
+            default:
+                throw new Exception('Wrong invoice Type!');
+                break;
+        }
 
-        $res = new Result();
-        $res->digestValue = '';
-
-//        if ($sale['document_code'] === '01'){
-        $resInvoice = $billingManager->SendInvoice($sale['invoice_id'], $invoice,$userReferId);
+        // Generate
         if ($resInvoice->success){
-            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
-                'xml_url' => $directoryXmlPath . $fileName,
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($invoiceData['invoice_id'],[
+                'xml_url' => $resInvoice->xmlPath,
                 'invoice_state_id' => 2,
             ]);
             $res->digestValue = $resInvoice->digestValue;
+            $res->xmlPath = $resInvoice->xmlPath;
             $res->success = true;
         }else{
-            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
+            $this->invoiceModel->updateInvoiceSunatByInvoiceId($invoiceData['invoice_id'],[
                 'other_message' => $resInvoice->errorMessage,
             ]);
             $res->message .= $resInvoice->errorMessage;
@@ -403,58 +440,73 @@ class BuildInvoice
             return $res;
         }
 
-        if ($resInvoice->sunatComunicationSuccess){
-            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
-                'response_message' => $resInvoice->sunatDescription,
-                'response_code' => $resInvoice->sunatResponseCode,
-                'other_message' => '',
-            ]);
-            $res->success = true;
-        } else {
-            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
-                'response_message' => $resInvoice->sunatCommuniationError,
-            ]);
-            $res->message .= $resInvoice->sunatCommuniationError;
-            $res->success = false;
-            return $res;
-        }
+        // Send
+        if($resInvoice->send === true){
+          if ($resInvoice->sunatComunicationSuccess){
+              $this->invoiceModel->updateInvoiceSunatByInvoiceId($invoiceData['invoice_id'],[
+                  'response_message' => $resInvoice->sunatDescription,
+                  'response_code' => $resInvoice->sunatResponseCode,
+                  'other_message' => '',
+                  'send' => true,
+              ]);
+              $res->success = true;
+          } else {
+              $this->invoiceModel->updateInvoiceSunatByInvoiceId($invoiceData['invoice_id'],[
+                  'response_message' => $resInvoice->sunatCommuniationMessage,
+                  'send' => true,
+              ]);
+              $res->message .= $resInvoice->sunatCommuniationMessage;
+              $res->success = false;
+              return $res;
+          }
 
-        if ($resInvoice->readerSuccess){
-            $this->invoiceModel->updateInvoiceSunatByInvoiceId($sale['invoice_id'],[
-                'cdr_url' => $directoryXmlPath . 'R-' . $fileName,
-                'invoice_state_id' => 3,
-            ]);
-            $res->success = true;
-        } else {
-            $res->message .= $resInvoice->readerError;
-            $res->success = false;
+          // Reader
+          if ($resInvoice->readerSuccess){
+              $this->invoiceModel->updateInvoiceSunatByInvoiceId($invoiceData['invoice_id'],[
+                  'cdr_url' => $resInvoice->cdrPath,
+                  'invoice_state_id' => 3,
+              ]);
+              $res->cdrPath = $resInvoice->cdrPath;
+              $res->success = true;
+          } else {
+              $res->message .= $resInvoice->readerMessage;
+              $res->success = false;
+          }
         }
-//        }elseif ($sale['document_code'] === '03'){
-//            $resInvoice = $billingManager->SaveTicketInvoice($sale['invoice_id'], $invoice, $userReferId);
-//
-//            if ($resInvoice->success){
-//                $this->saleModel->UpdateInvoiceSunatByInvoiceId($sale['invoice_id'],[
-//                    'xml_url' => $directoryXmlPath . $fileName,
-//                    'invoice_state_id' => 2,
-//                ]);
-//                $res->digestValue = $resInvoice->digestValue;
-//                $res->success = true;
-//            }else{
-//                $res->errorMessage .= $resInvoice->errorMessage;
-//                $res->success = false;
-//            }
-//        }
 
         return $res;
     }
 
-    public function BuildDocument($invoiceId, $userReferId){
+    public function SendEmail($to, array $invoice, array $business){
+        return EmailManager::sendInvoice(
+          $to,
+          "{$invoice['document_type_code_description']} {$invoice['serie']}-{$invoice['number']} | {$invoice['customer_social_reason']}",
+          APP_EMAIL,
+          $business['commercial_reason'],
+          [
+            'documentDescription' => $invoice['document_type_code_description'],
+            'serie' => $invoice['serie'],
+            'number' => $invoice['number'],
+            'socialReason' => $invoice['customer_social_reason'],
+            'dateOfIssue' => $invoice['date_of_issue'],
+            'dateOfDue' => $invoice['date_of_due'],
+            'total' => "{$invoice['currency_type_code_symbol']} {$invoice['total']}",
+            'documentUrl' => HOST . URL_PATH .  "/query?ruc=sss&serie={$invoice['serie']}&number={$invoice['number']}",
+          ],
+          [
+            ROOT_DIR . $invoice['pdf_url'],
+            ROOT_DIR . $invoice['xml_url'],
+            ROOT_DIR . $invoice['cdr_url'],
+          ]
+        );
+    }
+
+    public function BuildDocument($invoiceId, $userReferId, $sendEmail = false){
         $res = new Result();
-        $links =[];
         try{
             $business = $this->businessModel->getByUserId($userReferId);
             $invoice = $this->invoiceModel->getAllDataById($invoiceId);
-            $detailSale = $this->invoiceItemModel->byInvoiceIdXML($invoiceId);
+            $invoiceDetail = $this->invoiceItemModel->byInvoiceIdXML($invoiceId);
 
             $perceptionTypeCodeModel = new CatPerceptionTypeCode($this->connection);
             $perceptionTypeCode = $perceptionTypeCodeModel->getAll();
@@ -498,11 +550,11 @@ class BuildInvoice
 
             // XML
             $documentData = [
-                'sale' => $invoice,
-                'detailSale' => $detailSale,
+                'invoice' => $invoice,
+                'invoiceDetail' => $invoiceDetail,
                 'business' => $business,
             ];
-            $resXml = $this->GenerateXML($documentData,$userReferId);
+            $resXml = $this->GenerateXML($documentData, $userReferId);
             $res->message = $resXml->message;
             $res->success = $resXml->success;
             if (!$resXml->success){
@@ -510,25 +562,35 @@ class BuildInvoice
                     'other_message' =>  $resXml->message,
                 ]);
             }
-            $links['xmlPath'] = '';
-            $links['cdrPath'] = '';
+            $res->result = [
+              'xml_url' => $resXml->xmlPath,
+              'cdr_url' => $resXml->cdrPath,
+            ];
 
             // PDF
-            $documentData['sale']['digestValue'] = '';
+            $documentData['invoice']['digestValue'] = '';
             if ($resXml->success){
-                $documentData['sale']['digestValue'] = $resXml->digestValue;
+                $documentData['invoice']['digestValue'] = $resXml->digestValue;
             }
             $resPdf = $this->GeneratePdf($documentData);
             if (!$resPdf->success){
                 throw new Exception($resPdf->errorMessage);
             }
-            $links['pdfPath'] = $resPdf->pdfPath;
+            $res->result['pdf_url'] = $resPdf->pdfPath;
 
             // Email
-
-
-            $res->result = $links;
-        }catch (Exception $e){
+            if($sendEmail === true && $invoice['customer_email'] != ''){
+              $invoice['pdf_url'] = $resPdf->pdfPath;
+              $invoice['xml_url'] = $resXml->xmlPath;
+              $invoice['cdr_url'] = $resXml->cdrPath;
+              $resMail = $this->SendEmail($invoice['customer_email'],$invoice,$business);
+              if($resMail->success){
+                $this->invoiceModel->updateInvoiceCustomerByInvoiceId($invoiceId,[
+                  'email_sent'=>$resMail,
+                ]);
+              }
+            }
+        } catch (Exception $e){
             $res->errorMessage = $e->getMessage();
             $res->success = false;
         }

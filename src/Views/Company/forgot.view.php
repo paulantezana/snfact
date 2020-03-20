@@ -5,7 +5,7 @@
         <div class="SnForm-item required">
             <label for="email" class="SnForm-label">Email</label>
             <div class="SnControl-wrapper">
-                <i class="icon-envelop2 SnControl-prefix"></i>
+                <i class="fas fa-envelope SnControl-prefix"></i>
                 <input type="email" class="SnForm-control SnControl" required id="email" name="email" placeholder="Email">
             </div>
         </div>

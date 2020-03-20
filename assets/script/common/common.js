@@ -1,11 +1,10 @@
 const Service = {
     path: '/snfact',
-    apiPath: '/snfact',
 };
 
 class RequestApi {
     static setHeaders(options) {
-        if (options.method === 'POST' || options.method === 'PUT' || options.method === 'DELETE') {
+        if (options.method === 'POST' || options.method === 'PUT' || options.method === 'DELETE' || options.method === 'GET') {
             if (!(options.body instanceof FormData)) {
                 if (options.contentType === 'formData') {
                     let formData = new FormData();
@@ -32,13 +31,17 @@ class RequestApi {
         return options;
     };
 
-    static fetch(path, options) {
+    static fetch(path, options, responseType = 'json') {
         NProgress.start();
         const newOptions = RequestApi.setHeaders({ ...options }); // format
 
         return fetch(Service.path + path, newOptions)
             .then(response => {
-                return response.json(); // Return response
+                if (responseType === 'json'){
+                  return response.json();
+                } else {
+                  return response.text();
+                }
             }).catch(err => {
                 console.warn(err);
                 return err;

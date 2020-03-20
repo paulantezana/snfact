@@ -25,6 +25,7 @@ define('SESS_CURRENT_LOCAL','SnCurrentLocal');
 define('APP_NAME','SnFact');
 define('APP_AUTHOR','SnFact');
 define('APP_DESCRIPTION','SnFact');
+define('APP_EMAIL','contacto@paulantezana.com');
 
 define('FILE_PATH','/files');
 

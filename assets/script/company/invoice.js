@@ -1,11 +1,11 @@
-function invoiceList(page = 1, limit = 10, search = '', filter){
+function invoiceList(page = 1, limit = 10, filter = {}){
     let productTable = document.getElementById('invoiceTable');
     if(productTable){
         SnFreeze.freeze({selector: '#invoiceTable'});
-        RequestApi.fetchText(`/invoice/table?limit=${limit}&page=${page}&search=${search}`,{
+        RequestApi.fetch('/invoice/table',{
             method: 'POST',
-            body: { filter }
-        }).then(res => {
+            body: { filter, limit, page }
+        },'text').then(res => {
             productTable.innerHTML = res;
         }).finally(e =>{
             SnDropdown();
@@ -17,12 +17,14 @@ function invoiceList(page = 1, limit = 10, search = '', filter){
 function invoiceFilter(){
     let filterStartDate = document.getElementById('filterStartDate');
     let filterEndDate = document.getElementById('filterEndDate');
-    let filterCustomerId = document.getElementById('filterCustomerId');
-    if (filterStartDate && filterEndDate && filterCustomerId){
-        invoiceList(1,10,'',{
+    let filterInvoiceId = document.getElementById('filterInvoiceId');
+    let filterDocumentCode = document.getElementById('filterDocumentCode');
+    if (filterStartDate && filterEndDate && filterInvoiceId && filterDocumentCode){
+        invoiceList(1,10,{
             startDate: filterStartDate.value,
             endDate: filterEndDate.value,
-            customerId: filterCustomerId.value,
+            invoiceId: filterInvoiceId.value,
+            documentCode: filterDocumentCode.value,
         });
     }
 }
@@ -53,31 +55,6 @@ function invoiceResend(invoiceId){
     })
 }
 
-function invoiceSendEmail(){
-    event.preventDefault();
-    let sendInvoiceId = document.getElementById('sendInvoiceId');
-    let sendInvoiceCustomerEmail = document.getElementById('sendInvoiceCustomerEmail');
-    console.log(sendInvoiceCustomerEmail);
-    if (sendInvoiceId && sendInvoiceCustomerEmail){
-        RequestApi.fetch(`/invoice/sendEmail`,{
-            method: 'POST',
-            body: {
-                invoiceId: sendInvoiceId.value,
-                invoiceCustomerEmail: sendInvoiceCustomerEmail.value,
-            }
-        }).then(res => {
-            if (res.success){
-                SnModal.close('invoiceModalSendEmail');
-                SnMessage.success({ content: res.message });
-            } else {
-                SnModal.error({ title: 'Algo salió mal', content: res.message })
-            }
-        }).finally(e =>{
-            // SnFreeze.unFreeze('#invoiceTable');
-        })
-    }
-}
-
 function invoiceValidateDocument(invoiceId){
   console.log(invoiceId);
 }
@@ -85,24 +62,28 @@ function invoiceValidateDocument(invoiceId){
 document.addEventListener('DOMContentLoaded',()=>{
     invoiceList();
 
-    let filterStartDate = document.getElementById('filterStartDate');
-    if (filterStartDate){
-        filterStartDate.addEventListener('input',()=>{
-            invoiceFilter();
-        });
+    new SlimSelect({
+    select: '#filterInvoiceId',
+    searchingText: 'Buscando...',
+    // addToBody: true,
+    ajax: function (search, callback) {
+      if (search.length < 2) {
+        callback('Escriba almenos 2 caracteres');
+        return
+      }
+      RequestApi.fetch('/invoice/searchBySerieNumber',{
+        method: 'POST',
+        body: { search }
+      }).then(res=>{
+        if (res.success){
+          let data = res.result.map(item=>({ text: item.serie, value: item.invoice_id }));
+          callback(data);
+        } else {
+          callback(false);
+        }
+      }).catch(err=>{
+        callback(false);
+      })
     }
-
-    let filterEndDate = document.getElementById('filterEndDate');
-    if (filterEndDate){
-        filterEndDate.addEventListener('input',()=>{
-            invoiceFilter();
-        });
-    }
-
-    let filterCustomerId = document.getElementById('filterCustomerId');
-    if (filterCustomerId){
-        filterCustomerId.addEventListener('input',()=>{
-            invoiceFilter();
-        });
-    }
+  });
 });

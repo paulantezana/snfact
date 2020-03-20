@@ -459,7 +459,7 @@ function executeItem(uniqueId){
             calcItem(uniqueId);
         }
     });
-    
+
     let itemQuantityAdd = document.getElementById(`invoiceItemQuantityAdd${uniqueId}`);
     itemQuantityAdd.addEventListener('click',e => {
         let cuantityVal = parseFloat(itemQuantityText.value);
@@ -467,7 +467,7 @@ function executeItem(uniqueId){
         document.getElementById(`invoiceItemQuantity${uniqueId}`).value = itemQuantityText.value;
         calcItem(uniqueId);
     });
-    
+
     let itemQuantity = document.getElementById(`invoiceItemQuantity${uniqueId}`);
     itemQuantity.addEventListener('input',e=>{
         itemQuantityText.value = itemQuantity.value;
@@ -526,7 +526,7 @@ function invoiceSubmit(){
     invoice.invoiceUpdate = {};
     invoice.item = [];
 
-    invoice.dateOfIssue = document.getElementById('invoiceDateOfIssue').value; 
+    invoice.dateOfIssue = document.getElementById('invoiceDateOfIssue').value;
     invoice.dateOfDue = document.getElementById('invoiceDateOfDue').value;
     invoice.serie = document.getElementById('invoiceSerie').value;
     invoice.number = document.getElementById('invoiceNumber').value;
@@ -562,6 +562,7 @@ function invoiceSubmit(){
     invoice.customer.socialReason = document.getElementById('invoiceCustomerSocialReason').value;
     invoice.customer.address = document.getElementById('invoiceCustomerAddress').value;
     invoice.customer.email = document.getElementById('invoiceCustomerEmail').value;
+    invoice.customer.sendEmail = document.getElementById('invoiceCustomerSendEmail').checked;
     invoice.customer.telephone = '';
 
     // Invoice Credit and debit note
@@ -611,12 +612,12 @@ function invoiceSubmit(){
                 if (res.success){
                     let messagePrint = res.message;
                     let messageType = 'info';
-                    if(res.result.success){
+                    if(res.sunat.success){
                         messageType = 'success';
-                        messagePrint += '<br>' + res.result.message;
+                        messagePrint += '<br>' + res.sunat.message
                     } else {
                         messageType = 'warning';
-                        messagePrint += '<br>' + res.result.message;
+                        messagePrint += '<br>' + res.sunat.message;
                     }
 
                     let invoiceConfirmAlert = document.getElementById('invoiceConfirmAlert');
@@ -715,7 +716,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
 
             callback('Cargando...');
-            
+
             RequestApi.fetch('/customer/queryInnerDataAndPeru', {
                 method: 'POST',
                 body: { documentNumber: search }

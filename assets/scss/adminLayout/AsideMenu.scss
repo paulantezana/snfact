@@ -25,7 +25,7 @@ $asideFooterHeight: 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    [class*="icon-"] {
+    .AsideMenu-icon {
       margin-right: 16px;
     }
     > span {
@@ -144,7 +144,7 @@ $asideFooterHeight: 32px;
           .toggle {
             display: none;
           }
-          [class*="icon-"] {
+          .AsideMenu-icon {
             margin-right: 0;
           }
         }

@@ -100,3 +100,16 @@
     align-items: center;
   }
 }
+
+.InvoiceTableLegend{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  &-item{
+    margin-right: 16px;
+  }
+}
+.InvoiceTableFilter{
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--snColorBorder);
+}

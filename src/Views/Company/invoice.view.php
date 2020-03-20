@@ -18,20 +18,40 @@
             </div>
         </div>
     </div>
+
+    <div class="SnCard SnMb-5">
+      <div class="SnCard-body">
+        <div class="InvoiceTableLegend">
+          <div class="InvoiceTableLegend-item"><img src="<?= URL_PATH?>/assets/images/sunatLogo.png" alt="sunat" style="height: 32px"></div>
+          <div class="InvoiceTableLegend-item"><i class="fas fa-check SnMr-2" style="color: var(--snSuccess)"></i>Aceptado</div>
+          <div class="InvoiceTableLegend-item"><i class="fas fa-sync-alt SnMr-2" style="color: var(--snWarning)"></i>Pendiente de Envío</div>
+          <div class="InvoiceTableLegend-item"><i class="fas fa-chevron-circle-right SnMr-2" style="color: var(--snColor1)"></i>Para resumen</div>
+          <div class="InvoiceTableLegend-item"><i class="fas fa-ban SnMr-2" style="color: var(--snError)"></i>Comunicación de Baja (Anulado)</div>
+        </div>
+      </div>
+    </div>
+
     <div class="SnCard">
         <div class="SnCard-body">
-            <div class="SnGrid m-grid-3">
+            <div class="SnGrid m-grid-4 InvoiceTableFilter">
                 <div class="SnForm-item">
-                    <label for="filterStartDate" class="SnForm-label">Fecha inicio</label>
-                    <input type="date" id="filterStartDate" class="SnForm-control">
+                    <select class="SnForm-control" id="filterDocumentCode" onchange="invoiceFilter()">
+                      <option value="">Comprobante</option>
+                      <?php foreach ($parameter['catDocumentTypeCode'] as $row) : ?>
+                        <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
+                      <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="SnForm-item">
-                    <label for="filterEndDate" class="SnForm-label">Fecha limite</label>
-                    <input type="date" id="filterEndDate" class="SnForm-control">
+                    <select class="SnForm-control" id="filterInvoiceId" onchange="invoiceFilter()">
+                      <option value="">Serie / Numero</option>
+                    </select>
                 </div>
                 <div class="SnForm-item">
-                    <label for="filterCustomerId" class="SnForm-label">Cliente</label>
-                    <select id="filterCustomerId" class="SnForm-control"></select>
+                    <input type="date" id="filterStartDate" class="SnForm-control" onchange="invoiceFilter()">
+                </div>
+                <div class="SnForm-item">
+                    <input type="date" id="filterEndDate" class="SnForm-control" onchange="invoiceFilter()">
                 </div>
             </div>
             <div id="invoiceTable"></div>

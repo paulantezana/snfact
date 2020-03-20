@@ -1,6 +1,9 @@
 .Branding{
   align-self: flex-end;
   margin: 0 0 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   &-header{
     display: flex;
     align-items: center;

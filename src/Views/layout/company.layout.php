@@ -94,7 +94,7 @@
                             <?php endif; ?>
                             <?php if (MenuIsValid($asideMenu,['factura','boleta','notaCredito','notaDebito'])): ?>
                                 <li>
-                                    <a href="<?= URL_PATH ?>/invoice"><i class="icon-rocket"></i> <span>Comprobantes </span> </a>
+                                    <a href="<?= URL_PATH ?>/invoice"><i class="fas fa-file-medical-alt AsideMenu-icon"></i> <span>Comprobantes </span> </a>
                                     <ul>
                                         <?php if (MenuIsValid($asideMenu,'factura')): ?>
                                             <li><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura</a></li>

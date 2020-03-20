@@ -5,3 +5,8 @@ body{
   //background: #EFF3F6;
   background: var(--snColorBg);
 }
+
+img,
+video{
+  display: block;
+}
