@@ -95,6 +95,7 @@ class Invoice extends Model
             if (isset($filter['endDate']) && $filter['endDate']){
                 $sqlFilter .= $filterNumber >= 1 ? ' AND ' : ' WHERE ';
                 $sqlFilter .= "invoice.date_of_issue <= '{$filter['endDate']}'";
+                $filterNumber++;
             }
             $sqlFilter .= $filterNumber >= 1 ? ' AND ' : ' WHERE ';
             $sqlFilter .= "invoice.local_id = {$businessLocalId}";
@@ -264,32 +265,107 @@ class Invoice extends Model
                     ':product_code' => $row['productCode'],
                     ':unit_measure' => $row['unitMeasure'],
                     ':description' => $row['description'],
-                    ':quantity' => (float)($row['quantity']),
-                    ':unit_value' => (float)($row['unitValue']),
-                    ':unit_price' => (float)($row['unitPrice']),
-                    ':discount' => (float)($row['discount']),
+                    ':quantity' => $row['quantity'],
+                    ':unit_value' => $row['unitValue'],
+                    ':unit_price' => $row['unitPrice'],
+                    ':discount' => $row['discount'],
 
-                    ':affectation_code' => $row['affectationCode'] ?? '',
-                    ':total_base_igv' => (float)($row['totalBaseIgv'] ?? 0),
-                    ':igv' => (float)($row['igv'] ?? 0),
+                    ':affectation_code' => $row['affectationCode'],
+                    ':total_base_igv' => $row['totalBaseIgv'] ?? 0,
+                    ':igv' => $row['igv'],
 
                     ':system_isc_code' => $row['iscSystem'] ?? '',
-                    ':total_base_isc' => (float)($row['totalBaseIsc'] ?? 0),
-                    ':tax_isc' => (float)($row['iscTax'] ?? 0),
-                    ':isc' => (float)($row['isc'] ?? 0),
+                    ':total_base_isc' => $row['totalBaseIsc'] ?? 0,
+                    ':tax_isc' => $row['iscTax'] ?? 0,
+                    ':isc' => $row['isc'] ?? 0,
 
                     ':total_base_other_taxed' => 0,
                     ':percentage_other_taxed' => 0,
                     ':other_taxed' => 0,
 
-                    ':quantity_plastic_bag' => 0,
-                    ':plastic_bag_tax' => 0,
+                    ':quantity_plastic_bag' => $row['quantityPlasticBag'],
+                    ':plastic_bag_tax' => $row['plasticBagTax'],
 
-                    ':total_value' => (float)($row['totalValue']),
-                    ':total' => (float)($row['total']),
+                    ':total_value' => $row['totalValue'],
+                    ':total' => $row['total'],
                     ':charge' => 0,
                 ])){
                     throw new Exception('Error al insertar los items');
+                }
+            }
+
+            // Insert Detraction
+            if (isset($invoice['detractionEnabled']) && $invoice['detractionEnabled'] === true){
+                $detraction = $invoice['detraction'];
+                $sql = "INSERT INTO invoice_detraction(invoice_id, referral_value, effective_load, useful_load, travel_detail, whit_detraction, detraction_code, percentage, amount,
+                                                        location_starting_code, address_starting_point, location_arrival_code, address_arrival_point,
+                                                        boat_registration, boat_name, species_kind, delivery_address, delivery_date, quantity
+                                                    )
+                                                    VALUES (:invoice_id, :referral_value, :effective_load, :useful_load, :travel_detail, :whit_detraction, :detraction_code, :percentage, :amount,
+                                                        :location_starting_code, :address_starting_point, :location_arrival_code, :address_arrival_point,
+                                                        :boat_registration, :boat_name, :species_kind, :delivery_address, :delivery_date, :quantity
+                                                    )";
+                $stmt = $this->db->prepare($sql);
+
+                if (!$stmt->execute([
+                    ':invoice_id' => $invoiceId,
+                    ':referral_value' => $detraction['referralValue'],
+                    ':effective_load' => $detraction['effectiveLoad'],
+                    ':useful_load' => $detraction['usefulLoad'],
+                    ':travel_detail' => $detraction['travelDetail'],
+
+                    ':whit_detraction' => $invoice['detractionEnabled'],
+                    ':detraction_code' => $detraction['subjectCode'],
+                    ':percentage' => $detraction['percentage'],
+                    ':amount' => $detraction['total'] * ($detraction['percentage'] / 100),
+                    ':location_starting_code' => $detraction['locationStartingCode'],
+                    ':address_starting_point' => $detraction['addressStartingPoint'],
+                    ':location_arrival_code' => $detraction['locationArrivalCode'],
+                    ':address_arrival_point' => $detraction['addressArrivalPoint'],
+
+                    ':boat_registration' => $detraction['boatRegistration'],
+                    ':boat_name' => $detraction['boatName'],
+                    ':species_kind' => $detraction['speciesSold'],
+                    ':delivery_address' => $detraction['deliveryAddress'],
+                    ':delivery_date' => $detraction['deliveryDate'],
+                    ':quantity' => $detraction['quantity'],
+                ])){
+                    throw new Exception('No se pudo insertar el registro');
+                }
+            }
+
+            // Insert invoice guide
+            if (isset($invoice['guideEnabled']) && $invoice['guideEnabled'] === true){
+                $referralGuide = $invoice['guide'];
+                $sql = "INSERT INTO invoice_referral_guide(invoice_id, whit_guide, document_code, transfer_code, transport_code, transfer_start_date, total_gross_weight,
+                                                        carrier_document_code, carrier_document_number, carrier_denomination, driver_document_code,
+                                                        driver_document_number, driver_full_name, location_starting_code, address_starting_point,
+                                                        location_arrival_code, address_arrival_point)
+                                                    VALUES (:invoice_id, :whit_guide, :document_code, :transfer_code, :transport_code, :transfer_start_date, :total_gross_weight,
+                                                        :carrier_document_code, :carrier_document_number, :carrier_denomination, :driver_document_code,
+                                                        :driver_document_number, :driver_full_name, :location_starting_code, :address_starting_point,
+                                                        :location_arrival_code, :address_arrival_point)";
+                $stmt = $this->db->prepare($sql);
+                if (!$stmt->execute([
+                    ':invoice_id' => $invoiceId,
+                    ':whit_guide' => $invoice['guideEnabled'],
+                    ':document_code' => '09',
+                    ':transfer_code' => $referralGuide['transferCode'],
+                    ':transport_code' => $referralGuide['transportCode'],
+                    ':transfer_start_date' => $referralGuide['transferStartDate'],
+                    ':total_gross_weight' => $referralGuide['totalGrossWeight'],
+                    ':carrier_document_code' => $referralGuide['carrierDocumentCode'],
+                    ':carrier_document_number' => $referralGuide['carrierDocumentNumber'],
+                    ':carrier_denomination' => $referralGuide['carrierDenomination'],
+                    ':driver_document_code' => $referralGuide['driverDocumentCode'],
+                    ':driver_document_number' => $referralGuide['driverDocumentNumber'],
+                    ':driver_full_name' => $referralGuide['driverFullName'],
+                    ':location_starting_code' => $referralGuide['locationStartingCode'],
+                    ':address_starting_point' => $referralGuide['addressStartingPoint'],
+                    ':location_arrival_code' => $referralGuide['locationArrivalCode'],
+                    ':address_arrival_point' => $referralGuide['addressArrivalPoint'],
+                ])){
+                    throw new Exception('No se pudo insertar el registro');
                 }
             }
 

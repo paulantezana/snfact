@@ -1,7 +1,7 @@
 <div class="SnContent">
     <div class="SnToolbar" id="InvoiceToolbar">
         <div class="SnToolbar-left">
-            <i class="fas fa-chevron-right SnMr-2"></i>COMPROBANTES
+            <i class="fas fa-list-ul SnMr-2"></i>COMPROBANTES
         </div>
         <div class="SnToolbar-right">
             <div class="SnBtn jsCategoryAction" onclick="invoiceList()">
@@ -10,10 +10,10 @@
             <div class="SnDropdown">
                 <div class="SnDropdown-toggle SnBtn primary"><i class="fas fa-plus SnMr-2"></i>Nuevo</div>
                 <ul class="SnDropdown-list">
-                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01">Emitir factura</a></li>
-                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03">Emitir boleta</a></li>
-                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07">Emitir nota crédito</a></li>
-                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08">Emitir nota débito</a></li>
+                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=01"><i class="fas fa-file-invoice SnMr-2"></i>Emitir factura</a></li>
+                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=03"><i class="fas fa-receipt SnMr-2"></i>Emitir boleta</a></li>
+                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=07"><i class="far fa-clipboard SnMr-2"></i>Emitir nota crédito</a></li>
+                    <li class="SnDropdown-item"><a href="<?= URL_PATH ?>/invoice/newInvoice?documentCode=08"><i class="far fa-clipboard SnMr-2"></i>Emitir nota débito</a></li>
                 </ul>
             </div>
         </div>

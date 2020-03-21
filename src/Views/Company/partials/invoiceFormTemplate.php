@@ -48,8 +48,8 @@
                     <div class="SnForm-item required">
                         <label class="SnForm-label" for="invoiceNumber">Número</label>
                         <div class="SnControl-wrapper">
-                            <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" id="invoiceNumber" placeholder="#" required>
+                            <i class="far fa-sticky-note SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="invoiceNumber" required>
                         </div>
                     </div>
                     <div class="SnForm-item required">
@@ -71,29 +71,29 @@
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceChangeType">Tipo Cambio (SUNAT):</label>
                         <div class="SnControl-wrapper">
-                            <i class="icon-file-text2 SnControl-prefix"></i>
+                            <i class="far fa-sticky-note SnControl-prefix"></i>
                             <input class="SnForm-control SnControl" type="text" id="invoiceChangeType">
                         </div>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceVehiclePlate">N° Placa Vehículo:</label>
                         <div class="SnControl-wrapper">
-                            <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" id="invoiceVehiclePlate" placeholder="Número de placa">
+                            <i class="far fa-sticky-note SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="invoiceVehiclePlate">
                         </div>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoicePurchaseOrder">N° de Orden:</label>
                         <div class="SnControl-wrapper">
-                            <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" id="invoicePurchaseOrder" placeholder="Número de orden">
+                            <i class="far fa-sticky-note SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="invoicePurchaseOrder">
                         </div>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceTerm">Condiciiones de pago:</label>
                         <div class="SnControl-wrapper">
-                            <i class="icon-file-text2 SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" id="invoiceTerm" placeholder="Condiciiones de pago">
+                            <i class="far fa-sticky-note SnControl-prefix"></i>
+                            <input class="SnForm-control SnControl" type="text" id="invoiceTerm">
                         </div>
                     </div>
                 </div>
@@ -138,7 +138,7 @@
                     <div class="SnControl-group">
                         <div class="SnControl-wrapper">
                             <i class="icon-user SnControl-prefix"></i>
-                            <input class="SnForm-control SnControl" type="text" id="invoiceCustomerDocumentNumber" placeholder="Número de documento Aquí!" required>
+                            <input class="SnForm-control SnControl" type="text" id="invoiceCustomerDocumentNumber" required>
                         </div>
                         <div class="SnBtn primary"><i class="icon-search4"></i></div>
                     </div>
@@ -155,21 +155,21 @@
                     <label class="SnForm-label" for="invoiceCustomerSocialReason">Razón Social:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-vcard SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerSocialReason" placeholder="Nombre o Razón Social Aquí" required>
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerSocialReason" required>
                     </div>
                 </div>
                 <div class="SnForm-item l-cols-2">
                     <label class="SnForm-label" for="invoiceCustomerAddress">Dirección:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-home2 SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerAddress" placeholder="Escribe aquí la dirección completa">
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerAddress">
                     </div>
                 </div>
                 <div class="SnForm-item">
                     <label class="SnForm-label" for="invoiceCustomerLocation">Ubigeo:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-sphere SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerLocation" placeholder="Selecciona Tu Código de Ubigeo">
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerLocation">
                     </div>
                 </div>
                 <div class="SnForm-item SnSwitch l-cols-2 required">
@@ -180,7 +180,7 @@
                     <label class="SnForm-label" for="invoiceCustomerEmail">Email:</label>
                     <div class="SnControl-wrapper">
                         <i class="icon-envelop2 SnControl-prefix"></i>
-                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerEmail" placeholder="Escribe aquí el email del cliente">
+                        <input class="SnForm-control SnControl" type="text" id="invoiceCustomerEmail">
                     </div>
                 </div>
             </div>
@@ -214,10 +214,249 @@
                     </div>
                 </div>
                 <div class="SnTab-content">
-                    en proceso...
+                    <div class="SnCard SnMb-5">
+                        <div class="SnCard-body SnGrid m-grid-2">
+                            <div class="SnSwitch">
+                                <input type="checkbox" class="SnSwitch-control" id="invoiceDetractionEnable" data-collapsetrigger="collapseInvoiceDetraction">
+                                <label class="SnSwitch-label" for="invoiceDetractionEnable">¿Detracción?</label>
+                            </div>
+                            <div class="SnSwitch">
+                                <input type="checkbox" class="SnSwitch-control" id="invoicePerceptionEnable" data-collapsetrigger="collapseInvoicePerception">
+                                <label class="SnSwitch-label" for="invoicePerceptionEnable">Percepción</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="collapseInvoiceDetraction" class="SnCollapse" data-collapse="collapseInvoiceDetraction">
+                        <div class="SnGrid m-grid-2">
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="invoiceSubjectDetractionCode">Tipo de detracción</label>
+                                <select class="SnForm-control" id="invoiceSubjectDetractionCode">
+                                    <option value="">Elegir</option>
+                                    <?php foreach ($parameter['subjectDetractionCode'] ?? [] as $row) : ?>
+                                        <option value="<?= $row['code'] ?>">
+                                            <?= $row['description'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="invoiceDetractionPercentage">Porcentaje </label>
+                                <input type="number" step="any" class="SnForm-control" id="invoiceDetractionPercentage">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="SnGrid m-grid-2">
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionLocationStartingCode">Ubigeo Origen</label>
+                                <select class="SnForm-control" id="detractionLocationStartingCode">
+                                    <option value="">Buscar ubigeo</option>
+                                    <?php if (($parameter['invoice']['location_starting']['code'] ?? false)) :  ?>
+                                        <option value="<?= $parameter['invoice']['location_starting']['code'] ?>" selected><?= $parameter['invoice']['location_starting']['description'] ?></option>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionAddressStartingPoint">Dirección Origen</label>
+                                <input type="text" class="SnForm-control" id="detractionAddressStartingPoint">
+                            </div>
+                        </div>
+                        <div class="SnGrid m-grid-2">
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionLocationArrivalCode">Ubigeo Destino</label>
+                                <select class="SnForm-control" id="detractionLocationArrivalCode">
+                                    <option value="">Buscar ubigeo</option>
+                                    <?php if (($parameter['guide']['location_arrival']['code'] ?? false)) :  ?>
+                                        <option value="<?= $parameter['invoice']['location_arrival']['code'] ?>" selected><?= $parameter['invoice']['location_arrival']['description'] ?></option>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionAddressArrivalPoint">Dirección Destino</label>
+                                <input type="text" class="SnForm-control" id="detractionAddressArrivalPoint">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="SnGrid m-grid-2">
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionReferralValue">Valor Referencial Servicio de Transporte</label>
+                                <input type="text" class="SnForm-control" id="detractionReferralValue">
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionEffectiveLoad">Valor Referencia Carga Efectiva</label>
+                                <input type="text" class="SnForm-control" id="detractionEffectiveLoad">
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionUsefulLoad">Valor Referencial Carga Útil</label>
+                                <input type="text" class="SnForm-control" id="detractionUsefulLoad">
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionTravelDetail">Detalle del Viaje</label>
+                                <input type="text" class="SnForm-control" id="detractionTravelDetail">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="SnGrid m-grid-3" id="JsRowHydro">
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionBoatRegistration">Matrícula Embarcación</label>
+                                <input type="text" class="SnForm-control" id="detractionBoatRegistration">
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionBoatName">Nombre Embarcación</label>
+                                <input type="text" class="SnForm-control" id="detractionBoatName">
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionSpeciesSold">Tipo Especie vendida</label>
+                                <input type="text" class="SnForm-control" id="detractionSpeciesSold">
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionDeliveryAddress">Lugar de descarga</label>
+                                <input type="text" class="SnForm-control" id="detractionDeliveryAddress">
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionQuantity">Cantidad de la Especie vendida</label>
+                                <input type="text" class="SnForm-control" id="detractionQuantity">
+                            </div>
+                            <div class="SnForm-item">
+                                <label class="SnForm-label" for="detractionDeliveryDate">Fecha de descarga</label>
+                                <input type="date" class="SnForm-control" id="detractionDeliveryDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="collapseInvoicePerception" class="SnCollapse" data-collapse="collapseInvoicePerception">
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="invoicePerceptionCode">Tipo de percepcion</label>
+                            <select class="SnForm-control" id="invoicePerceptionCode">
+                                <option value="">Elegir</option>
+                                <?php foreach ($parameter['perceptionTypeCode'] ?? [] as $row): ?>
+                                    <option value="<?= $row['code'] ?>" data-percentage="<?= $row['percentage'] ?>">
+                                        <?php echo $row['percentage'] . '% ' . $row['description'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="SnTab-content">
-                    en proceso...
+                    <p>DATOS DEL TRASLADO</p>
+                    <hr>
+                    <div class="SnGrid m-grid-4">
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideTransferCode">Motivo de traslado</label>
+                            <select class="SnForm-control" id="guideTransferCode">
+                                <option value="">Elegir</option>
+                                <?php foreach ($parameter['catTransferReasonCode'] ?? [] as $row) : ?>
+                                    <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideTransportCode">Tipo de transporte</label>
+                            <select class="SnForm-control" id="guideTransportCode">
+                                <option value="">Elegir</option>
+                                <?php foreach ($parameter['catTransportModeCode'] ?? [] as $row) : ?>
+                                    <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideTransferStartDate">Fecha de inicio de traslado</label>
+                            <input type="date" class="SnForm-control" id="guideTransferStartDate" value="<?= date('Y-m-d') ?>">
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideTotalGrossWeight">Peso bruto total (KGM)</label>
+                            <input type="text" class="SnForm-control" id="guideTotalGrossWeight">
+                        </div>
+                    </div>
+
+                    <p>DATOS DEL TRANSPORTISTA</p>
+                    <hr>
+                    <div class="SnGrid s-grid-4">
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideCarrierDocumentCode">Tipo de documento</label>
+                            <select class="SnForm-control" id="guideCarrierDocumentCode">
+                                <option value="">Elegir</option>
+                                <?php foreach ($parameter['catIdentityDocumentTypeCode'] ?? [] as $row) : ?>
+                                    <option value="<?= $row['code'] ?>">
+                                        <?= $row['description'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideCarrierDocumentNumber">Documento numero</label>
+                            <input type="text" class="SnForm-control" id="guideCarrierDocumentNumber">
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideCarrierDenomination">Denominacion</label>
+                            <input type="text" class="SnForm-control" id="guideCarrierDenomination">
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideCarrierPlateNumber">Placa numero</label>
+                            <input type="text" class="SnForm-control" id="guideCarrierPlateNumber">
+                        </div>
+                    </div>
+
+                    <p>DATOS DEL CONDUCTOR</p>
+                    <hr>
+                    <div class="SnGrid s-grid-3">
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideDriverDocumentCode">Tipo de documento del conductor</label>
+                            <select class="SnForm-control" id="guideDriverDocumentCode">
+                                <option value="">Elegir</option>
+                                <?php foreach ($parameter['catIdentityDocumentTypeCode'] ?? [] as $row) : ?>
+                                    <option value="<?= $row['code'] ?>">
+                                        <?= $row['description'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideDriverDocumentNumber">Conductor documento numero</label>
+                            <input type="text" class="SnForm-control" id="guideDriverDocumentNumber">
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideDriverFullName">Nombre completo del conductor</label>
+                            <input type="text" class="SnForm-control" id="guideDriverFullName">
+                        </div>
+                    </div>
+
+                    <p>PUNTO DE PARTIDA</p>
+                    <hr>
+                    <div class="SnGrid m-grid-2">
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideLocationStartingCode">UBIGEO dirección de partida</label>
+                            <select class="SnForm-control" id="guideLocationStartingCode">
+                                <option value="">Buscar ubigeo</option>
+                                <?php if (($parameter['guide']['location_starting']['code'] ?? false)) :  ?>
+                                    <option value="<?= $parameter['guide']['location_starting']['code'] ?>" selected><?= $parameter['guide']['location_starting']['description'] ?></option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideAddressStartingPoint">Dirección del punto de partida</label>
+                            <input type="text" class="SnForm-control" id="guideAddressStartingPoint">
+                        </div>
+                    </div>
+
+                    <p>PUNTO DE LLEGADA</p>
+                    <hr>
+                    <div class="SnGrid s-grid-2">
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideLocationExitCode">UBIGEO dirección de salida</label>
+                            <select class="SnForm-control" id="guideLocationExitCode">
+                                <option value="">Buscar ubigeo</option>
+                                <?php if (($parameter['guide']['location_arrival']['code'] ?? false)) :  ?>
+                                    <option value="<?= $parameter['guide']['location_arrival']['code'] ?>"><?= $parameter['guide']['location_arrival']['description'] ?></option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                        <div class="SnForm-item">
+                            <label class="SnForm-label" for="guideAddressArrivalPoint">Dirección del punto de llegada</label>
+                            <input type="text" class="SnForm-control" id="guideAddressArrivalPoint">
+                        </div>
+                    </div>
                 </div>
                 <div class="SnTab-content">
                     en proceso...
@@ -256,19 +495,19 @@
                         <label class="SnForm-label" for="invoiceGlobalDiscountPercentage">Descuento Total (en porcentaje %):</label>
                         <div class="SnControl-wrapper">
                             <span class="SnControl-prefix">%</span>
-                            <input class="SnForm-control SnControl" type="number" name="invoice[globalDiscountPercentage]" id="invoiceGlobalDiscountPercentage" placeholder="0.00">
+                            <input class="SnForm-control SnControl" type="number" name="invoice[globalDiscountPercentage]" id="invoiceGlobalDiscountPercentage">
                         </div>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceTotalOtherCharger">Otros Cargos:</label>
                         <div class="SnControl-wrapper">
                             <span class="jsCurrencySymbol SnControl-prefix"></span>
-                            <input class="SnForm-control SnControl" type="number" name="invoice[totalOtherCharger]" id="invoiceTotalOtherCharger" placeholder="0.00">
+                            <input class="SnForm-control SnControl" type="number" name="invoice[totalOtherCharger]" id="invoiceTotalOtherCharger">
                         </div>
                     </div>
                     <div class="SnForm-item">
                         <label class="SnForm-label" for="invoiceObservation">Observación:</label>
-                        <textarea class="SnForm-control" name="invoice[observation]" id="invoiceObservation" cols="30" rows="5" placeholder="Escribe aquí una observación"></textarea>
+                        <textarea class="SnForm-control" name="invoice[observation]" id="invoiceObservation" cols="30" rows="5"></textarea>
                     </div>
                     <div class="SnGrid s-grid-2">
                         <div class="SnSwitch">

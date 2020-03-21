@@ -2303,7 +2303,7 @@ class BillingManager
       }
 
       try {
-        $url = SUNAT_SERVICE_URL;
+        $url = DEMO_SUNAT_SERVICE_URL;
 
         $options = array(
           'Username' => '20100066603MODDATOS',
@@ -2411,7 +2411,7 @@ class BillingManager
                 );
 
                 if ($communicationMethod == 1 || $communicationMethod == 2) {
-                    $url = SUNAT_SERVICE_URL;
+                    $url = DEMO_SUNAT_SERVICE_URL;
                     $client = new SoapClient($url, $options);
 
                     if ($communicationMethod == 1) {
@@ -2423,7 +2423,7 @@ class BillingManager
                     }
                 }
                 else{
-                    $url = SUNAT_GUIDE_SERVICE_URL;
+                    $url = DEMO_SUNAT_GUIDE_SERVICE_URL;
                     $client = new SoapClient($url, $options);
 
                     $result = $client->sendBill($data);

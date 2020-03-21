@@ -309,6 +309,7 @@ CREATE TABLE product(
     system_isc_code VARCHAR(2),
     isc FLOAT,
     state TINYINT DEFAULT 1,
+    bag_tax TINYINT DEFAULT 0,
     CONSTRAINT pk_product PRIMARY KEY (product_id),
     CONSTRAINT fk_product_unit_measure_code FOREIGN KEY (unit_measure_code) REFERENCES cat_unit_measure_type_code (code)
         ON UPDATE RESTRICT ON DELETE RESTRICT,

@@ -1,7 +1,7 @@
 <div class="SnContent">
     <div class="SnToolbar">
         <div class="SnToolbar-left">
-            <i class=" icon-equalizer SnMr-2"></i> <strong>CLIENTES</strong>
+            <i class=" fas fa-list-ul SnMr-2"></i> <strong>CLIENTES</strong>
         </div>
         <div class="SnToolbar-right">
             <div class="SnBtn jsCustomerAction" onclick="CustomerToPrint()">
@@ -34,9 +34,9 @@
 <div class="SnModal-wrapper" data-modal="customerModalForm">
     <div class="SnModal">
         <div class="SnModal-close" data-modalclose="customerModalForm">
-            <i class="icon-cross"></i>
+            <i class="fas fa-times"></i>
         </div>
-        <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Cliente</div>
+        <div class="SnModal-header"><i class="fas fa-folder-plus SnMr-2"></i> Cliente</div>
         <div class="SnModal-body">
             <form action="" class="SnForm" novalidate id="customerForm" onsubmit="CustomerSubmit(event)">
                 <input type="hidden" class="SnForm-control" id="customerId">

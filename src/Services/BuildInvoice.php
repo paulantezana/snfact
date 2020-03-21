@@ -211,7 +211,7 @@ class BuildInvoice
         $invoice['invoiceTypeCode'] = $invoiceData['document_code'];
         $invoice['amounInWord'] = NumberToLetter::StringFormat((int)$invoiceData['total']) . ' ' .$invoiceData['currency_type_code_description'];
         $invoice['supplierRuc'] = $business['ruc'];
-        $invoice['defaultUrl'] = 'WWW.SKYFACT.COM';
+        $invoice['defaultUrl'] = 'WWW.SNFACT.COM';
         $invoice['supplierName'] = htmlspecialchars($business['social_reason']);
         $invoice['supplierDocumentType'] = '6';					// TIPO DE DOCUMENTO EMISOR
         $invoice['customerDocumentType'] = $invoiceData['customer_identity_document_code'];					// TIPO DE DOCUMENTO CLIENTE
@@ -449,6 +449,7 @@ class BuildInvoice
                   'other_message' => '',
                   'send' => true,
               ]);
+              $res->message .= $resInvoice->sunatDescription . ' ['.$resInvoice->sunatResponseCode.']';
               $res->success = true;
           } else {
               $this->invoiceModel->updateInvoiceSunatByInvoiceId($invoiceData['invoice_id'],[

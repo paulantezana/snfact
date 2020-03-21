@@ -171,7 +171,7 @@
                 </tr>
             <?php endforeach; else: ?>
                 <tr>
-                    <td colspan="9">
+                    <td colspan="10">
                         <div class="SnEmpty">
                             <img src="<?= URL_PATH . '/assets/images/empty.svg' ?>" alt="">
                             <div>No hay datos</div>

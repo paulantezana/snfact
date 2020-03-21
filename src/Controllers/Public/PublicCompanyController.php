@@ -302,14 +302,14 @@ class PublicCompanyController extends Controller
                     }
 
                     $urlApp = HOST . URL_PATH . '/publicCompany/login';
-                    if(!EmailManager::send(APP_EMAIL, $register['email'], '¡🚀 Bienvenido a '.APP_NAME.' !',
+                    $resEmail = EmailManager::send(APP_EMAIL, $register['email'], '¡🚀 Bienvenido a '.APP_NAME.' !',
                       '<div>
                                     <h1>' . $dataPeru['socialReason'] . ', bienvenido(a) a ' . APP_NAME . '. Acelera tu negocio</h1>
                                     <p>Facturación electrónica</p>
                                     <a href="' . $urlApp . '">Ingresar al sistema</a>
-                                </div>'
-                    )){
-                      throw new Exception('No se pudo enviar el correo electrónico de bienvenida.');
+                                </div>');
+                    if(!$resEmail->success){
+                      throw new Exception($resEmail->message);
                     }
 
                     $this->redirect('/');
@@ -362,11 +362,12 @@ class PublicCompanyController extends Controller
                     ]);
 
                     $urlForgot = HOST . URL_PATH . '/publicCompany/forgotValidate?key=' .$token;
-                    if(!EmailManager::send(APP_EMAIL, $user['email'], 'Recupera tu Contraseña',
+                    $resEmail = EmailManager::send(APP_EMAIL, $user['email'], 'Recupera tu Contraseña',
                         '<p>Recientemente se solicitó un cambio de contraseña en tu cuenta. Si no fuiste tú, ignora este mensaje y sigue disfrutando de la experiencia de ' . APP_NAME . '.</p>
                                  <a href="' . $urlForgot . '" target="_blanck">Cambiar contraseña</a>'
-                    )){
-                      throw new Exception('No se pudo enviar el correo electrónico.');
+                    );
+                    if(!$resEmail->success){
+                        throw new Exception($resEmail->message);
                     }
 
                     $resView->message = 'El correo electrónico de confirmación de restablecimiento de contraseña se envió a su correo electrónico.';

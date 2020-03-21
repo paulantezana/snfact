@@ -1,7 +1,7 @@
 <div class="SnContent">
     <div class="SnToolbar">
         <div class="SnToolbar-left">
-            <i class="icon-equalizer SnMr-2"></i> LOCALES
+            <i class="fas fa-list-ul SnMr-2"></i> LOCALES
         </div>
         <div class="SnToolbar-right">
             <div class="SnBtn jsBusinessLocalAction" onclick="BusinessLocalList()">
@@ -29,9 +29,9 @@
 <div class="SnModal-wrapper" data-modal="businessLocalModalForm">
     <div class="SnModal" style="max-width: 90vw; top: 50px;">
         <div class="SnModal-close" data-modalclose="businessLocalModalForm">
-            <i class="icon-cross"></i>
+            <i class="fas fa-times"></i>
         </div>
-        <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Sucursal</div>
+        <div class="SnModal-header"><i class="fas fa-folder-plus SnMr-2"></i> Sucursal</div>
         <div class="SnModal-body">
             <form action="" class="SnForm" novalidate id="businessLocalForm" onsubmit="BusinessLocalSubmit()">
                 <input type="hidden" class="SnForm-control" id="businessLocalId">

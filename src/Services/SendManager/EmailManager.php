@@ -81,7 +81,7 @@ class EmailManager
         if (!filter_var($from, FILTER_VALIDATE_EMAIL)){
           throw new Exception('Email de origen es invalido');
         }
-        $headers = "From: " . $from . "\r\n";
+        $headers = "From: " . APP_NAME . " <{$from}>" . "\r\n";
         // $headers .= "Reply-To: ". strip_tags($_POST['req-email']) . "\r\n";
         // $headers .= "CC: susan@example.com\r\n";
         $headers .= "MIME-Version: 1.0\r\n";

@@ -71,12 +71,6 @@
 
 
 .InvoiceConfirm{
-  &-table{
-    margin-bottom: 16px;
-    td{
-      padding: 0;
-    }
-  }
   &-action{
     cursor: pointer;
     padding: 1rem;
@@ -85,8 +79,8 @@
     align-items: center;
     text-decoration: none;
     color: inherit;
-    [class*="icon"]{
-      font-size: 2rem;
+    svg{
+      font-size: 1.5rem;
       margin-bottom: .5rem;
     }
   }

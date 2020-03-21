@@ -80,6 +80,7 @@ function ProductSubmit(e) {
     productSendData.systemIscCode = document.getElementById('productSystemIscCode').value;
     productSendData.isc = document.getElementById('productIsc').value;
     productSendData.state = document.getElementById('productState').checked || false;
+    productSendData.bagTax = document.getElementById('productBagTax').checked || false;
 
     if (ProductState.modalType === 'create') {
         url = '/product/create';
@@ -162,8 +163,9 @@ function ProductShowModalUpdate(productId) {
             document.getElementById('productSystemIscCode').value = res.result.system_isc_code;
             document.getElementById('productIsc').value = res.result.isc;
             document.getElementById('productState').checked = res.result.state == '0' ? false : true;
+            document.getElementById('productBagTax').checked = res.result.bag_tax == '0' ? false : true;
             document.getElementById('productId').value = res.result.product_id;
-        
+
             ProductState.slimProductCode.setData([
                 {
                     text: res.result.product_code_description,
@@ -227,7 +229,6 @@ function CategorySubmit(e) {
     })
 }
 
-
 function ProductToExcel(){
     let dataTable = document.getElementById('productCurrentTable');
     if(dataTable){
@@ -248,28 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     ProductList();
-
-    // SnSelect({
-    //     elem: '#productProductCode',
-    //     data: (search, callback) => {
-    //         // if (search.length < 2) {
-    //         //     callback('Escriba almenos 2 caracteres');
-    //         //     return;
-    //         // }
-
-    //         RequestApi.fetch('/product/searchProductCode', {
-    //             method: 'POST',
-    //             body: { search: search }
-    //         }).then(res => {
-    //             if (res.success) {
-    //                 let data = res.result.map(item => ({ text: item.description, value: item.code }));
-    //                 callback(data);
-    //             } else {
-    //                 callback(false);
-    //             }
-    //         });
-    //     }
-    // });
 
     ProductState.slimProductCode = new SlimSelect({
         select: '#productProductCode',
@@ -295,4 +274,15 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         }
     });
+
+    let productUnitPrice = document.getElementById('productUnitPrice');
+    let productUnitValue = document.getElementById('productUnitValue');
+    if(productUnitPrice && productUnitValue){
+        productUnitPrice.addEventListener('input',()=>{
+            productUnitValue.value = roundCurrency(productUnitPrice.value / ( 1 + APP.igvPercentage));
+        });
+        productUnitValue.addEventListener('input',()=>{
+            productUnitPrice.value = roundCurrency(productUnitValue.value * (1 + APP.igvPercentage)) ;
+        });
+    }
 });

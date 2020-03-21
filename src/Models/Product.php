@@ -10,7 +10,7 @@ class Product extends Model
     public function getById($id)
     {
         try {
-            $sql = "SELECT product.*, cpc.description as product_code_description FROM product 
+            $sql = "SELECT product.*, cpc.description as product_code_description FROM product
                     INNER JOIN cat_product_code cpc ON product.product_code = cpc.code
                     WHERE product_id = :product_id LIMIT 1";
             $stmt = $this->db->prepare($sql);
@@ -68,9 +68,9 @@ class Product extends Model
     public function insert($product, $userReferId)
     {
         $currentDate = date('Y-m-d H:i:s');
-        $sql = 'INSERT INTO product (updated_at, created_at, created_user_id, updated_user_id, business_id, description, unit_price, unit_value,
-                                    product_key, product_code, unit_measure_code, affectation_code, system_isc_code, isc, category_id) 
-                                VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :business_id, :description, :unit_price, :unit_value,
+        $sql = 'INSERT INTO product (updated_at, created_at, created_user_id, updated_user_id, business_id, description, unit_price, unit_value, bag_tax,
+                                    product_key, product_code, unit_measure_code, affectation_code, system_isc_code, isc, category_id)
+                                VALUES (:updated_at, :created_at, :created_user_id, :updated_user_id, :business_id, :description, :unit_price, :unit_value, :bag_tax,
                                     :product_key, :product_code, :unit_measure_code, :affectation_code, :system_isc_code, :isc, :category_id)';
         $stmt = $this->db->prepare($sql);
 
@@ -84,6 +84,7 @@ class Product extends Model
             ':description' => $product['description'],
             ':unit_price' => $product['unitPrice'],
             ':unit_value' => $product['unitValue'],
+            ':bag_tax' => $product['bagTax'],
             ':product_key' => $product['productKey'],
             ':product_code' => $product['productCode'],
             ':unit_measure_code' => $product['unitMeasureCode'],

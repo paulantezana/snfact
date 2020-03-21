@@ -1,9 +1,9 @@
 <div class="SnModal-wrapper" data-modal="categoryModalForm">
     <div class="SnModal">
         <div class="SnModal-close" data-modalclose="categoryModalForm">
-            <i class="icon-cross"></i>
+            <i class="fas fa-times"></i>
         </div>
-        <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Categoria</div>
+        <div class="SnModal-header"><i class="fas fa-folder-plus SnMr-2"></i> Categoria</div>
         <div class="SnModal-body">
             <form action="" class="SnForm" id="categoryForm" novalidate onsubmit="CategorySubmit(event)">
                 <input type="hidden" class="SnForm-control" id="categoryId">

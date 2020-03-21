@@ -13,8 +13,8 @@ let DocumentPrinter = {
         let documentPrinterOpenBrowser = document.getElementById('documentPrinterOpenBrowser');
         if (documentPrinterOpenBrowser && salePrintModalIContent) {
             salePrintModalIContent.innerHTML = '';
-            salePrintModalIContent.innerHTML = `<iframe src="${Service.path}/${url}" width="100%" height="600" frameborder="0" id="documentPrinterIframe"></iframe>`;
-            documentPrinterOpenBrowser.setAttribute('href',`${Service.path}/${url}`);
+            salePrintModalIContent.innerHTML = `<iframe src="${APP.path}/${url}" width="100%" height="600" frameborder="0" id="documentPrinterIframe"></iframe>`;
+            documentPrinterOpenBrowser.setAttribute('href',`${APP.path}/${url}`);
             if (showPrinter){
                 this.print();
             }

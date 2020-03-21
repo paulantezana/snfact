@@ -1,20 +1,20 @@
 <div class="SnContent">
     <div class="SnToolbar">
         <div class="SnToolbar-left">
-            <i class=" icon-equalizer SnMr-2"></i> <strong>PRODUCTOS</strong>
+            <i class=" fas fa-list-ul SnMr-2"></i> <strong>PRODUCTOS</strong>
         </div>
         <div class="SnToolbar-right">
             <div class="SnBtn jsProductAction" onclick="ProductToPrint()">
-                <i class="icon-printer"></i>
+                <i class="fas fa-print"></i>
             </div>
             <div class="SnBtn jsProductAction" onclick="ProductToExcel()">
-                <i class="icon-file-excel"></i>
+                <i class="far fa-file-excel"></i>
             </div>
             <div class="SnBtn jsProductAction" onclick="ProductList()">
-                <i class="icon-reload-alt"></i>
+                <i class="fas fa-sync-alt"></i>
             </div>
             <div class="SnBtn primary jsProductAction" onclick="ProductShowModalCreate()">
-                <i class="icon-plus2 SnMr-2"></i> Nuevo
+                <i class="fas fa-plus SnMr-2"></i> Nuevo
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
         <div class="SnCard-body">
             <div class="SnControl-wrapper SnMb-5">
                 <input type="text" class="SnForm-control SnControl" id="productSearch">
-                <span class="SnControl-suffix icon-search4"></span>
+                <span class="SnControl-suffix fas fa-search"></span>
             </div>
             <div id="productTable"></div>
         </div>
@@ -34,9 +34,9 @@
 <div class="SnModal-wrapper" data-modal="productModalForm">
     <div class="SnModal">
         <div class="SnModal-close" data-modalclose="productModalForm">
-            <i class="icon-cross"></i>
+            <i class="fas fa-times"></i>
         </div>
-        <div class="SnModal-header"><i class="icon-file-plus SnMr-2"></i> Producto</div>
+        <div class="SnModal-header"><i class="fas fa-folder-plus SnMr-2"></i> Producto</div>
         <div class="SnModal-body">
             <form action="" class="SnForm" novalidate id="productForm" onsubmit="ProductSubmit(event)">
                 <input type="hidden" class="SnForm-control" id="productId">
@@ -45,10 +45,10 @@
                         <label for="productProductKey" class="SnForm-label">Código</label>
                         <div class="SnControl-group">
                             <div class="SnControl-wrapper">
-                                <i class="icon-barcode2 SnControl-prefix"></i>
+                                <i class="fas fa-barcode SnControl-prefix"></i>
                                 <input class="SnForm-control SnControl" type="text" id="productProductKey" required>
                             </div>
-                            <div class="SnBtn primary"><i class="icon-rotate-ccw3"></i></div>
+                            <div class="SnBtn primary"><i class="fas fa-search"></i></div>
                         </div>
                     </div>
                     <div class="SnForm-item required">
@@ -59,7 +59,7 @@
                 <div class="SnForm-item required">
                     <label for="productDescription" class="SnForm-label">Nombre del Producto o Servicio</label>
                     <div class="SnControl-wrapper">
-                        <i class="icon-file-text2 SnControl-prefix"></i>
+                        <i class="far fa-sticky-note SnControl-prefix"></i>
                         <input class="SnForm-control SnControl" type="text" id="productDescription" required>
                     </div>
                 </div>
@@ -76,14 +76,14 @@
                     <div class="SnForm-item required">
                         <label for="productUnitPrice" class="SnForm-label">PrecioVenta(Inc.IGV)</label>
                         <div class="SnControl-wrapper">
-                            <i class="icon-cash4 SnControl-prefix"></i>
+                            <i class="fas fa-coins SnControl-prefix"></i>
                             <input class="SnForm-control SnControl" type="number" step="any" id="productUnitPrice" required>
                         </div>
                     </div>
                     <div class="SnForm-item required">
                         <label for="productUnitValue" class="SnForm-label">PrecioVenta(Sin IGV)</label>
                         <div class="SnControl-wrapper">
-                            <i class="icon-cash4 SnControl-prefix"></i>
+                            <i class="fas fa-coins SnControl-prefix"></i>
                             <input class="SnForm-control SnControl" type="number" step="any" id="productUnitValue" required>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                                     <option value="<?= $row['category_id'] ?>"><?= $row['name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <div class="SnBtn primary" onclick="CategoryShowModalCreate()"><i class="icon-plus2"></i></div>
+                            <div class="SnBtn primary" onclick="CategoryShowModalCreate()"><i class="fa fa-plus"></i></div>
                         </div>
                     </div>
                     <div class="SnForm-item required">
@@ -126,10 +126,14 @@
                         <input type="number" step="any" class="SnForm-control" id="productIsc">
                     </div>
                 </div>
-                <div class="SnForm-item">
+                <div class="SnForm-item SnGrid s-grid-2">
                     <div class="SnSwitch">
                         <input class="SnSwitch-control" type="checkbox" id="productState">
                         <label class="SnSwitch-label" for="productState">Estado</label>
+                    </div>
+                    <div class="SnSwitch">
+                        <input class="SnSwitch-control" type="checkbox" id="productBagTax">
+                        <label class="SnSwitch-label" for="productBagTax">¿Es Afecto al ICBPER?</label>
                     </div>
                 </div>
                 <button type="submit" class="SnBtn primary block" id="productFormSubmit">Guardar</button>

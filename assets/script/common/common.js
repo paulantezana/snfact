@@ -1,10 +1,18 @@
-const Service = {
+const APP = {
     path: '/snfact',
+    igvPercentage: 0.18,
+    ICBPERYears: {
+        '2019': 0.1,
+        '2020': 0.2,
+        '2021': 0.3,
+        '2022': 0.4,
+        '2023': 0.5,
+    },
 };
 
 class RequestApi {
     static setHeaders(options) {
-        if (options.method === 'POST' || options.method === 'PUT' || options.method === 'DELETE' || options.method === 'GET') {
+        if (options.method === 'POST' || options.method === 'PUT' || options.method === 'DELETE') {
             if (!(options.body instanceof FormData)) {
                 if (options.contentType === 'formData') {
                     let formData = new FormData();
@@ -35,7 +43,7 @@ class RequestApi {
         NProgress.start();
         const newOptions = RequestApi.setHeaders({ ...options }); // format
 
-        return fetch(Service.path + path, newOptions)
+        return fetch(APP.path + path, newOptions)
             .then(response => {
                 if (responseType === 'json'){
                   return response.json();
@@ -51,7 +59,7 @@ class RequestApi {
     }
 
     static fetchText(path, options) {
-        const url = Service.path + path; // uri request
+        const url = APP.path + path; // uri request
 
         NProgress.start();
         return fetch(url, options)
@@ -199,16 +207,43 @@ let SnLiveList = options => {
 };
 
 function SnDropdown(){
-    let SnDropdowns = document.querySelectorAll('.SnDropdown');
-    SnDropdowns.forEach((item,index)=>{
-        if(item.getAttribute('tabindex') === null){
-            item.setAttribute('tabindex',generateUniqueId());
-            let toogleElem = item.querySelector('.SnDropdown-toggle');
-            let listElem = toogleElem.nextElementSibling;
-            toogleElem.addEventListener('click',()=>{
-                listElem.classList.toggle('show');
-            });
+    let lastDropdown = false;
+
+    function toggleDropdown(listElem) {
+        if(!listElem.classList.contains('show')){
+            listElem.classList.add('show');
+
+            if(lastDropdown && lastDropdown !== listElem){
+                lastDropdown.classList.remove('show');
+            }
+            lastDropdown = listElem;
+        }else {
+            lastDropdown = false;
+            listElem.classList.remove('show');
         }
+    }
+
+    function closeLastDropdown(){
+        if(lastDropdown){
+            lastDropdown.classList.remove('show');
+        }
+    }
+
+    document.querySelectorAll('.SnDropdown').forEach(item => {
+        let toggleElem = item.querySelector('.SnDropdown-toggle');
+        let listElem = toggleElem.nextElementSibling;
+
+        if(!item.classList.contains('listen')){
+            item.classList.add('listen');
+            toggleElem.addEventListener('click',e =>{
+                e.stopPropagation();
+                toggleDropdown(listElem);
+            }, true);
+        }
+    });
+
+    window.addEventListener('click',e =>{
+        closeLastDropdown();
     });
 }
 

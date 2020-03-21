@@ -295,6 +295,9 @@ function calcItem(uniqueId){
             }
         }
 
+        document.getElementById(`invoiceItemUnitValue${uniqueId}`).setAttribute('readonly','true');
+        document.getElementById(`invoiceItemUnitPrice${uniqueId}`).removeAttribute('readonly');
+
         document.getElementById(`invoiceItemUnitValue${uniqueId}`).value = unitValue;
         document.getElementById(`invoiceItemTotalValue${uniqueId}`).value = roundCurrency(totalValue);
         document.getElementById(`invoiceItemTotalBaseIsc${uniqueId}`).value = totalBaseIsc;
@@ -343,6 +346,9 @@ function calcItem(uniqueId){
                 total = totalValue + igv;
             }
         }
+        document.getElementById(`invoiceItemUnitPrice${uniqueId}`).setAttribute('readonly','true');
+        document.getElementById(`invoiceItemUnitValue${uniqueId}`).removeAttribute('readonly');
+
         document.getElementById(`invoiceItemUnitPrice${uniqueId}`).value = unitPrice;
         document.getElementById(`invoiceItemTotalValue${uniqueId}`).value = roundCurrency(totalValue);
         document.getElementById(`invoiceItemTotalBaseIsc${uniqueId}`).value = totalBaseIsc;
@@ -359,17 +365,29 @@ function calcItem(uniqueId){
         document.getElementById(`invoiceItemTotalText${uniqueId}`).innerHTML = roundCurrency(total);
     }
 
-    // if ($(`#plasticBagTaxEnabled${uniqueId}`).is(':checked')) {
-    //     let quantity = $(`#quantity${uniqueId}`).val() || 0;
-    //     let invoiceDateOfIssue = invoiceDateOfIssueInput.val(),
-    //         currentYear = parseFloat(invoiceDateOfIssue.split('-')[0]);
-    //     let plasticBagTaxed = currentYear > 2023 ? ICBPERYears[2023] : ICBPERYears[currentYear] * quantity;
-    //     $(`#plasticBagTax${uniqueId}`).val(RoundCurrency(plasticBagTaxed));
-    // } else {
-    //     $(`#plasticBagTax${uniqueId}`).val(RoundCurrency(0));
-    // }
+    let invoicePlasticBagTaxEnabled = document.getElementById(`invoiceItemPlasticBagTaxEnabled${uniqueId}`).checked;
+    let invoicePlasticQuantity = document.getElementById(`invoiceItemPlasticQuantity${uniqueId}`);
+    let invoicePlasticBagTax = document.getElementById(`invoiceItemPlasticBagTax${uniqueId}`);
+
+    if (invoicePlasticBagTaxEnabled) {
+        let invoiceDateOfIssue = document.getElementById('invoiceDateOfIssue').value;
+        let currentYear = parseFloat(invoiceDateOfIssue.split('-')[0]);
+        let plasticBagTaxed = currentYear > 2023 ? APP.ICBPERYears[2023] : APP.ICBPERYears[currentYear] * quantityInput.value;
+        invoicePlasticQuantity.value = quantityInput.value;
+        invoicePlasticBagTax.value = roundCurrency(plasticBagTaxed);
+    } else {
+        invoicePlasticBagTax.value = 0.00;
+    }
 
     calcTotal();
+}
+
+function calcAllItem() {
+    let table = document.getElementById('invoiceItemTableBody');
+    [...table.children].forEach(row => {
+        let uniqueId = row.dataset.uniqueid;
+        calcItem(uniqueId);
+    });
 }
 
 function setListenersTotalById(list){
@@ -420,13 +438,13 @@ function executeItem(uniqueId){
         onSelect: (target, data) => {
             document.getElementById(`invoiceItemAffectationCode${uniqueId}`).value = data.affectation_code;
             document.getElementById(`invoiceItemUnitMeasure${uniqueId}`).value = data.unit_measure_code;
-            document.getElementById(`invoiceProductCode${uniqueId}`).value = data.product_code;
+            document.getElementById(`invoiceItemProductCode${uniqueId}`).value = data.product_code;
             document.getElementById(`invoiceItemDescription${uniqueId}`).value = data.description;
             document.getElementById(`invoiceItemUnitPrice${uniqueId}`).value = data.unit_price;
             document.getElementById(`invoiceItemUnitValue${uniqueId}`).value = data.unit_value;
             document.getElementById(`invoiceItemQuantity${uniqueId}`).value = 1;
-
             document.getElementById(`invoiceItemDescriptionText${uniqueId}`).textContent =  data.description;
+            document.getElementById(`invoiceItemPlasticBagTaxEnabled${uniqueId}`).checked = data.bag_tax == '1';
             calcItem(uniqueId);
             SnCollapse.open(`invoiceProductData${uniqueId}`);
         }
@@ -438,6 +456,7 @@ function executeItem(uniqueId){
         `invoiceItemIscTax1${uniqueId}`,
         `invoiceItemDiscount${uniqueId}`,
         `invoiceItemAffectationCode${uniqueId}`,
+        `invoiceItemPlasticBagTaxEnabled${uniqueId}`,
     ], uniqueId );
 
     let invoiceItemDescription = document.getElementById(`invoiceItemDescription${uniqueId}`);
@@ -452,9 +471,9 @@ function executeItem(uniqueId){
     let itemQuantityText = document.getElementById(`invoiceItemQuantityText${uniqueId}`);
     let itemQuantityRemove = document.getElementById(`invoiceItemQuantityRemove${uniqueId}`);
     itemQuantityRemove.addEventListener('click',e => {
-        let cuantityVal = parseFloat(itemQuantityText.value);
-        if(cuantityVal > 1){
-            itemQuantityText.value = cuantityVal-1;
+        let quantityVal = parseFloat(itemQuantityText.value);
+        if(quantityVal > 1){
+            itemQuantityText.value = quantityVal-1;
             document.getElementById(`invoiceItemQuantity${uniqueId}`).value = itemQuantityText.value;
             calcItem(uniqueId);
         }
@@ -462,8 +481,8 @@ function executeItem(uniqueId){
 
     let itemQuantityAdd = document.getElementById(`invoiceItemQuantityAdd${uniqueId}`);
     itemQuantityAdd.addEventListener('click',e => {
-        let cuantityVal = parseFloat(itemQuantityText.value);
-        itemQuantityText.value = cuantityVal+1;
+        let quantityVal = parseFloat(itemQuantityText.value);
+        itemQuantityText.value = quantityVal+1;
         document.getElementById(`invoiceItemQuantity${uniqueId}`).value = itemQuantityText.value;
         calcItem(uniqueId);
     });
@@ -524,6 +543,8 @@ function invoiceSubmit(){
     let invoice = {};
     invoice.customer = {};
     invoice.invoiceUpdate = {};
+    invoice.guide = {};
+    invoice.detraction = {};
     invoice.item = [];
 
     invoice.dateOfIssue = document.getElementById('invoiceDateOfIssue').value;
@@ -565,6 +586,43 @@ function invoiceSubmit(){
     invoice.customer.sendEmail = document.getElementById('invoiceCustomerSendEmail').checked;
     invoice.customer.telephone = '';
 
+    // Guide
+    invoice.guide.transferCode = document.getElementById('guideTransferCode').value;
+    invoice.guide.transportCode = document.getElementById('guideTransportCode').value;
+    invoice.guide.transferStartDate = document.getElementById('guideTransferStartDate').value;
+    invoice.guide.totalGrossWeight = document.getElementById('guideTotalGrossWeight').value;
+    invoice.guide.carrierDocumentCode = document.getElementById('guideCarrierDocumentCode').value;
+    invoice.guide.carrierDocumentNumber = document.getElementById('guideCarrierDocumentNumber').value;
+    invoice.guide.carrierDenomination = document.getElementById('guideCarrierDenomination').value;
+    invoice.guide.carrierPlateNumber = document.getElementById('guideCarrierPlateNumber').value;
+    invoice.guide.driverDocumentCode = document.getElementById('guideDriverDocumentCode').value;
+    invoice.guide.driverDocumentNumber = document.getElementById('guideDriverDocumentNumber').value;
+    invoice.guide.driverFullName = document.getElementById('guideDriverFullName').value;
+    invoice.guide.locationStartingCode = document.getElementById('guideLocationStartingCode').value;
+    invoice.guide.addressStartingPoint = document.getElementById('guideAddressStartingPoint').value;
+    invoice.guide.locationArrivalCode = document.getElementById('guideLocationExitCode').value;
+    invoice.guide.addressArrivalPoint = document.getElementById('guideAddressArrivalPoint').value;
+    invoice.guideEnabled = false;
+
+    // Detraction
+    invoice.detraction.referralValue  = document.getElementById('detractionReferralValue').value;
+    invoice.detraction.effectiveLoad  = document.getElementById('detractionEffectiveLoad').value;
+    invoice.detraction.usefulLoad  = document.getElementById('detractionUsefulLoad').value;
+    invoice.detraction.travelDetail  = document.getElementById('detractionTravelDetail').value;
+    invoice.detraction.subjectCode  = document.getElementById('invoiceSubjectDetractionCode').value;
+    invoice.detraction.percentage  = document.getElementById('invoiceDetractionPercentage').value;
+    invoice.detraction.locationStartingCode  = document.getElementById('detractionLocationStartingCode').value;
+    invoice.detraction.addressStartingPoint  = document.getElementById('detractionAddressStartingPoint').value;
+    invoice.detraction.locationArrivalCode  = document.getElementById('detractionLocationArrivalCode').value;
+    invoice.detraction.addressArrivalPoint  = document.getElementById('detractionAddressArrivalPoint').value;
+    invoice.detraction.boatRegistration  = document.getElementById('detractionBoatRegistration').value;
+    invoice.detraction.boatName  = document.getElementById('detractionBoatName').value;
+    invoice.detraction.speciesSold = document.getElementById('detractionSpeciesSold').value;
+    invoice.detraction.deliveryAddress  = document.getElementById('detractionDeliveryAddress').value;
+    invoice.detraction.deliveryDate  = document.getElementById('detractionDeliveryDate').value;
+    invoice.detraction.quantity  = document.getElementById('detractionQuantity').value;
+    invoice.detractionEnabled = false;
+
     // Invoice Credit and debit note
     invoice.invoiceUpdate.invoiceId = document.getElementById('invoiceId').value || 0;
     invoice.invoiceUpdate.serie = document.getElementById('invoiceSerieUpdate').value || '';
@@ -576,7 +634,7 @@ function invoiceSubmit(){
         let uniqueId = row.dataset.uniqueid;
         let invoiceItem = {};
 
-        invoiceItem.productCode = document.getElementById(`invoiceProductCode${uniqueId}`).value;
+        invoiceItem.productCode = document.getElementById(`invoiceItemProductCode${uniqueId}`).value;
         invoiceItem.unitMeasure = document.getElementById(`invoiceItemUnitMeasure${uniqueId}`).value;
         invoiceItem.description = document.getElementById(`invoiceItemDescription${uniqueId}`).value;
         invoiceItem.quantity = document.getElementById(`invoiceItemQuantity${uniqueId}`).value;
@@ -592,11 +650,11 @@ function invoiceSubmit(){
         invoiceItem.isc = document.getElementById(`invoiceItemIsc${uniqueId}`).value;
         invoiceItem.totalValue = document.getElementById(`invoiceItemTotalValue${uniqueId}`).value;
         invoiceItem.total = document.getElementById(`invoiceItemTotal${uniqueId}`).value;
+        invoiceItem.quantityPlasticBag = document.getElementById(`invoiceItemPlasticQuantity${uniqueId}`).value;
+        invoiceItem.plasticBagTax = document.getElementById(`invoiceItemPlasticBagTax${uniqueId}`).value;
 
         return invoiceItem;
     });
-
-    console.log(invoice);
 
     SnModal.confirm({
         title: 'Necesitamos de tu Confirmación\n',
@@ -610,19 +668,29 @@ function invoiceSubmit(){
                 body: invoice,
             }).then(res => {
                 if (res.success){
-                    let messagePrint = res.message;
+                    let messagePrint = '';
                     let messageType = 'info';
                     if(res.sunat.success){
                         messageType = 'success';
-                        messagePrint += '<br>' + res.sunat.message
+                        messagePrint = res.sunat.message;
+
+                        let InvoiceConfirmWhatsapp = document.getElementById('InvoiceConfirmWhatsapp');
+                        let InvoiceConfirmPrint = document.getElementById('InvoiceConfirmPrint');
+                        let InvoiceConfirmEmail = document.getElementById('InvoiceConfirmEmail');
+
+                        InvoiceConfirmWhatsapp.setAttribute('href','https://api.whatsapp.com/send?text=' + encodeURI(res.sunat.message + ' \n' + (location.origin + APP.path + res.sunat.result.pdf_url)));
+                        InvoiceConfirmPrint.setAttribute('onclick',`DocumentPrinter.showModal('${res.sunat.result.pdf_url}', false)`);
+                        InvoiceConfirmEmail.setAttribute('onclick',`invoiceSendEmailOpenModal('${res.result.invoiceId}', '')`);
                     } else {
                         messageType = 'warning';
-                        messagePrint += '<br>' + res.sunat.message;
+                        messagePrint = res.sunat.message;
                     }
 
                     let invoiceConfirmAlert = document.getElementById('invoiceConfirmAlert');
+                    let InvoiceConfirmTitle = document.getElementById('InvoiceConfirmTitle');
                     invoiceConfirmAlert.classList.add(messageType);
                     invoiceConfirmAlert.innerHTML = messagePrint;
+                    InvoiceConfirmTitle.innerHTML = res.message;
 
                     SnModal.open('invoiceConfirmModal');
                 } else {
@@ -633,6 +701,16 @@ function invoiceSubmit(){
             });
         },
     });
+}
+
+function invoiceSendEmailOpenModal(invoiceId, customerEmail){
+    SnModal.open('invoiceModalSendEmail');
+    let sendInvoiceId = document.getElementById('sendInvoiceId');
+    let sendInvoiceCustomerEmail = document.getElementById('sendInvoiceCustomerEmail');
+    if (sendInvoiceId && sendInvoiceCustomerEmail){
+        sendInvoiceId.value = invoiceId;
+        sendInvoiceCustomerEmail.value = customerEmail;
+    }
 }
 
 function newInvoice(){
@@ -655,8 +733,9 @@ function newInvoice(){
     }
     calcTotal();
     invoiceValidator();
-}
 
+    SnModal.close('invoiceConfirmModal');
+}
 
 function invoiceValidator(){
     if(pValidator){
@@ -681,10 +760,10 @@ document.addEventListener('DOMContentLoaded',()=>{
         'invoiceTotalOtherCharger',
     ]);
 
-
     let includeIgv = document.getElementById('includeIgv');
     includeIgv.addEventListener('change',e =>{
         NewInvoiceState.includeIgv = includeIgv.checked;
+        calcAllItem();
     });
 
     let invoiceSerie = document.getElementById('invoiceSerie');

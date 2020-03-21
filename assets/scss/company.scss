@@ -126,3 +126,9 @@
 .SnHide{
   display: none;
 }
+
+.Result{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

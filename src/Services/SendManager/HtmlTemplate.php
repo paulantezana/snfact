@@ -69,8 +69,11 @@ class HtmlTemplate{
                 </head>
                 <body>
                   <div style=\'background: #FAFAFA; padding: 5rem 0; text-align: center;\'>
-                    <div style=\'max-width:590px!important; width:590px; background: white;padding: 2rem;margin: auto;\'>
-                    '.$content.'
+                    <div style=\'max-width:590px!important; width:590px; background: white;padding: 1rem;margin: auto;\'>
+                       '.$content.'
+                    </div>
+                    <div style="text-align: center; color: #888888; margin-top: 1rem;">
+                       Copyright ©' . date('Y') . ' ' . APP_AUTHOR . '
                     </div>
                   </div>
                 </body>

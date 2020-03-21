@@ -30,10 +30,10 @@
                     <td>
                         <div class="SnTable-action">
                             <div class="SnBtn icon jsCategoryAction" data-tooltip="Editar" onclick="ProductShowModalUpdate(<?= $row['product_id'] ?>)">
-                                <i class="icon-pencil"></i>
+                                <i class="fas fa-edit"></i>
                             </div>
                             <div class="SnBtn icon jsCategoryAction" data-tooltip="Eliminar" onclick="ProductDelete(<?= $row['product_id'] ?>,'<?= $row['description'] ?>')">
-                                <i class="icon-trash"></i>
+                                <i class="far fa-trash-alt"></i>
                             </div>
                         </div>
                     </td>

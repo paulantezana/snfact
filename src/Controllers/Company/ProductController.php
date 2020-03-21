@@ -134,6 +134,7 @@ class ProductController extends Controller
                 'description' => $body['description'],
                 'unit_price' => $body['unitPrice'],
                 'unit_value' => $body['unitValue'],
+                'bag_tax' => $body['bagTax'],
                 'product_key' => $body['productKey'],
                 'product_code' => $body['productCode'],
                 'unit_measure_code' => $body['unitMeasureCode'],
