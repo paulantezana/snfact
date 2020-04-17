@@ -15,7 +15,7 @@
             <?php if (count($parameter['company']['data']) >= 1) : foreach ($parameter['company']['data'] as $row) : ?>
                     <tr>
                         <td>
-                            <img src="<?php echo URL_PATH . $row['logo'] ?>" alt="logo">
+                            <img src="<?php echo URL_PATH . $row['logo'] ?>" alt="logo" style="max-height: 45px">
                         </td>
                         <td><?= $row['email'] ?></td>
                         <td>
@@ -43,10 +43,10 @@
                         <td>
                             <div class="SnTable-action">
                                 <div class="SnBtn icon jsCompanyAction" data-tooltip="Editar" onclick="CompanyShowModalUpdate(<?= $row['business_id'] ?>)">
-                                    <i class="icon-pencil"></i>
+                                    <i class="fas fa-edit"></i>
                                 </div>
-                                <div class="SnBtn icon jsCompanyAction" data-tooltip="Eliminar" onclick="CompanyShowModalLogo(<?= $row['business_id'] ?>)">
-                                    <i class="icon-camera"></i>
+                                <div class="SnBtn icon jsCompanyAction" data-tooltip="Logo" onclick="CompanyShowModalLogo(<?= $row['business_id'] ?>)">
+                                    <i class="fas fa-camera"></i>
                                 </div>
                             </div>
                         </td>

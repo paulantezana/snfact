@@ -13,11 +13,11 @@ class ManagerController extends Controller
     public function index()
     {
         try {
-            $this->render('Manager/dashboard.php',[],'layout/managerLayout.php');
+            $this->render('Manager/dashboard.php',[],'layout/manager.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/managerLayout.php');
+            ],'layout/manager.layout.php');
         }
     }
     public function error404()
@@ -25,7 +25,7 @@ class ManagerController extends Controller
         $message = $_GET['message'] ?? '';
         $this->render('404.php', [
             'message' => $message
-        ],'layout/managerLayout.php');
+        ],'layout/manager.layout.php');
     }
     public function logout(){
         session_destroy();

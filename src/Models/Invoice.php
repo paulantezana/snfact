@@ -100,7 +100,6 @@ class Invoice extends Model
             $sqlFilter .= $filterNumber >= 1 ? ' AND ' : ' WHERE ';
             $sqlFilter .= "invoice.local_id = {$businessLocalId}";
 
-            $limit = 10;
             $offset = ($page - 1) * $limit;
             $total_rows = $this->db->query("SELECT COUNT(invoice.invoice_id) FROM invoice INNER JOIN invoice_customer ic on invoice.invoice_id = ic.invoice_id {$sqlFilter}")->fetchColumn();
             $total_pages = ceil($total_rows / $limit);

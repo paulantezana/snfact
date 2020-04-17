@@ -24,7 +24,7 @@ class PublicManagerController extends Controller
                     $this->render('manager/login.php', [
                         'messageType' => 'error',
                         'message' => 'Los campos usuario y contraseña son requeridos',
-                    ],'layout/basicLayout.php');
+                    ],'layout/basic.layout.php');
                     return;
                 }
 
@@ -35,7 +35,7 @@ class PublicManagerController extends Controller
                     if ($loginUser['fa2_secret_enabled']) {
                         $this->render('manager/posLogin.php', [
                             'userId' => $loginUser['mng_user_id'],
-                        ],'layout/basicLayout.php');
+                        ],'layout/basic.layout.php');
                         return;
                     }
 
@@ -44,7 +44,7 @@ class PublicManagerController extends Controller
                         session_destroy();
                         $this->render('403.php', [
                             'message' => $responseApp->message,
-                        ],'layout/basicLayout.php');
+                        ],'layout/basic.layout.php');
                         return;
                     }
 
@@ -53,15 +53,15 @@ class PublicManagerController extends Controller
                     $this->render('manager/login.php', [
                         'messageType' => 'error',
                         'message' => $e->getMessage(),
-                    ],'layout/basicLayout.php');
+                    ],'layout/basic.layout.php');
                 }
             } else {
-                $this->render('manager/login.php',[],'layout/basicLayout.php');
+                $this->render('manager/login.php',[],'layout/basic.layout.php');
             }
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/basicLayout.php');
+            ],'layout/basic.layout.php');
         }
     }
 

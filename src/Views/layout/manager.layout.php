@@ -18,13 +18,13 @@
             <div class="AdminLayout-header">
                 <header class="Header">
                     <div class="Header-left">
-                        <div id="AsideMenu-toggle"> <i class="icon-list2"></i> </div>
+                        <div id="AsideMenu-toggle"><i class="fas fa-bars"></i></div>
                     </div>
                     <div class="Header-right">
-                        <ul class="HeaderMenu SnMenu">
+                        <ul class="HeaderMenu">
                             <li>
                                 <a href="<?= URL_PATH ?>/busines" class="Header-action">
-                                    <i class="icon-bell3"></i>
+                                    <i class="far fa-bell"></i>
                                 </a>
                             </li>
                             <li>
@@ -43,11 +43,11 @@
                                             <div class="User-description" id="userDescriptionInfo"></div>
                                         </div>
                                     </li>
-                                    <li class="SnPt-2"><a href="<?= URL_PATH ?>/user/profile"> <i class="icon-user-plus SnMr-2"></i> Perfil</a></li>
-                                    <li><a href="<?= URL_PATH ?>/manager/help"> <i class="icon-help SnMr-2"></i> Soporte</a></li>
-                                    <li class="SnPb-2"><a href="<?= URL_PATH ?>/business/update"> <i class="icon-cog SnMr-2"></i> Configurar empresa</a></li>
+                                    <li class="SnPt-2"><a href="<?= URL_PATH ?>/user/profile"><i class="fas fa-user SnMr-2"></i>Perfil</a></li>
+                                    <li><a href="<?= URL_PATH ?>/manager/help"><i class="fas fa-life-ring SnMr-2"></i>Soporte</a></li>
+                                    <li class="SnPb-2"><a href="<?= URL_PATH ?>/business/update"><i class="fas fa-cog SnMr-2"></i>Configurar empresa</a></li>
                                     <li class="divider"></li>
-                                    <li class="SnPt-2 SnPb-2"><a href="<?= URL_PATH ?>/manager/logout"> <i class="icon-switch2 SnMr-2"></i> Cerrar sesión</a></li>
+                                    <li class="SnPt-2 SnPb-2"><a href="<?= URL_PATH ?>/manager/logout"><i class="fas fa-sign-out-alt SnMr-2"></i>Cerrar sesión</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -70,10 +70,10 @@
                         </div>
                         <ul class="AsideMenu" id="AsideMenu">
                             <li>
-                                <a href="<?= URL_PATH ?>/"> <i class="icon-home"></i> <span>Inicio </span> </a>
+                                <a href="<?= URL_PATH ?>/"><i class="fas fa-tachometer-alt AsideMenu-icon"></i><span>Inicio </span> </a>
                             </li>
                             <li>
-                                <a href="<?= URL_PATH ?>/company"> <i class="icon-office"></i> <span>Empresas </span> </a>
+                                <a href="<?= URL_PATH ?>/company"><i class="fas fa-building AsideMenu-icon"></i><span>Empresas </span> </a>
                             </li>
                         </ul>
                         <div class="AsideFooter">

@@ -83,11 +83,13 @@ class BusinessController extends Controller
     public function api(){
         try {
             Authorization($this->connection, 'categoria', 'listar');
-            $this->render('company/documentation.view.php');
+            $this->render('company/documentation.view.php',[
+
+            ],'layout/company.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ]);
+            ],'layout/company.layout.php');
         }
     }
 

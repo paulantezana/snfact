@@ -1,7 +1,7 @@
 <div class="SnContent">
     <div class="SnToolbar">
         <div class="SnToolbar-left">
-            <i class=" fas fa-list-ul SnMr-2"></i> <strong>PRODUCTOS</strong>
+            <i class=" fas fa-list-ul SnMr-2"></i><strong>PRODUCTOS</strong>
         </div>
         <div class="SnToolbar-right">
             <div class="SnBtn jsProductAction" onclick="ProductToPrint()">
@@ -14,7 +14,7 @@
                 <i class="fas fa-sync-alt"></i>
             </div>
             <div class="SnBtn primary jsProductAction" onclick="ProductShowModalCreate()">
-                <i class="fas fa-plus SnMr-2"></i> Nuevo
+                <i class="fas fa-plus SnMr-2"></i>Nuevo
             </div>
         </div>
     </div>

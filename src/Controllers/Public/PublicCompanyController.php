@@ -200,7 +200,7 @@ class PublicCompanyController extends Controller
                         'name' => 'Admin',
                         'businessId' => $businessId,
                         'state' => true,
-                    ],$userId);
+                    ], $userId);
 
                     $this->userModel->updateById($userId,[
                         'user_role_id' => $roleId,

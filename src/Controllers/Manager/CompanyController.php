@@ -29,11 +29,11 @@ class CompanyController extends Controller
     {
         try {
             // Authorization($this->connection, 'company', 'listar');
-            $this->render('manager/company.php',[],'layout/managerLayout.php');
+            $this->render('manager/company.php',[],'layout/manager.layout.php');
         } catch (Exception $e) {
             $this->render('500.php', [
                 'message' => $e->getMessage(),
-            ],'layout/managerLayout.php');
+            ],'layout/manager.layout.php');
         }
     }
 
@@ -122,6 +122,7 @@ class CompanyController extends Controller
             $roleId = $this->userRoleModel->insert([
                 'name'=>'Admin',
                 'businessId'=>$businessId,
+                'state' => true,
             ],$userId);
 
             $this->userModel->updateById($userId,[
@@ -258,6 +259,33 @@ class CompanyController extends Controller
                 'ruc' => $body['ruc'],
                 'phone' => $dataPeru['telephone'] != '' ? $dataPeru['telephone'] : $body['phone'],
             ]);
+            $res->success = true;
+            $res->message = 'El registro se actualizo exitosamente';
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
+    public function uploadLogo()
+    {
+        $res = new Result();
+        try {
+            $companyId = $_POST['companyId'];
+
+            if(isset($_FILES['logo'])){
+                $logoPath = uploadAndValidateFile($_FILES['logo'], '/images/business/', 'C-' . $companyId, 2097152, ['jpeg','jpg','png']);
+                $currentDate = date('Y-m-d H:i:s');
+                $this->businessModel->updateById($companyId, [
+                    'updated_at' => $currentDate,
+                    'updated_user_id' => $_SESSION[SESS_KEY],
+    
+                    'logo' => $logoPath,
+                ]);
+            } else {
+                throw new Exception('Elija almenos un archvio.');
+            }
+
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
         } catch (Exception $e) {

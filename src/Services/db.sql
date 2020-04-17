@@ -149,11 +149,6 @@ CREATE TABLE setting(
 
 CREATE TABLE business(
     business_id INT AUTO_INCREMENT NOT NULL,
-    updated_at DATETIME,
-    created_at DATETIME,
-    updated_user_id INT,
-    created_user_id INT,
-
     continue_payment TINYINT,
     ruc VARCHAR(32) NOT NULL UNIQUE,
     social_reason VARCHAR(255) DEFAULT '',
@@ -165,17 +160,17 @@ CREATE TABLE business(
     web_site VARCHAR(64) DEFAULT '',
     logo VARCHAR(255) DEFAULT '',
     environment TINYINT DEFAULT 0,
+
+    updated_at DATETIME,
+    created_at DATETIME,
+    updated_user_id INT,
+    created_user_id INT,
     state TINYINT DEFAULT 1,
     CONSTRAINT pk_company PRIMARY KEY (business_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 CREATE TABLE business_local(
     business_local_id INT AUTO_INCREMENT NOT NULL,
-    updated_at DATETIME,
-    created_at DATETIME,
-    updated_user_id INT,
-    created_user_id INT,
-
     short_name VARCHAR(64) DEFAULT '',
     sunat_code VARCHAR(64) DEFAULT '',
     location_code VARCHAR(8) DEFAULT '',
@@ -184,6 +179,11 @@ CREATE TABLE business_local(
     pdf_header VARCHAR(255) DEFAULT '',
     description VARCHAR(255) DEFAULT '',
     business_id INT NOT NULL,
+
+    updated_at DATETIME,
+    created_at DATETIME,
+    updated_user_id INT,
+    created_user_id INT,
     state TINYINT DEFAULT 1,
     CONSTRAINT pk_business_local PRIMARY KEY (business_local_id),
     CONSTRAINT fk_business_local_business FOREIGN KEY (business_id) REFERENCES business (business_id)
@@ -192,16 +192,16 @@ CREATE TABLE business_local(
 
 CREATE TABLE business_serie(
     business_serie_id INT AUTO_INCREMENT NOT NULL,
-    updated_at DATETIME,
-    delete_at DATETIME,
-
-    business_local_id INT NOT NULL,
     serie VARCHAR(4) NOT NULL,
     document_code VARCHAR(2) NOT NULL,
     contingency TINYINT NOT NULL,
-
     max_correlative INT,
     hidden TINYINT DEFAULT 0,
+
+    business_local_id INT NOT NULL,
+
+    updated_at DATETIME,
+    delete_at DATETIME,
     CONSTRAINT pk_business_serie PRIMARY KEY (business_serie_id),
     -- CONSTRAINT uk_business_serie UNIQUE (business_local_id,serie,document_code,contingency),
     CONSTRAINT fk_business_serie_document_code FOREIGN KEY (document_code) REFERENCES cat_document_type_code (code)

@@ -35,13 +35,13 @@ function MenuIsValid(array $data, $value)
     $valid = false;
     if(gettype($value) === 'string'){
         $index = array_search($value, array_column($data, 'module'));
-        if($index !== false){
+        if(is_numeric($index)){
             $valid = true;
         }
     } else if(gettype($value) === 'array'){
         foreach ($value as $row) {
             $index = array_search($row, array_column($data, 'module'));
-            if($index !== false){
+            if(is_numeric($index)){
                 $valid = true;
             }
         }
@@ -408,4 +408,37 @@ Class ErrorCollector {
 
         $this->error[$parentName]['children'] = $item;
     }
+}
+
+
+function uploadAndValidateFile($file, $path, $fileName, $maxSize = 2097152, $mimeTypes = ['jpeg','jpg','png']){
+    $fileSize = $file['size'];
+    $fileTmp = $file['tmp_name'];
+    $fileExt = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+    $fileName = str_replace(array_merge(
+        array_map('chr', range(0, 31)),
+        array('<', '>', ':', '"', '/', '\\', '|', '?', '*')
+    ), '', $fileName);
+
+    if(in_array($fileExt, $mimeTypes)=== false){
+        throw new Exception('Extensión no permitida, elija un archivo .' . implode(', ',$mimeTypes) );
+    }
+    if($fileSize > $maxSize){
+        throw new Exception('Tamaño del archivo debe ser menor o igual a ' . $maxSize / 1024 / 1024 . ' MB');
+    }
+
+    $paths = explode('/',$path);
+    $pathAux = '/';
+    for ($i=0; $i < count($paths); $i++) {
+        if(!file_exists(ROOT_DIR . FILE_PATH . $pathAux . $paths[$i])){
+            mkdir(ROOT_DIR . FILE_PATH . $pathAux . $paths[$i]);
+        }
+        $pathAux .= $paths[$i] . '/';
+    }
+
+    $fileDir = FILE_PATH . $path . $fileName . '.' . $fileExt;
+    move_uploaded_file($fileTmp,ROOT_DIR . $fileDir);
+
+    return $fileDir;
 }
