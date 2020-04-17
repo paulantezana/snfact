@@ -177,6 +177,7 @@ function CompanyToPrint(){
 
 
 function CompanyShowModalLogo(companyId){
+    document.getElementById('companyLogoForm').reset();
     CompanySetLoading(true);
     RequestApi.fetch('/company/id',{
         method: 'POST',
@@ -187,6 +188,7 @@ function CompanyShowModalLogo(companyId){
         if (res.success){
             SnModal.open('companyModalLogoForm');
             document.getElementById('companyLogoId').value = res.result.business_id;
+            document.getElementById('companyLogoImg').setAttribute('src', APP.path + res.result.logo);
         }else {
             SnModal.error({ title: 'Algo salió mal', content: res.message })
         }
@@ -199,9 +201,11 @@ function CompanyLogoSubmit(){
     event.preventDefault();
     CompanySetLoading(true);
 
-    let companySendData = {};
+    let companySendData = new FormData();
+    companySendData.append('logo', document.getElementById('companyLogo').files[0]);
+    companySendData.append('companyId', document.getElementById('companyLogoId').value);
 
-    RequestApi.fetch('/company/ss',{
+    RequestApi.fetch('/company/uploadLogo',{
         method: 'POST',
         body: companySendData
     }).then(res => {

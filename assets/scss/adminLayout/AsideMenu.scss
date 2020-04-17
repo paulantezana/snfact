@@ -21,25 +21,17 @@ $asideFooterHeight: 32px;
   a {
     color: var(--snColorDarkInverse);
     text-decoration: none;
-    padding: 0 8px 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: inline-block;
+    width: 100%;
+    padding: 12px 30px 12px 20px;
     .AsideMenu-icon {
       margin-right: 16px;
-    }
-    > span {
-      flex: 1 1 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
     .toggle {
       margin: 0 0 0 8px;
     }
   }
   & > li > a {
-    line-height: 3rem;
     &:hover {
       background: var(--snColor1);
       color: white;
@@ -47,8 +39,7 @@ $asideFooterHeight: 32px;
   }
   ul {
     a {
-      padding: 8px 0  8px 50px;
-      line-height: 1.5rem;
+      padding: 10px 10px 10px 46px;
       &:hover{
         color: var(--snColor1Lighter);
       }
@@ -109,15 +100,16 @@ $asideFooterHeight: 32px;
           width: 220px;
           display: none;
           a {
-            padding: 8px 20px;
+            padding: 10px 10px 10px 24px;
           }
         }
         &:hover {
           > ul {
             display: block;
           }
-          > a span {
-            display: flex;
+          > a > span {
+            display: block;
+            padding: 12px 30px 12px 20px;
           }
           > a {
             color: var(--snColor1Lighter);
@@ -128,9 +120,8 @@ $asideFooterHeight: 32px;
       // Fisrt level
       > li {
         > a {
-          justify-content: center;
-          padding-left: 0;
-          padding-right: 0;
+          padding: 12px 16px 12px 16px;
+          text-align: center;
           > span {
             position: absolute;
             left: 100%;
@@ -146,6 +137,7 @@ $asideFooterHeight: 32px;
           }
           .AsideMenu-icon {
             margin-right: 0;
+            // font-size: 14px;
           }
         }
         &:hover{
@@ -229,9 +221,9 @@ $asideFooterHeight: 32px;
 }
 
 .icon-down::before{
-  content: "\e9c5";
+  content: "\25BC";
 }
 
 .icon-up::before{
-  content: "\e9c6";
+  content: "\25B2";
 }

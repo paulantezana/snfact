@@ -6,7 +6,7 @@
 @import "_base";
 
 // Components
-@include SnMenu();
+@include SnMenu(s,'.HeaderMenu');
 @include SnBtn();
 @include SnAlert();
 @include SnCard();
@@ -20,6 +20,7 @@
 @include SnMessage();
 @include SnPagination();
 @include SnTable();
+@include SnTag();
 @include SnSwitch();
 @include SnTooltip();
 @include SnTab();

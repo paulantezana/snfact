@@ -196,7 +196,6 @@ function BusinessLocalShowModalUpdate(businessLocalId){
 }
 
 function BusinessLocalSerieAddItem(businessSerieId, documentCode, serie, contingency = 0){
-    console.log(businessSerieId, documentCode, serie, contingency,'_S_S_');
     let uniqueId = generateUniqueId();
     let businessLocalAddItem = document.getElementById('businessLocalAddItem');
     let tableBody = document.getElementById('businessLocalSeriesTableBody');
